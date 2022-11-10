@@ -92,7 +92,7 @@ typedef struct
  * Parent_Container_Name : SecOCRxPduProcessing           *
  * Container_Index       : ECUC_SecOC_00048        *
  *****************************************/
-ECUC_SecOC_00048
+// ECUC_SecOC_00048
 typedef struct
 {
 
