@@ -4,20 +4,6 @@
 /*****************************************
  *          * Container Info *           *
  *                                       *
- * Container_Name        : SecOCRxAuthenticPduLayer *
- * Parent_Container_Name : SecOCRxPduProcessing           *
- * Container_Index       : 10.1.9        *
- *****************************************/
-typedef struct 
-{
-   SecOC_Pdu_Type             SecOCPduType;
-   uint16                     SecOCRxAuthenticLayerPduId;
-   //rf to pdu               *SecOCRxAuthenticLayerPduRef;
-}SecOC_RxAuthenticPduLayerType;
-
-/*****************************************
- *          * Container Info *           *
- *                                       *
  * Container_Name        : SecOCRxAuthenticPdu *
  * Parent_Container_Name : SecOCRxSecuredPduCollection           *
  * Container_Index       : 10.1.12        *
@@ -59,6 +45,20 @@ typedef struct
 /*****************************************
  *          * Container Info *           *
  *                                       *
+ * Container_Name        : SecOCRxAuthenticPduLayer *
+ * Parent_Container_Name : SecOCRxPduProcessing           *
+ * Container_Index       : 10.1.9        *
+ *****************************************/
+typedef struct 
+{
+   SecOC_Pdu_Type             SecOCPduType;
+   uint16                     SecOCRxAuthenticLayerPduId;
+   //rf to pdu               *SecOCRxAuthenticLayerPduRef;
+}SecOC_RxAuthenticPduLayerType;
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
  * Container_Name        : SecOCRxSecuredPdu *
  * Parent_Container_Name : SecOCRxSecuredPduLayer           *
  * Container_Index       : 10.1.8        *
@@ -92,7 +92,7 @@ typedef struct
  * Parent_Container_Name : SecOCRxPduProcessing           *
  * Container_Index       : ECUC_SecOC_00048        *
  *****************************************/
-// ECUC_SecOC_00048
+
 typedef struct
 {
 
@@ -115,8 +115,8 @@ typedef struct
    SecOC_ClientServerVerificationStatusPropagationMode_Type       SecOCClientServerVerificationStatusPropagationMode;
    uint16                                                         SecOCDataId;
    uint16                                                         SecOCFreshnessValueId;
-   uint16                                                         SecOCFreshnessValueLength;
-   uint16                                                         SecOCFreshnessValueTruncLength;
+   uint8                                                          SecOCFreshnessValueLength;
+   uint8                                                          SecOCFreshnessValueTruncLength;
    SecOC_ReceptionOverflowStrategy_Type                           SecOCReceptionOverflowStrategy;
    uint16                                                         SecOCReceptionQueueSize;
    boolean                                                        SecOCUseAuthDataFreshness;
