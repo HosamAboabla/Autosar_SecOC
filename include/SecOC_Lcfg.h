@@ -4,6 +4,7 @@
 #include "Std_Types.h"
 #include "SecOC_Types.h"
 
+extern EcuC_PduType EcuC_Pdu; // Reference to the global Pdu.
 
 /**************************************************************
  *          * Container Info *                                *
@@ -18,8 +19,6 @@ typedef struct
     uint16                  SecOCTxAuthenticLayerPduId;
     EcuC_PduType*           SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
-
-
 
 
 
