@@ -21,6 +21,19 @@ typedef struct
 } SecOC_TxAuthenticPduLayerType;
 
 
+/**************************************************************
+ *          * Container Info *                                *
+ *                                                            *
+ * Container_Name        : SecOC_TxSecuredPdu                 *
+ * Parent_Container_Name : SecOC_TxSecuredPduLayer             *
+ * Container_Index       : 10.1.16                            *
+ **************************************************************/
+typedef struct
+{
+    uint8                   SecOCAuthPduHeaderLength;
+    uint16                  SecOCTxSecuredLayerPduId;
+    EcuC_PduType*           SecOCTxSecuredLayerPduRef;
+} SecOC_TxSecuredPduType;
 
 
 
