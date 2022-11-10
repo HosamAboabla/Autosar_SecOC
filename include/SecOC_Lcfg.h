@@ -2,9 +2,22 @@
 #define INCLUDE_SECOC_LCFG_H_
 
 #include "Std_Types.h"
+#include "SecOC_Types.h"
 
 
-
+/**************************************************************
+ *          * Container Info *                                *
+ *                                                            *
+ * Container_Name        : SecOC_TxAuthenticPduLayer          *
+ * Parent_Container_Name : SecOC_TxPduProcessing              *
+ * Container_Index       : 10.1.14                            *
+ **************************************************************/
+typedef struct
+{
+    SecOC_PduType_Type      SecOCPduType;
+    uint16                  SecOCTxAuthenticLayerPduId;
+    EcuC_PduType*           SecOCTxAuthenticLayerPduRef;
+} SecOC_TxAuthenticPduLayerType;
 
 
 
