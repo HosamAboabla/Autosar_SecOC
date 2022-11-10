@@ -5,29 +5,29 @@
 
 typedef enum
 {
-	BOTH,
+	BOTH = 0,
 	FAILURE_ONLY,
 	NONE
-}SecOCClientServerVerificationStatusPropagationModeType;
+}SecOC_ClientServerVerificationStatusPropagationMode_Type;
 
 typedef enum
 {
-	QUEUE,
+	QUEUE = 0,
 	REJECT,
 	REPLACE
-}SecOCReceptionOverflowStrategyType;
+}SecOC_ReceptionOverflowStrategy_Type;
 
 typedef enum
 {
-	BOTH,
+	BOTH = 0,
 	FAILURE_ONLY,
 	NONE
-}SecOCVerificationStatusPropagationModeType;
+}SecOC_VerificationStatusPropagationMode_Type;
 
 typedef enum
 {
-	SECOC_IFPDU,
+	SECOC_IFPDU = 0,
 	SECOC_TPPDU
-}SecOCPdu_type;
+}SecOC_Pdu_Type;
 
 #endif

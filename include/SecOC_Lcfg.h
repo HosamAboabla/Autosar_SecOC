@@ -10,10 +10,10 @@
  *****************************************/
 typedef struct 
 {
-   SecOCPdu_type              SecOCPduType;
+   SecOC_Pdu_Type             SecOCPduType;
    uint16                     SecOCRxAuthenticLayerPduId;
    //rf to pdu               *SecOCRxAuthenticLayerPduRef;
-}SecOCRxAuthenticPduLayerType;
+}SecOC_RxAuthenticPduLayerType;
 
 /*****************************************
  *          * Container Info *           *
@@ -27,7 +27,7 @@ typedef struct
    uint8          SecOCAuthPduHeaderLength;
    uint16         SecOCRxAuthenticPduId;
    //rf           SecOCRxAuthenticPduRef;
-}SecOCRxAuthenticPduType;
+}SecOC_RxAuthenticPduType;
 
 /*****************************************
  *          * Container Info *           *
@@ -40,7 +40,7 @@ typedef struct
 {
    uint16            SecOCRxCryptographicPduId;
    //rf to pdu       SecOCRxCryptographicPduRef;
-}SecOCRxCryptographicPduType;
+}SecOC_RxCryptographicPduType;
 /*****************************************
  *          * Container Info *           *
  *                                       *
@@ -51,10 +51,10 @@ typedef struct
 typedef struct 
 {
    boolean                                 SecOCSecuredRxPduVerification;
-   SecOCRxAuthenticPduType                *SecOCRxAuthenticPdu;
-   SecOCRxCryptographicPduType            *SecOCRxCryptographicPdu;
-   SecOCUseMessageLinkType                *SecOCUseMessageLink;
-}SecOCRxSecuredPduCollectionType;
+   SecOC_RxAuthenticPduType               *SecOCRxAuthenticPdu;
+   SecOC_RxCryptographicPduType           *SecOCRxCryptographicPdu;
+   SecOC_UseMessageLinkType               *SecOCUseMessageLink;
+}SecOC_RxSecuredPduCollectionType;
 
 /*****************************************
  *          * Container Info *           *
@@ -69,7 +69,7 @@ typedef struct
    uint16         SecOCRxSecuredLayerPduId;
    boolean        SecOCSecuredRxPduVerification;
    //rf to pdu     SecOCRxSecuredLayerPduRef;
-}SecOCRxSecuredPduType;
+}SecOC_RxSecuredPduType;
 
 /*****************************************
  *          * Container Info *           *
@@ -79,11 +79,11 @@ typedef struct
  * Container_Index       : 10.1.7        *
  *****************************************/
 
-typedef struct {
+typedef struct
 {
-   SecOCRxSecuredPduType   *SecOCRxSecuredPdu;
-
-}SecOCRxSecuredPduLayerType;
+   SecOC_RxSecuredPduType                 *SecOCRxSecuredPdu;
+   SecOC_RxSecuredPduCollectionType       *SecOCRxSecuredPduCollection;
+}SecOC_RxSecuredPduLayerType;
 
 /***************************************** not certain
  *          * Container Info *           *
@@ -96,7 +96,8 @@ ECUC_SecOC_00048
 typedef struct
 {
 
-}SecOCRxAuthServiceConfigRefType;
+}SecOC_RxAuthServiceConfigRefType;
+
 /*****************************************
  *          * Container Info *           *
  *                                       *
@@ -111,21 +112,21 @@ typedef struct
    unit16                                                         SecOCAuthenticationBuildAttempts;
    uint16                                                         SecOCAuthenticationVerifyAttempts;
    uint16                                                         SecOCAuthInfoTruncLength;
-   SecOCClientServerVerificationStatusPropagationModeType         SecOCClientServerVerificationStatusPropagationMode;
+   SecOC_ClientServerVerificationStatusPropagationMode_Type       SecOCClientServerVerificationStatusPropagationMode;
    uint16                                                         SecOCDataId;
    uint16                                                         SecOCFreshnessValueId;
    uint16                                                         SecOCFreshnessValueLength;
    uint16                                                         SecOCFreshnessValueTruncLength;
-   SecOCReceptionOverflowStrategyType                             SecOCReceptionOverflowStrategy;
+   SecOC_ReceptionOverflowStrategy_Type                           SecOCReceptionOverflowStrategy;
    uint16                                                         SecOCReceptionQueueSize;
    boolean                                                        SecOCUseAuthDataFreshness;
-   SecOCVerificationStatusPropagationModeType                     SecOCVerificationStatusPropagationMode;
-   //SecOCRxAuthServiceConfigRefType                               *SecOCRxAuthServiceConfigRef;
-   //SecOCMainFunctionRxType                                       *SecOCRxPduMainFunctionRef;
-   //SecOCSameBufferPduCollectionType                              *SecOCSameBufferPduRef;
-   SecOCRxSecuredPduLayerType                                    *SecOCRxSecuredPduLayer;
-   SecOCRxAuthenticPduLayerType                                  *SecOCRxAuthenticPduLayer;
-   SecOCRxPduSecuredAreaType                                     *SecOCRxPduSecuredArea;
-}SecOCRxPduProcessingType;
+   SecOC_VerificationStatusPropagationMode_Type                   SecOCVerificationStatusPropagationMode;
+   //SecOC_RxAuthServiceConfigRefType                            *SecOCRxAuthServiceConfigRef;
+   //SecOC_MainFunctionRxType                                    *SecOCRxPduMainFunctionRef;
+   //SecOC_SameBufferPduCollectionType                           *SecOCSameBufferPduRef;
+   SecOC_RxSecuredPduLayerType                                   *SecOCRxSecuredPduLayer;
+   SecOC_RxAuthenticPduLayerType                                 *SecOCRxAuthenticPduLayer;
+   SecOC_RxPduSecuredAreaType                                    *SecOCRxPduSecuredArea;
+}SecOC_RxPduProcessingType;
 
 #endif
