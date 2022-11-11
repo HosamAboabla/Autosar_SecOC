@@ -44,8 +44,20 @@
  * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
  * Container_Index       : 10.1.19                          *
  ***********************************************************/
+
 #define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
 #define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
 
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_TxAuthenticPdu             *
+ * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
+ * Container_Index       : 10.1.18                          *
+ ***********************************************************/
+
+#define SECOC_AUTH_PDUHEADER_LENGTH         ((uint8)0)
+#define SECOC_TX_AUTHENTIC_PDUID            ((uint16)0)
+#define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)&EcuC_Pdu)
 
 #endif

@@ -32,3 +32,11 @@ SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu=
     SECOC_TX_CRYPTOGRAPHIC_PDUREF,
 };
 
+SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu=
+{
+    SECOC_AUTH_PDUHEADER_LENGTH,
+    SECOC_TX_AUTHENTIC_PDUID,
+    SECOC_TX_AUTHENTIC_PDUREF,
+};
+
+
