@@ -19,3 +19,9 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu=
     SECOC_TX_SECURED_LAYER_PDUID,
     &EcuC_Pdu,
 };
+
+SecOC_UseMessageLinkType SecOC_UseMessageLink=
+{
+    SECOC_MESSAGE_LINKLEN,
+    SECOC_MESSAGE_LINKPOS,
+};
