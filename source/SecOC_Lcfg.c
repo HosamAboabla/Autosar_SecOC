@@ -15,7 +15,7 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer=
 
 SecOC_TxSecuredPduType SecOC_TxSecuredPdu=
 {
-    SECOC_AUTH_PDU_HEADER_LENGTH,
+    SECOC_AUTH_PDUHEADER_LENGTH,
     SECOC_TX_SECURED_LAYER_PDUID,
     SECOC_TX_SECURED_LAYER_PDUREF,
 };

@@ -22,7 +22,7 @@
  * Container_Index       : 10.1.16                            *
  **************************************************************/
 
-#define SECOC_AUTH_PDU_HEADER_LENGTH        ((uint8)0)
+#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)0)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
 #define SECOC_TX_SECURED_LAYER_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
 
