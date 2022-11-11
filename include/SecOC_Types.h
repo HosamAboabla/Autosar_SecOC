@@ -7,8 +7,8 @@ typedef struct EcuC_PduType EcuC_PduType;
 
 typedef enum
 {
-    SECOC_IFPDU,    // SECOC_IFPDU Interface communication API
-    SECOC_TPPDU,    // SECOC_TPPDU Transport Protocol communication API
+    SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */ 
+    SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
 } SecOC_PduType_Type;
 
 #endif
