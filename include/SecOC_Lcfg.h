@@ -10,9 +10,9 @@
  *****************************************/
 typedef struct
 {
-   uint8          SecOCAuthPduHeaderLength;
-   uint16         SecOCRxAuthenticPduId;
-   //rf           SecOCRxAuthenticPduRef;
+   uint8                 SecOCAuthPduHeaderLength;
+   uint16                SecOCRxAuthenticPduId;
+   //rf to pdu           SecOCRxAuthenticPduRef;
 }SecOC_RxAuthenticPduType;
 
 /*****************************************
@@ -122,8 +122,8 @@ typedef struct
    boolean                                                        SecOCUseAuthDataFreshness;
    SecOC_VerificationStatusPropagationMode_Type                   SecOCVerificationStatusPropagationMode;
    //SecOC_RxAuthServiceConfigRefType                            *SecOCRxAuthServiceConfigRef;
-   //SecOC_MainFunctionRxType                                    *SecOCRxPduMainFunctionRef;
-   //SecOC_SameBufferPduCollectionType                           *SecOCSameBufferPduRef;
+   SecOC_MainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
+   SecOC_SameBufferPduCollectionType                             *SecOCSameBufferPduRef;
    SecOC_RxSecuredPduLayerType                                   *SecOCRxSecuredPduLayer;
    SecOC_RxAuthenticPduLayerType                                 *SecOCRxAuthenticPduLayer;
    SecOC_RxPduSecuredAreaType                                    *SecOCRxPduSecuredArea;
