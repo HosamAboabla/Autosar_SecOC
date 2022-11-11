@@ -39,4 +39,11 @@ SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu=
     SECOC_TX_AUTHENTIC_PDUREF,
 };
 
+SecOC_TxSecuredPduCollectionType SecOC_TxSecuredPduCollection=
+{
+    &SecOC_TxAuthenticPdu,
+    &SecOC_TxCryptographicPdu,
+    &SecOC_UseMessageLink,
+};
+
 
