@@ -1,6 +1,9 @@
 #ifndef INCLUDE_SECOC_LCFG_H_
 #define INCLUDE_SECOC_LCFG_H_
 
+#include "Std_Types.h"
+#include "SecOC_Types.h"
+
 /*****************************************
  *          * Container Info *           *
  *                                       *
@@ -109,7 +112,7 @@ typedef struct
 {
    uint16                                                         SecOCAuthDataFreshnessLen;
    uint16                                                         SecOCAuthDataFreshnessStartPosition;
-   unit16                                                         SecOCAuthenticationBuildAttempts;
+   uint16                                                         SecOCAuthenticationBuildAttempts;
    uint16                                                         SecOCAuthenticationVerifyAttempts;
    uint16                                                         SecOCAuthInfoTruncLength;
    SecOC_ClientServerVerificationStatusPropagationMode_Type       SecOCClientServerVerificationStatusPropagationMode;
