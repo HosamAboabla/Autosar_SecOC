@@ -127,19 +127,15 @@
 
 
 
-/*
- * Configuration parameter for SecOC_TxAuthenticPduLayer
- */
-//
-#define SECOC_TX_AUTHENTIC_LAYER_PDU_ID                         ((uint16) 0)
-#define SECOC_PDU_TYPE                                          ((SecOC_PduType_Type) SECOC_IFPDU)
 
+/****************************************************
+ *          * Container Info *                      *
+ *                                                  *
+ * Container_Name        : SecOC_TxPduProcessing    *
+ * Parent_Container_Name :                          *
+ * Container_Index       : 10.1.11                  *
+ ***************************************************/
 
-
-
-/*
- * Configuration parameter for SecOC_TxPduProcessing
- */
 #define SECOC_AUTHENTICATION_BUILD_ATTEMPTS                         ((uint16) 5)
 #define SECOC_AUTH_INFO_TRUNC_LENGTH                                ((uint16) 1)
 #define SECOC_DATA_ID                                               ((uint16) 0)
