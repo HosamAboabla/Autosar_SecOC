@@ -25,3 +25,10 @@ SecOC_UseMessageLinkType SecOC_UseMessageLink=
     SECOC_MESSAGE_LINKLEN,
     SECOC_MESSAGE_LINKPOS,
 };
+
+SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu=
+{
+    SECOC_TX_CRYPTOGRAPHIC_PDUID,
+    &EcuC_Pdu,
+};
+

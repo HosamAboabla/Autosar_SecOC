@@ -1,6 +1,7 @@
 #ifndef INCLUDE_SECOC_CFG_H_
 #define INCLUDE_SECOC_CFG_H_
 
+
 /**************************************************************
  *          * Container Info *                                *
  *                                                            *
@@ -11,7 +12,6 @@
 
 #define SECOC_PDU_TYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
-
 
 /**************************************************************
  *          * Container Info *                                *
@@ -34,6 +34,15 @@
 
 #define SECOC_MESSAGE_LINKLEN               ((uint16)0)
 #define SECOC_MESSAGE_LINKPOS               ((uint16)0)
+
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_TxCryptographicPdu         *
+ * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
+ * Container_Index       : 10.1.19                          *
+ ***********************************************************/
+#define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
 
 
 #endif
