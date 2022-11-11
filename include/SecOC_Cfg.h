@@ -60,4 +60,15 @@
 #define SECOC_TX_AUTHENTIC_PDUID            ((uint16)0)
 #define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)&EcuC_Pdu)
 
+/****************************************************
+ *          * Container Info *                      *
+ *                                                  *
+ * Container_Name        : SecOC_TxPduSecuredArea   *
+ * Parent_Container_Name : SecOC_TxPduProcessing    *
+ * Container_Index       : 10.1.21                  *
+ ***************************************************/          
+
+#define SECOC_SECURED_TX_PDULENGTH          ((uint32)0)
+#define SECOC_SECURED_TX_PDUOFFSET          ((uint32)0)
+
 #endif

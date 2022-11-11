@@ -46,4 +46,10 @@ SecOC_TxSecuredPduCollectionType SecOC_TxSecuredPduCollection=
     &SecOC_UseMessageLink,
 };
 
+SecOC_TxPduSecuredAreaType SecOC_TxPduSecuredArea=
+{
+    SECOC_SECURED_TX_PDULENGTH,
+    SECOC_SECURED_TX_PDUOFFSET,
+};
+
 

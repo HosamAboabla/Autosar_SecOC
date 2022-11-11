@@ -184,7 +184,7 @@ typedef struct
  * Parent_Container_Name : SecOC_TxPduProcessing    *
  * Container_Index       : 10.1.21                  *
  ***************************************************/
-     typedef struct
+typedef struct
 {
     uint32                  SecOCSecuredTxPduLength;
     uint32                  SecOCSecuredTxPduOffset;
