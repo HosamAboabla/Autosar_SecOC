@@ -10,14 +10,14 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer=
 {
     SECOC_PDU_TYPE,
     SECOC_TX_AUTHENTIC_LAYER_PDUID,
-    &EcuC_Pdu,
+    SECOC_TX_AUTHENTIC_LAYER_PDUREF,
 };
 
 SecOC_TxSecuredPduType SecOC_TxSecuredPdu=
 {
     SECOC_AUTH_PDU_HEADER_LENGTH,
     SECOC_TX_SECURED_LAYER_PDUID,
-    &EcuC_Pdu,
+    SECOC_TX_SECURED_LAYER_PDUREF,
 };
 
 SecOC_UseMessageLinkType SecOC_UseMessageLink=
@@ -29,6 +29,6 @@ SecOC_UseMessageLinkType SecOC_UseMessageLink=
 SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu=
 {
     SECOC_TX_CRYPTOGRAPHIC_PDUID,
-    &EcuC_Pdu,
+    SECOC_TX_CRYPTOGRAPHIC_PDUREF,
 };
 

@@ -12,6 +12,7 @@
 
 #define SECOC_PDU_TYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
+#define SECOC_TX_AUTHENTIC_LAYER_PDUREF     ((EcuC_PduType*)&EcuC_Pdu)
 
 /**************************************************************
  *          * Container Info *                                *
@@ -23,6 +24,7 @@
 
 #define SECOC_AUTH_PDU_HEADER_LENGTH        ((uint8)0)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
+#define SECOC_TX_SECURED_LAYER_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
 
 /************************************************************
  *          * Container Info *                              *
@@ -43,6 +45,7 @@
  * Container_Index       : 10.1.19                          *
  ***********************************************************/
 #define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
+#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
 
 
 #endif
