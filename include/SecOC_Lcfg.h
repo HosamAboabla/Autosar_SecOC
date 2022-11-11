@@ -34,7 +34,7 @@ typedef struct
     float64 SecOCMainFunctionPeriodTx;
     SecOC_MainFunctionTxPartitionRefType *SecOCMainFunctionTxPartitionRef;
 
-}SecOC_MainFunctionRxType;
+}SecOC_MainFunctionTxType;
 
 
 
@@ -69,11 +69,11 @@ typedef struct
 
 
 
-/*container ->dont know where is it*/
-typedef struct
-{
+// /*container ->dont know where is it*/
+// typedef struct
+// {
     
-}SecOC_SecurityEventRefsType;
+// }SecOC_SecurityEventRefsType;
 
 typedef enum {
     CFUNC,
@@ -110,17 +110,14 @@ typedef struct
     boolean SecOCEnableForcedPassOverride;
     boolean SecOCEnableSecurityEventReporting;
     boolean SecOCIgnoreVerificationResult;
-    /*
-    EcucStringParamDef 
-    This type can be e.g. uint8, uint16 or uint32.
-    */
-    uint8 SecOCMaxAlignScalarType[100];
+    
+    uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
     boolean SecOCOverrideStatusWithDataId;
     boolean SecOCPropagateOnlyFinalVerificationStatus;
     SecOC_QueryFreshnessValueType SecOCQueryFreshnessValue;
     SecOC_VerificationStatusCalloutType SecOCVerificationStatusCallout;
     boolean SecOCVersionInfoApi;
-    SecOC_SecurityEventRefsType *SecOCSecurityEventRefs;
+    //SecOC_SecurityEventRefsType *SecOCSecurityEventRefs; /* can't have the container of it */
 
 }SecOC_GeneralType;
 
