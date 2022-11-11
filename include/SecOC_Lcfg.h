@@ -89,6 +89,76 @@ typedef struct
 
 
 
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_UseMessageLink             *
+ * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
+ * Container_Index       : 10.1.20                          *
+ ***********************************************************/
+typedef struct
+{
+   uint16                  SecOCMessageLinkLen;
+   uint16                  SecOCMessageLinkPos;
+} SecOC_UseMessageLinkType;
+
+
+
+
+
+
+
+
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_TxCryptographicPdu         *
+ * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
+ * Container_Index       : 10.1.19                          *
+ ***********************************************************/
+typedef struct
+{
+   uint16                  SecOCTxCryptographicPduId;
+   EcuC_PduType            *SecOCTxCryptographicPduRef;
+} SecOC_TxCryptographicPduType;
+
+
+
+
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_TxAuthenticPdu             *
+ * Parent_Container_Name : SecOC_TxSecuredPduCollection     *
+ * Container_Index       : 10.1.18                          *
+ ***********************************************************/
+typedef struct
+{
+   uint8                         SecOCAuthPduHeaderLength;
+   uint16                        SecOCTxAuthenticPduId;
+   EcuC_PduType                  *SecOCTxAuthenticPduRef;
+} SecOC_TxAuthenticPduType;
+
+
+
+
+
+
+
+
+/************************************************************
+ *          * Container Info *                              *
+ *                                                          *
+ * Container_Name        : SecOC_TxSecuredPduCollection     *
+ * Parent_Container_Name : SecOC_TxSecuredPduLayer          *
+ * Container_Index       : 10.1.17                          *
+ ***********************************************************/
+typedef struct
+{
+   SecOC_TxAuthenticPduType                        *SecOCTxAuthenticPdu;
+   SecOC_TxCryptographicPduType                    *SecOCTxCryptographicPdu;
+   SecOC_UseMessageLinkType                        *SecOCUseMessageLink;
+} SecOC_TxSecuredPduCollectionType;
 
 
 
@@ -105,26 +175,7 @@ typedef struct
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// SecOCTxSecuredPduLayer
 
 /****************************************************
  *          * Container Info *                      *
