@@ -17,7 +17,7 @@ typedef struct
 {
     SecOC_PduType_Type      SecOCPduType;
     uint16                  SecOCTxAuthenticLayerPduId;
-    EcuC_PduType*           SecOCTxAuthenticLayerPduRef;
+    EcuC_PduType            *SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
 
 
@@ -32,7 +32,7 @@ typedef struct
 {
     uint8                   SecOCAuthPduHeaderLength;
     uint16                  SecOCTxSecuredLayerPduId;
-    EcuC_PduType*           SecOCTxSecuredLayerPduRef;
+    EcuC_PduType            *SecOCTxSecuredLayerPduRef;
 } SecOC_TxSecuredPduType;
 
 
