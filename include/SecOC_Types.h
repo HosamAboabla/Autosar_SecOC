@@ -30,4 +30,9 @@ typedef enum
 	SECOC_TPPDU
 }SecOC_Pdu_Type;
 
+typedef struct
+{
+	uint32 CsmJobId;
+}Csm_JobType;
+
 #endif

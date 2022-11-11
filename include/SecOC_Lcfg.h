@@ -15,7 +15,7 @@ typedef struct
 {
    uint8                 SecOCAuthPduHeaderLength;
    uint16                SecOCRxAuthenticPduId;
-   //rf to pdu           SecOCRxAuthenticPduRef;
+   EcuC_PduType         *SecOCRxAuthenticPduRef;
 }SecOC_RxAuthenticPduType;
 
 /*****************************************
@@ -28,7 +28,7 @@ typedef struct
 typedef struct
 {
    uint16            SecOCRxCryptographicPduId;
-   //rf to pdu       SecOCRxCryptographicPduRef;
+   EcuC_PduType     *SecOCRxCryptographicPduRef;
 }SecOC_RxCryptographicPduType;
 /*****************************************
  *          * Container Info *           *
@@ -56,7 +56,7 @@ typedef struct
 {
    SecOC_Pdu_Type             SecOCPduType;
    uint16                     SecOCRxAuthenticLayerPduId;
-   //rf to pdu               *SecOCRxAuthenticLayerPduRef;
+   EcuC_PduType              *SecOCRxAuthenticLayerPduRef;
 }SecOC_RxAuthenticPduLayerType;
 
 /*****************************************
@@ -68,10 +68,10 @@ typedef struct
  *****************************************/
 typedef struct
 {
-   uint8          SecOCAuthPduHeaderLength;
-   uint16         SecOCRxSecuredLayerPduId;
-   boolean        SecOCSecuredRxPduVerification;
-   //rf to pdu     SecOCRxSecuredLayerPduRef;
+   uint8           SecOCAuthPduHeaderLength;
+   uint16          SecOCRxSecuredLayerPduId;
+   boolean         SecOCSecuredRxPduVerification;
+   EcuC_PduType   *SecOCRxSecuredLayerPduRef;
 }SecOC_RxSecuredPduType;
 
 /*****************************************
@@ -95,10 +95,10 @@ typedef struct
  * Parent_Container_Name : SecOCRxPduProcessing           *
  * Container_Index       : ECUC_SecOC_00048        *
  *****************************************/
-
+extern Csm_JobType CsmJob;
 typedef struct
 {
-
+   Csm_JobType    CsmJob;
 }SecOC_RxAuthServiceConfigRefType;
 
 /*****************************************
