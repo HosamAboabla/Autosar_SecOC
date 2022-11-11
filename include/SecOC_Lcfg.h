@@ -17,7 +17,7 @@ typedef struct
 {
     SecOC_PduType_Type      SecOCPduType;
     uint16                  SecOCTxAuthenticLayerPduId;
-    EcuC_PduType*           SecOCTxAuthenticLayerPduRef;
+    EcuC_PduType            *SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
 
 
@@ -32,7 +32,7 @@ typedef struct
 {
     uint8                   SecOCAuthPduHeaderLength;
     uint16                  SecOCTxSecuredLayerPduId;
-    EcuC_PduType*           SecOCTxSecuredLayerPduRef;
+    EcuC_PduType            *SecOCTxSecuredLayerPduRef;
 } SecOC_TxSecuredPduType;
 
 
@@ -184,7 +184,7 @@ typedef struct
  * Parent_Container_Name : SecOC_TxPduProcessing    *
  * Container_Index       : 10.1.21                  *
  ***************************************************/
-     typedef struct
+typedef struct
 {
     uint32                  SecOCSecuredTxPduLength;
     uint32                  SecOCSecuredTxPduOffset;
