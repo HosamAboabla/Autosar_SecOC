@@ -216,7 +216,7 @@ typedef struct
     //                                                  SecOCSameBufferPduRef;
     //                                                  SecOCTxAuthServiceConfigRef
     //                                                  SecOCTxPduMainFunctionRef;
-    //                                                  SecOCTxAuthenticationPduLayer;
+    const SecOC_TxAuthenticPduLayerType                 *SecOCTxAuthenticationPduLayer;
     const SecOC_TxPduSecuredAreaType                    *SecOCTxPduSecuredArea;
 //                                                      SecOCTxSecuredPduLayer
 }SecOC_TxPduProcessingType;
