@@ -95,10 +95,10 @@ typedef struct
  * Parent_Container_Name : SecOCRxPduProcessing           *
  * Container_Index       : ECUC_SecOC_00048        *
  *****************************************/
-extern Csm_JobType CsmJob;
+//extern Csm_JobType CsmJob;
 typedef struct
 {
-   Csm_JobType    CsmJob;
+   Csm_JobType    *CsmJob;
 }SecOC_RxAuthServiceConfigRefType;
 
 /*****************************************
@@ -124,7 +124,7 @@ typedef struct
    uint16                                                         SecOCReceptionQueueSize;
    boolean                                                        SecOCUseAuthDataFreshness;
    SecOC_VerificationStatusPropagationMode_Type                   SecOCVerificationStatusPropagationMode;
-   //SecOC_RxAuthServiceConfigRefType                            *SecOCRxAuthServiceConfigRef;
+   SecOC_RxAuthServiceConfigRefType                              *SecOCRxAuthServiceConfigRef;
    SecOC_MainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
    SecOC_SameBufferPduCollectionType                             *SecOCSameBufferPduRef;
    SecOC_RxSecuredPduLayerType                                   *SecOCRxSecuredPduLayer;
