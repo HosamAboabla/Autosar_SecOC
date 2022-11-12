@@ -26,7 +26,7 @@ SecOC_RxSecuredPduCollectionType SecOCRxSecuredPduCollection =
     &SecOCRxAuthenticPdu,
     &SecOCRxCryptographicPdu,
     &SecOCUseMessageLink
-}
+};
 
 SecOC_RxAuthenticPduLayerType SecOCRxAuthenticPduLayer = 
 {
@@ -65,7 +65,7 @@ SecOC_RxAuthServiceConfigRefType SecOCRxAuthServiceConfigRef =
 
 SecOC_SameBufferPduCollectionType SecOCSameBufferPduRef=
 {
-    SEC_OCBUFFERLENGTH
+    SECOC_BUFFERLENGTH
 };
 
 SecOC_RxPduProcessingType SecOCRxPduProcessing = 

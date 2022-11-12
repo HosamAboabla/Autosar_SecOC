@@ -12,7 +12,7 @@
 /*
 * Configuration Parameter for SecOCBufferLength
 */
-#define SEC_OCBUFFERLENGTH                  ((uint32)0)
+#define SECOC_BUFFERLENGTH                  ((uint32)0)
 
 /*****************************************
  *          * Container Info *           *
@@ -161,12 +161,12 @@
 /*
 * Configuration Parameter for SecOC_AuthPduHeaderLength
 */
-#define SECOC_AUTHPDU_HEADERLENGTH ((uint8)0)
+#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)0)
 
 /*
 * Configuration Parameter for SecOC_RxAuthenticPduId
 */
-#define SECOC_RXAUTHENTIC_PDUID ((uint16)0)
+#define SECOC_RXAUTHENTIC_PDUID         ((uint16)0)
 
 
 /*****************************************
@@ -179,7 +179,7 @@
 /*
 * Configuration Parameter for SecOC_RxCryptographicPduId
 */
-#define SECOC_RX_CRYPTOGRAPHIC_PDUID ((uint16)0)
+#define SECOC_RX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
 
 
 #endif
