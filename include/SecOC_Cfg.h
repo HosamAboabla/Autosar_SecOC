@@ -24,7 +24,7 @@
 /*
 * Configration parameter for SecOCMainFunctionTxPartitionRef
 */
-#define SECOC_MAIN_FUNCTION_TX_PARTITION_REF                            ((SecOC_MainFunctionTxPartitionRefType)NULL)  
+#define SECOC_MAIN_FUNCTION_TX_PARTITION_REF                            ((SecOC_MainFunctionTxPartitionRefType*)NULL)  
 
 
 
@@ -44,7 +44,7 @@
 /*
 * Configration parameter for SecOCMainFunctionRxPartitionRef
 */
-#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOC_MainFunctionRxPartitionRefType)NULL)    
+#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOC_MainFunctionRxPartitionRefType*)NULL)    
 
 
 
@@ -111,13 +111,13 @@
 /* 
 * Configration parameter for SecOCQueryFreshnessValue 
 */ 
-#define SECOC_QUERY_FRESHNESS_VALUE                                     ((SecOC_QueryFreshnessValueType)CFUNC)
+#define SECOC_QUERY_FRESHNESS_VALUE                                     ((SecOC_QueryFreshnessValue_Type)SECOC_CFUNC)
 
 
 /* 
 * Configration parameter for SecOCVerificationStatusCallout 
 */ 
-#define SECOC_VERIFICATION_STATUS_CALLOUT                               ((SecOC_VerificationStatusCalloutType)NULL) /* Here a address for function */
+#define SECOC_VERIFICATION_STATUS_CALLOUT                               ((SecOC_VerificationStatusCalloutType*)NULL) /* Here a address for function */
 
 
 
@@ -202,7 +202,7 @@
 /*
 * Configuration Parameter for SecOC_DataId
 */
-#define SECOC_DATA_ID        ((uint16)1)
+#define SECOC_RX_DATA_ID        ((uint16)1)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
@@ -222,7 +222,7 @@
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
 */
-#define SECOC_RECEPTION_OVERFLOW_STRATEGY       QUEUE
+#define SECOC_RECEPTION_OVERFLOW_STRATEGY       SECOC_QUEUE
 
 /*
 * Configuration Parameter for SecOC_ReceptionQueueSize
@@ -279,7 +279,7 @@
 /*
 * Configuration Parameter for SecOC_Pdu
 */
-#define SECOC_PDUTYPE       SECOC_IFPDU
+#define SECOC_RX_PDUTYPE       SECOC_IFPDU
 
 /*
 * Configuration Parameter for SecOC_RxAuthenticLayerPduId
@@ -352,9 +352,9 @@
  * Container_Index       : 10.1.14                            *
  **************************************************************/
 
-#define SECOC_PDU_TYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
+#define SECOC_TX_PDUTYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
-#define SECOC_TX_AUTHENTIC_LAYER_PDUREF     ((EcuC_PduType*)&EcuC_Pdu)
+
 
 /**************************************************************
  *          * Container Info *                                *
@@ -366,7 +366,7 @@
 
 #define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)0)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
-#define SECOC_TX_SECURED_LAYER_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
+
 
 /************************************************************
  *          * Container Info *                              *
@@ -402,6 +402,21 @@
 #define SECOC_TX_AUTHENTIC_PDUID            ((uint16)0)
 #define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)&EcuC_Pdu)
 
+
+
+/****************************************************
+ *          * Container Info *                      *
+ *                                                  *
+ * Container_Name        : SecOC_RxPduSecuredArea   *
+ * Parent_Container_Name : SecOC_RxPduProcessing    *
+ * Container_Index       : 10.1.22                  *
+ ***************************************************/          
+
+#define SECOC_SECURED_RX_PDULENGTH          ((uint32)0)
+#define SECOC_SECURED_RX_PDUOFFSET          ((uint32)0)
+
+
+
 /****************************************************
  *          * Container Info *                      *
  *                                                  *
@@ -429,7 +444,7 @@
 
 #define SECOC_AUTHENTICATION_BUILD_ATTEMPTS                         ((uint16) 5)
 #define SECOC_AUTH_INFO_TRUNC_LENGTH                                ((uint16) 1)
-#define SECOC_DATA_ID                                               ((uint16) 0)
+#define SECOC_TX_DATA_ID                                               ((uint16) 0)
 #define SECOC_FRESHNESS_VALUE_ID                                    ((uint16) 0)
 #define SECOC_FRESHNESS_VALUE_LENGTH                                ((uint8 ) 0)
 #define SECOC_FRESHNESS_VALUE_TRUNC_LENGTH                          ((uint8 ) 0)

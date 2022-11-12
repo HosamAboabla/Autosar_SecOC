@@ -7,36 +7,25 @@
 
 
 
-/*
-* Start of RxPduProcessing
-*/
 
 typedef enum
 {
-	BOTH = 0,
-	FAILURE_ONLY,
-	NONE
-}SecOC_ClientServerVerificationStatusPropagationMode_Type;
+	SECOC_BOTH = 0,
+	SECOC_FAILURE_ONLY,
+	SECOC_NONE
+}SecOC_StatusPropagationMode_Type;
+
+
+
 
 typedef enum
 {
-	QUEUE = 0,
-	REJECT,
-	REPLACE
+	SECOC_QUEUE = 0,
+	SECOC_REJECT,
+	SECOC_REPLACE
 }SecOC_ReceptionOverflowStrategy_Type;
 
-typedef enum
-{
-	BOTH = 0,
-	FAILURE_ONLY,
-	NONE
-}SecOC_VerificationStatusPropagationMode_Type;
 
-typedef enum
-{
-	SECOC_IFPDU = 0,
-	SECOC_TPPDU
-}SecOC_Pdu_Type;
 
 typedef struct
 {
@@ -45,20 +34,9 @@ typedef struct
 
 
 
-/*
-* End of RxPduProcessing
-*/
-
-
-/*
-* Start of TxPduProcessing
-*/
 
 
 
-
-
-typedef struct EcuC_PduType EcuC_PduType;
 
 typedef enum
 {
@@ -67,9 +45,12 @@ typedef enum
 } SecOC_PduType_Type;
 
 
-/*
-* End of TxPduProcessing
-*/
+
+typedef enum {
+    SECOC_CFUNC,
+    SECOC_RTE,
+} SecOC_QueryFreshnessValue_Type;
+
 
 #endif
 
