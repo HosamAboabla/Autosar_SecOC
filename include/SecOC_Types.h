@@ -50,5 +50,26 @@ typedef struct
 */
 
 
+/*
+* Start of TxPduProcessing
+*/
+
+
+
+
+
+typedef struct EcuC_PduType EcuC_PduType;
+
+typedef enum
+{
+    SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */ 
+    SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
+} SecOC_PduType_Type;
+
+
+/*
+* End of TxPduProcessing
+*/
 
 #endif
+
