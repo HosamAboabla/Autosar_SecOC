@@ -4,6 +4,19 @@
 /*****************************************
  *          * Container Info *           *
  *                                       *
+ * Container_Name        : SecOCSameBufferPduCollection *
+ * Parent_Container_Name : SecOC           *
+ * Container_Index       : 10.1.5        *
+ *****************************************/
+
+/*
+* Configuration Parameter for SecOCBufferLength
+*/
+#define SEC_OCBUFFERLENGTH                  ((uint32)0)
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
  * Container_Name        : SecOCRxPduProcessing *
  * Parent_Container_Name : SecOC           *
  * Container_Index       : 10.1.6        *
@@ -125,5 +138,48 @@
 * Configuration Parameter for SecOC_RxAuthenticLayerPduId
 */
 #define SECOC_RXAUTHENTICLAYER_PDUID        ((uint16)10)
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
+ * Container_Name        : SecOCRxSecuredPduCollection *
+ * Parent_Container_Name : SecOCRxSecuredPduLayer           *
+ * Container_Index       : 10.1.10        *
+ *****************************************/
+/*
+* Configuration Parameter for SecOC_SecuredRxPduVerification
+*/
+#define SECOC_SECURED_RX_PDU_VERIFICATION       FALSE
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
+ * Container_Name        : SecOCRxAuthenticPdu *
+ * Parent_Container_Name : SecOCRxSecuredPduCollection           *
+ * Container_Index       : 10.1.12        *
+ *****************************************/
+/*
+* Configuration Parameter for SecOC_AuthPduHeaderLength
+*/
+#define SECOC_AUTHPDU_HEADERLENGTH ((uint8)0)
+
+/*
+* Configuration Parameter for SecOC_RxAuthenticPduId
+*/
+#define SECOC_RXAUTHENTIC_PDUID ((uint16)0)
+
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
+ * Container_Name        : SecOCRxCryptographicPdu *
+ * Parent_Container_Name : SecOCRxSecuredPduCollection           *
+ * Container_Index       : 10.1.11        *
+ *****************************************/
+/*
+* Configuration Parameter for SecOC_RxCryptographicPduId
+*/
+#define SECOC_RX_CRYPTOGRAPHIC_PDUID ((uint16)0)
+
 
 #endif

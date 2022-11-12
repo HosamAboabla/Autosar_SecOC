@@ -3,7 +3,6 @@
 
 #include "Std_Types.h"
 #include "SecOC_Types.h"
-
 /*****************************************
  *          * Container Info *           *
  *                                       *
@@ -100,6 +99,19 @@ typedef struct
 {
    Csm_JobType    *CsmJob;
 }SecOC_RxAuthServiceConfigRefType;
+
+/*****************************************
+ *          * Container Info *           *
+ *                                       *
+ * Container_Name        : SecOCSameBufferPduCollection *
+ * Parent_Container_Name : SecOC           *
+ * Container_Index       : 10.1.5        *
+ *****************************************/
+typedef struct
+{
+   uint32    SecOCBufferLength;
+}SecOC_SameBufferPduCollectionType;
+
 
 /*****************************************
  *          * Container Info *           *

@@ -7,6 +7,27 @@
 #include "SecOC_Lcfg.h"
 #include "SecOC_Cfg.h"
 
+SecOC_RxCryptographicPduType SecOCRxCryptographicPdu =
+{
+    SECOC_RX_CRYPTOGRAPHIC_PDUID,
+    &EcuC_Pdu
+};
+
+SecOC_RxAuthenticPduType SecOCRxAuthenticPdu =
+{
+    SECOC_AUTHPDU_HEADERLENGTH,
+    SECOC_RXAUTHENTIC_PDUID,
+    &EcuC_Pdu
+};
+
+SecOC_RxSecuredPduCollectionType SecOCRxSecuredPduCollection =
+{
+    SECOC_SECURED_RX_PDU_VERIFICATION,
+    &SecOCRxAuthenticPdu,
+    &SecOCRxCryptographicPdu,
+    &SecOCUseMessageLink
+}
+
 SecOC_RxAuthenticPduLayerType SecOCRxAuthenticPduLayer = 
 {
     SECOC_PDUTYPE,
@@ -42,7 +63,10 @@ SecOC_RxAuthServiceConfigRefType SecOCRxAuthServiceConfigRef =
     &CsmJob
 };
 
-
+SecOC_SameBufferPduCollectionType SecOCSameBufferPduRef=
+{
+    SEC_OCBUFFERLENGTH
+};
 
 SecOC_RxPduProcessingType SecOCRxPduProcessing = 
 {
