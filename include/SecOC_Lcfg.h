@@ -56,6 +56,7 @@ typedef struct
 
 /*
 /*container ->dont know where is it
+* The type of this container is: EcucParamConfContainerDef  "Abdallah"
 typedef struct
 {
     
@@ -69,9 +70,15 @@ typedef enum {
 
 
 
+/*
+* To be done: EcucFunctionNameDef / SecOC_VerificationStatusCalloutType
+* typedef .....?.... SecOC_VerificationStatusCalloutType
+*/
+
+
 
 /* callout function --> what should i do */
-typedef void (*SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType verificationStatus);
+void (*SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType verificationStatus);
 
 
 

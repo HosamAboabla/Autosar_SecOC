@@ -50,10 +50,14 @@
 **************************************************************/
 
 /*
-* Configration parameter for SecOCDefaultAuthenticationInformationPattern
+* Configration parameter for SecOCDefaultAuthenticationInformationPatternMultiplicity
 */
-#define SECOC_DEFAULT_AUTHENTICATION_INFORMATION_PATTERN     ((uint8)0)      
+#define SECOC_DEFAULT_AUTHENTICATION_INFORMATION_PATTERN_MULTIPLICITY     ((uint8)0)      
  
+ /*
+* Configration parameter for SecOCDefaultAuthenticationInformationPatternValue
+*/
+#define SECOC_DEFAULT_AUTHENTICATION_INFORMATION_PATTERN_VALUE     ((uint8)0)
  
 /* 
 * Configration parameter for SecOCDevErrorDetect 
