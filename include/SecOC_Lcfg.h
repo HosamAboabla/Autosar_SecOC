@@ -78,7 +78,7 @@ typedef enum {
 
 
 /* callout function --> what should i do */
-void (*SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType verificationStatus);
+typedef void (*SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType verificationStatus);
 
 
 
