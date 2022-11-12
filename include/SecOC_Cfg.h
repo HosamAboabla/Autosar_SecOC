@@ -2,6 +2,13 @@
 #define INCLUDE_SECOC_CFG_H_
 
 
+
+/*
+* Start of General
+*/
+
+
+
 /*************************************************************
 *                          Container                         *
 * Name : SecOCMainFunctionTx                                 *
@@ -130,155 +137,14 @@
 
 
 
+/*
+* End Of General
+*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+* Start of RxPduProcessing
+*/
 
 
 
@@ -461,6 +327,13 @@
 * Configuration Parameter for SecOC_RxCryptographicPduId
 */
 #define SECOC_RX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
+
+
+
+/*
+* End of General
+*/
+
 
 
 #endif

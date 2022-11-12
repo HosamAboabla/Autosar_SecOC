@@ -8,6 +8,9 @@
 #include "SecOC_Cfg.h"
 
 
+/*
+* Start Of General
+*/
 
 SecOC_MainFunctionTxType SecOC_MainFunctionTx = 
 {
@@ -45,128 +48,16 @@ SecOC_GeneralType SecOC_General =
 
 
 
+/*
+* End of General
+*/
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+* Start of RxPduProcessing
+*/
 
 
 SecOC_RxCryptographicPduType SecOCRxCryptographicPdu =
@@ -253,3 +144,9 @@ SecOC_RxPduProcessingType SecOCRxPduProcessing =
     &SecOCRxAuthenticPduLayer,
     &SecOCRxPduSecuredArea
 };
+
+
+
+/*
+* End of RxPduProcessing
+*/

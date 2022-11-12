@@ -7,156 +7,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+* Start of RxPduProcessing
+*/
 
 
 /*****************************************
@@ -300,12 +153,17 @@ typedef struct
    SecOC_RxPduSecuredAreaType                                    *SecOCRxPduSecuredArea;
 }SecOC_RxPduProcessingType;
 
-#include "Std_Types.h"
-#include "Rte_SecOC.h"
+
+/*
+* end of RxPduProcessing
+*/
 
 
 
 
+/*
+* Start of General
+*/
 
 
 /*************************************************************
@@ -405,6 +263,11 @@ typedef struct
     //SecOC_SecurityEventRefsType *SecOCSecurityEventRefs; /* can't have the container of it */
 
 }SecOC_GeneralType;
+
+/*
+* End of General
+*/
+
 
 
 #endif
