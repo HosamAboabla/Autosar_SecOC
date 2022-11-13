@@ -27,7 +27,7 @@ SecOCSecuredTxPduLength
 
 - `[SWS_BSW_00146]` ConfigType shall be labelled according to the following convention:
 `<Ma>_<Tn>Type`
-<br/>
+
 Where `<Ma>` is the Module abbreviation ([SWS_BSW_00101]) and `<Tn>` is the Type
 name, which shall be written in camel case `(SRS_BSW_00305)`
 
@@ -44,7 +44,7 @@ typedef struct
 
 
 
-## **Naming convention for enumeration literals, status valuesand pre-processor directives `[SWS_BSW_00124]`**
+## **Naming convention for enumeration literals, status values and pre-processor directives `[SWS_BSW_00124]`**
 ---
 <br/>
 
@@ -79,7 +79,7 @@ typedef enum
 `<Ma>_<Tn>_Type` <br/>
 Where `<Ma>` is the Module abbreviation ([SWS_BSW_00101]) and `<Tn>` is the Type
 name, which shall be written in camel case `(SRS_BSW_00305)`
-> No enoughe evidence on this one, depended on enumeratione example in Pg.38, file: SWS_BSWGeneral
+> No enoughe evidence on this one. Depended on enumeratione example in Pg.38, file: SWS_BSWGeneral
 ## Example for enumeration 
 ```C
 typedef enum
