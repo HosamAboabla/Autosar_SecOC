@@ -174,4 +174,6 @@ typedef enum
 ```C
 SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
 ```
+> If the global variable is constant, add the const qualifer
+
 
