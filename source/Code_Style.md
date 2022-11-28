@@ -11,6 +11,7 @@ Table of contents
 * [Error values](#Error-values)
 * [Global data](#Global-data)
 * [Type definitions](#Type-definitions)
+* [Callout APIS](#Callout-APIs)
 * [Summary](#Summary)
 
 <!--te-->
@@ -148,6 +149,42 @@ typedef uint16 SecOC_VerificationStatusType
 
 
 
+# Callout APIS
+<br/>
+
+- `[SWS_BSW_00135]` The following convention shall be used for declaration of Callout functions prototypes:<br/>
+```C
+ /* --- Start section definition: --- */
+
+#define <MIP>_START_SEC_<CN>_CODE
+
+/* --- Function prototype definition: --- */
+
+FUNC(void, <MIP>_<CN>_CODE) <Cn> (void);
+
+/* --- Stop section definition: --- */
+
+#define <MIP>_STOP_SEC_<CN>_CODE
+```
+
+## Example for Callout
+```C
+ /* --- Start section definition: --- */
+
+#define SECOC_START_SEC_GETRXFRESHNESS_CODE
+
+/* --- Function prototype definition: --- */
+
+FUNC(void, SECOC_GETRXFRESHNESS_CODE) GetRxFreshness (void);
+
+/* --- Stop section definition: --- */
+
+#define SECOC_STOP_SEC_GETRXFRESHNESS_CODE
+```
+<br/>
+
+
+
 # Summary 
 
 <br/>
@@ -196,3 +233,17 @@ SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
 typedef uint16 SecOC_VerificationStatusType
 ```
 
+## Example for Callout
+```C
+ /* --- Start section definition: --- */
+
+#define SECOC_START_SEC_GETRXFRESHNESS_CODE
+
+/* --- Function prototype definition: --- */
+
+FUNC(void, SECOC_GETRXFRESHNESS_CODE) GetRxFreshness (void);
+
+/* --- Stop section definition: --- */
+
+#define SECOC_STOP_SEC_GETRXFRESHNESS_CODE
+```
