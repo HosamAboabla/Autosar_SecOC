@@ -70,6 +70,8 @@ typedef enum
 } SecOC_PduType_Type;
 ```
 
+
+
 ## **Enumeration**
 ---
 
@@ -88,6 +90,21 @@ typedef enum
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
 } SecOC_PduType_Type;
 ```
+
+
+
+
+## **Error values**
+---
+
+<br/>
+
+- Error values shall be named in the following way: `<MIP_E_<EN>` <br/>
+Where here `<MIP>` is the Capitalized module implementation prefix of this BSW Module `[SWS_BSW_00102]`, `<EN>` is the error name. Only capital letters shall be used. If `<EN>` consists of several words, they shall be separated by underscore.c `(SRS_BSW_-00327)`
+## Example for error values 
+```C
+#define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
+```
 <br/>
 <br/>
 
@@ -104,11 +121,14 @@ typedef struct
 } SecOC_UseMessageLinkType;
 ```
 
-## Example for pre-processor directives
 
+
+## Example for pre-processor directives
 ```C
 #define SECOC_AUTH_PDUHEADER_LENGTH         ((uint8)0)
 ```
+
+
 
 ## Example for enumeration and enumeration literals
 ```C
@@ -117,5 +137,12 @@ typedef enum
     SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */ 
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
 } SecOC_PduType_Type;
+```
+
+
+
+## Example for error values 
+```C
+#define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
 ```
 
