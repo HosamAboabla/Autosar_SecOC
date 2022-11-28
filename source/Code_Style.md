@@ -1,10 +1,21 @@
 # **Code style**
 This file contains the followed code style throughout the project
 
+Table of contents
+=================
+
+<!--ts-->
+* [Configuration](#Configuration)
+    * [Configuration parameter](##Configuration-parameter)
+    * [Cofiguration container](##Cofiguration-container)
+* [Enumeration literals and pre-processor directives](#Enumeration-literals-and-pre-processor-directives)
+* [Enumeration](#Enumeration)
+* [Summary](#Summary) 
+<!--te-->
 <br/>
 
-## **Configuration**
----
+# **Configuration**
+
 <br/>
 
 ## Configuration parameter
@@ -22,7 +33,7 @@ SecOCSecuredTxPduLength
 
 <br/>
 
-## Cofiguration container
+## Configuration container
 <br/>
 
 - `[SWS_BSW_00146]` ConfigType shall be labelled according to the following convention:
@@ -40,11 +51,11 @@ typedef struct
 } SecOC_UseMessageLinkType;
 ```
 
+<br/>
 
+# Enumeration literals and pre-processor directives 
 
-
-
-## **Naming convention for enumeration literals, status values and pre-processor directives `[SWS_BSW_00124]`**
+`[SWS_BSW_00124]`
 ---
 <br/>
 
@@ -69,13 +80,11 @@ typedef enum
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
 } SecOC_PduType_Type;
 ```
-
-
-
-## **Enumeration**
----
-
 <br/>
+
+# Enumeration
+<br/>
+
 
 - Enumeration shall be labelled according to the following convention:
 `<Ma>_<Tn>_Type` <br/>
@@ -90,13 +99,11 @@ typedef enum
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
 } SecOC_PduType_Type;
 ```
+<br/>
 
 
 
-
-## **Error values**
----
-
+# Error values
 <br/>
 
 - Error values shall be named in the following way: `<MIP_E_<EN>` <br/>
