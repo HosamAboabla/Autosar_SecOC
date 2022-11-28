@@ -10,6 +10,7 @@ Table of contents
 * [Enumeration](#Enumeration)
 * [Error values](#Error-values)
 * [Global data](#Global-data)
+* [Type definitions](#Type-definitions)
 * [Summary](#Summary)
 
 <!--te-->
@@ -57,8 +58,6 @@ typedef struct
 # Enumeration literals and pre-processor directives 
 
 `[SWS_BSW_00124]`
----
-<br/>
 
 All enumeration literals, status values and pre-processor
 directives (#define) shall be labeled in the following way:
@@ -130,6 +129,21 @@ Where `<Mip>` is the Module implementation prefix of the BSW Module
 SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
 ```
 - Definition of **constant global** variables dIf the BSW Module defines global variables with read-only purpose, this shall be formalized by assigning the **const** qualifier to their definitions and declarations `(SRS_BSW_00309)`
+
+<br/>
+
+
+
+# Type definitions
+<br/>
+
+- `[SWS_BSW_00146]` All data types defined by the BSW Module, **except ConfigType**, shall be labelled according to the following convention: `<Ma>_<Tn>Type`<br/>
+ Where `<Ma>` is the Module abbreviation `[SWS_BSW_00101]` and `<Tn>` is the Type name, which shall be written in camel case `(SRS_BSW_00305)`
+
+## Example for Typedefs
+```C
+typedef uint16 SecOC_VerificationStatusType
+```
 <br/>
 
 
@@ -174,6 +188,11 @@ typedef enum
 ```C
 SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
 ```
-> If the global variable is read-only, add the const qualifer
+> If the global variable is read-only, add the const qualifer 
 
+
+## Example for Typedefs
+```C
+typedef uint16 SecOC_VerificationStatusType
+```
 
