@@ -9,7 +9,9 @@ Table of contents
 * [Enumeration literals and pre-processor directives](#Enumeration-literals-and-pre-processor-directives)
 * [Enumeration](#Enumeration)
 * [Error values](#Error-values)
-* [Summary](#Summary) 
+* [Global data](#Global-data)
+* [Summary](#Summary)
+
 <!--te-->
 <br/>
 
@@ -112,7 +114,25 @@ Where here `<MIP>` is the Capitalized module implementation prefix of this BSW M
 #define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
 ```
 <br/>
+
+
+
+# Global data
 <br/>
+
+- If the BSW Module defines d global variables, then their definition shall take place in the Implementation source file `(SRS_BSW_00308)`
+- All global variables defined by the BSW Module shall be labeled according to the following: `<Mip>_<Vn>` <br/>
+Where `<Mip>` is the Module implementation prefix of the BSW Module
+`[SWS_BSW_00102]` and `<Vn>` is the Variable name, which shall be written in camel case `(SRS_BSW_00307)`
+
+## Example for global variable 
+```C
+SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
+```
+- Definition of **constant global** variables dIf the BSW Module defines global variables with read-only purpose, this shall be formalized by assigning the **const** qualifier to their definitions and declarations `(SRS_BSW_00309)`
+<br/>
+
+
 
 # Summary 
 
@@ -128,12 +148,10 @@ typedef struct
 ```
 
 
-
 ## Example for pre-processor directives
 ```C
 #define SECOC_AUTH_PDUHEADER_LENGTH         ((uint8)0)
 ```
-
 
 
 ## Example for enumeration and enumeration literals
@@ -146,9 +164,14 @@ typedef enum
 ```
 
 
-
 ## Example for error values 
 ```C
 #define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
+```
+
+
+## Example for global variable 
+```C
+SecOC_MessageBuffer[SECOC_BUFFER_LENGTH]
 ```
 
