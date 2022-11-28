@@ -1,15 +1,14 @@
 # **Code style**
-This file contains the followed code style throughout the project
+This file contains the followed code style throughout the project according to BSWGeneral SWS documentation
 
 Table of contents
 =================
 
 <!--ts-->
-* [Configuration](#Configuration)
-    * [Configuration parameter](##Configuration-parameter)
-    * [Configuration container](##Configuration-container)
+* [Configuration containers](#Configuration)
 * [Enumeration literals and pre-processor directives](#Enumeration-literals-and-pre-processor-directives)
 * [Enumeration](#Enumeration)
+* [Error values](#Error-values)
 * [Summary](#Summary) 
 <!--te-->
 <br/>
