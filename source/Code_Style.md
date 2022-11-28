@@ -7,14 +7,14 @@ Table of contents
 <!--ts-->
 * [Configuration](#Configuration)
     * [Configuration parameter](##Configuration-parameter)
-    * [Cofiguration container](##Cofiguration-container)
+    * [Configuration container](##Configuration-container)
 * [Enumeration literals and pre-processor directives](#Enumeration-literals-and-pre-processor-directives)
 * [Enumeration](#Enumeration)
 * [Summary](#Summary) 
 <!--te-->
 <br/>
 
-# **Configuration**
+# Configuration
 
 <br/>
 
