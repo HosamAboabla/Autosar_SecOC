@@ -1,3 +1,10 @@
+/******************************************************************************
+ * Module      : PduR                                                         *
+ * File Name   : PduR_Com.h                                                   *
+ * Description : Header file of APIs provided by PduR to Com                  *
+ * Created on  : December 1, 2022                                             *
+ ******************************************************************************/
+
 #ifndef INCLUDE_PDUR_COM_H_
 #define INCLUDE_PDUR_COM_H_
 
