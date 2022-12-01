@@ -21,11 +21,7 @@
  * Function_Descripton  : Transmits message to PDuR *
  *                                                  *
  ***************************************************/
-Std_ReturnType PduR_ComTransmit(PduIdType PduID, const PduInfoType *PduInfo)
-{
-    // When SecOC is used, PduR routes the message to the SecOC 
-    SecOC_IfTransmit(PduID, PduInfo);
-}
+Std_ReturnType PduR_ComTransmit(PduIdType PduID, const PduInfoType *PduInfo);
 
 
 #endif
