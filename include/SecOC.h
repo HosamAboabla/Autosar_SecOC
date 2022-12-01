@@ -3,4 +3,12 @@
 
 #include "SecOC_Cfg.h"
 
+
+
+Std_ReturnType SecOC_IfTransmit(
+    Pdu_IdType                  TxPduId,
+    const Pdu_InfoType*         PduInfoPtr
+);
+
+
 #endif
