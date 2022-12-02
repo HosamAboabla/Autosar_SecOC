@@ -5,8 +5,8 @@
 
 
 Std_ReturnType SecOC_IfTransmit(
-    Pdu_IdType                  TxPduId,
-    const Pdu_InfoType*         PduInfoPtr
+    PduIdType                  TxPduId,
+    const PduInfoType*         PduInfoPtr
 );
 
 void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result);
