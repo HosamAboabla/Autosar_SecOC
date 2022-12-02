@@ -16,3 +16,15 @@ void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 	Com_TxConfirmation(TxPduId, result);
 }
 
+ Std_ReturnType success_flag =0;//check if the message reached the distination or not
+
+ void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+ {
+	if(success_flag)
+    {
+		result = E_OK;	
+	}else{
+		result = E_NOT_OK;
+	}
+}
+
