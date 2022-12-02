@@ -7,9 +7,9 @@
 #include "SecOC.h"
 
 
-Pdu_InfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
+PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
-Std_ReturnType SecOC_IfTransmit( Pdu_IdType TxPduId, const Pdu_InfoType* PduInfoPtr)
+Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
     Std_ReturnType result = E_OK; 
     if( TxPduId < SECOC_BUFFERLENGTH )
@@ -24,7 +24,7 @@ Std_ReturnType SecOC_IfTransmit( Pdu_IdType TxPduId, const Pdu_InfoType* PduInfo
     return result;
 
 }
-// Pdu_InfoType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
+// PduIdType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
 
 /****************************************************
  *          * Function Info *                           *
