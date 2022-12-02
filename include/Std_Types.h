@@ -18,6 +18,7 @@
 #define HIGH        (1u)
 #define LOW         (0u)
 
+
 /* Boolean Data Type */
 typedef unsigned char           boolean;
 typedef unsigned char           uint8;          /*           0 .. 255             */
