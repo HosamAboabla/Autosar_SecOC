@@ -18,10 +18,6 @@
 #define HIGH        (1u)
 #define LOW         (0u)
 
-#define SUCCESS     1
-#define FAILED      0
-
-#define STATUS_TRANSMISSION SUCCESS
 
 /* Boolean Data Type */
 typedef unsigned char           boolean;
