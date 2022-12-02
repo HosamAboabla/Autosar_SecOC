@@ -10,9 +10,24 @@
 
 #include "Std_Types.h"
 
+/* The size of this global type depends on the maximum number of PDUs-- can be uint8/uint16 */
+typedef uint16 PduIdType;
+/* The size of this global type depends on the maximum length of PDUs-- can be uint8/uint16/uint32 */
+typedef uint16 PduLengthType;
+
 /* Signal object identifier */
 typedef uint16 Com_SignalIdType;
 typedef uint16 Com_SignalGroupIdType;
+
+
+/* store the basic information about a PDU of any type */
+typedef struct
+{
+   uint8*            SduDataPtr; /*memory model being used at compile time.*/
+   uint8*            MetaDataPtr; /*Pointer to the meta data*/
+   PduLengthType     SduLength; /*Length of the SDU in bytes.*/
+} PduInfoType;
+
 
 /* Available Transmission modes for I-PDU */
 typedef enum {
