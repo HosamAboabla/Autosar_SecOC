@@ -23,7 +23,7 @@ Std_ReturnType SecOC_IfTransmit( Pdu_IdType TxPduId, const Pdu_InfoType* PduInfo
 
     return result;
 
-
+}
 // Pdu_InfoType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
 
 /****************************************************
