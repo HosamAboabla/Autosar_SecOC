@@ -159,7 +159,7 @@
 /*
 * Configuration Parameter for SecOCBufferLength
 */
-#define SECOC_BUFFERLENGTH                  ((uint32)0)
+#define SECOC_BUFFERLENGTH                  ((uint32)100)
 
 /*****************************************
  *          * Container Info *           *
