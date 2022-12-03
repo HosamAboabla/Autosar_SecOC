@@ -7,9 +7,9 @@
 #include "SecOC.h"
 
 
-<<<<<<< HEAD
 
-=======
+
+
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
@@ -49,4 +49,4 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
     PduR_SecOCIfTxConfirmation(TxPduId,result);
 
 }
->>>>>>> origin/APIs
+
