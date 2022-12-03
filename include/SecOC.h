@@ -3,10 +3,16 @@
 
 #include "SecOC_Cfg.h"
 
-void PduR_CanIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+<<<<<<< HEAD
+=======
 
-void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+Std_ReturnType SecOC_IfTransmit(
+    PduIdType                  TxPduId,
+    const PduInfoType*         PduInfoPtr
+);
 
-void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result);
+
+>>>>>>> origin/APIs
 
 #endif
