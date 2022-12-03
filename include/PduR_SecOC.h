@@ -18,4 +18,8 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType PduId, const PduInfoType* PduInfo);
 
 
 
+void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+
+
+
 #endif

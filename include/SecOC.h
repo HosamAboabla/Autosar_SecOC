@@ -3,6 +3,8 @@
 
 #include "SecOC_Cfg.h"
 
+<<<<<<< HEAD
+=======
 
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
@@ -11,5 +13,6 @@ Std_ReturnType SecOC_IfTransmit(
 
 void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result);
 
+>>>>>>> origin/APIs
 
 #endif

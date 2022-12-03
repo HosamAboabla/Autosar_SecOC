@@ -1,5 +1,5 @@
 #include "PduR_SecOC.h"
-
+#include "Com.h"
 
 
 
@@ -33,4 +33,10 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
         return CanTp_Transmit(TxPduId, PduInfoPtr);
     }
     return E_NOT_OK;
+}
+
+
+void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+	Com_TxConfirmation(TxPduId, result);
 }
