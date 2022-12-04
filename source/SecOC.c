@@ -9,7 +9,7 @@
 
 
 
-=======
+
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
