@@ -35,10 +35,9 @@ extern Std_ReturnType Csm_MacGenerate (
 
         // Update macLength
         (*macLengthPtr) = MAC_LEN - macStart;
-        
         // Copy generated MAC to the required destination
         // cppcheck-suppress misra-c2012-17.7
-        memcpy(macPtr, MacData[jobId][macStart], macLengthPtr);
+        memcpy(macPtr, &MacData[jobId][macStart], *macLengthPtr);
 
 
     }
