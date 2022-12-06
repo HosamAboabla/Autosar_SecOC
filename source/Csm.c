@@ -2,8 +2,8 @@
 
 #include <string.h>
 
-#define MAC_DATA_LEN 100 // Maximum number of stored MACs
-#define MAC_LEN 16      // Length of MAC
+#define MAC_DATA_LEN ((uint8)100) // Maximum number of stored MACs
+#define MAC_LEN      ((uint8)16)      // Length of MAC
 
 static uint8 MacData[MAC_DATA_LEN][MAC_LEN]; // An array to store generated macs, uses jobId as an index
 
