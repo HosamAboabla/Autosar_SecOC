@@ -5,14 +5,14 @@
  ******************************************************************************/
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
-#include "SecOC_Cfg.h"
+
 
 
 /*
 * Start Of General
 */
 
-SecOC_MainFunctionTxType SecOC_MainFunctionTx = 
+SecOC_MainFunctionTxType SecOC_MainFunctionTxConf = 
 {
     SECOC_MAIN_FUNCTION_PERIOD_TX,
     SECOC_MAIN_FUNCTION_TX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
@@ -51,14 +51,14 @@ SecOC_GeneralType SecOC_General =
 SecOC_RxCryptographicPduType SecOCRxCryptographicPdu =
 {
     SECOC_RX_CRYPTOGRAPHIC_PDUID,
-    &EcuC_Pdu
+    //&EcuC_Pdu
 };
 
 SecOC_RxAuthenticPduType SecOCRxAuthenticPdu =
 {
     SECOC_AUTHPDU_HEADERLENGTH,
     SECOC_RXAUTHENTIC_PDUID,
-    &EcuC_Pdu
+    //&EcuC_Pdu
 };
 
 
@@ -81,7 +81,7 @@ SecOC_RxAuthenticPduLayerType SecOCRxAuthenticPduLayer =
 {
     SECOC_RX_PDUTYPE,
     SECOC_RXAUTHENTICLAYER_PDUID,
-    &EcuC_Pdu
+    //&EcuC_Pdu
 };
 
 SecOC_RxSecuredPduType SecOCRxSecuredPdu = 
@@ -89,7 +89,7 @@ SecOC_RxSecuredPduType SecOCRxSecuredPdu =
     SECOC_AUTHPDU_HEADERLENGTH,
     SECOC_RX_SECUREDLAYER_PDUID,
     SECOC_SECURED_RX_PDUVERIFICATION,
-    &EcuC_Pdu
+    //&EcuC_Pdu
 };
 
 SecOC_RxSecuredPduLayerType SecOCRxSecuredPduLayer =
@@ -128,14 +128,14 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer=
 {
     SECOC_TX_PDUTYPE,
     SECOC_TX_AUTHENTIC_LAYER_PDUID,
-    &EcuC_Pdu,
+    //&EcuC_Pdu,
 };
 
 SecOC_TxSecuredPduType SecOC_TxSecuredPdu=
 {
     SECOC_AUTH_PDUHEADER_LENGTH,
     SECOC_TX_SECURED_LAYER_PDUID,
-    &EcuC_Pdu,
+    //&EcuC_Pdu,
 };
 
 
