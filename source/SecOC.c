@@ -7,10 +7,17 @@
 #include "SecOC.h"
 #include "PduR_SecOC.h"
 
+#include "PduR_SecOC.h"
 
 
 
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { NULL };
+
+
+extern void SecOC_MainFunctionTx ( void )
+{
+
+}
 
 Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
@@ -43,7 +50,7 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 {
     if(result==E_OK)
     {
-        SecOC_Buffer[TxPduId] = NULL;
+        //SecOC_Buffer[TxPduId] = NULL;
         // clear buffer
     }
     PduR_SecOCIfTxConfirmation(TxPduId,result);

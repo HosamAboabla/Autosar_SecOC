@@ -197,7 +197,7 @@
 /*
 * Configuration Parameter for SecOC_ClientServerVerificationStatusPropagationMode
 */
-#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       NONE
+#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       ((SecOC_StatusPropagationMode_Type)SECOC_NONE)
 
 /*
 * Configuration Parameter for SecOC_DataId
@@ -237,7 +237,7 @@
 /*
 * Configuration Parameter for SecOC_VerificationStatusPropagationMode
 */
-#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        NONE
+#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        ((SecOC_StatusPropagationMode_Type)SECOC_NONE)
 
 /*
 * Configuration Parameter for Csm_JobId
@@ -388,7 +388,7 @@
  ***********************************************************/
 
 #define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
-#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
+#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)NULL) //((EcuC_PduType*)&EcuC_Pdu)
 
 /************************************************************
  *          * Container Info *                              *
@@ -400,7 +400,7 @@
 
 #define SECOC_AUTH_PDUHEADER_LENGTH         ((uint8)0)
 #define SECOC_TX_AUTHENTIC_PDUID            ((uint16)0)
-#define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)&EcuC_Pdu)
+#define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)NULL) //((EcuC_PduType*)&EcuC_Pdu)
 
 
 
