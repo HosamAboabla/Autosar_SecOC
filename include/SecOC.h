@@ -2,8 +2,9 @@
 #define INCLUDE_SECOC_H_
 
 #include "SecOC_Cfg.h"
+#include "SecOC_Types.h"
 
-
+void SecOC_MainFunctionTx ( void );
 
 
 Std_ReturnType SecOC_IfTransmit(

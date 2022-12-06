@@ -1,5 +1,6 @@
 #include "PduR_SecOC.h"
 #include "Com.h"
+#include "CanIF.h"
 
 
 
@@ -22,15 +23,15 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
 {
     if(*(PduInfoPtr->MetaDataPtr) == CANIF)
     {
-        return CanIf_Transmit(TxPduId,PduInfoPtr);
+       // return CanIf_Transmit(TxPduId,PduInfoPtr);
     }
     else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
     {
-        return FrIf_Transmit(TxPduId, PduInfoPtr);
+       // return FrIf_Transmit(TxPduId, PduInfoPtr);
     }   
     else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
     {
-        return CanTp_Transmit(TxPduId, PduInfoPtr);
+       // return CanTp_Transmit(TxPduId, PduInfoPtr);
     }
     return E_NOT_OK;
 }

@@ -10,7 +10,7 @@
 
 
 #include <stdint.h>
-#include "Com_Types.h"
+
 
 
 typedef uint32 TPParameterType ;
