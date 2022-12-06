@@ -6,11 +6,18 @@
 #include "Rte_SecOC.h"
 #include "SecOC.h"
 
+#include "PduR_SecOC.h"
 
 
 
 
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
+
+
+extern void SecOC_MainFunctionTx ( void )
+{
+
+}
 
 Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
