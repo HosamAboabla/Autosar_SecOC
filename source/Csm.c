@@ -30,7 +30,7 @@ extern Std_ReturnType Csm_MacGenerate (
         //******end mac generation*********
 
         // the Authenticator should only be truncated down to the most significant (Shift the start)
-        uint32 macDiff = MAC_LEN - (*macLengthPtr);
+        sint32 macDiff = MAC_LEN - (*macLengthPtr);
         uint8 macStart = (macDiff < 0) ? 0 : macDiff;
 
         // Update macLength
