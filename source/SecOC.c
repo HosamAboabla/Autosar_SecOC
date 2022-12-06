@@ -43,7 +43,7 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 {
     if(result==E_OK)
     {
-        SecOC_Buffer[TxPduId] = NULL;
+        //SecOC_Buffer[TxPduId] = NULL;
         // clear buffer
     }
     PduR_SecOCIfTxConfirmation(TxPduId,result);
