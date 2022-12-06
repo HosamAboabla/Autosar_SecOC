@@ -5,14 +5,13 @@
  ******************************************************************************/
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
-#include "SecOC_Cfg.h"
 
 
 /*
 * Start Of General
 */
 
-SecOC_MainFunctionTxType SecOC_MainFunctionTx = 
+SecOC_MainFunctionTxType SecOC_MainFunctionTxConf = 
 {
     SECOC_MAIN_FUNCTION_PERIOD_TX,
     SECOC_MAIN_FUNCTION_TX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
