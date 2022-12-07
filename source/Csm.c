@@ -23,7 +23,7 @@ extern Std_ReturnType Csm_MacGenerate (
 
         //******starts mac generation*********
         // Right now, I'm just using the data as the mac
-        uint32 datalen = (dataLength <= 16) ? 16 : dataLength;
+        uint32 datalen = (dataLength > 16) ? 16 : dataLength;
 
         // cppcheck-suppress misra-c2012-17.7
         memcpy(MacData[jobId], dataPtr, datalen);
