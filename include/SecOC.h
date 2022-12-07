@@ -14,6 +14,6 @@ Std_ReturnType SecOC_IfTransmit(
 
 void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result);
 
-
+void SecOc_SPduTxConfirmation (uint16 SecOCFreshnessValueID);
 
 #endif
