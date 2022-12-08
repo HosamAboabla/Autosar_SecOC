@@ -1,4 +1,5 @@
 #include "SecOC_Lcfg.h"
+#include "SecOC_Cfg.h"
 #include "SecOC_PBcfg.h"
 #include "SecOC_Cbk.h"
 #include "ComStack_Types.h"
@@ -58,3 +59,19 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : This interface is used by     *
+ * SecOC to indicate that the Secured I-PDU has been    *
+ * initiated for transmission                           *
+ ***************************************************/
+#if (SECOC_USE_TX_CONFIRMATION == 1)
+    void SecOc_SPduTxConfirmation (uint16 SecOCFreshnessValueID)
+    {
+        /* Specific User's Code need to be written here*/
+    }
+#endif
