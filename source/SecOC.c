@@ -58,3 +58,17 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+SecOC_StateType _secOCState=SECOC_UNINIT;
+
+const SecOC_GeneralType tmpSecOCGeneral;
+const SecOC_RxPduProcessingType* tmpSecOCRxPduProcessing;
+const SecOC_TxPduProcessingType* tmpSecOCTxPduProcessing;
+
+
+void SecOC_Init(const SecOC_ConfigType *config)
+{
+    tmpSecOCGeneral = config->general;
+	tmpSecOCTxPduProcessing = config->secOCTxPduProcessings;
+	tmpSecOCRxPduProcessing = config->secOCRxPduProcessings;
+    _secOCState = SECOC_INIT;
+}
