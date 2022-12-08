@@ -64,17 +64,17 @@ i want to put the data in which is in counter to the array of fresshness values 
 how it will return busy or not okay */
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
-    /*
-    if (SecOCFreshnessValueID > 7)
-        return E_NOT_OK;
-    else if (SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE)
-        return E_NOT_OK;
-    */
-    SecOC_FreshnessArrayType counter[8] = {0};
-    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCFreshnessValueLength);
-    for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) {
-        SecOCFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
+    Std_ReturnType result = E_OK;
+    if (SecOCFreshnessValueID > 7) {
+        result =  E_NOT_OK;
+    } else if ( SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE ) {
+        result = E_NOT_OK;
+    } else {
+        SecOC_FreshnessArrayType counter[8] = {0};
+        uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCFreshnessValueLength);
+        for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) {
+            SecOCFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
+        }
     }
-    return E_OK;
-
+    return result;
 }
