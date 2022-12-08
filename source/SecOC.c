@@ -71,7 +71,7 @@ uint32* SecOCFreshnessValueLength) {
         return E_NOT_OK;
     */
     SecOC_FreshnessArrayType counter[8] = {0};
-    uint32 Datalength = *SecOCFreshnessValueLength;
+    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCFreshnessValueLength);
     for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) {
         SecOCFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
     }
