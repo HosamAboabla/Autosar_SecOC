@@ -1,5 +1,5 @@
-#include "SecOC_Lcfg.h"
 #include "SecOC_PBcfg.h"
+#include "SecOC_Lcfg.h"
 #include "SecOC_Cbk.h"
 #include "ComStack_Types.h"
 #include "Det.h"
@@ -8,7 +8,7 @@
 
 #include "PduR_SecOC.h"
 
-
+#include "Rte_SecOC_Type.h"
 
 
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
@@ -36,7 +36,7 @@ Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPt
 }
 // PduIdType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
 
-/****************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_TxConfirmation          *
@@ -45,7 +45,7 @@ Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPt
  * Function_Descripton  : The lower layer communication * 
  * interface module confirms  the transmission of a PDU *
  *        or the failure to transmit a PDU              *
- ***************************************************/
+ *******************************************************/
 void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 {
     if(result==E_OK)
@@ -58,3 +58,23 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+/* So confess about ID- Value
+i asume that a freshnessvlaue in global counter this global counter access by id
+i want to put the data in which is in counter to the array of fresshness values so it made it  
+how it will return busy or not okay */
+Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength) {
+    /*
+    if (SecOCFreshnessValueID > 7)
+        return E_NOT_OK;
+    else if (SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE)
+        return E_NOT_OK;
+    */
+    SecOC_FreshnessArrayType counter[8] = {0};
+    uint32 Datalength = *SecOCFreshnessValueLength;
+    for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) {
+        SecOCFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
+    }
+    return E_OK;
+
+}
