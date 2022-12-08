@@ -8,9 +8,9 @@
 
 #include "PduR_SecOC.h"
 
+
+
 #include "Rte_SecOC_Type.h"
-
-
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 
