@@ -6,20 +6,16 @@
 #include "Det.h"
 #include "Rte_SecOC.h"
 #include "SecOC.h"
-
 #include "PduR_SecOC.h"
 #include "Csm.h"
+
 
 
 
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 
-extern void SecOC_MainFunctionTx ( void )
-{
-
-}
-
+ 
 Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
     Std_ReturnType result = E_OK; 
@@ -59,6 +55,30 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+
+
+
+
+
+extern void SecOC_MainFunctionTx(void) {
+    // check if initialized or not;
+    // if (_secOCState == SECOC_UNINT) {
+    //     return;
+    // }
+    PduIdType idx = 0;
+    PduInfoType transmitPduInfo;
+    for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer[idx].SduLength > 0 ) {
+            // authenticate SecOC_Buffer[idx];
+            // send authenticated data
+            // authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
+            PduR_SecOCTransmit(idx , &transmitPduInfo);
+
+        } else {
+        }
+    }
+}
 
 SecOC_StateType _secOCState=SECOC_UNINIT;
 
@@ -115,6 +135,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return E_OK;
 }
+
 
 
 
