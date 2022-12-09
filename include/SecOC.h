@@ -14,6 +14,9 @@ Std_ReturnType SecOC_IfTransmit(
 
 void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result);
 
+
+void SecOc_SPduTxConfirmation (uint16 SecOCFreshnessValueID);
+
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -32,6 +35,7 @@ uint32* SecOCFreshnessValueLength,
 uint8* SecOCTruncatedFreshnessValue,
 uint32* SecOCTruncatedFreshnessValueLength
 );
+
 
 
 #endif
