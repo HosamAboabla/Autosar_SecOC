@@ -1,4 +1,5 @@
 #include "SecOC_Lcfg.h"
+#include "SecOC_Cfg.h"
 #include "SecOC_PBcfg.h"
 #include "SecOC_Cbk.h"
 #include "ComStack_Types.h"
@@ -58,6 +59,7 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+
 SecOC_StateType _secOCState=SECOC_UNINIT;
 
 const SecOC_GeneralType tmpSecOCGeneral;
@@ -72,3 +74,47 @@ void SecOC_Init(const SecOC_ConfigType *config)
 	tmpSecOCRxPduProcessing = config->secOCRxPduProcessings;
     _secOCState = SECOC_INIT;
 }
+
+
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : This interface is used by     *
+ * SecOC to indicate that the Secured I-PDU has been    *
+ * initiated for transmission                           *
+ ***************************************************/
+#if (SECOC_USE_TX_CONFIRMATION == 1)
+    void SecOc_SPduTxConfirmation (uint16 SecOCFreshnessValueID)
+    {
+        /* Specific User's Code need to be written here*/
+    }
+#endif
+
+
+#define MAX_COUNTER_FRESHNESS_IDS   10
+
+Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
+{
+    if (SecOCFreshnessValueID > (MAX_COUNTER_FRESHNESS_IDS-1)) 
+    {
+        return E_NOT_OK;
+    }
+    else if (SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
+    {
+        return E_NOT_OK;
+    }
+    SecOC_FreshnessArrayType counter[MAX_COUNTER_FRESHNESS_IDS] = {0};
+    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCTruncatedFreshnessValueLength);
+    for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) 
+    {
+        SecOCTruncatedFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
+    }
+    return E_OK;
+}
+
+
+
