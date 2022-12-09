@@ -8,7 +8,7 @@
 #include "SecOC.h"
 
 #include "PduR_SecOC.h"
-
+#include "Csm.h"
 
 
 
@@ -59,6 +59,7 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -75,3 +76,28 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
         /* Specific User's Code need to be written here*/
     }
 #endif
+
+
+#define MAX_COUNTER_FRESHNESS_IDS   10
+
+Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
+{
+    if (SecOCFreshnessValueID > (MAX_COUNTER_FRESHNESS_IDS-1)) 
+    {
+        return E_NOT_OK;
+    }
+    else if (SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
+    {
+        return E_NOT_OK;
+    }
+    SecOC_FreshnessArrayType counter[MAX_COUNTER_FRESHNESS_IDS] = {0};
+    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCTruncatedFreshnessValueLength);
+    for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) 
+    {
+        SecOCTruncatedFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
+    }
+    return E_OK;
+}
+
+
