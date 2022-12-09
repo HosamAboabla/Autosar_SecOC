@@ -1,62 +1,93 @@
 #include "SecOC_Lcfg.h"
+#include "SecOC_Cfg.h"
 #include "SecOC_PBcfg.h"
 #include "SecOC_Cbk.h"
 #include "ComStack_Types.h"
 #include "Det.h"
 #include "Rte_SecOC.h"
 #include "SecOC.h"
-
 #include "PduR_SecOC.h"
+#include "Csm.h"
 
 
 
+PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
 
-PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 
-extern void SecOC_MainFunctionTx ( void )
-{
-
-}
-
-Std_ReturnType SecOC_IfTransmit( PduIdType TxPduId, const PduInfoType* PduInfoPtr)
-{
-    Std_ReturnType result = E_OK; 
-    if( TxPduId < SECOC_BUFFERLENGTH )
-    {
+Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr) {
+    Std_ReturnType result = E_OK;
+    if (TxPduId < SECOC_BUFFERLENGTH) {
         SecOC_Buffer[TxPduId] = *PduInfoPtr;
-    }
-    else
-    {
+    } else {
         result = E_NOT_OK;
     }
 
     return result;
-
 }
 // PduIdType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
 
-/****************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_TxConfirmation          *
- * Function_Index       : 8.4.3 [SWS_SecOC_00126]       *
- * Function_File        : SWS of secOC                  *
- * Function_Descripton  : The lower layer communication * 
- * interface module confirms  the transmission of a PDU *
- *        or the failure to transmit a PDU              *
- ***************************************************/
-void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
-{
-    if(result==E_OK)
-    {
-        //SecOC_Buffer[TxPduId] = NULL;
+
+void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
+    if (result == E_OK) {
+        // SecOC_Buffer[TxPduId] = NULL;
         // clear buffer
     }
-    PduR_SecOCIfTxConfirmation(TxPduId,result);
-
-
+    PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
+
+
+
+
+
+
+SecOC_StateType _secOCState = SECOC_UNINIT;
+
+SecOC_GeneralType tmpSecOCGeneral;
+const SecOC_RxPduProcessingType* tmpSecOCRxPduProcessing;
+const SecOC_TxPduProcessingType* tmpSecOCTxPduProcessing;
+
+
+void SecOC_Init(const SecOC_ConfigType *config) {
+    tmpSecOCGeneral = config->general;
+    tmpSecOCTxPduProcessing = config->secOCTxPduProcessings;
+    tmpSecOCRxPduProcessing = config->secOCRxPduProcessings;
+    _secOCState = SECOC_INIT;
+}
+
+
+
+
+
+extern void SecOC_MainFunctionTx(void) {
+    // check if initialized or not;
+    if (_secOCState == SECOC_UNINIT) {
+        return;
+    }
+    PduIdType idx = 0;
+    PduInfoType transmitPduInfo;
+    for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer[idx].SduLength > 0 ) {
+            // authenticate SecOC_Buffer[idx];
+            // send authenticated data
+            // authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
+            PduR_SecOCTransmit(idx , &transmitPduInfo);
+
+        } else {
+        }
+    }
+}
+
+
+
+
+#if (SECOC_USE_TX_CONFIRMATION == 1)
+    void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
+        /* Specific User's Code need to be written here*/
+    }
+#endif
+
 
 #define MAX_COUNTER_FRESHNESS_IDS   10
 
@@ -82,4 +113,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
+
+
+
 
