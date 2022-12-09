@@ -11,8 +11,7 @@
 
 
 
-
-PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
+PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
 
 
  
