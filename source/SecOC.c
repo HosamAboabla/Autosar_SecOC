@@ -60,6 +60,9 @@ void SecOC_TxConfirmation (PduIdType TxPduId,Std_ReturnType result)
 
 extern void SecOC_MainFunctionTx(void) {
     // check if initialized or not;
+    // if (_secOCState == SECOC_UNINT) {
+    //     return;
+    // }
     PduIdType idx = 0;
     PduInfoType transmitPduInfo;
     for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
