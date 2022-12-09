@@ -61,9 +61,9 @@ void SecOC_Init(const SecOC_ConfigType *config) {
 
 extern void SecOC_MainFunctionTx(void) {
     // check if initialized or not;
-    // if (_secOCState == SECOC_UNINT) {
-    //     return;
-    // }
+    if (_secOCState == SECOC_UNINIT) {
+        return;
+    }
     PduIdType idx = 0;
     PduInfoType transmitPduInfo;
     for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
