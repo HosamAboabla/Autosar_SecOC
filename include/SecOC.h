@@ -42,11 +42,15 @@ void SecOC_Init(const SecOC_ConfigType *config);
  * byte in the array (SecOCFreshnessValue),             *
  * in big endian format.                                *
  *******************************************************/
+#define SECOC_START_SEC_GetTxFreshness_CODE
 
 Std_ReturnType SecOC_GetTxFreshness (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength);
+Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
 
 
 #endif
+#define SECOC_END_SEC_GetTxFreshness_CODE
 
 
 
@@ -57,7 +61,7 @@ Std_ReturnType SecOC_GetTxFreshness (uint16 SecOCFreshnessValueID,uint8* SecOCFr
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Name        : SecOC_SPduTxConfirmation      *
  * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : This interface is used by     *
