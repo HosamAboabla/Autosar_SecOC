@@ -1,4 +1,3 @@
-
 #ifndef INCLUDE_COM_H_
 #define INCLUDE_COM_H_
 
@@ -8,5 +7,3 @@
 void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
 #endif
-
-
