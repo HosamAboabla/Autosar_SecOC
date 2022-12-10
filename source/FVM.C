@@ -44,14 +44,14 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
     
 
      /* Calculate the Number of bits in the Counter */
-        for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
-            uint8 temp = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]);
-            if (temp != 0)
-            {
-                len = temp + INDEX * 8;
-                break;
-            }
+    for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
+        uint8 temp = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]);
+        if (temp != 0)
+        {
+            len = temp + INDEX * 8;
+            break;
         }
+    }
 
     return E_OK;
 }
