@@ -9,14 +9,14 @@ SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
 
 
 uint8 countBits(uint8 n) {
-       uint8 count = 0;
-       while (n)
-       {
-            count++;
-            n >>= 1;
-        }
-        return count;
+    uint8 count = 0;
+    while (n)
+    {
+        count++;
+        n >>= 1;
     }
+    return count;
+}
 
 
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength) {  
