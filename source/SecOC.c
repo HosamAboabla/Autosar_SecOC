@@ -41,18 +41,19 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
 
 
 
-SecOC_StateType _secOCState = SECOC_UNINIT;
+SecOC_StateType SecOc_State = SECOC_UNINIT;
 
 SecOC_GeneralType tmpSecOCGeneral;
 const SecOC_RxPduProcessingType* tmpSecOCRxPduProcessing;
 const SecOC_TxPduProcessingType* tmpSecOCTxPduProcessing;
 
 
-void SecOC_Init(const SecOC_ConfigType *config) {
+void SecOC_Init(const SecOC_ConfigType *config)
+{
     tmpSecOCGeneral = config->general;
     tmpSecOCTxPduProcessing = config->secOCTxPduProcessings;
     tmpSecOCRxPduProcessing = config->secOCRxPduProcessings;
-    _secOCState = SECOC_INIT;
+    SecOc_State = SECOC_INIT;
 }
 
 
@@ -61,7 +62,7 @@ void SecOC_Init(const SecOC_ConfigType *config) {
 
 extern void SecOC_MainFunctionTx(void) {
     // check if initialized or not;
-    if (_secOCState == SECOC_UNINIT) {
+    if (SecOc_State == SECOC_UNINIT) {
         return;
     }
     PduIdType idx = 0;
@@ -82,11 +83,11 @@ extern void SecOC_MainFunctionTx(void) {
 
 
 
-#if (SECOC_USE_TX_CONFIRMATION == 1)
-    void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
-        /* Specific User's Code need to be written here*/
-    }
-#endif
+// #if (SECOC_USE_TX_CONFIRMATION == 1)
+//     void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
+//         /* Specific User's Code need to be written here*/
+//     }
+// #endif
 
 /*
 #define MAX_COUNTER_FRESHNESS_IDS   10
@@ -106,7 +107,3 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(uint16 SecOCFreshnessValueID, uint8
     return E_OK;
 }
 */
-
-
-
-
