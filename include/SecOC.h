@@ -44,12 +44,9 @@ void SecOC_Init(const SecOC_ConfigType *config);
  *******************************************************/
 #define SECOC_START_SEC_GetTxFreshness_CODE
 
-Std_ReturnType SecOC_GetTxFreshness (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength);
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength);
 
-
-#endif
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
 
