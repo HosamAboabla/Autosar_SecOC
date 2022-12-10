@@ -1,3 +1,4 @@
+/* "Copyright [2022/2023] <Tanta University>" */
 #ifndef INCLUDE_SECOC_CFG_H_
 #define INCLUDE_SECOC_CFG_H_
 
