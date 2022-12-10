@@ -7,7 +7,9 @@
 /* Freshness Counter */
 SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
 
-
+/* Shitf Right by 1 to divide by 2
+        untill there is no number
+        Can be replaced by --> uint8 len = ceil(log2(counterTemp.counter))*/
 uint8 countBits(uint8 n) {
     uint8 count = 0;
     while (n)
@@ -37,8 +39,11 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
         {
             break;
         }
+    }
 
-        /* Calculate the Number of bits in the Counter */
+    
+
+     /* Calculate the Number of bits in the Counter */
         for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
             uint8 temp = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]);
             if (temp != 0)
@@ -47,16 +52,6 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
                 break;
             }
         }
-    }
-
-    /* Shitf Right by 1 to divide by 2
-        untill there is no number
-        Can be replaced by --> uint8 len = ceil(log2(counterTemp.counter))*/
-
-    for (INDEX = 0; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX++) {
-        len += countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]);
-    }
-    *SecOCFreshnessValueLength = len;
 
     return E_OK;
 }
