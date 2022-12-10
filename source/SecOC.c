@@ -1,3 +1,4 @@
+/* "Copyright [2022/2023] <Tanta University>" */
 #include "SecOC_Lcfg.h"
 #include "SecOC_Cfg.h"
 #include "SecOC_PBcfg.h"
@@ -35,24 +36,12 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
     PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
 
-/* So confess about ID- Value
-i asume that a freshnessvlaue in global counter this global counter access by id
-i want to put the data in which is in counter to the array of fresshness values so it made it  
-how it will return busy or not okay */
+
+
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
-    Std_ReturnType result = E_OK;
-    if (SecOCFreshnessValueID > 7) {
-        result =  E_NOT_OK;
-    } else if ( SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE ) {
-        result = E_NOT_OK;
-    } else {
-        SecOC_FreshnessArrayType counter[8] = {0};
-        uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCFreshnessValueLength);
-        for (int DataIndex = SECOC_MAX_FRESHNESS_SIZE - 1; DataIndex >= Datalength; DataIndex--) {
-            SecOCFreshnessValue[DataIndex] = counter[SecOCFreshnessValueID][DataIndex];
-        }
-    }
+    SecOC_GetTxFreshnessCallbackType PTR = (SecOC_GetTxFreshnessCallbackType)FVM_GetTxFreshness;
+Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);
     return result;
 }
 
