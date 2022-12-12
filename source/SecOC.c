@@ -3,11 +3,12 @@
 #include "SecOC_PBcfg.h"
 #include "SecOC_Cbk.h"
 #include "ComStack_Types.h"
-#include "Det.h"
 #include "Rte_SecOC.h"
 #include "SecOC.h"
 #include "PduR_SecOC.h"
 #include "Csm.h"
+
+
 
 
 
@@ -41,27 +42,53 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
 
 
 
-SecOC_StateType _secOCState = SECOC_UNINIT;
+SecOC_StateType SecOc_State = SECOC_UNINIT;
 
-SecOC_GeneralType tmpSecOCGeneral;
+const SecOC_GeneralType* tmpSecOCGeneral;
 const SecOC_RxPduProcessingType* tmpSecOCRxPduProcessing;
 const SecOC_TxPduProcessingType* tmpSecOCTxPduProcessing;
 
+static Std_VersionInfoType _SecOC_VersionInfo ={(uint16)1,(uint16) 1,(uint8)1,(uint8)0,(uint8)0};
 
-void SecOC_Init(const SecOC_ConfigType *config) {
+#if (SECOC_ERROR_DETECT == STD_ON)
+#define VALIDATE_STATE_INIT()\
+	if(SECOC_INIT!=SecOc_State){\
+		Det_ReportError(); \
+		return; \
+	}
+
+#else
+#define VALIDATE_STATE_INIT(_api)
+#endif
+
+
+
+uint8 success=1;
+void SecOC_Init(const SecOC_ConfigType *config)
+{
     tmpSecOCGeneral = config->general;
     tmpSecOCTxPduProcessing = config->secOCTxPduProcessings;
     tmpSecOCRxPduProcessing = config->secOCRxPduProcessings;
-    _secOCState = SECOC_INIT;
+    if(!success)
+    {
+        SecOc_State = SECOC_E_UNINIT;        
+    }                                   
+    SecOc_State = SECOC_INIT;
+}                   
+
+
+void SecOC_GetVersionInfo (Std_VersionInfoType* versioninfo)
+{
+
+    VALIDATE_STATE_INIT();
+    memcpy(versioninfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));//copy from source to distination with the length
 }
-
-
-
 
 
 extern void SecOC_MainFunctionTx(void) {
     // check if initialized or not;
-    if (_secOCState == SECOC_UNINIT) {
+    if (SecOc_State == SECOC_UNINIT) {
+        // cppcheck-suppress misra-c2012-15.5
         return;
     }
     PduIdType idx = 0;
@@ -82,11 +109,11 @@ extern void SecOC_MainFunctionTx(void) {
 
 
 
-#if (SECOC_USE_TX_CONFIRMATION == 1)
-    void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
-        /* Specific User's Code need to be written here*/
-    }
-#endif
+// #if (SECOC_USE_TX_CONFIRMATION == 1)
+//     void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
+//         /* Specific User's Code need to be written here*/
+//     }
+// #endif
 
 
 #define MAX_COUNTER_FRESHNESS_IDS   10
@@ -114,7 +141,4 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
-
-
-
 

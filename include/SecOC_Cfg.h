@@ -462,5 +462,6 @@
 * End of TxPduProcessing
 */
 
+#define SECOC_ERROR_DETECT STD_OFF
 
 #endif  // INCLUDE_SECOC_CFG_H_
