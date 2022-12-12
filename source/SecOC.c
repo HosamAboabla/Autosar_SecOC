@@ -107,6 +107,37 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(uint16 SecOCFreshnessValueID, uint8
 }
 */
 
+void verify(PduInfoType* SPDU, PduInfoType A_PDu, ,SecOC_RxPduProcessingType SecOCRxPduProcessing)
+{
+    uint8 *SecOCFreshnessValue;
+	uint32 *SecOCFreshnessValueLength;
+    uint8 *verify_mac;
+	uint32 verify_mac_length;
+    Std_ReturnType Freshness_result;
+    Std_ReturnType Mac_result;
+    SecOC_VerificationResultType verification_result;
+
+    if (tmpSecOCGeneral.SecOCQueryFreshnessValue == SECOC_CFUNC) {
+        if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) {
+            // SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
+            // );
+        } else {
+            Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
+            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
+            SecOCFreshnessValue, SecOCFreshnessValueLength);
+        }
+
+    }
+
+    if (Freshness_result == E_OK) {
+        Csm_MacGenerate();
+        Csm_verify(SecOCRxPduProcessing.SecOCDataId, 0, , , verify_mac, verify_mac_length);
+        if (Mac_result == E_OK) {
+            verification_result = SECOC_VERIFICATIONSUCCESS;
+        }
+
+    }
+}
 
 
 
