@@ -12,35 +12,36 @@
 #include <string.h>
 
 
-PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
+static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
+#define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
+#define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTH_INFO_TRUNC_LENGTH / 8)))
+
+#define SECOC_SDATA_MAX         ((uint8)4)
+#define SECOC_FRESHNESS_MAX     ((uint8)16)
+#define SECOC_MACLEN_MAX        ((uint8)16)
 
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : authenticate                  *
  * Function_Index       : SecOC internal                *
- * Function_File        : SWS of secOC                  *
+ * Parameter in         : TxPduId                       *
  * Function_Descripton  : The lower layer communication * 
  * interface module confirms  the transmission of a PDU *
  *        or the failure to transmit a PDU              *
  ***************************************************/
-//        authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
-authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
-/*Std_ReturnType authenticate(
-    const PduIdType TxPduId, 
-    const PduInfoType* PduInfoPtr,
-    uint8* authPtr,
-    uint32* authLengthPtr)*/
+static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
+
 {
     // 1. Prepare Secured I-PDU
     // 2. Construct Data for Authenticator
-    // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
-    uint8 DataToAuth[100]; // Discuss size later
+    uint8 DataToAuth[sizeof(TxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX]; // CAN payload
     uint8 DataToAuthLen = 0;
 
+    // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
     // Data Identifier
-    memcpy(&DataToAuth[DataToAuthLen], TxPduId, sizeof(TxPduId));
+    memcpy(&DataToAuth[DataToAuthLen], &TxPduId, sizeof(TxPduId));
     DataToAuthLen += sizeof(TxPduId);
 
     // secured part of the Authentic I-PDU
@@ -54,15 +55,37 @@ authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* S
     */
 
     Std_ReturnType result;
-    uint8*  authenticatorPtr;
-    uint32  authenticatorLen;
+    uint8  authenticatorPtr[SECOC_MACLEN_MAX];
+    uint32  authenticatorLen = SECOC_AUTH_INFO_TRUNC_LENGTH / 8;
     result = Csm_MacGenerate(TxPduId, 0, DataToAuth, DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
+    if(result == E_NOT_OK)
+    {
+        return result;
+    }
+
+    // Create secured IPDU
+
+    *SecPdu = *AuthPdu;
+    SecPdu->SduLength = 8;
+
+    memcpy(SecPdu->SduDataPtr + SECOC_CAN_DATA_MAX, authenticatorPtr, authenticatorLen);
     return result;
 }
-
-extern void SecOC_MainFunctionTx ( void )
+#include <stdio.h>
+void SecOC_MainFunctionTx ( void )
 {
+    PduInfoType SecPdu, AuthPdu;
+    uint8 in[4] = {'a', 'b', 'c', 'd'};
+   // memcpy(SecPdu.SduDataPtr, in, 4);
+    AuthPdu.SduDataPtr = in;
+    AuthPdu.SduLength = 4;
+    printf("%.*s\n", AuthPdu.SduLength, AuthPdu.SduDataPtr);
+    uint8_t sec[20];
+    SecPdu.SduDataPtr = sec;
+    authenticate(0, &AuthPdu, &SecPdu);
+
+    printf("%.*s\n", SecPdu.SduLength, SecPdu.SduDataPtr);
 
 }
 
