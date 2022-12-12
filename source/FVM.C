@@ -12,7 +12,7 @@ SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
         Can be replaced by --> uint8 len = ceil(log2(counterTemp.counter))*/
 uint8 countBits(uint8 n) {
     uint8 count = 0;
-    while (n)
+    while (n > 0)
     {
         count++;
         n >>= 1;
