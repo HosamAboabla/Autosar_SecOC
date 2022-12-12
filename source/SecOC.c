@@ -106,8 +106,9 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     SecOC_FreshnessArrayType counter[MAX_COUNTER_FRESHNESS_IDS] = {0};
     uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCTruncatedFreshnessValueLength);
     
-    int DataIndex = (SECOC_MAX_FRESHNESS_SIZE - 1); uint8 big_End_index =0 ;
-    for (DataIndex , big_End_index ; DataIndex >= Datalength , big_End_index < (*SecOCTruncatedFreshnessValueLength); DataIndex-- ,big_End_index++) 
+    int DataIndex = (SECOC_MAX_FRESHNESS_SIZE - 1); 
+    uint8 big_End_index =0;
+    for ( ; ((DataIndex >= Datalength) && (big_End_index < (*SecOCTruncatedFreshnessValueLength))); DataIndex-- , big_End_index++) 
     {
         SecOCTruncatedFreshnessValue[big_End_index] = counter[SecOCFreshnessValueID][DataIndex];
     }
