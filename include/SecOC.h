@@ -25,8 +25,29 @@ void SecOC_Init(const SecOC_ConfigType *config);
 
 
 
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetTxFreshness          *
+ * Function_Index       : 8.5.3 [SWS_SecOC_00126]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This API returns the freshness*
+ * value from the Most Significant Bits in the first    *
+ * byte in the array (SecOCFreshnessValue),             *
+ * in big endian format.                                *
+ *******************************************************/
+#define SECOC_START_SEC_GetTxFreshness_CODE
+
+Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
+
+#define SECOC_END_SEC_GetTxFreshness_CODE
+
+
+
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
+
 
 
 
@@ -34,7 +55,7 @@ void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Name        : SecOC_SPduTxConfirmation      *
  * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : This interface is used by     *

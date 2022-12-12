@@ -1,3 +1,4 @@
+/* "Copyright [2022/2023] <Tanta University>" */
 #include "SecOC_Lcfg.h"
 #include "SecOC_Cfg.h"
 #include "SecOC_PBcfg.h"
@@ -7,8 +8,7 @@
 #include "SecOC.h"
 #include "PduR_SecOC.h"
 #include "Csm.h"
-
-
+#include "Rte_SecOC_Type.h"
 
 
 
@@ -37,6 +37,14 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
     PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
 
+
+
+Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength) {
+    SecOC_GetTxFreshnessCallbackType PTR = (SecOC_GetTxFreshnessCallbackType)FVM_GetTxFreshness;
+Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);
+    return result;
+}
 
 
 

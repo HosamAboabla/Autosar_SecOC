@@ -1,5 +1,5 @@
-
-
+#ifndef  SCHM_SECOC_H_
+#define SCHM_SECOC_H_
 
 
 
@@ -18,3 +18,6 @@
  *        or the failure to transmit a PDU              *
  ***************************************************/
 void SecOC_MainFunctionTx(void);
+
+
+#endif
