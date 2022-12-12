@@ -414,17 +414,12 @@ typedef struct
 
 typedef struct //Specific Implementation Data Structure Configuration SecOC Module Data Structure
 { 
-	const SecOC_GeneralType general;
+	const SecOC_GeneralType* general;
 	const SecOC_TxPduProcessingType* secOCTxPduProcessings;
 	const SecOC_RxPduProcessingType* secOCRxPduProcessings;
 }SecOC_ConfigType;
 
-typedef struct   // Specific Implementation Data Structure Configuration SecOC Module Data Structure
-{
-    const SecOC_GeneralType general;
-    const SecOC_TxPduProcessingType* secOCTxPduProcessings;
-    const SecOC_RxPduProcessingType* secOCRxPduProcessings;
-}SecOC_ConfigType;
+
 
 
 #endif
