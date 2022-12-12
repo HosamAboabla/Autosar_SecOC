@@ -5,7 +5,10 @@
 #include "SecOC_Types.h"
 #include "SecOC_Lcfg.h"
 #include "SchM_SecOC.h"
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include "Det.h"
 
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
@@ -13,16 +16,7 @@ Std_ReturnType SecOC_IfTransmit(
 );
 
 
-typedef struct {  // Specific Implementation Data Structure Configuration SecOC Module Data Structure
-    const SecOC_GeneralType general;
-    const SecOC_TxPduProcessingType* secOCTxPduProcessings;
-    const SecOC_RxPduProcessingType* secOCRxPduProcessings;
-}SecOC_ConfigType;
 
-typedef enum {      // SecOC status
-    SECOC_UNINIT,   // SecOC uninitialized
-    SECOC_INIT      // SecOC initialized
-}SecOC_StateType;
 
 
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
@@ -50,6 +44,9 @@ uint32* SecOCFreshnessValueLength);
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
 
+
+void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
+//void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
 
 
 
@@ -89,6 +86,6 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint32* SecOCTruncatedFreshnessValueLength
 );
 
-
+#define SECOC_E_UNINIT 					0x02
 
 #endif  // INCLUDE_SECOC_H_
