@@ -1,3 +1,6 @@
+#ifndef INCLUDE_CSM_H_
+#define INCLUDE_CSM_H_
+
 #include "Std_Types.h"
 
 // Stub enumeration
@@ -13,3 +16,5 @@ Std_ReturnType Csm_MacGenerate (
     uint32 dataLength,
     uint8* macPtr,
     uint32* macLengthPtr );
+
+#endif

@@ -5,7 +5,10 @@
 #include "SecOC_Types.h"
 #include "SecOC_Lcfg.h"
 #include "SchM_SecOC.h"
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include "Det.h"
 
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
@@ -13,16 +16,7 @@ Std_ReturnType SecOC_IfTransmit(
 );
 
 
-typedef struct {  // Specific Implementation Data Structure Configuration SecOC Module Data Structure
-    const SecOC_GeneralType general;
-    const SecOC_TxPduProcessingType* secOCTxPduProcessings;
-    const SecOC_RxPduProcessingType* secOCRxPduProcessings;
-}SecOC_ConfigType;
 
-typedef enum {      // SecOC status
-    SECOC_UNINIT,   // SecOC uninitialized
-    SECOC_INIT      // SecOC initialized
-}SecOC_StateType;
 
 
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
@@ -59,6 +53,24 @@ Std_ReturnType SecOC_GetRxFreshnessAuthData(uint16 SecOCFreshnessValueID , const
 uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessValue,
  uint16 SecOCAuthDataFreshnessValueLength , uint16 SecOCAuthVerifyAttempts,
  uint8* SecOCFreshnessValue, uint32* SecOCFreshnessValueLength);
+ 
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetTxFreshness          *
+ * Function_Index       : 8.5.3 [SWS_SecOC_00126]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This API returns the freshness*
+ * value from the Most Significant Bits in the first    *
+ * byte in the array (SecOCFreshnessValue),             *
+ * in big endian format.                                *
+ *******************************************************/
+#define SECOC_START_SEC_GetTxFreshness_CODE
+
+Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
+
+#define SECOC_END_SEC_GetTxFreshness_CODE
 
 
 /*******************************************************
@@ -72,12 +84,17 @@ uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessV
 
 void verify(PduInfoType* SPDU, SecOC_RxPduProcessingType SecOCRxPduProcessing);
 
+void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
+//void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
+
+
+
 
 
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Name        : SecOC_SPduTxConfirmation      *
  * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : This interface is used by     *
@@ -108,6 +125,6 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint32* SecOCTruncatedFreshnessValueLength
 );
 
-
+#define SECOC_E_UNINIT 					0x02
 
 #endif  // INCLUDE_SECOC_H_

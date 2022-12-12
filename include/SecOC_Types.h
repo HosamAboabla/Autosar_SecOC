@@ -48,5 +48,22 @@ typedef enum {
 } SecOC_QueryFreshnessValue_Type;
 
 
-#endif  // INCLUDE_SECOC_TYPES_H_
+typedef enum       // SecOC status
+{
+    SECOC_UNINIT,   // SecOC uninitialized
+    SECOC_INIT      // SecOC initialized
+}SecOC_StateType;
 
+typedef struct 
+{
+	uint16 vendorID;
+	uint16 moduleID;
+	uint8 sw_major_version;
+	uint8 sw_minor_version;
+	uint8 sw_patch_version;
+}Std_VersionInfoType;
+
+#define STD_ON 0x01u
+#define STD_OFF 0x00u
+
+#endif

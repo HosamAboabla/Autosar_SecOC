@@ -1,3 +1,4 @@
+/* "Copyright [2022/2023] <Tanta University>" */
 #ifndef INCLUDE_SECOC_CFG_H_
 #define INCLUDE_SECOC_CFG_H_
 
@@ -462,5 +463,6 @@
 * End of TxPduProcessing
 */
 
+#define SECOC_ERROR_DETECT STD_OFF
 
 #endif  // INCLUDE_SECOC_CFG_H_
