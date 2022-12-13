@@ -1,6 +1,7 @@
 #include "Csm.h"
 
 #include <string.h>
+#include "encrypt.h"
 
 #define MAC_DATA_LEN ((uint8)100) // Maximum number of stored MACs
 #define MAC_LEN      ((uint8)16)      // Length of MAC
@@ -24,6 +25,8 @@ extern Std_ReturnType Csm_MacGenerate (
         //******starts mac generation*********
         // Right now, I'm just using the data as the mac
         uint32 datalen = (dataLength > 16) ? 16 : dataLength;
+
+        startEncryption(dataPtr , dataLength , macPtr ,macLengthPtr);
 
         memcpy(MacData[jobId], dataPtr, datalen);
         //******end mac generation*********
