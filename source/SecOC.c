@@ -41,7 +41,7 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
 
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
-    SecOC_GetTxFreshnessCallbackType PTR = (SecOC_GetTxFreshnessCallbackType)FVM_GetTxFreshness;
+    SecOC_GetTxFreshnessCalloutType PTR = (SecOC_GetTxFreshnessCalloutType)FVM_GetTxFreshness;
 Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);
     return result;
 }
