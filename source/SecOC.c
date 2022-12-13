@@ -13,7 +13,7 @@
 
 PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
 
-
+PduInfoType SecOC_Buffer_Rx[SECOC_BUFFERLENGTH] = { {NULL, 0}};
 
 Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr) {
     Std_ReturnType result = E_OK;
@@ -87,6 +87,20 @@ extern void SecOC_MainFunctionTx(void) {
         /* Specific User's Code need to be written here*/
     }
 #endif
+
+
+
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{
+    /* The length of the Pdu has been checked in SecOC_IfTransmit, *
+     * So we don't need to check it again in reception             *
+     */
+    SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr; /* The SecOC copies the Authentic I-PDU to its own buffer */
+
+
+
+}
+
 
 /*
 #define MAX_COUNTER_FRESHNESS_IDS   10
