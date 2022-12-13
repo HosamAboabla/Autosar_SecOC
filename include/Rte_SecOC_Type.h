@@ -9,7 +9,7 @@
 
 typedef uint8                 SecOC_FreshnessArrayType[SECOC_MAX_FRESHNESS_SIZE];
 
-typedef Std_ReturnType(*SecOC_GetTxFreshnessCallbackType)(uint16 , uint8* , uint32*);
+typedef Std_ReturnType(*SecOC_GetTxFreshnessCalloutType)(uint16 , uint8* , uint32*);
 #define GET_TXFRESHNESS_CALLBACK_PTR FVM_GetTxFreshness
 
 #endif /* INCLUDE_RTE_SECOC_TYPE_H_ */
