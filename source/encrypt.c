@@ -256,7 +256,7 @@ void AESEncrypt(uint32* message, unsigned char * expandedKey, uint8* encryptedMe
     }
 }
 
-void addPadding(const uint32* message , int messageLen , uint32* paddedMessage)
+void addPadding(const uint8* message , int messageLen , uint32* paddedMessage)
 {
     // Pad message to 16 bytes
     int originalLen = messageLen;
@@ -276,7 +276,7 @@ void addPadding(const uint32* message , int messageLen , uint32* paddedMessage)
 
 
 
-void startEncryption(const uint32* message, uint32 messageLen, uint8* macPtr, uint32* macLengthPtr)
+void startEncryption(const uint8* message, uint32 messageLen, uint8* macPtr, uint32* macLengthPtr)
 {
     uint8 key[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     uint8 expandedKey[176];
@@ -299,9 +299,9 @@ void startEncryption(const uint32* message, uint32 messageLen, uint8* macPtr, ui
 
     
     *macLengthPtr = paddedMessageLen;
+
     // Free memory
-    // delete[] paddedMessage;
-    // delete[] encryptedMessage;
+    free(paddedMessage);
 }
 
 /*
