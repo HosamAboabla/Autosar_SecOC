@@ -32,7 +32,9 @@ typedef unsigned long long      uint64;         /*       0..18446744073709551615
 typedef float                   float32;
 typedef double                  float64;
 
+#ifndef NULL
 #define NULL ((void*)0)
+#endif
 
 typedef uint8 Std_ReturnType;
 #define E_OK            ((Std_ReturnType)0x00)
