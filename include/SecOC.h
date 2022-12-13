@@ -30,18 +30,23 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 void SecOC_Init(const SecOC_ConfigType *config);
 
 
-
-
-
-
-
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_RxIndication            *
+ * Function_Index       : 8.4.1 [SWS_SecOC_00124]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : Indication of a received PDU  *
+ * from a lower layer communication interface module.   *
+ ***************************************************/
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
 
 
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_SPduTxConfirmation          *
+ * Function_Name        : SecOC_SPduTxConfirmation      *
  * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : This interface is used by     *
