@@ -2,10 +2,12 @@
 
 /* This is Stub for Freshness Value Manger that have the global counter */
 
-
+/* Convert the bits to nearst byte */
+#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
 
 /* Freshness Counter */
-SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
+static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {255};
+static uint32 Freshness_Counter_length [ID_MAX] = {0};
 
 /* Shitf Right by 1 to divide by 2
         untill there is no number
@@ -23,39 +25,31 @@ uint8 countBits(uint8 n) {
 
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength) {  
 
+    /* increase the counter by 1 */
     uint8 INDEX = 0;
-    uint32 len = 0;
-    while (1)
+    for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX ++)
     {
         Freshness_Counter[SecOCFreshnessValueID][INDEX] ++;
         if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
             break;
-        } else {
-            INDEX++;
-        }
-        /* Reset the counter if it full */
-        if(INDEX == SECOC_MAX_FRESHNESS_SIZE)
-        {
-            break;
         }
     }
-
     
-
      /* Calculate the Number of bits in the Counter */
     for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
-        uint8 temp = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]);
-        if (temp != 0)
+        if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
-            len = temp + INDEX * 8;
+            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + INDEX * 8;
             break;
         }
     }
-    *SecOCFreshnessValueLength = len;
+   
+    *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
 
     return E_OK;
 }
+
 
 Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
@@ -63,17 +57,19 @@ uint32* SecOCFreshnessValueLength) {
     Std_ReturnType result = E_OK;
     if (SecOCFreshnessValueID > ID_MAX) {
         result =  E_NOT_OK;
-    } else if ( ((*SecOCFreshnessValueLength) / 8) > SECOC_MAX_FRESHNESS_SIZE ) {
+    } else if ( (BIT_TO_BYTES(*SecOCFreshnessValueLength)) > SECOC_MAX_FRESHNESS_SIZE ) {
         result = E_NOT_OK;
     } else {
         
         /* Get data length in bytes */
-        uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - ((*SecOCFreshnessValueLength) / 8);
+        /* copy the counter to FreshnessValue in Big india */
         uint32 FreshnessIndex = SECOC_MAX_FRESHNESS_SIZE - 1;
         uint32 CounterIndex = 0;
-        for (; ((FreshnessIndex >= Datalength) && (SECOC_MAX_FRESHNESS_SIZE > CounterIndex)); FreshnessIndex--, CounterIndex++) {
+        for (; (SECOC_MAX_FRESHNESS_SIZE > CounterIndex); FreshnessIndex--, CounterIndex++) {
             SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][CounterIndex];
         }
+        /* Update Length */
+        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID]; 
     }
     return result;
 }
