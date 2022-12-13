@@ -94,6 +94,7 @@ void SecOC_GetVersionInfo (Std_VersionInfoType* versioninfo)
 
 
 extern void SecOC_MainFunctionTx(void) {
+    /*
     // check if initialized or not;
     if (SecOc_State == SECOC_UNINIT) {
         // cppcheck-suppress misra-c2012-15.5
@@ -112,6 +113,34 @@ extern void SecOC_MainFunctionTx(void) {
         } else {
         }
     }
+    */
+
+    uint8 FreshnessValue[100];
+    uint32 length[100] = {0};
+    /* here we put in the first byte of freshness 240 */
+    FreshnessValue[99] = 240;
+    printf("%d\n", FreshnessValue[99]);
+    // /* Test case 1 */
+    // /* get the value in the counter */
+    // SecOC_GetTxFreshness(0, FreshnessValue, length);
+    // printf("%d\n", FreshnessValue[99]);
+    // /* Get the value from Freashness counter */
+    // FVM_IncreaseCounter(0, length);
+    // /* Get the value from Freashness counter */
+    // SecOC_GetTxFreshness(0, FreshnessValue, length);
+    // printf("%d\n", FreshnessValue[99]);
+    // /* Output : 240 \n 0 \n 1*/
+    
+
+    /* Test case 2 */
+    /* go to the counter and change the array from 0 to 255 */
+    SecOC_GetTxFreshness(0, FreshnessValue, length);
+    printf("%d\t %d \n", FreshnessValue[99],FreshnessValue[98]);
+    FVM_IncreaseCounter(0, length);
+    SecOC_GetTxFreshness(0, FreshnessValue, length);
+    printf("%d\t %d \n", FreshnessValue[99],FreshnessValue[98]);
+    /* Output : 255 \t 0\n 0 \t 1*/
+
 }
 
 
