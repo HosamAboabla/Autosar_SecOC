@@ -10,6 +10,7 @@
 #include "Csm.h"
 #include "Rte_SecOC_Type.h"
 
+
 #include <string.h>
 
 
@@ -34,13 +35,11 @@ static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
  *        or the failure to transmit a PDU              *
  ***************************************************/
 static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
-
-
 {
     // 1. Prepare Secured I-PDU
     // 2. Construct Data for Authenticator
     uint8 DataToAuth[sizeof(TxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX]; // CAN payload
-    uint8 DataToAuthLen = 0;
+    uint32 DataToAuthLen = 0;
 
     // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
     // Data Identifier
@@ -52,10 +51,11 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     DataToAuthLen += AuthPdu->SduLength;
 
     // Complete Freshness Value
-    /*
-    memcpy(&DataToAuth[DataToAuthLen], PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
-    DataToAuthLen += PduInfoPtr->SduLength;
-    */
+    uint8 FreshnessVal[SECOC_FRESHNESS_MAX] ={0};
+    uint32 Freshnesslen = 16;
+    memcpy(&DataToAuth[DataToAuthLen], FreshnessVal, &Freshnesslen);
+    DataToAuthLen += Freshnesslen;
+    
 
     Std_ReturnType result;
     uint8  authenticatorPtr[SECOC_MACLEN_MAX];
