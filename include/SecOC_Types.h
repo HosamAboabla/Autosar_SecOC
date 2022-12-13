@@ -8,28 +8,25 @@
 
 
 
-typedef enum
-{
-	SECOC_BOTH = 0,
-	SECOC_FAILURE_ONLY,
-	SECOC_NONE
+typedef enum {
+    SECOC_BOTH = 0,
+    SECOC_FAILURE_ONLY,
+    SECOC_NONE
 }SecOC_StatusPropagationMode_Type;
 
 
 
 
-typedef enum
-{
-	SECOC_QUEUE = 0,
-	SECOC_REJECT,
-	SECOC_REPLACE
+typedef enum {
+    SECOC_QUEUE = 0,
+    SECOC_REJECT,
+    SECOC_REPLACE
 }SecOC_ReceptionOverflowStrategy_Type;
 
 
 
-typedef struct
-{
-	uint32 CsmJobId;
+typedef struct {
+    uint32 CsmJobId;
 }Csm_JobType;
 
 
@@ -38,10 +35,9 @@ typedef struct
 
 
 
-typedef enum
-{
-    SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */ 
-    SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */ 
+typedef enum {
+    SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */
+    SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */
 } SecOC_PduType_Type;
 
 
@@ -52,5 +48,22 @@ typedef enum {
 } SecOC_QueryFreshnessValue_Type;
 
 
-#endif
+typedef enum       // SecOC status
+{
+    SECOC_UNINIT,   // SecOC uninitialized
+    SECOC_INIT      // SecOC initialized
+}SecOC_StateType;
 
+typedef struct 
+{
+	uint16 vendorID;
+	uint16 moduleID;
+	uint8 sw_major_version;
+	uint8 sw_minor_version;
+	uint8 sw_patch_version;
+}Std_VersionInfoType;
+
+#define STD_ON 0x01u
+#define STD_OFF 0x00u
+
+#endif
