@@ -21,5 +21,5 @@ extern Std_ReturnType Csm_MacGenerate (
     uint32* macLengthPtr )
     {
         startEncryption(dataPtr , dataLength , macPtr ,macLengthPtr);
-        return E_OK
+        return E_OK;
     }
