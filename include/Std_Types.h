@@ -7,6 +7,9 @@
 #ifndef INCLUDE_STD_TYPES_H_
 #define INCLUDE_STD_TYPES_H_
 
+/* Convert the bits to nearst byte */
+#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
+
 /* Boolean Values */
 #ifndef FALSE
 #define FALSE       (0u)

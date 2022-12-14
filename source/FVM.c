@@ -2,11 +2,10 @@
 
 /* This is Stub for Freshness Value Manger that have the global counter */
 
-/* Convert the bits to nearst byte */
-#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
+
 
 /* Freshness Counter */
-static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {255};
+static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
 static uint32 Freshness_Counter_length [ID_MAX] = {0};
 
 /* Shitf Right by 1 to divide by 2
@@ -55,21 +54,26 @@ Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFres
 uint32* SecOCFreshnessValueLength) {
 
     Std_ReturnType result = E_OK;
+    uint32 FreshnessValueLengthBytes = (BIT_TO_BYTES(*SecOCFreshnessValueLength));
     if (SecOCFreshnessValueID > ID_MAX) {
         result =  E_NOT_OK;
-    } else if ( (BIT_TO_BYTES(*SecOCFreshnessValueLength)) > SECOC_MAX_FRESHNESS_SIZE ) {
+    } else if ( FreshnessValueLengthBytes > SECOC_MAX_FRESHNESS_SIZE ) {
         result = E_NOT_OK;
     } else {
         
-        /* Get data length in bytes */
-        /* copy the counter to FreshnessValue in Big india */
-        uint32 FreshnessIndex = SECOC_MAX_FRESHNESS_SIZE - 1;
-        uint32 CounterIndex = 0;
-        for (; (SECOC_MAX_FRESHNESS_SIZE > CounterIndex); FreshnessIndex--, CounterIndex++) {
-            SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][CounterIndex];
+        /*  Acctual Freshness Value length --> for the minimu length of buffer
+            Freshnes index and counter Index --> index to copy the value from counter to pointer
+            last index t
+         */
+        uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (FreshnessValueLengthBytes ) :  (Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 FreshnessIndex = FreshnessValueLengthBytes- 1, FreshnessCounterIndex; 
+        for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
+        {
+            SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
+            FreshnessIndex--;
         }
         /* Update Length */
-        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID]; 
+        *SecOCFreshnessValueLength = AcctualFreshnessVallength; 
     }
     return result;
 }
