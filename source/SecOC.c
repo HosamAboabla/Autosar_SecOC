@@ -56,7 +56,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32 FreshnesslenBits = SECOC_FRESHNESS_MAX * 8;
     SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
 
-    uint32 FreshnesslenBytes = FreshnesslenBits / 8;
+    uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
     memcpy(&DataToAuth[DataToAuthLen], FreshnessVal, FreshnesslenBits);
     DataToAuthLen += FreshnesslenBytes;
     
