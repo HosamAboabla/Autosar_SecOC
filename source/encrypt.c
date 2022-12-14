@@ -233,7 +233,7 @@ void FinalRound(unsigned char * state, unsigned char * key) {
 /* The AES encryption function
  * Organizes the confusion and diffusion steps into one function
  */
-void AESEncrypt(uint32* message, unsigned char * expandedKey, uint8* encryptedMessage) {
+void AESEncrypt(uint8* message, unsigned char * expandedKey, uint8* encryptedMessage) {
     unsigned char state[16];  // Stores the first 16 bytes of original message
 
     for (int i = 0; i < 16; i++) {
@@ -256,13 +256,13 @@ void AESEncrypt(uint32* message, unsigned char * expandedKey, uint8* encryptedMe
     }
 }
 
-void addPadding(const uint8* message , int messageLen , uint32* paddedMessage)
+void addPadding(const uint8* message , int messageLen , uint8* paddedMessage)
 {
     // Pad message to 16 bytes
     int originalLen = messageLen;
     int paddedMessageLen = originalLen;
     if ((paddedMessageLen % 16) != 0) {
-        paddedMessageLen = (paddedMessageLen / 16 + 1) * 16;
+        paddedMessageLen = ( (paddedMessageLen / 16) + 1) * 16;
     }
 
     for (int i = 0; i < paddedMessageLen ; i++) {
@@ -288,39 +288,28 @@ void startEncryption(const uint8* message, uint32 messageLen, uint8* macPtr, uin
         paddedMessageLen = ( (paddedMessageLen / 16) + 1) * 16;
     }
 
-    uint32* paddedMessage = (uint32*) malloc( sizeof(uint32) * paddedMessageLen);
+    uint8* encryptedMessage    = (uint8*) malloc( sizeof(uint8) * paddedMessageLen);
+    uint8* paddedMessage       = (uint8*) malloc( sizeof(uint8) * paddedMessageLen);
 
-    addPadding(message , paddedMessageLen , paddedMessage);
+    addPadding(message , messageLen , paddedMessage);
     KeyExpansion(key, expandedKey);
 
     for (int i = 0; i < paddedMessageLen; i += 16) {
-        AESEncrypt( &paddedMessage[i], expandedKey, macPtr+i);
+        AESEncrypt(&paddedMessage[i], expandedKey, encryptedMessage+i);
     }
 
-    
-    *macLengthPtr = paddedMessageLen;
+    sint32 macDiff = paddedMessageLen - (*macLengthPtr);
+    uint8 macStart = (macDiff < 0) ? 0 : macDiff;
+    // Update macLength
+    (*macLengthPtr) = paddedMessageLen - macStart;
+    // Copy generated MAC to the required destination
+    memcpy(macPtr, &encryptedMessage[macStart], *macLengthPtr);
+
+    if (*macLengthPtr > paddedMessageLen) {
+        *macLengthPtr = paddedMessageLen;
+    }
 
     // Free memory
     free(paddedMessage);
+    free(encryptedMessage);
 }
-
-/*
-int main() {
-    uint8 message[100];
-
-
-    printf("=============================\n");
-    printf(" 128-bit AES Encryption Tool   \n");
-    printf("=============================\n");
-
-    printf("Enter the message to encrypt: ");
-
-
-    scanf("%s" , message);
-
-    uint8 messageLen = strlen(message);
-    startEncryption(message, messageLen);
-
-    return 0;
-}
-*/

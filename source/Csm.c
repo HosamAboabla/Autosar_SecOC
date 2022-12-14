@@ -24,21 +24,21 @@ extern Std_ReturnType Csm_MacGenerate (
 
         //******starts mac generation*********
         // Right now, I'm just using the data as the mac
-        uint32 datalen = (dataLength > 16) ? 16 : dataLength;
+        // uint32 datalen = (dataLength > 16) ? 16 : dataLength;
 
         startEncryption(dataPtr , dataLength , macPtr ,macLengthPtr);
 
-        memcpy(MacData[jobId], dataPtr, datalen);
+        // memcpy(MacData[jobId], dataPtr, datalen);
         //******end mac generation*********
 
         // the Authenticator should only be truncated down to the most significant (Shift the start)
-        sint32 macDiff = MAC_LEN - (*macLengthPtr);
-        uint8 macStart = (macDiff < 0) ? 0 : macDiff;
+        // sint32 macDiff = MAC_LEN - (*macLengthPtr);
+        // uint8 macStart = (macDiff < 0) ? 0 : macDiff;
 
         // Update macLength
-        (*macLengthPtr) = MAC_LEN - macStart;
+        // (*macLengthPtr) = MAC_LEN - macStart;
         // Copy generated MAC to the required destination
-        memcpy(macPtr, &MacData[jobId][macStart], *macLengthPtr);
+        // memcpy(macPtr, &MacData[jobId][macStart], *macLengthPtr);
 
 
     }
