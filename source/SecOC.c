@@ -50,24 +50,17 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     // secured part of the Authentic I-PDU
     memcpy(&DataToAuth[DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
     DataToAuthLen += AuthPdu->SduLength;
-
+    
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX] ={0};
     uint32 FreshnesslenBits = SECOC_FRESHNESS_MAX * 8;
-   SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
-    // 1 2 0 0
+    SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
-
-    printf("Freshness bytes: %d\n", FreshnesslenBytes);
-
-    
     memcpy(&DataToAuth[DataToAuthLen], &FreshnessVal[SECOC_FRESHNESS_MAX - FreshnesslenBytes], FreshnesslenBytes);
-    DataToAuthLen += FreshnesslenBytes;        
-    
+    DataToAuthLen += FreshnesslenBytes;
 
-
-    
-
+    // MAC generation
     Std_ReturnType result;
     uint8  authenticatorPtr[SECOC_MACLEN_MAX];
     uint32  authenticatorLen = SECOC_AUTH_INFO_TRUNC_LENGTH / 8;
@@ -84,7 +77,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     SecPdu->SduLength = SECOC_CAN_DATAFRAME_MAX;
 
     memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, SECOC_CAN_DATA_MAX);
-
     memcpy(SecPdu->SduDataPtr + SECOC_CAN_DATA_MAX, authenticatorPtr, authenticatorLen);
 
    return result;
@@ -101,7 +93,6 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
 
     return result;
 }
-// PduIdType SecOC_Buffer[SECOC_BUFFERLENGTH];  Hossam declared it
 
 
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
