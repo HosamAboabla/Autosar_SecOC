@@ -22,7 +22,7 @@ static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
 
 #define SECOC_SDATA_MAX         ((uint8)4)
 #define SECOC_FRESHNESS_MAX     ((uint8)16)
-#define SECOC_MACLEN_MAX        ((uint8)16)
+#define SECOC_MACLEN_MAX        ((uint8)32)
 
 /****************************************************
  *          * Function Info *                           *
