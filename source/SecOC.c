@@ -42,6 +42,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32 DataToAuthLen = 0;
 
     // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
+
     // Data Identifier
     memcpy(&DataToAuth[DataToAuthLen], &TxPduId, sizeof(TxPduId));
     DataToAuthLen += sizeof(TxPduId);
@@ -52,9 +53,12 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
 
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX] ={0};
-    uint32 Freshnesslen = 16;
-    memcpy(&DataToAuth[DataToAuthLen], FreshnessVal, &Freshnesslen);
-    DataToAuthLen += Freshnesslen;
+    uint32 FreshnesslenBits = SECOC_FRESHNESS_MAX * 8;
+    SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+
+    uint32 FreshnesslenBytes = FreshnesslenBits / 8;
+    memcpy(&DataToAuth[DataToAuthLen], FreshnessVal, FreshnesslenBits);
+    DataToAuthLen += FreshnesslenBytes;
     
 
     Std_ReturnType result;
@@ -68,7 +72,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     }
 
     // Create secured IPDU
-
     *SecPdu = *AuthPdu;
     SecPdu->SduLength = 8;
 
