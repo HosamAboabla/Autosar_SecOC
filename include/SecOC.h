@@ -82,7 +82,7 @@ uint32* SecOCFreshnessValueLength);
  * Function_Descripton  : Verification of I-PDUs        *
  *******************************************************/
 
-Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, PduInfoType* A_PDU, SecOC_RxPduProcessingType SecOCRxPduProcessing);
+Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessingType SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result);
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
