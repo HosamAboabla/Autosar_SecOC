@@ -39,3 +39,27 @@ extern Std_ReturnType Csm_MacGenerate (
 
 
     }
+
+Std_ReturnType Csm_MacVerify(uint32 jobId, Crypto_OperationModeType mode, const uint8* dataPtr, uint32 dataLength,
+const uint8* macPtr, const uint32 macLength, Crypto_VerifyResultType* verifyPtr)
+{
+    if (dataLength != macLength) 
+    {
+        return CRYPTO_E_KEY_SIZE_MISMATCH;
+    } 
+    else if (dataLength == macLength) 
+    {
+        if ((strcmp(dataPtr, macPtr)) == 0) 
+        {
+            return E_OK;
+        }
+            else 
+        {
+            return E_NOT_OK;
+        }
+    } 
+    else 
+    {
+        return E_NOT_OK;
+    }
+}
