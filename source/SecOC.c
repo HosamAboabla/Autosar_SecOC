@@ -54,11 +54,18 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX] ={0};
     uint32 FreshnesslenBits = SECOC_FRESHNESS_MAX * 8;
-    SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
-
+   SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    // 1 2 0 0
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
-    memcpy(&DataToAuth[DataToAuthLen], FreshnessVal, FreshnesslenBytes);
-    DataToAuthLen += FreshnesslenBytes;
+
+    printf("Freshness bytes: %d\n", FreshnesslenBytes);
+
+    
+    memcpy(&DataToAuth[DataToAuthLen], &FreshnessVal[SECOC_FRESHNESS_MAX - FreshnesslenBytes], FreshnesslenBytes);
+    DataToAuthLen += FreshnesslenBytes;        
+    
+
+
     
 
     Std_ReturnType result;
@@ -71,14 +78,16 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
         return result;
     }
 
+
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_CAN_DATAFRAME_MAX;
 
     memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, SECOC_CAN_DATA_MAX);
+
     memcpy(SecPdu->SduDataPtr + SECOC_CAN_DATA_MAX, authenticatorPtr, authenticatorLen);
 
-    return result;
+   return result;
 }
 
 
@@ -216,3 +225,36 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     return result;
 }
 */
+
+#include <stdio.h>
+void SecOC_test()
+{
+    PduInfoType Secured, Authentic;
+
+    // BUFFERS
+    uint8 authdata[4] = {'h', 'o', 's', 's'};
+    uint8 secdata[8];
+    // Init
+    Authentic.SduDataPtr = authdata;
+    Authentic.SduLength = 4;
+
+    Secured.SduDataPtr = secdata;
+    Secured.SduLength  = 0;
+
+    authenticate(0, &Authentic, &Secured);
+
+    printf("Authentic data: \n");
+    for(int i= 0; i < Authentic.SduLength; i++)
+    {
+        printf("%x ", Authentic.SduDataPtr[i]);
+    }
+    printf("\n");
+
+    printf("Secured data: \n");
+    for(int i= 0; i < Secured.SduLength; i++)
+    {
+        printf("%x ", Secured.SduDataPtr[i]);
+    }
+    printf("\n");     
+
+}
