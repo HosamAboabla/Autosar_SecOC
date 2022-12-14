@@ -72,10 +72,12 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     }
 
     // Create secured IPDU
-    *SecPdu = *AuthPdu;
-    SecPdu->SduLength = 8;
+    SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
+    SecPdu->SduLength = SECOC_CAN_DATAFRAME_MAX;
 
+    memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, SECOC_CAN_DATA_MAX);
     memcpy(SecPdu->SduDataPtr + SECOC_CAN_DATA_MAX, authenticatorPtr, authenticatorLen);
+
     return result;
 }
 
