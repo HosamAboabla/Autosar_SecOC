@@ -1,12 +1,11 @@
 
 #include "SecOC.h"
 #include <stdio.h>
-#include "encrypt.h"
-#include "Csm.h"
 
 int main(void)
 {
     SecOC_MainFunctionTx();
- 
+
+    printf("Program ran successfully\n");
     return 0;
 }
