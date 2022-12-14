@@ -149,36 +149,66 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
-*/
 
-Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, PduInfoType* A_PDU, SecOC_RxPduProcessingType SecOCRxPduProcessing)
+#define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
+#define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTHINFO_TRUNCLENGTH / 8)))
+
+#define SECOC_SDATA_MAX         ((uint8)4)
+#define SECOC_FRESHNESS_MAX     ((uint8)16)
+#define SECOC_MACLEN_MAX        ((uint8)16)
+Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessingType SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
 {
     uint8 *SecOCFreshnessValue;
 	uint32 *SecOCFreshnessValueLength;
-    uint8 *verify_mac;
-	uint32 verify_mac_length;
+    uint32 SecOCTruncatedFreshnessValue = 0;
+    uint16 attempts = 0;
+    uint8 *mac;
+	uint32 mac_length;
     Std_ReturnType Freshness_result;
-    Std_ReturnType Mac_result;
-    SecOC_VerificationResultType verification_result;
+    //Std_ReturnType Mac_result;
 
     if (tmpSecOCGeneral.SecOCQueryFreshnessValue == SECOC_CFUNC) {
         if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) {
-            // SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
-            // );
+            Freshness_result = SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId,
+            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
+            SecOCRxPduProcessing.SecOCAuthDataFreshnessStartPosition,
+            SecOCRxPduProcessing.SecOCAuthDataFreshnessLen, attempts, SecOCFreshnessValue, SecOCFreshnessValueLength);
         } else {
             Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
-            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
+            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength, attempts,
             SecOCFreshnessValue, SecOCFreshnessValueLength);
         }
 
     }
 
+    uint8 DataToAuth[sizeof(RxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX];  // CAN payload
+    uint32 DataToAuthLen = 0;
+
+    memcpy(&DataToAuth[DataToAuthLen], &RxPduId, sizeof(RxPduId));
+    DataToAuthLen += sizeof(RxPduId);
+
+    memcpy(&DataToAuth[DataToAuthLen], (SPDU->SduDataPtr), SECOC_SDATA_MAX);
+    DataToAuthLen += SECOC_SDATA_MAX;
+    
+    memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, (*SecOCFreshnessValueLength));
+    DataToAuthLen += *SecOCFreshnessValueLength;
+
+    memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), SECOC_MACLEN_MAX);
+
+    Std_ReturnType result;
+    uint8 authenticatorPtr[SECOC_MACLEN_MAX];
+    uint32 authenticatorLen = SECOC_AUTHINFO_TRUNCLENGTH / 8;
+
+    // memcpy(&Mac_result,(SPDU->MetaDataPtr+(SPDU->SduLength)+(*SecOCFreshnessValueLength)),length_mac);
+
     if (Freshness_result == E_OK) {
-        Csm_MacGenerate();
-        Csm_verify(SecOCRxPduProcessing.SecOCDataId, 0, , , verify_mac, verify_mac_length);
-        if (Mac_result == E_OK) {
-            verification_result = SECOC_VERIFICATIONSUCCESS;
-        }
+            result = Csm_MacGenerate(RxPduId, 0, DataToAuth, DataToAuthLen, authenticatorPtr, &authenticatorLen);
+            if (result == E_OK) {
+                Std_ReturnType Mac_verify = Csm_verify(RxPduId, 0, authenticatorPtr, authenticatorLen, mac, mac_length);
+                if (Mac_verify == E_OK) {
+                *verification_result = SECOC_VERIFICATIONSUCCESS;
+                }
+            }
 
     }
 }
