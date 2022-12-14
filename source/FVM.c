@@ -2,8 +2,7 @@
 
 /* This is Stub for Freshness Value Manger that have the global counter */
 
-/* Convert the bits to nearst byte */
-#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
+
 
 /* Freshness Counter */
 static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {255};
