@@ -41,8 +41,6 @@ void SecOC_Init(const SecOC_ConfigType *config);
  ***************************************************/
 void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
-
-
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
