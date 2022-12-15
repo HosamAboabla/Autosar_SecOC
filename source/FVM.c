@@ -99,7 +99,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecO
         /* Assume that the buffer of truncated is its truncated length 
         and the SecOCFreshnessValueLength is buffer of freshness */
         /* Valid the Truncated Freshness Value */
-        for (FreshnessCounterIndex = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - 1 ; FreshnessCounterIndex > counterTruncMax; FreshnessCounterIndex --)
+        for (FreshnessCounterIndex = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - 1 ; (FreshnessCounterIndex > counterTruncMax) && (TrancatedCounter < BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength)); FreshnessCounterIndex --)
         {
             if(SecOCTruncatedFreshnessValue[TrancatedCounter] != Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex])
             {
