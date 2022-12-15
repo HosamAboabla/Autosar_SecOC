@@ -158,8 +158,8 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 #define SECOC_MACLEN_MAX        ((uint8)16)
 Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessingType SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
 {
-    uint8 *SecOCFreshnessValue;
-	uint32 *SecOCFreshnessValueLength;
+    uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX];
+	uint32 SecOCFreshnessValueLength;
     uint32 SecOCTruncatedFreshnessValue = 0;
     uint16 attempts = 0;
     uint8 mac[SECOC_MACLEN_MAX];
@@ -173,13 +173,13 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
             Freshness_result = SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId,
             SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
             SecOCRxPduProcessing.SecOCAuthDataFreshnessStartPosition,
-            SecOCRxPduProcessing.SecOCAuthDataFreshnessLen, attempts, SecOCFreshnessValue, SecOCFreshnessValueLength);
+            SecOCRxPduProcessing.SecOCAuthDataFreshnessLen, attempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
         } 
         else 
         {
             Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
             SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength, attempts,
-            SecOCFreshnessValue, SecOCFreshnessValueLength);
+            SecOCFreshnessValue, &SecOCFreshnessValueLength);
         }
 
     }
@@ -193,8 +193,8 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
     memcpy(&DataToAuth[DataToAuthLen], (SPDU->SduDataPtr), SECOC_SDATA_MAX);
     DataToAuthLen += SECOC_SDATA_MAX;
     
-    memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, (*SecOCFreshnessValueLength));
-    DataToAuthLen += *SecOCFreshnessValueLength;
+    memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
+    DataToAuthLen += BIT_TO_BYTES(SecOCFreshnessValueLength);
 
     memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), SECOC_MACLEN_MAX);
 
