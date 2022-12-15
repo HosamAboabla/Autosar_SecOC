@@ -106,11 +106,9 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
     if (result == E_OK) {
         // clear buffer
-        PduInfoType emptyPdu;
-        emptyPdu.MetaDataPtr = NULL;
-        emptyPdu.SduDataPtr = NULL;
-        emptyPdu.SduLength = 0;
-        SecOC_Buffer[TxPduId] = emptyPdu;
+        SecOC_Buffer[TxPduId].MetaDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduLength = 0;
     }
     PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
