@@ -15,9 +15,10 @@
 
 #include <string.h>
 
+#include <stdio.h>
 
 
-static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH] = { { NULL , 0} };
+static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
 #define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
 #define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTH_INFO_TRUNC_LENGTH / 8)))
@@ -104,8 +105,12 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
 
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
     if (result == E_OK) {
-        // SecOC_Buffer[TxPduId] = NULL;
         // clear buffer
+        PduInfoType emptyPdu;
+        emptyPdu.MetaDataPtr = NULL;
+        emptyPdu.SduDataPtr = NULL;
+        emptyPdu.SduLength = 0;
+        SecOC_Buffer[TxPduId] = emptyPdu;
     }
     PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
@@ -176,20 +181,19 @@ extern void SecOC_MainFunctionTx(void) {
     PduInfoType transmitPduInfo;
     uint8 temp[8];
     transmitPduInfo.SduDataPtr = temp;
-    authenticate(0 , &SecOC_Buffer[0] , &transmitPduInfo);
+    
 
-    PduR_SecOCTransmit(idx , &transmitPduInfo);
-    // for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
-    //     // check if there is data
-    //     if ( SecOC_Buffer[idx].SduLength > 0 ) {
-    //         // authenticate SecOC_Buffer[idx];
-    //         // send authenticated data
-    //         // authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
-    //         PduR_SecOCTransmit(idx , &transmitPduInfo);
+    
+    
+    for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer[idx].SduLength > 0 ) {
+            authenticate(idx , &SecOC_Buffer[idx] , &transmitPduInfo);
+            PduR_SecOCTransmit(idx , &transmitPduInfo);
 
-    //     } else {
-    //     }
-    // }
+        } else {
+        }
+    }
 }
 
 
