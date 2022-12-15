@@ -9,6 +9,8 @@
 #include "PduR_SecOC.h"
 #include "Csm.h"
 #include "Rte_SecOC_Type.h"
+#include "PduR_Com.h"
+#include "PduR_SecOC.h"
 
 
 #include <string.h>
@@ -172,17 +174,22 @@ extern void SecOC_MainFunctionTx(void) {
     }
     PduIdType idx = 0;
     PduInfoType transmitPduInfo;
-    for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
-        // check if there is data
-        if ( SecOC_Buffer[idx].SduLength > 0 ) {
-            // authenticate SecOC_Buffer[idx];
-            // send authenticated data
-            // authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
-            PduR_SecOCTransmit(idx , &transmitPduInfo);
+    uint8 temp[8];
+    transmitPduInfo.SduDataPtr = temp;
+    authenticate(0 , &SecOC_Buffer[0] , &transmitPduInfo);
 
-        } else {
-        }
-    }
+    PduR_SecOCTransmit(idx , &transmitPduInfo);
+    // for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
+    //     // check if there is data
+    //     if ( SecOC_Buffer[idx].SduLength > 0 ) {
+    //         // authenticate SecOC_Buffer[idx];
+    //         // send authenticated data
+    //         // authenticate( SecOC_Buffer[idx] , &transmitPduInfo)
+    //         PduR_SecOCTransmit(idx , &transmitPduInfo);
+
+    //     } else {
+    //     }
+    // }
 }
 
 

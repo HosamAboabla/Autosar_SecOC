@@ -1,4 +1,5 @@
 #include "CanIF.h"
+#include "ethernet.h"
 
 /****************************************************
  *          * Function Info *                       *
@@ -13,6 +14,8 @@ PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
    // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
+    ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
+
     if(STATUS_TRANSMISSION)
     {
         return E_OK;
