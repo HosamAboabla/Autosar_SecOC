@@ -21,18 +21,18 @@
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
-    if(*(PduInfoPtr->MetaDataPtr) == CANIF)
-    {
-       // return CanIf_Transmit(TxPduId,PduInfoPtr);
-    }
-    else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
-    {
-       // return FrIf_Transmit(TxPduId, PduInfoPtr);
-    }   
-    else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
-    {
-       // return CanTp_Transmit(TxPduId, PduInfoPtr);
-    }
+   if(*(PduInfoPtr->MetaDataPtr) == CANIF)
+   {
+      return CanIf_Transmit(TxPduId,PduInfoPtr);
+   }
+   else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
+   {
+      // return FrIf_Transmit(TxPduId, PduInfoPtr);
+   }   
+   else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
+   {
+      // return CanTp_Transmit(TxPduId, PduInfoPtr);
+   }
     return E_NOT_OK;
 }
 

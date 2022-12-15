@@ -7,6 +7,9 @@
 #ifndef INCLUDE_STD_TYPES_H_
 #define INCLUDE_STD_TYPES_H_
 
+/* Convert the bits to nearst byte */
+#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
+
 /* Boolean Values */
 #ifndef FALSE
 #define FALSE       (0u)
@@ -32,7 +35,9 @@ typedef unsigned long long      uint64;         /*       0..18446744073709551615
 typedef float                   float32;
 typedef double                  float64;
 
+#ifndef NULL
 #define NULL ((void*)0)
+#endif
 
 typedef uint8 Std_ReturnType;
 #define E_OK            ((Std_ReturnType)0x00)
