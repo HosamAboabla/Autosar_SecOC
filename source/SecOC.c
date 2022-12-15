@@ -96,9 +96,6 @@ void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
      * So we don't need to check it again in reception             *
      */
     SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr; /* The SecOC copies the Authentic I-PDU to its own buffer */
-
-
-
 }
 
 
