@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    SecOC_MainFunctionTx();
+    SecOC_test();
 
     printf("Program ran successfully\n");
     return 0;
