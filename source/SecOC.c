@@ -232,30 +232,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecOCTruncatedFreshnessValue,uint32 SecOCTruncatedFreshnessValueLength,
     uint16 SecOCAuthVerifyAttempts,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength)
 {
-    Std_ReturnType result = E_OK;
-    static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
-    static uint32 Freshness_Counter_length [ID_MAX] = {0};
-    uint32 FreshnessValueLengthBytes = (BIT_TO_BYTES(*SecOCFreshnessValueLength));
-    if (SecOCFreshnessValueID > ID_MAX) 
-    {
-        result =  E_NOT_OK;
-    } else if ( FreshnessValueLengthBytes > SECOC_MAX_FRESHNESS_SIZE ) 
-    {
-        result = E_NOT_OK;
-    } else 
-    {
-        
-        uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID])?(FreshnessValueLengthBytes):(Freshness_Counter_length[SecOCFreshnessValueID]);
-        uint32 FreshnessIndex = FreshnessValueLengthBytes- 1, FreshnessCounterIndex; 
-        for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
-        {
-            SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
-            FreshnessIndex--;
-        }
-        /* Update Length */
-        *SecOCFreshnessValueLength = AcctualFreshnessVallength; 
-    }
-    return result;
+    FVM_GetRxFreshness(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength, SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength);
 }
 
 void SecOC_test()
