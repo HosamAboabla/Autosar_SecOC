@@ -14,6 +14,7 @@
 
 
 #include <string.h>
+#include <stdio.h>
 
 
 
@@ -229,55 +230,82 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 }
 */
 
-#define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
-#define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTHINFO_TRUNCLENGTH / 8)))
-
-#define SECOC_SDATA_MAX         ((uint8)4)
-#define SECOC_FRESHNESS_MAX     ((uint8)16)
-#define SECOC_MACLEN_MAX        ((uint8)16)
 Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessingType SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
 {
     uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX];
-	uint32 SecOCFreshnessValueLength;
-    uint32 SecOCTruncatedFreshnessValue = 0;
+	uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX;
+    uint32 SecOCTruncatedFreshnessValueLength = SECOC_FRESHNESS_MAX;
+    uint8 SecOCTruncatedFreshnessValue[SECOC_FRESHNESS_MAX];
+    uint8 SecOCAuthDataFreshnessValue[SECOC_FRESHNESS_MAX];
+    uint16 SecOCAuthDataFreshnessValueLength = SECOC_FRESHNESS_MAX;
     uint16 attempts = 0;
     uint8 mac[SECOC_MACLEN_MAX];
-	uint32 mac_length;
+	uint32 mac_length = BIT_TO_BYTES(SECOC_MACLEN_MAX);
     Std_ReturnType Freshness_result;
 
-    if (tmpSecOCGeneral->SecOCQueryFreshnessValue == SECOC_CFUNC) 
-    {
-        if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) 
-        {
-            Freshness_result = SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId,
-            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
-            SecOCRxPduProcessing.SecOCAuthDataFreshnessStartPosition,
-            SecOCRxPduProcessing.SecOCAuthDataFreshnessLen, attempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
-        } 
-        else 
-        {
-            Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
-            SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength, attempts,
-            SecOCFreshnessValue, &SecOCFreshnessValueLength);
-        }
+    // waiting implemention function of freshness
+    // if (tmpSecOCGeneral->SecOCQueryFreshnessValue == SECOC_CFUNC) 
+    // {
+    //     if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) 
+    //     {
+    //         Freshness_result = SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId,
+    //         SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength,SecOCAuthDataFreshnessValue, 
+    //         SecOCAuthDataFreshnessValueLength, attempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
+    //     } 
+    //     else 
+    //     {
+    //         Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
+    //         SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, attempts,
+    //         SecOCFreshnessValue, &SecOCFreshnessValueLength);
+    //     }
 
-    }
+    // }
 
     uint8 DataToAuth[sizeof(RxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX];  // CAN payload
     uint32 DataToAuthLen = 0;
 
+    printf("id = %d & len = %d\n",RxPduId,sizeof(RxPduId));
+
+    // copy the Id to buffer Data to Auth
     memcpy(&DataToAuth[DataToAuthLen], &RxPduId, sizeof(RxPduId));
     DataToAuthLen += sizeof(RxPduId);
 
+    for(uint8 i =0 ;i<DataToAuthLen;i++)
+    {
+    	printf("%d",DataToAuth[i]);
+    	fflush(stdin); fflush(stdout);
+    }
+    printf("\n");
+
+    // copy the data to buffer Data to Auth
     memcpy(&DataToAuth[DataToAuthLen], (SPDU->SduDataPtr), SECOC_SDATA_MAX);
     DataToAuthLen += SECOC_SDATA_MAX;
+
+    for(uint8 i =0 ;i<DataToAuthLen;i++)
+    {
+    	printf("%d",DataToAuth[i]);
+    	fflush(stdin); fflush(stdout);
+    }
+    printf("\n");
+
     
+    // copy the freshness value to buffer Data to Auth
     memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
     DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));
 
-    memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), SECOC_MACLEN_MAX);
 
-    Std_ReturnType result;
+
+    // copy mac from secured data to MAC buffer
+    memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), mac_length);
+    for(uint8 i=0;i<mac_length;i++)
+    {
+    	printf("%d",mac[i]);
+    	fflush(stdin); fflush(stdout);
+    }
+    printf("\n");
+
+
+    SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
 
     if (Freshness_result == E_OK) 
@@ -285,12 +313,57 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
         Std_ReturnType Mac_verify = Csm_MacVerify(RxPduId, 0, DataToAuth, DataToAuthLen, mac, (mac_length)*8, &verify_var);
         if (Mac_verify == E_OK) 
         {
-            *verification_result = SECOC_VERIFICATIONSUCCESS;
+            *verification_result = CRYPTO_E_VER_OK;
+            uint8 clear_buffer[(BIT_TO_BYTES(SECOC_MACLEN_MAX))] = {0};
+            memcpy((SPDU->SduDataPtr+SECOC_SDATA_MAX), clear_buffer, mac_length);
+            SPDU->SduLength = SECOC_SDATA_MAX;
+            result = SECOC_VERIFICATIONSUCCESS;
+        }
+        else 
+        {
+            *verification_result = CRYPTO_E_VER_NOT_OK;
+            result = SECOC_VERIFICATIONFAILURE;
         }
     }
+
+    else
+    {
+        result = SECOC_VERIFICATIONFAILURE;
+    }
+    return result;
 }
 
 void SecOC_test()
 {
+    #define MAX 16
+    uint8 x[MAX]={2,0,0,0,1,1,1,1,1};
+    uint8 MAC[32];
+    uint8 csm[4]={83,47,198,102};
+    uint32 MAC_Length = 4;
+    Csm_MacGenerate(10,0,x,MAX,MAC,&MAC_Length);
+    for(int i =0 ; i<MAC_Length;i++)
+    {
+        printf("%d\t",MAC[i]);
+    }
+    printf("\n");
+    Crypto_VerifyResultType _verify;
+    Std_ReturnType Mac_status = Csm_MacVerify(10,0,x,MAX,csm,MAC_Length*8,&_verify);
 
+    if ((Mac_status == E_OK)) 
+    {
+        printf("result = E_OK\n");
+    } 
+    else 
+    {
+        printf("result = E_NOT_OK\n");
+    }
+
+    uint8 buff[16]={1,1,1,1,1,1,0,0};
+    PduLengthType len = 8;
+    PduInfoType SPDU;
+    SPDU.SduDataPtr = buff;
+    SPDU.SduLength = len;
+    SecOC_VerificationResultType verify_;
+    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
+    verify(20, &SPDU, SecOC_RxPduProcessing,&verify_);
 }
