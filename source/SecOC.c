@@ -177,7 +177,7 @@ extern void SecOC_MainFunctionTx(void) {
         // cppcheck-suppress misra-c2012-15.5
         return;
     }
-    PduIdType idx = 0;
+    PduIdType idx;
     PduInfoType transmitPduInfo;
     uint8 temp[8];
     transmitPduInfo.SduDataPtr = temp;
@@ -185,13 +185,12 @@ extern void SecOC_MainFunctionTx(void) {
 
     
     
-    for ( ; idx < SECOC_BUFFERLENGTH ; idx++) {
+    for (idx = 0 ; idx < SECOC_BUFFERLENGTH ; idx++) {
         // check if there is data
         if ( SecOC_Buffer[idx].SduLength > 0 ) {
             authenticate(idx , &SecOC_Buffer[idx] , &transmitPduInfo);
             PduR_SecOCTransmit(idx , &transmitPduInfo);
 
-        } else {
         }
     }
 }
