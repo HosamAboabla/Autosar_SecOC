@@ -192,7 +192,7 @@
 /*
 * Configuration Parameter for SecOC_AuthInfoTruncLength
 */
-#define SECOC_AUTHINFO_TRUNCLENGTH      ((uint16)1)
+#define SECOC_AUTHINFO_TRUNCLENGTH      ((uint16)32)
 
 /*
 * Configuration Parameter for SecOC_ClientServerVerificationStatusPropagationMode
