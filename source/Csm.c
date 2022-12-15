@@ -40,26 +40,32 @@ extern Std_ReturnType Csm_MacGenerate (
 
     }
 
+#define MAC_LENGTH_BYTES 4
+#define MAX_MAC_BUFFER  100
 Std_ReturnType Csm_MacVerify(uint32 jobId, Crypto_OperationModeType mode, const uint8* dataPtr, uint32 dataLength,
 const uint8* macPtr, const uint32 macLength, Crypto_VerifyResultType* verifyPtr)
 {
-    if (dataLength != macLength) 
+    uint32 datalen = MAC_LENGTH_BYTES;
+    uint8 mac[MAX_MAC_BUFFER];
+    Std_ReturnType Mac_status, result;
+    Mac_status = Csm_MacGenerate(jobId, mode, dataPtr, dataLength, mac, &datalen);
+    if ((Mac_status == E_OK) && (datalen == (macLength/8))) 
     {
-        return CRYPTO_E_KEY_SIZE_MISMATCH;
-    } 
-    else if (dataLength == macLength) 
-    {
-        if ((strcmp(dataPtr, macPtr)) == 0) 
+        if ((memcmp(dataPtr, macPtr, datalen)) == 0) 
         {
-            return E_OK;
+            result = E_OK;
+            *verifyPtr = CRYPTO_E_VER_OK;
         }
-            else 
+        else 
         {
-            return E_NOT_OK;
+            result = E_NOT_OK;
+            *verifyPtr = E_NOT_OK;
         }
     } 
     else 
     {
-        return E_NOT_OK;
+        result = E_NOT_OK;
+        *verifyPtr = E_NOT_OK;
     }
+    return result;
 }
