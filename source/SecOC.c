@@ -162,18 +162,21 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
 	uint32 *SecOCFreshnessValueLength;
     uint32 SecOCTruncatedFreshnessValue = 0;
     uint16 attempts = 0;
-    uint8 *mac;
+    uint8 mac[SECOC_MACLEN_MAX];
 	uint32 mac_length;
     Std_ReturnType Freshness_result;
-    //Std_ReturnType Mac_result;
 
-    if (tmpSecOCGeneral.SecOCQueryFreshnessValue == SECOC_CFUNC) {
-        if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) {
+    if (tmpSecOCGeneral->SecOCQueryFreshnessValue == SECOC_CFUNC) 
+    {
+        if (SecOCRxPduProcessing.SecOCUseAuthDataFreshness == TRUE) 
+        {
             Freshness_result = SecOC_GetRxFreshnessAuthData(SecOCRxPduProcessing.SecOCFreshnessValueId,
             SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength,
             SecOCRxPduProcessing.SecOCAuthDataFreshnessStartPosition,
             SecOCRxPduProcessing.SecOCAuthDataFreshnessLen, attempts, SecOCFreshnessValue, SecOCFreshnessValueLength);
-        } else {
+        } 
+        else 
+        {
             Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing.SecOCFreshnessValueId,
             SecOCTruncatedFreshnessValue, SecOCRxPduProcessing.SecOCFreshnessValueTruncLength, attempts,
             SecOCFreshnessValue, SecOCFreshnessValueLength);
@@ -196,20 +199,15 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
     memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), SECOC_MACLEN_MAX);
 
     Std_ReturnType result;
-    uint8 authenticatorPtr[SECOC_MACLEN_MAX];
-    uint32 authenticatorLen = SECOC_AUTHINFO_TRUNCLENGTH / 8;
+    Crypto_VerifyResultType verify_var;
 
-    // memcpy(&Mac_result,(SPDU->MetaDataPtr+(SPDU->SduLength)+(*SecOCFreshnessValueLength)),length_mac);
-
-    if (Freshness_result == E_OK) {
-            result = Csm_MacGenerate(RxPduId, 0, DataToAuth, DataToAuthLen, authenticatorPtr, &authenticatorLen);
-            if (result == E_OK) {
-                Std_ReturnType Mac_verify = Csm_verify(RxPduId, 0, authenticatorPtr, authenticatorLen, mac, mac_length);
-                if (Mac_verify == E_OK) {
-                *verification_result = SECOC_VERIFICATIONSUCCESS;
-                }
-            }
-
+    if (Freshness_result == E_OK) 
+    {
+        Std_ReturnType Mac_verify = Csm_MacVerify(RxPduId, 0, DataToAuth, DataToAuthLen, mac, (mac_length)*8, &verify_var);
+        if (Mac_verify == E_OK) 
+        {
+            *verification_result = SECOC_VERIFICATIONSUCCESS;
+        }
     }
 }
 
