@@ -273,7 +273,7 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
     DataToAuthLen += SECOC_SDATA_MAX;
     
     memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
-    DataToAuthLen += BIT_TO_BYTES(SecOCFreshnessValueLength);
+    DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));
 
     memcpy(mac, (SPDU->SduDataPtr+SECOC_SDATA_MAX), SECOC_MACLEN_MAX);
 
