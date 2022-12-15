@@ -86,6 +86,28 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint32* SecOCTruncatedFreshnessValueLength
 );
 
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetRxFreshness          *
+ * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This interface is used by the *
+ *  SecOC to obtain the current freshness value.        *
+ *******************************************************/
+Std_ReturnType SecOC_GetRxFreshness(
+    uint16 SecOCFreshnessValueID, 
+    const uint8* SecOCTruncatedFreshnessValue, 
+    uint32 SecOCTruncatedFreshnessValueLength, 
+    uint16 SecOCAuthVerifyAttempts,
+    uint8* SecOCFreshnessValue,
+    uint32* SecOCFreshnessValueLength 
+
+);
+
+
+
 #define SECOC_E_UNINIT 					0x02
 
 #endif  // INCLUDE_SECOC_H_

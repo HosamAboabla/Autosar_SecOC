@@ -114,8 +114,8 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
 
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
-    SecOC_GetTxFreshnessCalloutType PTR = (SecOC_GetTxFreshnessCalloutType)FVM_GetTxFreshness;
-Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);
+    SecOC_GetTxFreshnessCalloutType PTR = (SecOC_GetTxFreshnessCalloutType)FVM_GetTxFreshness;//why casting
+Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);//why not &
     return result;
 }
 
@@ -201,7 +201,7 @@ extern void SecOC_MainFunctionTx(void) {
 //     }
 // #endif
 
-/*
+
 #define MAX_COUNTER_FRESHNESS_IDS   10
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
@@ -227,7 +227,37 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
-*/
+
+
+Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecOCTruncatedFreshnessValue,uint32 SecOCTruncatedFreshnessValueLength,
+    uint16 SecOCAuthVerifyAttempts,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength)
+{
+    Std_ReturnType result = E_OK;
+    static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
+    static uint32 Freshness_Counter_length [ID_MAX] = {0};
+    uint32 FreshnessValueLengthBytes = (BIT_TO_BYTES(*SecOCFreshnessValueLength));
+    if (SecOCFreshnessValueID > ID_MAX) 
+    {
+        result =  E_NOT_OK;
+    } else if ( FreshnessValueLengthBytes > SECOC_MAX_FRESHNESS_SIZE ) 
+    {
+        result = E_NOT_OK;
+    } else 
+    {
+        
+        uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID])?(FreshnessValueLengthBytes):(Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 FreshnessIndex = FreshnessValueLengthBytes- 1, FreshnessCounterIndex; 
+        for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
+        {
+            SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
+            FreshnessIndex--;
+        }
+        /* Update Length */
+        *SecOCFreshnessValueLength = AcctualFreshnessVallength; 
+    }
+    return result;
+}
+
 void SecOC_test()
 {
 
