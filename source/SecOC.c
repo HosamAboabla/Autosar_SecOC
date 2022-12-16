@@ -231,5 +231,24 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 */
 void SecOC_test()
 {
+    SecOC_ConfigType conf;
+    SecOC_Init(&conf);
+    
+    PduInfoType test_pdu;
+    uint32 idx = 0;
+    uint8 test_data[10];//  = {'h' , 'a' , 'm' , 'a' , 'd' , 'a'};
+    test_pdu.SduDataPtr = test_data;
+    uint8 test_meta_data = 0;
+    test_pdu.MetaDataPtr = &test_meta_data;
+    while(1)
+    {
+        printf("Please enter message to send: ");
+        scanf("%s" , (char*) test_pdu.SduDataPtr);
+        test_pdu.SduLength = strlen(test_pdu.SduDataPtr);
+        PduR_ComTransmit(idx , &test_pdu);
 
+        SecOC_MainFunctionTx();
+        
+        idx++;
+    }
 }

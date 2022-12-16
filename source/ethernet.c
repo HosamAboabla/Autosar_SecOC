@@ -15,7 +15,6 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
     int connection_status = connect(network_sockect , (struct sockaddr* ) &server_address , sizeof(server_address) );
 
     if (connection_status != 0) {
-        printf("error can't connect : %d\n" , connection_status);
         return E_NOT_OK;
     }
 
