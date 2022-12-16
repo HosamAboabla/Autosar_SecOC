@@ -5,10 +5,11 @@ if (WIN32)
     file(GLOB HDR_FILES CONFIGURE_DEPENDS "include/*.h")
     list(REMOVE_ITEM SCR_FILES "${CMAKE_SOURCE_DIR}/source/ethernet.c")
     list(REMOVE_ITEM HDR_FILES "${CMAKE_SOURCE_DIR}/include/ethernet.h")
-    
+    set (CMAKE_GENERATOR "MinGW Makefiles" CACHE INTERNAL "" FORCE)
 elseif(UNIX)
     file(GLOB SCR_FILES CONFIGURE_DEPENDS  "source/*.c")
     file(GLOB HDR_FILES CONFIGURE_DEPENDS  "include/*.h")
+    set (CMAKE_GENERATOR "Unix Makefiles" CACHE INTERNAL "" FORCE)
 endif()
 
 
