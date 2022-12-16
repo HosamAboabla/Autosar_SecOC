@@ -255,7 +255,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SPDU, SecOC_RxPduProcessin
     Std_ReturnType Mac_verify = Csm_MacVerify(RxPduId, 0, DataToAuth, DataToAuthLen, mac, (mac_length)*8, &verify_var);
     if (Mac_verify == E_OK) 
     {
-        printf("..");
         *verification_result = CRYPTO_E_VER_OK;
         SPDU->SduLength = SECOC_SDATA_MAX;
         result = SECOC_VERIFICATIONSUCCESS;
