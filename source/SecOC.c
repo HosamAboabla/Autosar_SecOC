@@ -193,7 +193,10 @@ extern void SecOC_MainFunctionTx(void) {
 }
 
 
-
+void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result)
+{
+    PduR_SecOCIfTxConfirmation(id, result);
+}
 
 // #if (SECOC_USE_TX_CONFIRMATION == 1)
 //     void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
