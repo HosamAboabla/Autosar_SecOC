@@ -19,8 +19,9 @@ PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
     // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
-    #ifdef LINUX
     Std_ReturnType result;
+    
+    #ifdef LINUX
     result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
 
