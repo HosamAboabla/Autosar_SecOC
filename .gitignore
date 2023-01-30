@@ -53,3 +53,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 *.dump
+cppcheck_includes.txt
