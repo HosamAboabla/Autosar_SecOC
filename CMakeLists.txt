@@ -17,10 +17,14 @@ project(SecOC)
 
 add_executable(SecOC ${SCR_FILES})
 
+file(WRITE  "${CMAKE_SOURCE_DIR}/cppcheck_includes.txt" "")
 foreach (_file ${HDR_FILES})
     cmake_path(REMOVE_FILENAME _file)
+    file(APPEND  "${CMAKE_SOURCE_DIR}/cppcheck_includes.txt" "${_file}\n")
+
     target_include_directories(SecOC PUBLIC ${_file})
 endforeach()
+
 
 if(WIN32)
     target_compile_definitions(SecOC PUBLIC WINDOWS)
