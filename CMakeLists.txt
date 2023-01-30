@@ -1,4 +1,5 @@
 
+set(CMAKE_BUILD_TYPE Debug)
 
 if (WIN32)
     file(GLOB_RECURSE SCR_FILES CONFIGURE_DEPENDS "source/*.c")
