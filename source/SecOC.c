@@ -15,8 +15,6 @@
 
 #include <string.h>
 
-#include <stdio.h>
-
 
 static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
