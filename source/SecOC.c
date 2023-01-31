@@ -232,7 +232,8 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecOCTruncatedFreshnessValue,uint32 SecOCTruncatedFreshnessValueLength,
     uint16 SecOCAuthVerifyAttempts,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength)
 {
-    FVM_GetRxFreshness(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength, SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength);
+    FVM_GetRxFreshness(SecOCFreshnessValueID,SecOCTruncatedFreshnessValue,SecOCTruncatedFreshnessValueLength,
+    SecOCAuthVerifyAttempts,SecOCFreshnessValue,SecOCFreshnessValueLength);
 }
 
 void SecOC_test()
