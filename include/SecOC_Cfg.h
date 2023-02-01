@@ -192,7 +192,7 @@
 /*
 * Configuration Parameter for SecOC_AuthInfoTruncLength
 */
-#define SECOC_AUTHINFO_TRUNCLENGTH      ((uint16)32)
+#define SECOC_RX_AUTH_INFO_TRUNCLENGTH      ((uint16)32)
 
 /*
 * Configuration Parameter for SecOC_ClientServerVerificationStatusPropagationMode
@@ -202,7 +202,7 @@
 /*
 * Configuration Parameter for SecOC_DataId
 */
-#define SECOC_RX_DATA_ID        ((uint16)1)
+#define SECOC_RX_DATA_ID        ((uint16)20)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
@@ -212,12 +212,12 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
 */
-#define SECOC_FRESHNESSVALUE_LENGTH     ((uint8)10)
+#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)16)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueTruncLength
 */
-#define SECOC_FRESHNESSVALUE_TRUNCLENGTH        ((uint8)0)
+#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)0)
 
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
