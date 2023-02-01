@@ -205,11 +205,8 @@ extern void SecOC_MainFunctionTx(void) {
 
 
 void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
-{
-    /* The length of the Pdu has been checked in SecOC_IfTransmit, *
-     * So we don't need to check it again in reception             *
-     */
-    SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr; /* The SecOC copies the Authentic I-PDU to its own buffer */
+{   /* The SecOC copies the Authentic I-PDU to its own buffer */
+    if (RxPduId < SECOC_BUFFERLENGTH) SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr;
 }
 
 
