@@ -25,33 +25,34 @@ static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 #define SECOC_FRESHNESS_MAX     ((uint8)16)
 #define SECOC_MACLEN_MAX        ((uint8)32)
 
+
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : authenticate                  *
+ * Function_Name        : constructDataToAuthenticator  *
  * Function_Index       : SecOC internal                *
  * Parameter in         : TxPduId                       *
- * Function_Descripton  : The lower layer communication * 
- * interface module confirms  the transmission of a PDU *
- *        or the failure to transmit a PDU              *
- ***************************************************/
-static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
+ * Parameter in/out     : DataToAuth                    *
+ * Parameter in/out     : DataToAuthLen                 *
+ * Parameter in         : AuthPdu                       *
+ * Function_Descripton  : This function constructs the  *
+ * DataToAuthenticator using Data Identifier, secured   *
+ * part of the * Authentic I-PDU, and freshness value   *
+ *******************************************************/
+static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint8 *DataToAuth, uint32 *DataToAuthLen, const PduInfoType* AuthPdu)
 {
     Std_ReturnType result;
-    // 1. Prepare Secured I-PDU
-    // 2. Construct Data for Authenticator
-    uint8 DataToAuth[sizeof(TxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX]; // CAN payload
-    uint32 DataToAuthLen = 0;
+    *DataToAuthLen = 0;
 
     // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
 
     // Data Identifier
-    memcpy(&DataToAuth[DataToAuthLen], &TxPduId, sizeof(TxPduId));
-    DataToAuthLen += sizeof(TxPduId);
+    memcpy(&DataToAuth[*DataToAuthLen], &TxPduId, sizeof(TxPduId));
+    *DataToAuthLen += sizeof(TxPduId);
 
     // secured part of the Authentic I-PDU
-    memcpy(&DataToAuth[DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
-    DataToAuthLen += AuthPdu->SduLength;
+    memcpy(&DataToAuth[*DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
+    *DataToAuthLen += AuthPdu->SduLength;
     
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX] ={0};
@@ -65,18 +66,61 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
 
-    memcpy(&DataToAuth[DataToAuthLen], &FreshnessVal[SECOC_FRESHNESS_MAX - FreshnesslenBytes], FreshnesslenBytes);
-    DataToAuthLen += FreshnesslenBytes;
+    memcpy(&DataToAuth[*DataToAuthLen], &FreshnessVal[SECOC_FRESHNESS_MAX - FreshnesslenBytes], FreshnesslenBytes);
+    *DataToAuthLen += FreshnesslenBytes;
+
+    return E_OK;
+}
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name            : generateMAC               *
+ * Function_Index           : SecOC internal            *
+ * Parameter in             : TxPduId                   *
+ * Parameter in             : DataToAuth                *
+ * Parameter in             : DataToAuthLen             *
+ * Parameter in/out         : authenticatorPtr          *
+ * Parameter in/out         : authenticatorLen          *
+ * Function_Descripton  : This function generates MAC   *
+ * based on the DataToAuthenticator                     *
+ *******************************************************/
+static Std_ReturnType generateMAC(const PduIdType TxPduId, uint8 const *DataToAuth, const uint32 *DataToAuthLen, uint8  *authenticatorPtr, uint32  *authenticatorLen)
+{
+    Std_ReturnType result;
+
+    *authenticatorLen /= 8;
+    result = Csm_MacGenerate(TxPduId, 0, DataToAuth, *DataToAuthLen, authenticatorPtr, authenticatorLen);
+
+    return result;
+}
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : authenticate                  *
+ * Function_Index       : SecOC internal                *
+ * Parameter in         : TxPduId                       *
+ * Parameter in         : AuthPdu                       *
+ * Parameter in/out     : SecPdu                        * 
+ * Function_Descripton  : This function generates the   *
+ * secured PDU using authenticator, payload, freshness  * 
+ *  value                                               *
+ *******************************************************/
+static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
+{
+    Std_ReturnType result;
+    
+    // Construct Data for Authenticator
+    uint8 DataToAuth[sizeof(TxPduId) + SECOC_SDATA_MAX + SECOC_FRESHNESS_MAX]; // CAN payload
+    uint32 DataToAuthLen = 0;
+    result = constructDataToAuthenticator(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
 
     // MAC generation
     uint8  authenticatorPtr[SECOC_MACLEN_MAX];
-    uint32  authenticatorLen = SECOC_AUTH_INFO_TRUNC_LENGTH / 8;
-    result = Csm_MacGenerate(TxPduId, 0, DataToAuth, DataToAuthLen, authenticatorPtr, &authenticatorLen);
+    uint32  authenticatorLen = SECOC_AUTH_INFO_TRUNC_LENGTH;
+    result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
-    if(result != E_OK)
-    {
-        return result;
-    }
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_CAN_DATAFRAME_MAX;
