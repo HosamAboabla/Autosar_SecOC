@@ -70,6 +70,30 @@ void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID);
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
+ * Function_Name        : SecOC_CopyTxData              *
+ * Function_Index       : 8.4.7 [SWS_SecOC_00129]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called to    *
+ * acquire the transmit data of an I-PDU segment (N-PDU)*
+ * Each call to this function provides the next part of *
+ * the I-PDU data unless retry->Tp DataState is         *
+ * TP_DATARETRY. In this case the function restarts to  *
+ * copy the data beginning at the offset from the       *
+ * current position indicated by retry->TxTpDataCnt.    *
+ * The size of the remaining data is written to the     *
+ * position indicated by availableDataPtr.              *
+ *******************************************************/
+BufReq_ReturnType SecOC_CopyTxData (
+    PduIdType id,
+    const PduInfoType* info,
+    const RetryInfoType* retry,
+    PduLengthType* availableDataPtr
+);
+
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
  * Function_Name        : SecOC_GetTxFreshnessTruncData *
  * Function_Index       : 8.5.4 [SWS_SecOC_91003]       *
  * Function_File        : SWS of SecOC                  *

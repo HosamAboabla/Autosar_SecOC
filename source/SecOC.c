@@ -113,6 +113,75 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
 
 
 
+BufReq_ReturnType SecOC_CopyTxData (PduIdType id,const PduInfoType* info,
+const RetryInfoType* retry, PduLengthType* availableDataPtr)
+{
+    BufReq_ReturnType result = BUFREQ_OK;
+    static PduLengthType bufferRemainIndex = 0;
+    PduLengthType remainingBytes = SECOC_BUFFERLENGTH - bufferRemainIndex;
+    /* - Check if there is data in the buffer to be copy */
+    if(SecOC_Buffer[id].SduLength > 0)
+    {
+        if(info->SduLength <= remainingBytes)
+        {
+            if(info->SduLength == 0)
+            {
+                /* Querey amount of avalible data in upperlayer */
+                *availableDataPtr = remainingBytes;
+            }
+            else
+            {
+                if(retry != NULL)
+                {
+                    switch (retry->TpDataState)
+                    {
+                        case TP_DATACONF:
+
+                            /* indicates that all data that has been copied before this call is confirmed and 
+                            can be removed from the TP buffer. Data copied by this API call is excluded and will be confirmed later */
+                            memcpy(info->SduDataPtr, SecOC_Buffer[id].SduDataPtr + bufferRemainIndex, info->SduLength);
+                            bufferRemainIndex += info->SduLength;
+                            remainingBytes -= info->SduLength;
+                            break;
+                        case TP_CONFPENDING:
+                            /* the previously copied data must remain in the TP buffer to be available for error recovery */
+                            /* do nothing */
+                            memcpy(info->SduDataPtr, SecOC_Buffer[id].SduDataPtr + bufferRemainIndex - info->SduLength, info->SduLength);
+                            break;
+                        case TP_DATARETRY:
+                            /* indicates that this API call shall copy previously copied data in order to recover from an error. 
+                            In this case TxTpDataCnt specifies the offset in bytes from the current data copy position */
+                            memcpy(info->SduDataPtr, SecOC_Buffer[id].SduDataPtr + bufferRemainIndex - retry->TxTpDataCnt, info->SduLength);
+                            break;
+                        default:
+                            result = BUFREQ_E_NOT_OK;
+                        break;  
+                    }
+                }
+                else
+                {
+                    /* Copy data then remove from the buffer */
+                    memcpy(info->SduDataPtr, SecOC_Buffer[id].SduDataPtr + bufferRemainIndex, info->SduLength);
+                    bufferRemainIndex += info->SduLength;
+                }
+                *availableDataPtr = remainingBytes;
+            }
+        }
+        else
+        {
+            result = BUFREQ_E_BUSY;
+        }
+    }
+    else
+    {
+        result = BUFREQ_E_NOT_OK;
+    }
+    
+    return result;
+}
+
+
+
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
     SecOC_GetTxFreshnessCalloutType PTR = (SecOC_GetTxFreshnessCalloutType)FVM_GetTxFreshness;
