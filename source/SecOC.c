@@ -191,7 +191,7 @@ extern void SecOC_MainFunctionTx(void) {
     }
 }
 
-
+extern SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLaye;
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
     if (result == E_OK) {
@@ -200,7 +200,20 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
         SecOC_Buffer[TxPduId].SduDataPtr = NULL;
         SecOC_Buffer[TxPduId].SduLength = 0;
     }
-    PduR_SecOCIfTxConfirmation(TxPduId, result);
+
+    if (SecOC_TxAuthenticPduLaye.SecOCPduType == SECOC_TPPDU)
+    {
+        PduR_SecOCTpTxConfirmation(TxPduId, result);
+    }
+    else if (SecOC_TxAuthenticPduLaye.SecOCPduType == SECOC_IFPDU)
+    {
+        PduR_SecOCIfTxConfirmation(TxPduId, result);
+    }
+    else
+    {
+        // DET Report Error
+    }
+
 }
 
 // #if (SECOC_USE_TX_CONFIRMATION == 1)
