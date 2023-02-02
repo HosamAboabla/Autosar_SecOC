@@ -289,32 +289,8 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     return result;
 }
 */
-#include <stdio.h>
+
 void SecOC_test()
 {
-    //FVM_IncreaseCounter(0, 100);
-   // uint8_t adata[100] = "hello, world";
-    uint8_t adata[100] = {0, 1, 2, 3, 9, 5, 6, 7, 8, 9, 10, 11, 12};
-    uint8_t sdata[100];
-    PduInfoType AuthPdu, SecPdu;
-    AuthPdu.SduDataPtr = adata;
-    AuthPdu.SduLength = SECOC_AUTHPDU_MAX_LENGTH;
-    SecPdu.SduDataPtr = sdata;
-    SecPdu.SduLength = SECOC_SECPDU_MAX_LENGTH;
-    
-    // Changing parameters: Authentic I-PDU(constant for now), Freshness Value, Authenticator
-    SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength = 32;
-    SecOC_TxPduProcessing.SecOCAuthInfoTruncLength = 64; // BITS
-
-    for(int i = 0; i < AuthPdu.SduLength; i++)
-        printf("%d ", AuthPdu.SduDataPtr[i]);
-    printf("\n");
-
-    authenticate(0, &AuthPdu, &SecPdu);
-
-    for(int i = 0; i < SecPdu.SduLength; i++)
-        printf("%d ", SecPdu.SduDataPtr[i]);
-    printf("\n");
-    printf("done");
     
 }
