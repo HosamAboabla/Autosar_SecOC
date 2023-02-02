@@ -15,3 +15,9 @@ Std_ReturnType success_flag =0;//check if the message reached the distination or
 		result = E_NOT_OK;
 	}
 }
+
+
+void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{
+	printf("Recived message Id = %d, data = %s", RxPduId , PduInfoPtr->SduDataPtr);
+}
