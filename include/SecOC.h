@@ -10,6 +10,13 @@
 #include <stdint.h>
 #include "Det.h"
 
+
+// Derived configuration
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 4)
+#define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
+#define SECOC_AUTHENTICATOR_MAX_LENGTH                                  ((uint8)32)
+#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESSVALUE_TRUNCLENGTH + SECOC_TX_AUTH_INFO_TRUNC_LENGTH / 8)
+
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
     const PduInfoType*         PduInfoPtr
