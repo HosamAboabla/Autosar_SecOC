@@ -26,7 +26,7 @@ static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 #define SECOC_FRESHNESS_MAX     ((uint8)16)
 #define SECOC_MACLEN_MAX        ((uint8)32)
 
-#define AUTH_SECOC_PDU_MAX_LENGTH    ((uint8)4)
+#define SECOC_AUTHPDU_MAX_LENGTH    ((uint8)4)
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -202,7 +202,7 @@ extern void SecOC_MainFunctionTx(void) {
 //     }
 // #endif
 
-/*
+
 #define MAX_COUNTER_FRESHNESS_IDS   10
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
@@ -213,7 +213,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     {
         result = E_NOT_OK;
     }
-    else if (SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
+    else if ((*SecOCTruncatedFreshnessValueLength) > SECOC_MAX_FRESHNESS_SIZE) 
     {
         result = E_NOT_OK;
     }
@@ -228,7 +228,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
-*/
+
 // header - auth_data - Freshness - MAC
 Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
 {
@@ -238,7 +238,7 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     uint32 SecOCFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueLength;
     uint8 SecOCFreshnessValue[BIT_TO_BYTES(SecOCFreshnessValueLength)];
 
-    uint8 DataToAuth[sizeof(SecOCRxPduProcessing->SecOCDataId) + AUTH_SECOC_PDU_MAX_LENGTH + (SECOC_RX_FRESHNESS_VALUE_LENGTH/8 + 1 )] = {0};  // CAN payload
+    uint8 DataToAuth[sizeof(SecOCRxPduProcessing->SecOCDataId) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_RX_FRESHNESS_VALUE_LENGTH/8 + 1 )] = {0};  // CAN payload
     uint32 DataToAuthLen = 0;
 
     //copy the Id to buffer Data to Auth
@@ -248,8 +248,8 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     printf("id = %d & len = %d\n",SecOCRxPduProcessing->SecOCDataId,sizeof(SecOCRxPduProcessing->SecOCDataId));
 
     // copy the data to buffer Data to Auth
-    memcpy(&DataToAuth[DataToAuthLen], (SecPdu->SduDataPtr), AUTH_SECOC_PDU_MAX_LENGTH);
-    DataToAuthLen += AUTH_SECOC_PDU_MAX_LENGTH;
+    memcpy(&DataToAuth[DataToAuthLen], (SecPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
+    DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
 
 
     for(uint8 i =0 ;i<DataToAuthLen;i++)
@@ -259,21 +259,22 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     }
     printf("\n");
 
-    // // const uint8* SecOCTruncatedFreshnessValue = SecPdu->SduDataPtr+AUTH_SECOC_PDU_MAX_LENGTH;
-    // // uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueTruncLength;
-    // // Std_ReturnType Freshness_result;
-    // // uint16 authVeriAttempts;
+    // const uint8* SecOCTruncatedFreshnessValue = SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH;
+    // uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueTruncLength;
+    // Std_ReturnType Freshness_result;
+    // uint16 authVeriAttempts = 0;
+    Std_ReturnType Freshness_result = E_NOT_OK;
 
-    // // Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing->SecOCFreshnessValueId,
-    // // SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
-    // // SecOCFreshnessValue, &SecOCFreshnessValueLength);
+    // Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing->SecOCFreshnessValueId,
+    // SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
+    // SecOCFreshnessValue, &SecOCFreshnessValueLength);
 
     // // copy the freshness value to buffer Data to Auth
     // // memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
     // // DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));    
     
     // copy mac from secured data to MAC buffer
-    memcpy(mac, (SecPdu->SduDataPtr+AUTH_SECOC_PDU_MAX_LENGTH), BIT_TO_BYTES(mac_length_bit));
+    memcpy(mac, (SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH), BIT_TO_BYTES(mac_length_bit));
 
     for(uint8 i=0;i<BIT_TO_BYTES(mac_length_bit);i++)
     {
@@ -285,23 +286,33 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
 
-    Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing->SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
-    if (Mac_verify == E_OK) 
+    if(Freshness_result == E_OK)
     {
-        *verification_result = CRYPTO_E_VER_OK;
-        SecPdu->SduLength = AUTH_SECOC_PDU_MAX_LENGTH;
-        result = SECOC_VERIFICATIONSUCCESS;
-        printf("success\n");
-        for(int i =0; i<SecPdu->SduLength; i++)
-            printf("%d",*(SecPdu->SduDataPtr+i));
-        printf("\n");
+        Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing->SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
+        if (Mac_verify == E_OK) 
+        {
+            *verification_result = CRYPTO_E_VER_OK;
+            SecPdu->SduLength = SECOC_AUTHPDU_MAX_LENGTH;
+            result = SECOC_VERIFICATIONSUCCESS;
+            printf("success MAC\n");
+            for(int i =0; i<SecPdu->SduLength; i++)
+                printf("%d",*(SecPdu->SduDataPtr+i));
+            printf("\n");
+        }
+        else 
+        {
+            // drop message
+            SecPdu->SduDataPtr = NULL;
+            *verification_result = CRYPTO_E_VER_NOT_OK;
+            result = SECOC_VERIFICATIONFAILURE;
+            printf("Failed MAC\n");
+        }
     }
-    else 
+    else
     {
-        *verification_result = CRYPTO_E_VER_NOT_OK;
+        // drop message
         result = SECOC_VERIFICATIONFAILURE;
-        printf("Failed");
-
+        printf("freshness fail\n");
     }
     return result;
 }
