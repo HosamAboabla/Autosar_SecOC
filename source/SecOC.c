@@ -263,7 +263,7 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     // uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueTruncLength;
     // Std_ReturnType Freshness_result;
     // uint16 authVeriAttempts = 0;
-    Std_ReturnType Freshness_result = E_NOT_OK;
+    Std_ReturnType Freshness_result = E_OK;
 
     // Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing->SecOCFreshnessValueId,
     // SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
@@ -303,6 +303,7 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
         {
             // drop message
             SecPdu->SduDataPtr = NULL;
+            SecPdu->SduLength = 0;
             *verification_result = CRYPTO_E_VER_NOT_OK;
             result = SECOC_VERIFICATIONFAILURE;
             printf("Failed MAC\n");
@@ -311,6 +312,8 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     else
     {
         // drop message
+        SecPdu->SduDataPtr = NULL;
+        SecPdu->SduLength = 0;
         result = SECOC_VERIFICATIONFAILURE;
         printf("freshness fail\n");
     }
