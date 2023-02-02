@@ -54,8 +54,8 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
     *DataToAuthLen += AuthPdu->SduLength;
     
     // Complete Freshness Value
-    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] ={0};
-    uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueLength * 8;
+    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
+    uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueLength;
 
     result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
     if(result != E_OK)
@@ -88,7 +88,6 @@ static Std_ReturnType generateMAC(const PduIdType TxPduId, uint8 const *DataToAu
 {
     Std_ReturnType result;
 
-    *authenticatorLen = BIT_TO_BYTES(*authenticatorLen);
     result = Csm_MacGenerate(TxPduId, 0, DataToAuth, *DataToAuthLen, authenticatorPtr, authenticatorLen);
 
     return result;
@@ -115,21 +114,40 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32 DataToAuthLen = 0;
     result = constructDataToAuthenticator(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
 
-    // MAC generation
+    // Authenticator generation
     uint8  authenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
-    uint32  authenticatorLen = SecOC_TxPduProcessing.SecOCAuthInfoTruncLength ;
+    uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
 
-    // SECURED = HEADER(OPTIONAL) + AuthPdu + FreshnessValue(OPTIONAL) + Authenticator
+    // Truncated freshness value
+    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH] = {0};
+    uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength;
+    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+
+    uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength);
+
+    // SECURED = HEADER(OPTIONAL) + AuthPdu + TruncatedFreshnessValue(OPTIONAL) + Authenticator
+    PduLengthType SecPduLen = 0;
+
+    // AuthPdu
     memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, AuthPdu->SduLength);
-    memcpy(&SecPdu->SduDataPtr[AuthPdu->SduLength], authenticatorPtr, authenticatorLen);        
+    SecPduLen += AuthPdu->SduLength;
 
+    // TruncatedFreshnessValue
+    memcpy(&SecPdu->SduDataPtr[SecPduLen], FreshnessVal, FreshnesslenBytes);
+    SecPduLen += FreshnesslenBytes;
 
-   return result;
+    // Authenticator
+    memcpy(&SecPdu->SduDataPtr[SecPduLen], authenticatorPtr, authenticatorLen);
+    SecPduLen += authenticatorLen;
+    
+    SecPdu->SduLength = SecPduLen;
+
+    return result;
 }
 
 
@@ -274,8 +292,9 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 #include <stdio.h>
 void SecOC_test()
 {
+    //FVM_IncreaseCounter(0, 100);
    // uint8_t adata[100] = "hello, world";
-    uint8_t adata[100] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    uint8_t adata[100] = {0, 1, 2, 3, 9, 5, 6, 7, 8, 9, 10, 11, 12};
     uint8_t sdata[100];
     PduInfoType AuthPdu, SecPdu;
     AuthPdu.SduDataPtr = adata;
@@ -283,6 +302,10 @@ void SecOC_test()
     SecPdu.SduDataPtr = sdata;
     SecPdu.SduLength = SECOC_SECPDU_MAX_LENGTH;
     
+    // Changing parameters: Authentic I-PDU(constant for now), Freshness Value, Authenticator
+    SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength = 32;
+    SecOC_TxPduProcessing.SecOCAuthInfoTruncLength = 64; // BITS
+
     for(int i = 0; i < AuthPdu.SduLength; i++)
         printf("%d ", AuthPdu.SduDataPtr[i]);
     printf("\n");
