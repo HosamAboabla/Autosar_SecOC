@@ -119,16 +119,10 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
-    // Create secured IPDU SECURED = HEADER(OPTIONAL) + AuthPdu + TruncatedFreshnessValue(OPTIONAL) + Authenticator
-
+    // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
-    SecPdu->SduLength = 0;
+    SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
 
-     // AuthPdu
-    memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, AuthPdu->SduLength);
-    SecPdu->SduLength += AuthPdu->SduLength;
-
-#if SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH > 0
     // Truncated freshness value
     uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength;
@@ -136,14 +130,22 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength);
 
-    memcpy(&SecPdu->SduDataPtr[SecPdu->SduLength], FreshnessVal, FreshnesslenBytes);
-    SecPdu->SduLength += FreshnesslenBytes;
-#endif
+    // SECURED = HEADER(OPTIONAL) + AuthPdu + TruncatedFreshnessValue(OPTIONAL) + Authenticator
+    PduLengthType SecPduLen = 0;
+
+    // AuthPdu
+    memcpy(SecPdu->SduDataPtr, AuthPdu->SduDataPtr, AuthPdu->SduLength);
+    SecPduLen += AuthPdu->SduLength;
+
+    // TruncatedFreshnessValue
+    memcpy(&SecPdu->SduDataPtr[SecPduLen], FreshnessVal, FreshnesslenBytes);
+    SecPduLen += FreshnesslenBytes;
 
     // Authenticator
-    memcpy(&SecPdu->SduDataPtr[SecPdu->SduLength], authenticatorPtr, authenticatorLen);
-    SecPdu->SduLength += authenticatorLen;
+    memcpy(&SecPdu->SduDataPtr[SecPduLen], authenticatorPtr, authenticatorLen);
+    SecPduLen += authenticatorLen;
     
+    SecPdu->SduLength = SecPduLen;
 
     return result;
 }
@@ -290,5 +292,5 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
 
 void SecOC_test()
 {
-
+    
 }
