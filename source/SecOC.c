@@ -192,9 +192,15 @@ extern void SecOC_MainFunctionTx(void) {
 }
 
 
-void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result)
+void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
-    PduR_SecOCIfTxConfirmation(id, result);
+    if (result == E_OK) {
+        // clear buffer
+        SecOC_Buffer[TxPduId].MetaDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduLength = 0;
+    }
+    PduR_SecOCIfTxConfirmation(TxPduId, result);
 }
 
 // #if (SECOC_USE_TX_CONFIRMATION == 1)
