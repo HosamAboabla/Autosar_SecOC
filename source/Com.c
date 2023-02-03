@@ -7,7 +7,6 @@ Std_ReturnType success_flag =0;//check if the message reached the distination or
 
  void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
  {
-	printf("returned result %d\n" , result);
 	if(success_flag)
     {
 		result = E_OK;	
