@@ -90,6 +90,7 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
+
  * Function_Name        : SecOC_GetRxFreshness          *
  * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
  * Function_File        : SWS of SecOC                  *
@@ -105,6 +106,17 @@ Std_ReturnType SecOC_GetRxFreshness(
     uint32* SecOCFreshnessValueLength 
 
 );
+/*
+ * Function_Name        : SecOC_TpTxConfirmation        *
+ * Function_Index       : 8.4.4                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called after *
+ * the I-PDU has been transmitted on its network, the   *
+ * result indicates whether the transmission was        *
+ * successful or not.                                   *
+ *******************************************************/
+void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
+
 
 
 

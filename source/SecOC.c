@@ -25,6 +25,10 @@ static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 #define SECOC_FRESHNESS_MAX     ((uint8)16)
 #define SECOC_MACLEN_MAX        ((uint8)32)
 
+
+
+
+extern SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer;
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -192,8 +196,29 @@ extern void SecOC_MainFunctionTx(void) {
     }
 }
 
+void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
+{
+    if (result == E_OK) {
+        // clear buffer
+        SecOC_Buffer[TxPduId].MetaDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduLength = 0;
+    }
 
+    if (SecOC_TxAuthenticPduLayer.SecOCPduType == SECOC_TPPDU)
+    {
+        PduR_SecOCTpTxConfirmation(TxPduId, result);
+    }
+    else if (SecOC_TxAuthenticPduLayer.SecOCPduType == SECOC_IFPDU)
+    {
+        PduR_SecOCIfTxConfirmation(TxPduId, result);
+    }
+    else
+    {
+        // DET Report Error
+    }
 
+}
 
 // #if (SECOC_USE_TX_CONFIRMATION == 1)
 //     void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
