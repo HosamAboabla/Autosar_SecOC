@@ -13,10 +13,11 @@ static uint32 Freshness_Counter_length [ID_MAX] = {0};
         Can be replaced by --> uint8 len = ceil(log2(counterTemp.counter))*/
 uint8 countBits(uint8 n) {
     uint8 count = 0;
-    while (n > 0)
+    uint8 n_=n;
+    while (n_ > 0)
     {
         count++;
-        n >>= 1;
+        n_ >>= 1;
     }
     return count;
 }
@@ -39,7 +40,7 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
     for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
         if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
-            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + INDEX * 8;
+            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) +(INDEX * 8);
             break;
         }
     }
@@ -103,7 +104,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecO
         and the SecOCFreshnessValueLength is buffer of freshness */
         /* Valid the Truncated Freshness Value */
         uint16 num_attempts=SecOCAuthVerifyAttempts;
-        for(;num_attempts>0;num_attempts--)
+        for(;num_attempts>0;)
         {
             for (FreshnessCounterIndex = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - 1 ; (FreshnessCounterIndex > counterTruncMax) && (TrancatedCounter < BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength)); FreshnessCounterIndex --)
             {
@@ -115,6 +116,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecO
                 }
                 TrancatedCounter++;
             }
+            num_attempts--;
         }
 
         /* Get the Current Value from Freshness counter */
