@@ -43,7 +43,15 @@ void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 }
 
 
+
 void PduR_SecOCIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
    Com_RxIndication(RxPduId, PduInfoPtr);
+}
+
+
+void PduR_SecOCTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+	// Com_TxConfirmation(TxPduId, result);
+   Dcm_TpTxConfirmation(TxPduId, result);
 }
