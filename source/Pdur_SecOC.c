@@ -41,3 +41,9 @@ void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
 	Com_TxConfirmation(TxPduId, result);
 }
+
+void PduR_SecOCTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+	// Com_TxConfirmation(TxPduId, result);
+   Dcm_TpTxConfirmation(TxPduId, result);
+}
