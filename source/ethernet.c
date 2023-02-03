@@ -1,5 +1,6 @@
 #include "ethernet.h"
 
+
 Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
     // create a socket
     int network_sockect;
@@ -23,6 +24,7 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
     // close the connection
     close(network_sockect);
     return E_OK;
+
 }
 
 Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen)
