@@ -1,0 +1,69 @@
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_a6fda/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_a6fda.dir/build.make CMakeFiles/cmTC_a6fda.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_a6fda.dir/CMakeCCompilerABI.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_a6fda/fast] Error 2
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_e2b7e/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_e2b7e.dir/build.make CMakeFiles/cmTC_e2b7e.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_e2b7e.dir/testCCompiler.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_e2b7e/fast] Error 2
+
+
+
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_7861e/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_7861e.dir/build.make CMakeFiles/cmTC_7861e.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_7861e.dir/CMakeCCompilerABI.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_7861e/fast] Error 2
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_181da/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_181da.dir/build.make CMakeFiles/cmTC_181da.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_181da.dir/testCCompiler.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_181da/fast] Error 2
+
+
+
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_5d2be/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_5d2be.dir/build.make CMakeFiles/cmTC_5d2be.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_5d2be.dir/CMakeCCompilerABI.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_5d2be/fast] Error 2
+
+
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/WinAVR-20100110/utils/bin/make.exe -f Makefile cmTC_34da5/fast && C:/WinAVR-20100110/utils/bin/make.exe  -f CMakeFiles/cmTC_34da5.dir/build.make CMakeFiles/cmTC_34da5.dir/build
+make.exe[1]: Entering directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe[1]: *** [CMakeFiles/cmTC_34da5.dir/testCCompiler.c.obj] Error -1073741502
+make.exe[1]: Leaving directory `F:/graduation_project/Autosar_SecOC/build/CMakeFiles/CMakeTmp'
+make.exe: *** [cmTC_34da5/fast] Error 2
+
+
+

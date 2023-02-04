@@ -31,6 +31,16 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 void SecOC_Init(const SecOC_ConfigType *config);
 
 
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_RxIndication            *
+ * Function_Index       : 8.4.1 [SWS_SecOC_00124]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : Indication of a received PDU  *
+ * from a lower layer communication interface module.   *
+ ***************************************************/
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
 /********************************************************
  *          * Function Info *                           *
@@ -92,6 +102,22 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint8* SecOCTruncatedFreshnessValue,
     uint32* SecOCTruncatedFreshnessValueLength
 );
+
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TpTxConfirmation        *
+ * Function_Index       : 8.4.4                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called after *
+ * the I-PDU has been transmitted on its network, the   *
+ * result indicates whether the transmission was        *
+ * successful or not.                                   *
+ *******************************************************/
+void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
+
+
 
 #define SECOC_E_UNINIT 					0x02
 

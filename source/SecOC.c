@@ -18,15 +18,15 @@
 extern SecOC_TxPduProcessingType SecOC_TxPduProcessing;
 
 static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
-/*
-#define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
-#define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTH_INFO_TRUNC_LENGTH / 8)))
 
-#define SECOC_SDATA_MAX         ((uint8)4)
-#define SECOC_FRESHNESS_MAX     ((uint8)16)
-#define SECOC_MACLEN_MAX        ((uint8)32)
-*/
+PduInfoType SecOC_Buffer_Rx[SECOC_BUFFERLENGTH] = { {NULL, 0}};
 
+
+
+
+
+
+extern SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer;
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -253,14 +253,43 @@ extern void SecOC_MainFunctionTx(void) {
     }
 }
 
+void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
+{
+    if (result == E_OK) {
+        // clear buffer
+        SecOC_Buffer[TxPduId].MetaDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduDataPtr = NULL;
+        SecOC_Buffer[TxPduId].SduLength = 0;
+    }
 
+    if (SecOC_TxAuthenticPduLayer.SecOCPduType == SECOC_TPPDU)
+    {
+        PduR_SecOCTpTxConfirmation(TxPduId, result);
+    }
+    else if (SecOC_TxAuthenticPduLayer.SecOCPduType == SECOC_IFPDU)
+    {
+        PduR_SecOCIfTxConfirmation(TxPduId, result);
+    }
+    else
+    {
+        // DET Report Error
+    }
 
+}
 
 // #if (SECOC_USE_TX_CONFIRMATION == 1)
 //     void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID) {
 //         /* Specific User's Code need to be written here*/
 //     }
 // #endif
+
+
+
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{   /* The SecOC copies the Authentic I-PDU to its own buffer */
+    if (RxPduId < SECOC_BUFFERLENGTH) SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr;
+}
+
 
 /*
 #define MAX_COUNTER_FRESHNESS_IDS   10
