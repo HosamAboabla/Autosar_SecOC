@@ -18,6 +18,7 @@
 
 static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
+PduInfoType SecOC_Buffer_Rx[SECOC_BUFFERLENGTH] = { {NULL, 0}};
 #define SECOC_CAN_DATAFRAME_MAX ((uint8)8)
 #define SECOC_CAN_DATA_MAX      ((uint16)(SECOC_CAN_DATAFRAME_MAX - (SECOC_AUTH_INFO_TRUNC_LENGTH / 8)))
 
@@ -224,6 +225,14 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 //         /* Specific User's Code need to be written here*/
 //     }
 // #endif
+
+
+
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{   /* The SecOC copies the Authentic I-PDU to its own buffer */
+    if (RxPduId < SECOC_BUFFERLENGTH) SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr;
+}
+
 
 /*
 #define MAX_COUNTER_FRESHNESS_IDS   10

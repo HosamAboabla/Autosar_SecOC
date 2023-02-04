@@ -450,8 +450,9 @@
 #define SECOC_FRESHNESS_VALUE_TRUNC_LENGTH                          ((uint8 ) 0)
 #define SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE                  ((boolean) 0)
 #define SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT                ((boolean) 1)
-#define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8 ) 0)
-#define SECOC_USE_TX_CONFIRMATION                                   ((boolean)0)
+#define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8) 0)
+#define SECOC_USE_TX_CONFIRMATION                                   (0)
+
 //                                                  SecOCSameBufferPduRef;
 //                                                  SecOCTxAuthServiceConfigRef
 //                                                  SecOCTxPduMainFunctionRef;
