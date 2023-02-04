@@ -94,40 +94,51 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecO
         result = E_NOT_OK;
     } else 
     {
-
         uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID])?(FreshnessValueLengthBytes):(Freshness_Counter_length[SecOCFreshnessValueID]);
         uint32 FreshnessIndex = FreshnessValueLengthBytes- 1;
         uint32 FreshnessCounterIndex;
         uint32 TrancatedCounter = 0;
-        uint32 counterTruncMax =  BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength); 
+        uint32 counterTruncMax =  BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
+        uint32 truncedfreshnesslength=BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength); 
         /* Assume that the buffer of truncated is its truncated length 
         and the SecOCFreshnessValueLength is buffer of freshness */
         /* Valid the Truncated Freshness Value */
-        uint16 num_attempts=SecOCAuthVerifyAttempts;
-        for(;num_attempts>0;)
+        // uint16 num_attempts=SecOCAuthVerifyAttempts;
+        for (FreshnessCounterIndex = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - 1 ; (FreshnessCounterIndex > counterTruncMax) && (TrancatedCounter < BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength)); FreshnessCounterIndex --)
         {
-            for (FreshnessCounterIndex = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - 1 ; (FreshnessCounterIndex > counterTruncMax) && (TrancatedCounter < BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength)); FreshnessCounterIndex --)
+            if(SecOCTruncatedFreshnessValue[TrancatedCounter] != Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex])
             {
-                if(SecOCTruncatedFreshnessValue[TrancatedCounter] != Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex])
-                {
-                    /* Not Sure */
-                    result =  E_NOT_OK;
-                    break;
-                }
-                TrancatedCounter++;
+                /* Not Sure */
+                result =  E_NOT_OK;
+                break;
             }
-            num_attempts--;
+            TrancatedCounter++;
         }
-
-        /* Get the Current Value from Freshness counter */
+        // num_attempts--;
+        
+        /* Get the Current Value from Freshness counter if the message is fresh */
+        // if(result==E_OK)
+        // {
+        //     for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
+        //     {
+        //         SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
+        //         FreshnessIndex--;
+        //     }
+        //     /* Update Length */
+        //     *SecOCFreshnessValueLength = AcctualFreshnessVallength; 
+        // }
+            /* Get the Current Value from the  */
         if(result==E_OK)
         {
-            for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
+            for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < counterTruncMax);FreshnessCounterIndex++) 
             {
                 SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
                 FreshnessIndex--;
             }
-            /* Update Length */
+            for (uint32 truncedfrshnessindex = 0; (truncedfrshnessindex <truncedfreshnesslength);truncedfrshnessindex++) 
+            {
+                SecOCFreshnessValue[truncedfrshnessindex] = SecOCTruncatedFreshnessValue[TrancatedCounter];
+            }
             *SecOCFreshnessValueLength = AcctualFreshnessVallength; 
         }
     }
