@@ -291,7 +291,7 @@ void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 }
 
 
-/*
+
 #define MAX_COUNTER_FRESHNESS_IDS   10
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
@@ -302,7 +302,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     {
         result = E_NOT_OK;
     }
-    else if (SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
+    else if (*SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
     {
         result = E_NOT_OK;
     }
@@ -317,7 +317,7 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     }
     return result;
 }
-*/
+
 
 void SecOC_test()
 {
