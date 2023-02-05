@@ -102,26 +102,27 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
     {
         /* The FVM module shall construct Freshness Verify Value (i.e. the Freshness Value to be used for Verification) and
          provide it to SecOC */
-        uint32 ActualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (FreshnessValueLengthBytes) : (Freshness_Counter_length[SecOCFreshnessValueID]);
-        uint32 FreshnessIndex = FreshnessValueLengthBytes - 1;
+        //uint32 ActualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (FreshnessValueLengthBytes) : (Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 ActualFreshnessVallength = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 FreshnessIndex = ActualFreshnessVallength - 1;
         uint32 TrancatedCounterIndex = 0;
         uint32 counterTruncMax = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength) - 1;
         uint32 truncedFreshnessLength = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
         uint32 truncedFreshnessIndex = truncedFreshnessLength - 1;
         uint32 MSBsCounterIndex = truncedFreshnessLength;
 
-        if (ActualFreshnessVallength == SecOCTruncatedFreshnessValueLength)
+        if (ActualFreshnessVallength == truncedFreshnessLength)
         {
-            memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, truncedFreshnessLength);
+            memcpy(SecOCFreshnessValue + ActualFreshnessVallength - truncedFreshnessLength, SecOCTruncatedFreshnessValue, truncedFreshnessLength);
         }
         else
         {
             SecOCAuthVerifyAttempts = 0;
-            if (SecOCTruncatedFreshnessValue[TrancatedCounterIndex] > Freshness_Counter[SecOCFreshnessValueID][truncedFreshnessLength - 1])
+            if (SecOCTruncatedFreshnessValue[TrancatedCounterIndex] > Freshness_Counter[SecOCFreshnessValueID][truncedFreshnessIndex])
             {
                 /* most significant bits of FreshnessValue corresponding to reshnessValueID |
                 FreshnessValue parsed from Secured I-PDU */
-                for (; FreshnessIndex > (ActualFreshnessVallength - counterTruncMax); FreshnessIndex--)
+                for (; FreshnessIndex >= (ActualFreshnessVallength - MSBsCounterIndex); FreshnessIndex--)
                 {
                     SecOCFreshnessValue[FreshnessIndex] = SecOCTruncatedFreshnessValue[truncedFreshnessIndex];
                     truncedFreshnessIndex--;
@@ -136,7 +137,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             {
                 /*  most significant bits of FreshnessValue corresponding to SecOCFreshnessValueID + 1 |
                 FreshnessValue parsed from payload */
-                for (; FreshnessIndex > (ActualFreshnessVallength - counterTruncMax); FreshnessIndex--)
+                 for (; FreshnessIndex >= (ActualFreshnessVallength - MSBsCounterIndex); FreshnessIndex--)
                 {
                     SecOCFreshnessValue[FreshnessIndex] = SecOCTruncatedFreshnessValue[truncedFreshnessIndex];
                     truncedFreshnessIndex--;
@@ -156,11 +157,25 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     FreshnessIndex--;
                 }
             }
+            *SecOCFreshnessValueLength = ActualFreshnessVallength * 8;
         }
         /* verified that the constructed FreshnessVerifyValue is larger than the last stored notion of the Freshness Value */
-        
-
-        /* If it is not larger than the last stored notion of the Freshness Value, the FVM shall stop the verification and drop the Secured I-PDU */
-    }
+        /* If it is not larger than the last stored notion of the Freshness Value,
+         the FVM shall stop the verification and drop the Secured I-PDU */
+        uint32 counterFreshness = 0;
+        for(FreshnessIndex = ActualFreshnessVallength - 1; FreshnessIndex >= 0; FreshnessIndex--)
+        {
+            if(SecOCFreshnessValue[counterFreshness] < Freshness_Counter[SecOCFreshnessValueID][FreshnessIndex])
+            {
+                result = E_NOT_OK;
+                break;
+            }
+            else if (SecOCFreshnessValue[counterFreshness] > Freshness_Counter[SecOCFreshnessValueID][FreshnessIndex])
+            {
+                break;
+            }
+            counterFreshness++;
+        }
+    }   
     return result;
 }
