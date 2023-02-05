@@ -1,6 +1,7 @@
 #include "PduR_SecOC.h"
 #include "Com.h"
 #include "CanIF.h"
+#include "Dcm.h"
 
 
 
@@ -40,4 +41,18 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
 void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
 	Com_TxConfirmation(TxPduId, result);
+}
+
+
+
+void PduR_SecOCIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{
+   Com_RxIndication(RxPduId, PduInfoPtr);
+}
+
+
+void PduR_SecOCTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+	// Com_TxConfirmation(TxPduId, result);
+   Dcm_TpTxConfirmation(TxPduId, result);
 }

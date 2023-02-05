@@ -12,5 +12,9 @@
 
 Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen);
 
+Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen);
+
+
+
 
 #endif
