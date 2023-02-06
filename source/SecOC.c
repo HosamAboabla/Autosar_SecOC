@@ -111,7 +111,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     Std_ReturnType result;
     
     // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
-    uint8 DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
+    uint8 DataToAuth[SECOC_DATA_TO_AUTHENTICATOR_LENGTH];
     uint32 DataToAuthLen = 0;
     result = constructDataToAuthenticator(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
 
@@ -319,37 +319,28 @@ uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* Se
     return result;
 }
 
-// header - auth_data - Freshness - MAC
-Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
+Std_ReturnType construct_RX_DataToAuthenticator(PduIdType TxPduId, PduInfoType* secPdu,SecOC_RxPduProcessingType *SecOCRxPduProcessing, uint8 *DataToAuth, uint32 *DataToAuthLen)
 {
-    uint32 mac_length_bit = SecOCRxPduProcessing->SecOCAuthInfoTruncLength;
-    uint8 mac[BIT_TO_BYTES(mac_length_bit)];
-
-    uint32 SecOCFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueLength;
-    uint8 SecOCFreshnessValue[BIT_TO_BYTES(SecOCFreshnessValueLength)];
-
-    uint8 DataToAuth[sizeof(SecOCRxPduProcessing->SecOCDataId) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_RX_FRESHNESS_VALUE_LENGTH/8 + 1 )] = {0};  // CAN payload
-    uint32 DataToAuthLen = 0;
-
-    //copy the Id to buffer Data to Auth
-    memcpy(&DataToAuth[DataToAuthLen], &SecOCRxPduProcessing->SecOCDataId, sizeof(SecOCRxPduProcessing->SecOCDataId));
-    DataToAuthLen += sizeof(SecOCRxPduProcessing->SecOCDataId);
-
-    printf("id = %d & len = %d\n",SecOCRxPduProcessing->SecOCDataId,sizeof(SecOCRxPduProcessing->SecOCDataId));
+    //*DataToAuthLen = 0;
+	//copy the Id to buffer Data to Auth
+    memcpy(&DataToAuth[*DataToAuthLen], &TxPduId, sizeof(TxPduId));
+    *DataToAuthLen += sizeof(TxPduId);	
+    printf("id = %d & len = %d\n",TxPduId,sizeof(TxPduId));
 
     // copy the data to buffer Data to Auth
-    memcpy(&DataToAuth[DataToAuthLen], (SecPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
-    DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
+    memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
+    *DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
 
-
-    for(uint8 i =0 ;i<DataToAuthLen;i++)
+    for(uint8 i =0 ;i<(*DataToAuthLen);i++)
     {
     	printf("%d",DataToAuth[i]);
     	fflush(stdin); fflush(stdout);
     }
     printf("\n");
 
-    // const uint8* SecOCTruncatedFreshnessValue = SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH;
+    // uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX_LENGTH;
+    // uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
+    // const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH);
     // uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueTruncLength;
     // Std_ReturnType Freshness_result;
     // uint16 authVeriAttempts = 0;
@@ -361,8 +352,20 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
 
     // // copy the freshness value to buffer Data to Auth
     // // memcpy(&DataToAuth[DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
-    // // DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));    
+    // // *DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));    
+    return Freshness_result;
+}
+
+// header - auth_data - Freshness - MAC
+Std_ReturnType verify(PduIdType TxPduId, PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
+{
+    uint8 DataToAuth[SECOC_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
+    uint32 DataToAuthLen = 0;
     
+    Std_ReturnType FV_result = construct_RX_DataToAuthenticator(TxPduId, SecPdu, SecOCRxPduProcessing, DataToAuth, &DataToAuthLen);
+
+    uint32 mac_length_bit = SecOCRxPduProcessing->SecOCAuthInfoTruncLength;
+    uint8 mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8] = {0};
     // copy mac from secured data to MAC buffer
     memcpy(mac, (SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH), BIT_TO_BYTES(mac_length_bit));
 
@@ -371,12 +374,12 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
     	printf("%d",mac[i]);
     	fflush(stdin); fflush(stdout);
     }
-    printf("\n");
+    printf("\n");    
 
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
 
-    if(Freshness_result == E_OK)
+    if(FV_result == E_OK)
     {
         Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing->SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
         if (Mac_verify == E_OK) 
@@ -387,7 +390,6 @@ Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPd
             printf("success MAC\n");
             for(int i =0; i<SecPdu->SduLength; i++)
                 printf("%d",*(SecPdu->SduDataPtr+i));
-            printf("\n");
         }
         else 
         {
@@ -419,7 +421,7 @@ void SecOC_test()
     // MAC
     uint8 csm[4]={228,222,90,23};
     uint32 MAC_Length = 4;
-    Csm_MacGenerate(10,0,x,MAX,MAC,&MAC_Length);
+    Csm_MacGenerate(20,0,x,MAX,MAC,&MAC_Length);
     for(int i =0 ; i<MAC_Length;i++)
     {
         printf("%d\t",MAC[i]);
@@ -448,5 +450,5 @@ void SecOC_test()
     SecOC_RxPduProcessing.SecOCFreshnessValueLength = SECOC_RX_FRESHNESS_VALUE_LENGTH;
     SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH;
     SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
-    verify(&SPDU, &SecOC_RxPduProcessing,&verify_);
+    verify(20,&SPDU, &SecOC_RxPduProcessing,&verify_);
 }
