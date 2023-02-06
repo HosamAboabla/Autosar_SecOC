@@ -12,10 +12,11 @@
 
 
 // Derived configuration
-#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 4)
-#define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
 #define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
-#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESSVALUE_TRUNCLENGTH + SECOC_TX_AUTH_INFO_TRUNC_LENGTH / 8)
+#define SECOC_FRESHNESS_MAX_LENGTH                                  ((uint8)16)
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32)4)
+#define SECOC_DATA_TO_AUTHENTICATOR_LENGTH                          (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESS_MAX_LENGTH)
+#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESS_MAX_LENGTH / 8 + SECOC_AUTHENTICATOR_MAX_LENGTH / 8)
 
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
@@ -89,6 +90,7 @@ uint32* SecOCFreshnessValueLength);
 
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
+Std_ReturnType construct_RX_DataToAuthenticator(PduIdType TxPduId, PduInfoType* secPdu,SecOC_RxPduProcessingType *SecOCRxPduProcessing, uint8 *DataToAuth, uint32 *DataToAuthLen);
 
 /*******************************************************
  *          * Function Info *                           *
@@ -99,7 +101,7 @@ uint32* SecOCFreshnessValueLength);
  * Function_Descripton  : Verification of I-PDUs        *
  *******************************************************/
 
-Std_ReturnType verify( PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result);
+Std_ReturnType verify(PduIdType TxPduId, PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result);
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
