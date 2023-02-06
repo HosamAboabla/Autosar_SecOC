@@ -15,7 +15,7 @@
 #define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
 #define SECOC_FRESHNESS_MAX_LENGTH                                  ((uint8)16)
 #define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32)4)
-#define SECOC_DATA_TO_AUTHENTICATOR_LENGTH                          (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESS_MAX_LENGTH)
+#define SECOC_DATA_TO_AUTHENTICATOR_LENGTH                          (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESS_MAX_LENGTH / 8)
 #define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESS_MAX_LENGTH / 8 + SECOC_AUTHENTICATOR_MAX_LENGTH / 8)
 
 Std_ReturnType SecOC_IfTransmit(
