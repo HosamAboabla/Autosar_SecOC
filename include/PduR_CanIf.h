@@ -8,4 +8,17 @@
 
 void PduR_CanIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
+
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : PduR_<Lo>RxIndication         *
+ * Function_Index       : 8.5.4.1                       *
+ * Function_File        : SWS of PduR                   *
+ * Function_Descripton  : Indication of a received      *
+ * I-PDU from a lower layer communication module.       *
+ *******************************************************/
+void PduR_CanIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr);
+
 #endif

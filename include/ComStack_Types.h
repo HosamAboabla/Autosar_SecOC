@@ -14,7 +14,7 @@
 
 
 typedef uint32 TPParameterType ;
-typedef uint32 PduIdType ;
+typedef uint16 PduIdType ;
 typedef uint32 PduLengthType ;
 
 typedef enum
