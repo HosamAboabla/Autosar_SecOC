@@ -150,11 +150,26 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     {
                         break;
                     }
+                    currentFreshnessVal[maxTruncedIndex] = SecOCTruncatedFreshnessValue[maxTruncedIndex] | currentFreshnessVal[maxTruncedIndex];
                 }
                 for (; (MSBsCounterIndex < ActualFreshnessVallength) && (FreshnessIndex >= 0); MSBsCounterIndex++)
                 {
-                    SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][MSBsCounterIndex];
-                    FreshnessIndex--;
+                    /*  most significant bits of (FreshnessValue corresponding to SecOCFreshnessValueID + 1) |
+                    FreshnessValue parsed from payload */
+                    FVM_IncreaseCounter(SecOCFreshnessValueID, SecOCFreshnessValueLength);
+                    FreshnessVallengthBytes = (BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]));
+                    /* Convert the counter to Big india to Compare */
+                    freshnessIndex = FreshnessVallengthBytes - 1;
+                    for(counterIndex = 0; counterIndex < FreshnessVallengthBytes; counterIndex++)
+                    {
+                        currentFreshnessVal[freshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][counterIndex];
+                        freshnessIndex--;
+                    }
+                    for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
+                    {
+                        currentFreshnessVal[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
+                    }
+                    currentFreshnessVal[maxTruncedIndex] = SecOCTruncatedFreshnessValue[maxTruncedIndex] | currentFreshnessVal[maxTruncedIndex];
                 }
             }
             *SecOCFreshnessValueLength = ActualFreshnessVallength * 8;
