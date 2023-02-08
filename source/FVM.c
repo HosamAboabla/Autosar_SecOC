@@ -21,6 +21,7 @@ uint8 countBits(uint8 n)
     return count;
 }
 
+
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32 *SecOCFreshnessValueLength)
 {
 
@@ -103,79 +104,93 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
 
         /* The FVM module shall construct Freshness Verify Value (i.e. the Freshness Value to be used for Verification) and
          provide it to SecOC */
-        //uint32 ActualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (FreshnessValueLengthBytes) : (Freshness_Counter_length[SecOCFreshnessValueID]);
-        uint32 ActualFreshnessVallength = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]);
-        uint32 FreshnessIndex = ActualFreshnessVallength - 1;
-        uint32 TrancatedCounterIndex = 0;
-        uint32 counterTruncMax = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]) - BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength) - 1;
-        uint32 truncedFreshnessLength = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
-        uint32 truncedFreshnessIndex = truncedFreshnessLength - 1;
-        uint32 MSBsCounterIndex = truncedFreshnessLength;
+        uint32 FreshnessVallengthBytes = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 truncedFreshnessLengthBytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
+        uint32 maxTruncedIndex = truncedFreshnessLengthBytes - 1;
+        uint32 freshnessIndex = FreshnessVallengthBytes - 1;
+        uint32 counterIndex;
 
-        if (ActualFreshnessVallength == truncedFreshnessLength)
+
+        if (FreshnessVallengthBytes == truncedFreshnessLengthBytes)
         {
-            memcpy(SecOCFreshnessValue + ActualFreshnessVallength - truncedFreshnessLength, SecOCTruncatedFreshnessValue, truncedFreshnessLength);
+            memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, truncedFreshnessLengthBytes);
         }
         else
         {
+            SecOC_FreshnessArrayType currentFreshnessVal = {0};
             SecOCAuthVerifyAttempts = 0;
-            if (SecOCTruncatedFreshnessValue[TrancatedCounterIndex] > Freshness_Counter[SecOCFreshnessValueID][truncedFreshnessIndex])
+            /* Convert the counter to Big india to Compare */
+            for(counterIndex = 0; counterIndex < FreshnessVallengthBytes; counterIndex++)
             {
-                /* most significant bits of FreshnessValue corresponding to reshnessValueID |
-                FreshnessValue parsed from Secured I-PDU */
-                for (; FreshnessIndex >= (ActualFreshnessVallength - MSBsCounterIndex); FreshnessIndex--)
-                {
-                    SecOCFreshnessValue[FreshnessIndex] = SecOCTruncatedFreshnessValue[truncedFreshnessIndex];
-                    truncedFreshnessIndex--;
-                }
-                for (; (MSBsCounterIndex < ActualFreshnessVallength) && (FreshnessIndex >= 0); MSBsCounterIndex++)
-                {
-                    SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][MSBsCounterIndex];
-                    FreshnessIndex--;
-                }
+                currentFreshnessVal[freshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][counterIndex];
+                freshnessIndex--;
             }
-            else
+
+            /* construction of Freshness Value */
+            for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
             {
-                /*  most significant bits of FreshnessValue corresponding to SecOCFreshnessValueID + 1 |
-                FreshnessValue parsed from payload */
-                 for (; FreshnessIndex >= (ActualFreshnessVallength - MSBsCounterIndex); FreshnessIndex--)
+                if (SecOCTruncatedFreshnessValue[counterIndex] == currentFreshnessVal[counterIndex] && SecOCTruncatedFreshnessValue[counterIndex] == 0)
                 {
-                    SecOCFreshnessValue[FreshnessIndex] = SecOCTruncatedFreshnessValue[truncedFreshnessIndex];
-                    truncedFreshnessIndex--;
+                    continue;
                 }
-                uint8 INDEX = MSBsCounterIndex;
-                for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX++)
+                if (SecOCTruncatedFreshnessValue[counterIndex] > currentFreshnessVal[counterIndex])
                 {
-                    Freshness_Counter[SecOCFreshnessValueID][INDEX]++;
-                    if (Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
+                    /* most significant bits of FreshnessValue corresponding to FreshnessValueID |
+                    FreshnessValue parsed from Secured I-PDU */
+                    for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
                     {
-                        break;
+                        currentFreshnessVal[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
                     }
+                    uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
+                    currentFreshnessVal[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (currentFreshnessVal[maxTruncedIndex] & (0xFF << remainingBitsTrunc));
                 }
-                for (; (MSBsCounterIndex < ActualFreshnessVallength) && (FreshnessIndex >= 0); MSBsCounterIndex++)
+                else
                 {
-                    SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][MSBsCounterIndex];
-                    FreshnessIndex--;
+                    /*  most significant bits of (FreshnessValue corresponding to SecOCFreshnessValueID + 1) |
+                    FreshnessValue parsed from payload */
+                    FVM_IncreaseCounter(SecOCFreshnessValueID, SecOCFreshnessValueLength);
+                    FreshnessVallengthBytes = (BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]));
+                    /* Convert the counter to Big india to Compare */
+                    freshnessIndex = FreshnessVallengthBytes - 1;
+                    for(counterIndex = 0; counterIndex < FreshnessVallengthBytes; counterIndex++)
+                    {
+                        currentFreshnessVal[freshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][counterIndex];
+                        freshnessIndex--;
+                    }
+                    for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
+                    {
+                        currentFreshnessVal[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
+                    }
+                    uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
+                    currentFreshnessVal[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (currentFreshnessVal[maxTruncedIndex] & (0xFF << remainingBitsTrunc));
                 }
+                
+                memcpy(SecOCFreshnessValue, currentFreshnessVal, FreshnessVallengthBytes);
+                break;
             }
-            *SecOCFreshnessValueLength = ActualFreshnessVallength * 8;
         }
+        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
         /* verified that the constructed FreshnessVerifyValue is larger than the last stored notion of the Freshness Value */
         /* If it is not larger than the last stored notion of the Freshness Value,
          the FVM shall stop the verification and drop the Secured I-PDU */
-        uint32 counterFreshness = 0;
-        for(FreshnessIndex = ActualFreshnessVallength - 1; FreshnessIndex >= 0; FreshnessIndex--)
+        freshnessIndex = 0;
+        for(counterIndex = FreshnessVallengthBytes - 1; counterIndex >= 0; counterIndex--)
         {
-            if(SecOCFreshnessValue[counterFreshness] < Freshness_Counter[SecOCFreshnessValueID][FreshnessIndex])
+            if (Freshness_Counter[SecOCFreshnessValueID][counterIndex] == SecOCFreshnessValue[freshnessIndex])
+            {
+               continue;
+            }
+            else if (Freshness_Counter[SecOCFreshnessValueID][counterIndex] < SecOCFreshnessValue[freshnessIndex])
+            {
+                result = E_OK;
+                break;
+            }
+            else
             {
                 result = E_NOT_OK;
                 break;
             }
-            else if (SecOCFreshnessValue[counterFreshness] > Freshness_Counter[SecOCFreshnessValueID][FreshnessIndex])
-            {
-                break;
-            }
-            counterFreshness++;
+            freshnessIndex++;
         }
     }   
 
