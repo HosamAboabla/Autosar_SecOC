@@ -100,7 +100,6 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
     }
     else
     {
-
         /* The FVM module shall construct Freshness Verify Value (i.e. the Freshness Value to be used for Verification) and
          provide it to SecOC */
         //uint32 ActualFreshnessVallength = (FreshnessValueLengthBytes <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (FreshnessValueLengthBytes) : (Freshness_Counter_length[SecOCFreshnessValueID]);
@@ -178,8 +177,5 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             counterFreshness++;
         }
     }   
-
-     
-
     return result;
 }
