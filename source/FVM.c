@@ -21,6 +21,7 @@ uint8 countBits(uint8 n)
     return count;
 }
 
+
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32 *SecOCFreshnessValueLength)
 {
 
@@ -139,7 +140,8 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     {
                         currentFreshnessVal[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
                     }
-                    currentFreshnessVal[maxTruncedIndex] = SecOCTruncatedFreshnessValue[maxTruncedIndex] | currentFreshnessVal[maxTruncedIndex];
+                    uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
+                    currentFreshnessVal[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (currentFreshnessVal[maxTruncedIndex] & (0xFF << remainingBitsTrunc));
                 }
                 else
                 {
@@ -158,7 +160,8 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     {
                         currentFreshnessVal[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
                     }
-                    currentFreshnessVal[maxTruncedIndex] = SecOCTruncatedFreshnessValue[maxTruncedIndex] | currentFreshnessVal[maxTruncedIndex];
+                    uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
+                    currentFreshnessVal[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (currentFreshnessVal[maxTruncedIndex] & (0xFF << remainingBitsTrunc));
                 }
                 
                 memcpy(SecOCFreshnessValue, currentFreshnessVal, FreshnessVallengthBytes);
