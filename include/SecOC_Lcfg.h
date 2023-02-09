@@ -400,13 +400,13 @@ typedef struct
     boolean SecOCEnableForcedPassOverride;
     boolean SecOCEnableSecurityEventReporting;
     boolean SecOCIgnoreVerificationResult;
-    uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
     boolean SecOCOverrideStatusWithDataId;
     boolean SecOCPropagateOnlyFinalVerificationStatus;
-    SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
-    // SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;
     boolean SecOCVersionInfoApi;
-    //SecOC_SecurityEventRefsType *SecOCSecurityEventRefs; /* can't have the container of it */
+    SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
+    uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
+    // SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;
+    //SecOC_SecurityEventRefsType *SecOCSecurityEventRefs; // can't have the container of it //
 
 }SecOC_GeneralType;
 
