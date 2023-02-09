@@ -261,28 +261,8 @@ Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* Se
     SecOCAuthVerifyAttempts,SecOCFreshnessValue,SecOCFreshnessValueLength);
 }
 
+
 void SecOC_test()
 {
-    uint16 SecOCFreshnessValueID=10;
-    uint8 SecOCTruncatedFreshnessValue[1]={3};
-    uint32 SecOCTruncatedFreshnessValueLength=1;
-    uint16 SecOCAuthVerifyAttempts=0;
-    uint8 SecOCFreshnessValue[8]={0};
-    uint32 SecOCFreshnessValueLength=8;
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    // FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-    printf("%d \n",SecOC_GetRxFreshness(SecOCFreshnessValueID,SecOCTruncatedFreshnessValue,SecOCTruncatedFreshnessValueLength,
-    SecOCAuthVerifyAttempts,SecOCFreshnessValue,&SecOCFreshnessValueLength));
-    for(uint8 i=0;i<SecOCFreshnessValueLength;i++)
-    {
-        printf("%d \t",SecOCFreshnessValue[i]);
-    }
-    printf("\n%d \t",SecOCFreshnessValueLength);
+
 }
