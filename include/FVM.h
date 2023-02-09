@@ -40,24 +40,4 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
 Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength);
 
-
-/*******************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_GetRxFreshness          *
- * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : This interface is used by the *
- *  SecOC to obtain the current freshness value.        *
- *******************************************************/
-Std_ReturnType FVM_GetRxFreshness(
-    uint16 SecOCFreshnessValueID, 
-    const uint8* SecOCTruncatedFreshnessValue, 
-    uint32 SecOCTruncatedFreshnessValueLength, 
-    uint16 SecOCAuthVerifyAttempts,
-    uint8* SecOCFreshnessValue,
-    uint32* SecOCFreshnessValueLength 
-
-);
-
 #endif /* INCLUDE_FVM_H_ */
