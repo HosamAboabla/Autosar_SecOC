@@ -1,5 +1,9 @@
 #include "CanIF.h"
+// #include "OSconfig.h"
+
+#ifdef LINUX
 #include "ethernet.h"
+#endif
 #include "PduR_CanIf.h"
 
 /****************************************************
@@ -14,9 +18,12 @@
 PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
-   // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
+    // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
     Std_ReturnType result;
+    
+    #ifdef LINUX
     result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
+    #endif
 
     PduR_CanIfTxConfirmation(TxPduId , result);
     if(STATUS_TRANSMISSION)
