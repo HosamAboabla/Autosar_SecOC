@@ -15,23 +15,23 @@
  ***************************************************/
 
 /*FROM ROUTING TABLE WE KNOW PAGE 129*/
-#define CANIF 0
-#define FRIF 1
-#define CANTP 2
+#define DIRECT_TRANSMISSION_MODE 0  /*e.g. CanIf*/
+#define TRANSPORT_PROTOCOL_MODE 1   /*e.g. CanTp*/
+#define TRIGGERED_TRANSMISSION_MODE 2  /*e.g. FlIf*/
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
-   if(*(PduInfoPtr->MetaDataPtr) == CANIF)
+   if(*(PduInfoPtr->MetaDataPtr) == DIRECT_TRANSMISSION_MODE)
    {
       return CanIf_Transmit(TxPduId,PduInfoPtr);
    }
-   else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
+   else if (*(PduInfoPtr->MetaDataPtr) == TRIGGERED_TRANSMISSION_MODE)
    {
       // return FrIf_Transmit(TxPduId, PduInfoPtr);
    }   
-   else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
+   else if(*(PduInfoPtr->MetaDataPtr) == TRANSPORT_PROTOCOL_MODE)
    {
-      // return CanTp_Transmit(TxPduId, PduInfoPtr);
+      return CanTp_Transmit(TxPduId, PduInfoPtr);
    }
     return E_NOT_OK;
 }
