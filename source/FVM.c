@@ -1,4 +1,5 @@
 #include "FVM.h"
+#include <string.h>
 
 /* This is Stub for Freshness Value Manger that have the global counter */
 
