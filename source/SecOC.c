@@ -297,6 +297,7 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 {
     uint8 DataToAuth[SECOC_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
     uint32 DataToAuthLen = 0;
+    uint8 TruncatedLength_Bytes;
     
     Std_ReturnType FV_result = construct_RX_DataToAuthenticator(RxPduId, SecPdu, SecOCRxPduProcessing, DataToAuth, &DataToAuthLen, &TruncatedLength_Bytes);
 
