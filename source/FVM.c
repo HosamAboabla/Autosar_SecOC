@@ -126,7 +126,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                 {
                     continue;
                 }
-                if (SecOCTruncatedFreshnessValue[counterIndex] > currentFreshnessVal[counterIndex])
+                if (SecOCTruncatedFreshnessValue[counterIndex] >= currentFreshnessVal[counterIndex])
                 {
                     /* most significant bits of FreshnessValue corresponding to FreshnessValueID |
                     FreshnessValue parsed from Secured I-PDU */
