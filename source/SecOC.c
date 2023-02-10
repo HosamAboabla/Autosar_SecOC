@@ -228,6 +228,7 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 // #endif
 
 
+
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
 {
