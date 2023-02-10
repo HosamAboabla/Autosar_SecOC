@@ -227,33 +227,15 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 //     }
 // #endif
 
-/*
-#define MAX_COUNTER_FRESHNESS_IDS   10
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
 {
-    Std_ReturnType result = E_OK; 
-    if (SecOCFreshnessValueID > (MAX_COUNTER_FRESHNESS_IDS-1)) 
-    {
-        result = E_NOT_OK;
-    }
-    else if (SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
-    {
-        result = E_NOT_OK;
-    }
-    SecOC_FreshnessArrayType counter[MAX_COUNTER_FRESHNESS_IDS] = {0};
-    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCTruncatedFreshnessValueLength);
-    
-    int DataIndex = (SECOC_MAX_FRESHNESS_SIZE - 1); 
-    uint8 big_End_index =0;
-    for ( ; ((DataIndex >= Datalength) && (big_End_index < (*SecOCTruncatedFreshnessValueLength))); DataIndex-- , big_End_index++) 
-    {
-        SecOCTruncatedFreshnessValue[big_End_index] = counter[SecOCFreshnessValueID][DataIndex];
-    }
+    Std_ReturnType result = FVM_GetTxFreshnessTruncData(SecOCFreshnessValueID, SecOCFreshnessValue , SecOCFreshnessValueLength,
+    SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength);
     return result;
 }
-*/
+
 
 Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecOCTruncatedFreshnessValue,uint32 SecOCTruncatedFreshnessValueLength,
     uint16 SecOCAuthVerifyAttempts,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength)
