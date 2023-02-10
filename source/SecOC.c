@@ -351,22 +351,30 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
-    #define MAX 16
-    // id + data = Auth-PDU
-    uint8 x[MAX]={20,0,1,1,1,1};
-    uint8 MAC[32];
-    // MAC
-    uint8 csm[4]={228,222,90,23};
-    uint32 MAC_Length = 4;
-    Csm_MacGenerate(20,0,x,MAX,MAC,&MAC_Length);
-    for(int i =0 ; i<MAC_Length;i++)
-    {
-        printf("%d\t",MAC[i]);
-    }
-    printf("\n");
-    Crypto_VerifyResultType _verify;
-    Std_ReturnType Mac_status = Csm_MacVerify(10,0,x,MAX,csm,MAC_Length*8,&_verify);
 
+
+    if ((Mac_status == E_OK)) 
+    {
+        printf("result = E_OK\n");
+    } 
+    else 
+    {
+        printf("result = E_NOT_OK\n");
+    }
+    // Data + MAC = SecPdu
+    uint8 buff[16]={1,1,1,1,228,222,90,23};
+    PduLengthType len = 8;
+    PduInfoType SPDU;
+    SPDU.SduDataPtr = buff;
+    SPDU.SduLength = len;
+    SecOC_VerificationResultType verify_;
+    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
+    SecOC_RxPduProcessing.SecOCAuthInfoTruncLength = SECOC_RX_AUTH_INFO_TRUNCLENGTH;
+    SecOC_RxPduProcessing.SecOCFreshnessValueLength = SECOC_RX_FRESHNESS_VALUE_LENGTH;
+    SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH;
+    SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
+    verify(20,&SPDU, &SecOC_RxPduProcessing,&verify_);
+    
     if ((Mac_status == E_OK)) 
     {
         printf("result = E_OK\n");
