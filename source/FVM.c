@@ -104,7 +104,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
         uint32 counterIndex;
 
 
-        if (FreshnessVallengthBytes == truncedFreshnessLengthBytes)
+        if (Freshness_Counter_length[SecOCFreshnessValueID] == SecOCTruncatedFreshnessValueLength)
         {
             memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, truncedFreshnessLengthBytes);
         }
