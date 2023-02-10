@@ -120,7 +120,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             }
 
             /* construction of Freshness Value */
-            for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
+            for(counterIndex = 0; counterIndex <= maxTruncedIndex; counterIndex++)
             {
                 if (SecOCTruncatedFreshnessValue[counterIndex] == currentFreshnessVal[counterIndex] && SecOCTruncatedFreshnessValue[counterIndex] == 0)
                 {
