@@ -351,49 +351,5 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
-
-
-    if ((Mac_status == E_OK)) 
-    {
-        printf("result = E_OK\n");
-    } 
-    else 
-    {
-        printf("result = E_NOT_OK\n");
-    }
-    // Data + MAC = SecPdu
-    uint8 buff[16]={1,1,1,1,228,222,90,23};
-    PduLengthType len = 8;
-    PduInfoType SPDU;
-    SPDU.SduDataPtr = buff;
-    SPDU.SduLength = len;
-    SecOC_VerificationResultType verify_;
-    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
-    SecOC_RxPduProcessing.SecOCAuthInfoTruncLength = SECOC_RX_AUTH_INFO_TRUNCLENGTH;
-    SecOC_RxPduProcessing.SecOCFreshnessValueLength = SECOC_RX_FRESHNESS_VALUE_LENGTH;
-    SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH;
-    SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
-    verify(20,&SPDU, &SecOC_RxPduProcessing,&verify_);
     
-    if ((Mac_status == E_OK)) 
-    {
-        printf("result = E_OK\n");
-    } 
-    else 
-    {
-        printf("result = E_NOT_OK\n");
-    }
-    // Data + MAC = SecPdu
-    uint8 buff[16]={1,1,1,1,228,222,90,23};
-    PduLengthType len = 8;
-    PduInfoType SPDU;
-    SPDU.SduDataPtr = buff;
-    SPDU.SduLength = len;
-    SecOC_VerificationResultType verify_;
-    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
-    SecOC_RxPduProcessing.SecOCAuthInfoTruncLength = SECOC_RX_AUTH_INFO_TRUNCLENGTH;
-    SecOC_RxPduProcessing.SecOCFreshnessValueLength = SECOC_RX_FRESHNESS_VALUE_LENGTH;
-    SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH;
-    SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
-    verify(20,&SPDU, &SecOC_RxPduProcessing,&verify_);
 }
