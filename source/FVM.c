@@ -190,3 +190,41 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
     }   
     return result;
 }
+
+Std_ReturnType FVM_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* SecOCTruncatedFreshnessValueLength)
+{
+    Std_ReturnType result = E_OK; 
+    if (SecOCFreshnessValueID > ID_MAX) 
+    {
+        result = E_NOT_OK;
+    }
+    else if (*SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
+    {
+        result = E_NOT_OK;
+    }
+    else
+    {
+        /* get the current Value and convert it into Big india format*/
+        SecOC_FreshnessArrayType currentFreshnessVal = {0};
+        uint32 freshnessVallengthBytes = BIT_TO_BYTES(*SecOCFreshnessValueLength);
+        uint32 acctualFreshnessVallength = (freshnessVallengthBytes <= BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID])) ? (freshnessVallengthBytes ) :  (BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]));
+        uint32 freshnessIndex = acctualFreshnessVallength - 1;
+        uint32 counterIndex;
+        uint32 truncFreshnessVallengthBytes = BIT_TO_BYTES(*SecOCTruncatedFreshnessValueLength);
+        uint32 acctualFreshnessTruncVallength = (truncFreshnessVallengthBytes <= acctualFreshnessVallength) ? (truncFreshnessVallengthBytes ) :  (acctualFreshnessVallength);
+        /* get freshness from counter and its length */
+        for(counterIndex = 0; counterIndex < acctualFreshnessVallength; counterIndex++)
+        {
+            SecOCFreshnessValue[freshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][counterIndex];
+            freshnessIndex--;
+        }
+        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
+        /* Trunc the LSBs from freshness and store in the Freshness and update it length*/
+        memcpy(SecOCTruncatedFreshnessValue, SecOCFreshnessValue, acctualFreshnessTruncVallength - 1);
+        uint8 bitTrunc = 8 - ((acctualFreshnessTruncVallength * 8) - *SecOCTruncatedFreshnessValueLength);
+        SecOCTruncatedFreshnessValue[acctualFreshnessTruncVallength - 1] = (SecOCFreshnessValue[acctualFreshnessTruncVallength - 1] & (~(0xFF << bitTrunc)));
+        *SecOCTruncatedFreshnessValueLength = acctualFreshnessTruncVallength * 8;
+    }
+    return result;
+}
