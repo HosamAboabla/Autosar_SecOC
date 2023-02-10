@@ -248,9 +248,9 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType TxPduId, PduInfoType* 
 {
     //*DataToAuthLen = 0;
 	//copy the Id to buffer Data to Auth
-    memcpy(&DataToAuth[*DataToAuthLen], &TxPduId, sizeof(TxPduId));
-    *DataToAuthLen += sizeof(TxPduId);	
-    printf("id = %d & len = %d\n",TxPduId,sizeof(TxPduId));
+    memcpy(&DataToAuth[*DataToAuthLen], &RxPduId, sizeof(RxPduId));
+    *DataToAuthLen += sizeof(RxPduId);	
+    printf("id = %d & len = %d\n",RxPduId,sizeof(RxPduId));
 
     // copy the data to buffer Data to Auth
     memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
