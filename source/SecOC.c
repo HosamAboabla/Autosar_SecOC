@@ -254,6 +254,28 @@ extern void SecOC_MainFunctionTx(void) {
     }
 }
 
+void SecOC_MainFunctionRx(void)
+{
+    PduIdType idx = 0;
+    SecOC_VerificationResultType result ,macResult;
+    extern SecOC_RxPduProcessingType SecOC_RxPduProcessing; 
+
+    
+    for (idx = 0 ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer_Rx[idx].SduLength > 0 ) {
+            
+            result = verify(idx , &SecOC_Buffer_Rx[idx] ,&SecOC_RxPduProcessing ,&macResult);
+            if( result == SECOC_VERIFICATIONSUCCESS )
+            {
+                PduR_SecOCIfRxIndication(idx,  &SecOC_Buffer_Rx[idx]);
+            }
+
+        }
+    }
+
+}
+
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
     if (result == E_OK) {
@@ -383,7 +405,7 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
         // drop message
         SecPdu->SduDataPtr = NULL;
         SecPdu->SduLength = 0;
-        result = SECOC_VERIFICATIONFAILURE;
+        result = SECOC_FRESHNESSFAILURE;
     }
     return result;
 }

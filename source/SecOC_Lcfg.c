@@ -20,12 +20,12 @@ SecOC_MainFunctionTxType SecOC_MainFunctionTxConf =
 };
 
 
-SecOC_MainFunctionRxType SecOC_MainFunctionRx = 
-{
-    SECOC_MAIN_FUNCTION_PERIOD_RX,
-    SECOC_MAIN_FUNCTION_RX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
+// SecOC_MainFunctionRxType SecOC_MainFunctionRx = 
+// {
+//     SECOC_MAIN_FUNCTION_PERIOD_RX,
+//     SECOC_MAIN_FUNCTION_RX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
 
-};
+// };
 
 
 
@@ -216,7 +216,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing =
     SECOC_USE_AUTHDATA_FRESHNESS,
     SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE,
     &SecOCRxAuthServiceConfigRef,
-    &SecOC_MainFunctionRx,
+    // &SecOC_MainFunctionRx,
     &SecOCSameBufferPduRef,
     &SecOCRxSecuredPduLayer,
     &SecOCRxAuthenticPduLayer,
