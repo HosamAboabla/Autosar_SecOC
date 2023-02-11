@@ -4,10 +4,14 @@
 #include "Std_Types.h"
 #include "SecOC_Types.h"
 #include "Rte_SecOC.h"
+#include "SecOC_Cfg.h"
 
-
-
-
+// Derived configuration
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 4)
+#define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
+#define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
+#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + SECOC_FRESHNESSVALUE_TRUNCLENGTH / 8 + SECOC_TX_AUTH_INFO_TRUNC_LENGTH / 8)
+ 
 
 typedef SecOC_StatusPropagationMode_Type SecOC_ClientServerVerificationStatusPropagationMode_Type;
 typedef SecOC_StatusPropagationMode_Type SecOC_VerificationStatusPropagationMode_Type;
@@ -24,8 +28,6 @@ typedef void (SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType
 
 
 typedef uint16                SecOC_MainFunctionTxPartitionRefType;/* NOT SURE ABOUT THAT TYPE */
-typedef struct EcuC_PduType EcuC_PduType;
-extern EcuC_PduType           EcuC_Pdu; /* Reference to the global Pdu. */
 
 /*
 * Start of RxPduProcessing
@@ -95,7 +97,7 @@ typedef struct
 typedef struct
 {
    uint16                  SecOCTxCryptographicPduId;
-   EcuC_PduType            *SecOCTxCryptographicPduRef;
+   PduInfoType            *SecOCTxCryptographicPduRef;
 } SecOC_TxCryptographicPduType;
 
 
@@ -112,7 +114,7 @@ typedef struct
 {
    uint8                         SecOCAuthPduHeaderLength;
    uint16                        SecOCTxAuthenticPduId;
-   EcuC_PduType                  *SecOCTxAuthenticPduRef;
+   PduInfoType                  *SecOCTxAuthenticPduRef;
 } SecOC_TxAuthenticPduType;
 
 
@@ -147,11 +149,15 @@ typedef struct
 {
     uint8                   SecOCAuthPduHeaderLength;
     uint16                  SecOCTxSecuredLayerPduId;
-    EcuC_PduType            *SecOCTxSecuredLayerPduRef;
+    PduInfoType             SecOCTxSecuredLayerPduRef;
 } SecOC_TxSecuredPduType;
 
 
-
+typedef struct
+{
+   SecOC_TxSecuredPduType                 *SecOCTxSecuredPdu;
+   SecOC_TxSecuredPduCollectionType       *SecOCTxSecuredPduCollection;
+}SecOC_TxSecuredPduLayerType;
 
 /**************************************************************
  *          * Container Info *                                *
@@ -164,7 +170,7 @@ typedef struct
 {
     SecOC_PduType_Type      SecOCPduType;
     uint16                  SecOCTxAuthenticLayerPduId;
-    EcuC_PduType            *SecOCTxAuthenticLayerPduRef;
+    PduInfoType             SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
 
 
@@ -177,22 +183,22 @@ typedef struct
  ***************************************************/
 typedef struct
 {
-    uint16                                              SecOCAuthenticationBuildAttempts;
-    uint16                                              SecOCAuthInfoTruncLength;
-    uint16                                              SecOCDataId;
-    uint16                                              SecOCFreshnessValueId;
-    uint8                                               SecOCFreshnessValueLength;
-    uint8                                               SecOCFreshnessValueTruncLength;
-    boolean                                             SecOCProvideTxTruncatedFreshnessValue;
-    boolean                                             SecOCReAuthenticateAfterTriggerTransmit;
-    uint8                                               SecOCTxPduUnusedAreasDefault;
-    boolean                                             SecOCUseTxConfirmation;
-    //                                                  SecOCSameBufferPduRef;
-    //                                                  SecOCTxAuthServiceConfigRef
-    //                                                  SecOCTxPduMainFunctionRef;
-    const SecOC_TxAuthenticPduLayerType                 *SecOCTxAuthenticationPduLayer;
-    const SecOC_TxPduSecuredAreaType                    *SecOCTxPduSecuredArea;
-//                                                      SecOCTxSecuredPduLayer
+   uint16                                              SecOCAuthenticationBuildAttempts;
+   uint16                                              SecOCAuthInfoTruncLength;
+   uint16                                              SecOCDataId;
+   uint16                                              SecOCFreshnessValueId;
+   uint8                                               SecOCFreshnessValueLength;
+   uint8                                               SecOCFreshnessValueTruncLength;
+   boolean                                             SecOCProvideTxTruncatedFreshnessValue;
+   boolean                                             SecOCReAuthenticateAfterTriggerTransmit;
+   uint8                                               SecOCTxPduUnusedAreasDefault;
+   boolean                                             SecOCUseTxConfirmation;
+   //                                                  SecOCSameBufferPduRef;
+   //                                                  SecOCTxAuthServiceConfigRef
+   //                                                  SecOCTxPduMainFunctionRef;
+   SecOC_TxAuthenticPduLayerType                      *SecOCTxAuthenticPduLayer;
+   //const SecOC_TxPduSecuredAreaType                  *SecOCTxPduSecuredArea;
+   const SecOC_TxSecuredPduLayerType                   *SecOCTxSecuredPduLayer;
 }SecOC_TxPduProcessingType;
 
 
@@ -209,7 +215,7 @@ typedef struct
 {
    uint8                 SecOCAuthPduHeaderLength;
    uint16                SecOCRxAuthenticPduId;
-   EcuC_PduType         *SecOCRxAuthenticPduRef;
+   PduInfoType         *SecOCRxAuthenticPduRef;
 }SecOC_RxAuthenticPduType;
 
 /*****************************************
@@ -222,7 +228,7 @@ typedef struct
 typedef struct
 {
    uint16            SecOCRxCryptographicPduId;
-   EcuC_PduType     *SecOCRxCryptographicPduRef;
+   PduInfoType     *SecOCRxCryptographicPduRef;
 }SecOC_RxCryptographicPduType;
 /*****************************************
  *          * Container Info *           *
@@ -250,7 +256,7 @@ typedef struct
 {
    SecOC_PduType_Type             SecOCPduType;
    uint16                     SecOCRxAuthenticLayerPduId;
-   EcuC_PduType              *SecOCRxAuthenticLayerPduRef;
+   PduInfoType              *SecOCRxAuthenticLayerPduRef;
 }SecOC_RxAuthenticPduLayerType;
 
 /*****************************************
@@ -265,7 +271,7 @@ typedef struct
    uint8           SecOCAuthPduHeaderLength;
    uint16          SecOCRxSecuredLayerPduId;
    boolean         SecOCSecuredRxPduVerification;
-   EcuC_PduType   *SecOCRxSecuredLayerPduRef;
+   PduInfoType   *SecOCRxSecuredLayerPduRef;
 }SecOC_RxSecuredPduType;
 
 /*****************************************
@@ -414,9 +420,9 @@ typedef struct
 
 typedef struct //Specific Implementation Data Structure Configuration SecOC Module Data Structure
 { 
-	const SecOC_GeneralType* general;
-	const SecOC_TxPduProcessingType* secOCTxPduProcessings;
-	const SecOC_RxPduProcessingType* secOCRxPduProcessings;
+	const SecOC_GeneralType* General;
+	const SecOC_TxPduProcessingType* SecOCTxPduProcessings;
+	const SecOC_RxPduProcessingType* SecOCRxPduProcessings;
 }SecOC_ConfigType;
 
 
