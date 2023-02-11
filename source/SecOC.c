@@ -238,6 +238,7 @@ extern void SecOC_MainFunctionTx(void) {
     PduIdType idx;
     PduInfoType transmitPduInfo;
     uint8 temp[8];
+    uint8 temp[12];
     transmitPduInfo.SduDataPtr = temp;
     
 
