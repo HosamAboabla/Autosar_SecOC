@@ -258,21 +258,8 @@ void SecOC_MainFunctionRx(void)
 {
     PduIdType idx = 0;
     SecOC_VerificationResultType result ,macResult;
-    
-    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
-    SecOC_RxPduProcessing.SecOCAuthInfoTruncLength = SECOC_RX_AUTH_INFO_TRUNCLENGTH;
-    SecOC_RxPduProcessing.SecOCFreshnessValueLength = 0;
-    SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = 13;
-    SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
-    SecOC_RxPduProcessing.SecOCFreshnessValueId = 10;
-    
-    uint16 SecOCFreshnessValueID = 10;
+    extern SecOC_RxPduProcessingType SecOC_RxPduProcessing; 
 
-    uint8 SecOCFreshnessValue[8]={0};
-    uint32 SecOCFreshnessValueLength = 8 * 8;
-    
-    for(int i = 0; i < 0x12C; i++)
-        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
     
     for (idx = 0 ; idx < SECOC_BUFFERLENGTH ; idx++) {
         // check if there is data
