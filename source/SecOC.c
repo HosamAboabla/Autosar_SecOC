@@ -412,15 +412,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
-    PduIdType idx = 0;
-    uint8 buff[16]={1,1,1,1,1,12,124,39,126,215};
-    PduLengthType len = 10;
-    PduInfoType SPDU;
-    SPDU.SduDataPtr = buff;
-    SPDU.SduLength = len;
-
-    PduR_CanIfRxIndication(idx , &SPDU);
     
-    SecOC_MainFunctionRx();
 }
 
