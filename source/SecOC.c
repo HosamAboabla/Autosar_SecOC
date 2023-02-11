@@ -119,6 +119,13 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
+    printf("Mac = ");
+    for(int i =0; i <BIT_TO_BYTES(SECOC_AUTHENTICATOR_MAX_LENGTH); i++)
+    {
+        printf("%d\t",authenticatorPtr[i]);
+    }
+    printf("\n");
+    
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
