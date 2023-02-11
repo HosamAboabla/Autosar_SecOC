@@ -237,7 +237,6 @@ extern void SecOC_MainFunctionTx(void) {
     }
     PduIdType idx;
     PduInfoType transmitPduInfo;
-    uint8 temp[8];
     uint8 temp[12];
     transmitPduInfo.SduDataPtr = temp;
     
@@ -327,19 +326,19 @@ void SecOC_test()
     
     PduInfoType test_pdu;
     uint32 idx = 0;
-    uint8 test_data[10];//  = {'h' , 'a' , 'm' , 'a' , 'd' , 'a'};
+    uint8 test_data[4] = {'t' , 'e' , 's' , 't'};
     test_pdu.SduDataPtr = test_data;
     uint8 test_meta_data = 0;
     test_pdu.MetaDataPtr = &test_meta_data;
-    while(1)
-    {
-        printf("Please enter message to send: ");
-        scanf("%s" , (char*) test_pdu.SduDataPtr);
-        test_pdu.SduLength = strlen(test_pdu.SduDataPtr);
+    // while(1)
+    // {
+        // printf("Please enter message to send: ");
+        // scanf("%s" , (char*) test_pdu.SduDataPtr);
+        test_pdu.SduLength = 4; // strlen(test_pdu.SduDataPtr);
         PduR_ComTransmit(idx , &test_pdu);
 
         SecOC_MainFunctionTx();
         
-        idx++;
-    }
+    //     idx++;
+    // }
 }
