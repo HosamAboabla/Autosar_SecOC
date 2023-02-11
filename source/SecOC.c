@@ -254,6 +254,42 @@ extern void SecOC_MainFunctionTx(void) {
     }
 }
 
+void SecOC_MainFunctionRx(void)
+{
+    PduIdType idx = 0;
+    SecOC_VerificationResultType result ,macResult;
+    
+    SecOC_RxPduProcessingType SecOC_RxPduProcessing;
+    SecOC_RxPduProcessing.SecOCAuthInfoTruncLength = SECOC_RX_AUTH_INFO_TRUNCLENGTH;
+    SecOC_RxPduProcessing.SecOCFreshnessValueLength = 0;
+    SecOC_RxPduProcessing.SecOCFreshnessValueTruncLength = 13;
+    SecOC_RxPduProcessing.SecOCDataId = SECOC_RX_DATA_ID;
+    SecOC_RxPduProcessing.SecOCFreshnessValueId = 10;
+    
+    uint16 SecOCFreshnessValueID = 10;
+
+    uint8 SecOCFreshnessValue[8]={0};
+    uint32 SecOCFreshnessValueLength = 8 * 8;
+    
+    for(int i = 0; i < 0x12C; i++)
+        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
+    
+    for (idx = 0 ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer_Rx[idx].SduLength > 0 ) {
+            
+            result = verify(idx , &SecOC_Buffer_Rx[idx] ,&SecOC_RxPduProcessing ,&macResult);
+            printf(" verify result %d\n" , result);
+            if( result == SECOC_VERIFICATIONSUCCESS )
+            {
+                PduR_SecOCIfRxIndication(idx,  &SecOC_Buffer_Rx[idx]);
+            }
+
+        }
+    }
+
+}
+
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
     if (result == E_OK) {
@@ -390,6 +426,15 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
+    PduIdType idx = 0;
+    uint8 buff[16]={1,1,1,1,1,12,124,39,126,215};
+    PduLengthType len = 10;
+    PduInfoType SPDU;
+    SPDU.SduDataPtr = buff;
+    SPDU.SduLength = len;
+
+    PduR_CanIfRxIndication(idx , &SPDU);
     
+    SecOC_MainFunctionRx();
 }
 

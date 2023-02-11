@@ -1,7 +1,7 @@
 #include "Com.h"
 #include "PduR_Com.h"
 #include "Std_Types.h"
-
+#include <stdio.h>
 
 Std_ReturnType success_flag =0;//check if the message reached the distination or not
 
@@ -18,5 +18,5 @@ Std_ReturnType success_flag =0;//check if the message reached the distination or
 
 void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
-	
+	printf("Id %d , data: %s\n" , RxPduId , PduInfoPtr->SduDataPtr);
 }
