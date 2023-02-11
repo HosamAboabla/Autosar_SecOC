@@ -279,7 +279,7 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
 // header - auth_data - Freshness - MAC
 Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
 {
-    uint8 DataToAuth[SECOC_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
+    uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
     uint32 DataToAuthLen = 0;
     uint8 TruncatedLength_Bytes;
     
