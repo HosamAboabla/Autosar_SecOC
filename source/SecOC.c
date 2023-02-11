@@ -118,13 +118,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint8  authenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
     uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
-
-    printf("Mac = ");
-    for(int i =0; i <BIT_TO_BYTES(SECOC_AUTHENTICATOR_MAX_LENGTH); i++)
-    {
-        printf("%d\t",authenticatorPtr[i]);
-    }
-    printf("\n");
     
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
@@ -419,33 +412,4 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
-
-
-    uint16 SecOCFreshnessValueID = 10;
-
-    uint8 SecOCFreshnessValue[8]={0};
-    uint32 SecOCFreshnessValueLength = 8 * 8;
-    for(int i = 0; i < 0x12C; i++)
-        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-        
-    SecOC_ConfigType conf;
-    SecOC_Init(&conf);
-    
-    PduInfoType test_pdu;
-    uint16 idx = 20;
-    uint8 test_data[4] = {1 , 1 , 1 , 1};
-    test_pdu.SduDataPtr = test_data;
-    uint8 test_meta_data = 0;
-    test_pdu.MetaDataPtr = &test_meta_data;
-    // while(1)
-    // {
-        // printf("Please enter message to send: ");
-        // scanf("%s" , (char*) test_pdu.SduDataPtr);
-        test_pdu.SduLength = 4; // strlen(test_pdu.SduDataPtr);
-        PduR_ComTransmit(idx , &test_pdu);
-
-        SecOC_MainFunctionTx();
-        
-    //     idx++;
-    // }
 }
