@@ -170,7 +170,7 @@ typedef struct
 {
     SecOC_PduType_Type      SecOCPduType;
     uint16                  SecOCTxAuthenticLayerPduId;
-    PduInfoType             SecOCTxAuthenticLayerPduRef;
+    PduInfoType       SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
 
 
