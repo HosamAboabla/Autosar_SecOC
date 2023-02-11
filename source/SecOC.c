@@ -412,12 +412,21 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
+
+
+    uint16 SecOCFreshnessValueID = 10;
+
+    uint8 SecOCFreshnessValue[8]={0};
+    uint32 SecOCFreshnessValueLength = 8 * 8;
+    for(int i = 0; i < 0x12C; i++)
+        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
+        
     SecOC_ConfigType conf;
     SecOC_Init(&conf);
     
     PduInfoType test_pdu;
-    uint32 idx = 0;
-    uint8 test_data[4] = {'t' , 'e' , 's' , 't'};
+    uint16 idx = 20;
+    uint8 test_data[4] = {1 , 1 , 1 , 1};
     test_pdu.SduDataPtr = test_data;
     uint8 test_meta_data = 0;
     test_pdu.MetaDataPtr = &test_meta_data;
