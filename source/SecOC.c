@@ -251,18 +251,10 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
 	//copy the Id to buffer Data to Auth
     memcpy(&DataToAuth[*DataToAuthLen], &RxPduId, sizeof(RxPduId));
     *DataToAuthLen += sizeof(RxPduId);	
-    printf("id = %d & len = %d\n",RxPduId,sizeof(RxPduId));
 
     // copy the data to buffer Data to Auth
     memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
     *DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
-
-    for(uint8 i =0 ;i<(*DataToAuthLen);i++)
-    {
-    	printf("%d",DataToAuth[i]);
-    	fflush(stdin); fflush(stdout);
-    }
-    printf("\n");
 
     uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX_LENGTH;
     uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
@@ -277,18 +269,10 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
     SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
     SecOCFreshnessValue, &SecOCFreshnessValueLength);
 
-    if(Freshness_result == E_OK)
-        printf("freshness enter sucess\n");
-    
-    else
-        printf("freshness fail generated\n");
     // copy the freshness value to buffer Data to Auth
     memcpy(&DataToAuth[*DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
     *DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));
 
-    for(int i = BIT_TO_BYTES(SecOCFreshnessValueLength) -1 ; i>=0;i--)
-        printf("%d\t",SecOCFreshnessValue[i]);
-    printf("\n");
     return Freshness_result;
 }
 
@@ -306,13 +290,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
     // copy mac from secured data to MAC buffer
     memcpy(mac, (SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
 
-    for(uint8 i=0;i<BIT_TO_BYTES(mac_length_bit);i++)
-    {
-    	printf("%d",mac[i]);
-    	fflush(stdin); fflush(stdout);
-    }
-    printf("\n");    
-
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
 
@@ -324,9 +301,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
             *verification_result = CRYPTO_E_VER_OK;
             SecPdu->SduLength = SECOC_AUTHPDU_MAX_LENGTH;
             result = SECOC_VERIFICATIONSUCCESS;
-            printf("success MAC\n");
-            for(int i =0; i<SecPdu->SduLength; i++)
-                printf("%d",*(SecPdu->SduDataPtr+i));
         }
         else 
         {
@@ -335,7 +309,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
             SecPdu->SduLength = 0;
             *verification_result = CRYPTO_E_VER_NOT_OK;
             result = SECOC_VERIFICATIONFAILURE;
-            printf("Failed MAC\n");
         }
     }
     else
@@ -344,7 +317,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
         SecPdu->SduDataPtr = NULL;
         SecPdu->SduLength = 0;
         result = SECOC_VERIFICATIONFAILURE;
-        printf("freshness fail\n");
     }
     return result;
 }
