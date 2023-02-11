@@ -10,7 +10,7 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT_NUMBER);
-    server_address.sin_addr.s_addr = inet_addr("192.168.1.2");  //INADDR_ANY;
+    server_address.sin_addr.s_addr = INADDR_ANY; //inet_addr("192.168.1.2");
 
     int connection_status = connect(network_sockect , (struct sockaddr* ) &server_address , sizeof(server_address) );
 

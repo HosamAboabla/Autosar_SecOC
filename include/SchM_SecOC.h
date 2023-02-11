@@ -19,5 +19,6 @@
  ***************************************************/
 void SecOC_MainFunctionTx(void);
 
+void SecOC_MainFunctionRx(void);
 
 #endif

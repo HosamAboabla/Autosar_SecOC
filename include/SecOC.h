@@ -12,6 +12,7 @@
 
 
 
+
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
     const PduInfoType*         PduInfoPtr
@@ -37,6 +38,35 @@ void SecOC_Init(const SecOC_ConfigType *config);
  ***************************************************/
 void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetRxFreshness          *
+ * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This interface is used by the *
+ * SecOC to obtain the current freshness value          *
+ *******************************************************/
+
+Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8* SecOCTruncatedFreshnessValue,
+uint32 SecOCTruncatedFreshnessValueLength, uint16 SecOCAuthVerifyAttempts, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetRxFreshnessAuthData  *
+ * Function_Index       : 8.5.2 [SWS_SecOC_91006]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This interface is used by the *
+ * SecOC to obtain the current freshness value          *
+ *******************************************************/
+
+Std_ReturnType SecOC_GetRxFreshnessAuthData(uint16 SecOCFreshnessValueID , const uint8* SecOCTruncatedFreshnessValue ,
+uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessValue,
+ uint16 SecOCAuthDataFreshnessValueLength , uint16 SecOCAuthVerifyAttempts,
+ uint8* SecOCFreshnessValue, uint32* SecOCFreshnessValueLength);
+ 
 /********************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -55,7 +85,18 @@ uint32* SecOCFreshnessValueLength);
 
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
+Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu,SecOC_RxPduProcessingType *SecOCRxPduProcessing, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : verify                        *
+ * Function_Index       :  SecOC internal               *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Verification of I-PDUs        *
+ *******************************************************/
+
+Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result);
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
