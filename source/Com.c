@@ -9,11 +9,9 @@ Std_ReturnType success_flag =0;//check if the message reached the distination or
  {
 	if( result == E_OK )
 	{
-		printf("Returned confirmation 'E_OK' \n\n");
 	}
 	else
 	{
-		printf("Returned confirmation 'E_NOT_OK' \n\n");
 	}
 
 	if(success_flag)
