@@ -6,9 +6,11 @@
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
 
-uint8_t AuthPdu0Buffer[SECOC_AUTHPDU_MAX_LENGTH];
-uint8_t SecPdu0Buffer[SECOC_SECPDU_MAX_LENGTH];
+uint8_t AuthPdu0BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu0BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
+uint8_t AuthPdu0BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu0BufferRx[SECOC_SECPDU_MAX_LENGTH];
 /*
 * Start Of General
 */
@@ -49,13 +51,13 @@ SecOC_GeneralType SecOC_General =
 
 
 
-SecOC_RxCryptographicPduType SecOCRxCryptographicPdu =
+SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
 {
     SECOC_RX_CRYPTOGRAPHIC_PDUID,
     //&EcuC_Pdu
 };
 
-SecOC_RxAuthenticPduType SecOCRxAuthenticPdu =
+SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
 {
     SECOC_AUTHPDU_HEADERLENGTH,
     SECOC_RXAUTHENTIC_PDUID,
@@ -70,33 +72,39 @@ SecOC_UseMessageLinkType SecOC_UseMessageLink=
     SECOC_MESSAGE_LINKPOS,
 };
 
-SecOC_RxSecuredPduCollectionType SecOCRxSecuredPduCollection =
+SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection =
 {
     SECOC_SECURED_RX_PDU_VERIFICATION,
-    &SecOCRxAuthenticPdu,
-    &SecOCRxCryptographicPdu,
+    &SecOC_RxAuthenticPdu,
+    &SecOC_RxCryptographicPdu,
     &SecOC_UseMessageLink
 };
 
-SecOC_RxAuthenticPduLayerType SecOCRxAuthenticPduLayer = 
+SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] = 
 {
-    SECOC_RX_PDUTYPE,
-    SECOC_RXAUTHENTICLAYER_PDUID,
-    //&EcuC_Pdu
+    {
+        SECOC_RX_PDUTYPE,
+        SECOC_RXAUTHENTICLAYER_PDUID,
+        {AuthPdu0BufferRx, NULL, 0},
+    }
 };
 
-SecOC_RxSecuredPduType SecOCRxSecuredPdu = 
+SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] = 
 {
-    SECOC_AUTHPDU_HEADERLENGTH,
-    SECOC_RX_SECUREDLAYER_PDUID,
-    SECOC_SECURED_RX_PDUVERIFICATION,
-    //&EcuC_Pdu
+    {
+        SECOC_AUTHPDU_HEADERLENGTH,
+        SECOC_RX_SECUREDLAYER_PDUID,
+        SECOC_SECURED_RX_PDUVERIFICATION,
+        {SecPdu0BufferRx, NULL, 0},
+    }
 };
 
-SecOC_RxSecuredPduLayerType SecOCRxSecuredPduLayer =
+SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
 {
-    &SecOCRxSecuredPdu,
-    &SecOCRxSecuredPduCollection    
+    {
+        &SecOC_RxSecuredPdu[0],
+        &SecOC_RxSecuredPduCollection  
+    }  
 };
 
 
@@ -108,12 +116,12 @@ Csm_JobType CsmJob =
 
 
 
-SecOC_RxAuthServiceConfigRefType SecOCRxAuthServiceConfigRef = 
+SecOC_RxAuthServiceConfigRefType SecOC_RxAuthServiceConfigRef = 
 {
     &CsmJob
 };
 
-SecOC_SameBufferPduCollectionType SecOCSameBufferPduRef=
+SecOC_SameBufferPduCollectionType SecOC_SameBufferPduRef=
 {
     SECOC_BUFFERLENGTH
 };
@@ -130,7 +138,7 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
     {   
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
-        {AuthPdu0Buffer, NULL, 0},
+        {AuthPdu0BufferTx, NULL, 0},
     }
 };
 
@@ -139,7 +147,7 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
     {
         SECOC_AUTH_PDUHEADER_LENGTH,
         SECOC_TX_SECURED_LAYER_PDUID,
-        {SecPdu0Buffer, NULL, 0},
+        {SecPdu0BufferTx, NULL, 0},
     }
 };
 
@@ -221,34 +229,37 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
 
 
 
-SecOC_RxPduProcessingType SecOC_RxPduProcessing = 
+SecOC_RxPduProcessingType SecOC_RxPduProcessing[] = 
 {
-    SECOC_AUTHDATA_FRESHNESSLEN,
-    SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
-    SECOC_AUTHENTICATION_BUILDATTEMPTS,
-    SECOC_AUTHENTICATION_VERIFYATTEMPTS,
-    SECOC_AUTHINFO_TRUNCLENGTH,
-    SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE,
-    SECOC_RX_DATA_ID,
-    SECOC_FRESHNESSVALUE_ID,
-    SECOC_FRESHNESSVALUE_LENGTH,
-    SECOC_FRESHNESSVALUE_TRUNCLENGTH,
-    SECOC_RECEPTION_OVERFLOW_STRATEGY,
-    SECOC_RECEPTION_QUEUESIZE,
-    SECOC_USE_AUTHDATA_FRESHNESS,
-    SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE,
-    &SecOCRxAuthServiceConfigRef,
-    &SecOC_MainFunctionRx,
-    &SecOCSameBufferPduRef,
-    &SecOCRxSecuredPduLayer,
-    &SecOCRxAuthenticPduLayer,
-    //&SecOC_RxPduSecuredArea
+    
+    {        
+        SECOC_AUTHDATA_FRESHNESSLEN,
+        SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
+        SECOC_AUTHENTICATION_BUILDATTEMPTS,
+        SECOC_AUTHENTICATION_VERIFYATTEMPTS,
+        SECOC_AUTHINFO_TRUNCLENGTH,
+        SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE,
+        SECOC_RX_DATA_ID,
+        SECOC_FRESHNESSVALUE_ID,
+        SECOC_FRESHNESSVALUE_LENGTH,
+        SECOC_FRESHNESSVALUE_TRUNCLENGTH,
+        SECOC_RECEPTION_OVERFLOW_STRATEGY,
+        SECOC_RECEPTION_QUEUESIZE,
+        SECOC_USE_AUTHDATA_FRESHNESS,
+        SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE,
+        &SecOC_RxAuthServiceConfigRef,
+        &SecOC_MainFunctionRx,
+        &SecOC_SameBufferPduRef,
+        &SecOC_RxSecuredPduLayer[0],
+        &SecOC_RxAuthenticPduLayer[0],
+        //&SecOC_RxPduSecuredArea
+    }
 };
 
 
 SecOC_ConfigType SecOC_Config=
 {
     &SecOC_General,
-    &SecOC_TxPduProcessing[0],
-    &SecOC_RxPduProcessing,
+    SecOC_TxPduProcessing,
+    SecOC_RxPduProcessing,
 };

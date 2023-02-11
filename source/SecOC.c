@@ -205,6 +205,8 @@ void SecOC_Init(const SecOC_ConfigType *config)
 
 void SecOC_MainFunctionTx(void) {
 
+    PduInfoType *secured = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    PduInfoType *auth = &(SecOCRxPduProcessing[0].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
     PduIdType idx;
     for (idx = 0 ; idx < 1 ; idx++) 
     {
