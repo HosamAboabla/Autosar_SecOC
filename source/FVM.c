@@ -1,5 +1,5 @@
 #include "FVM.h"
-
+#include <string.h>
 /* This is Stub for Freshness Value Manger that have the global counter */
 
 
@@ -194,7 +194,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
     return result;
 }
 
-Std_ReturnType FVM_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+Std_ReturnType FVM_GetTxFreshnessTruncData(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* SecOCTruncatedFreshnessValueLength)
 {
     Std_ReturnType result = E_OK; 

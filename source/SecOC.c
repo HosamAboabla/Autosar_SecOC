@@ -57,8 +57,7 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueLength;
-
-    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    result = SecOC_GetTxFreshness(SecOC_TxPduProcessing.SecOCFreshnessValueId, FreshnessVal, &FreshnesslenBits);
     if(result != E_OK)
     {
         return result;
@@ -66,7 +65,7 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
 
-    memcpy(&DataToAuth[*DataToAuthLen], &FreshnessVal[SecOC_TxPduProcessing.SecOCFreshnessValueLength - FreshnesslenBytes], FreshnesslenBytes);
+    memcpy(&DataToAuth[*DataToAuthLen], FreshnessVal, FreshnesslenBytes);
     *DataToAuthLen += FreshnesslenBytes;
 
     return E_OK;
@@ -120,14 +119,22 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
 
+    printf("Mac = ");
+    for(int i =0; i <BIT_TO_BYTES(SECOC_AUTHENTICATOR_MAX_LENGTH); i++)
+    {
+        printf("%d\t",authenticatorPtr[i]);
+    }
+    printf("\n");
+    
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
 
     // Truncated freshness value
-    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH] = {0};
+    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength;
-    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    uint32 SecOCFreshnessValueLength = SecOC_TxPduProcessing.SecOCFreshnessValueLength;
+    result = SecOC_GetTxFreshnessTruncData(SecOC_TxPduProcessing.SecOCFreshnessValueId, FreshnessVal, &SecOCFreshnessValueLength, FreshnessVal, &FreshnesslenBits);
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength);
 
@@ -238,7 +245,7 @@ extern void SecOC_MainFunctionTx(void) {
     }
     PduIdType idx;
     PduInfoType transmitPduInfo;
-    uint8 temp[8];
+    uint8 temp[12];
     transmitPduInfo.SduDataPtr = temp;
     
 
@@ -412,6 +419,33 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
 
 void SecOC_test()
 {
-    
-}
 
+
+    uint16 SecOCFreshnessValueID = 10;
+
+    uint8 SecOCFreshnessValue[8]={0};
+    uint32 SecOCFreshnessValueLength = 8 * 8;
+    for(int i = 0; i < 0x12C; i++)
+        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
+        
+    SecOC_ConfigType conf;
+    SecOC_Init(&conf);
+    
+    PduInfoType test_pdu;
+    uint16 idx = 20;
+    uint8 test_data[4] = {1 , 1 , 1 , 1};
+    test_pdu.SduDataPtr = test_data;
+    uint8 test_meta_data = 0;
+    test_pdu.MetaDataPtr = &test_meta_data;
+    // while(1)
+    // {
+        // printf("Please enter message to send: ");
+        // scanf("%s" , (char*) test_pdu.SduDataPtr);
+        test_pdu.SduLength = 4; // strlen(test_pdu.SduDataPtr);
+        PduR_ComTransmit(idx , &test_pdu);
+
+        SecOC_MainFunctionTx();
+        
+    //     idx++;
+    // }
+}
