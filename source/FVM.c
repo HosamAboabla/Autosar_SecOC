@@ -1,55 +1,54 @@
 #include "FVM.h"
-#include <string.h>
 
 /* This is Stub for Freshness Value Manger that have the global counter */
 
+
+
 /* Freshness Counter */
 static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
-static uint32 Freshness_Counter_length[ID_MAX] = {0};
+static uint32 Freshness_Counter_length [ID_MAX] = {0};
 
 /* Shitf Right by 1 to divide by 2
         untill there is no number
         Can be replaced by --> uint8 len = ceil(log2(counterTemp.counter))*/
-uint8 countBits(uint8 n)
-{
+uint8 countBits(uint8 n) {
     uint8 count = 0;
-    uint8 n_ = n;
-    while (n_ > 0)
+    while (n > 0)
     {
         count++;
-        n_ >>= 1;
+        n >>= 1;
     }
     return count;
 }
 
-Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32 *SecOCFreshnessValueLength)
-{
+
+Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength) {  
 
     /* increase the counter by 1 */
     uint8 INDEX = 0;
-    for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX++)
+    for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX ++)
     {
-        Freshness_Counter[SecOCFreshnessValueID][INDEX]++;
-        if (Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
+        Freshness_Counter[SecOCFreshnessValueID][INDEX] ++;
+        if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
             break;
         }
     }
-
-    /* Calculate the Number of bits in the Counter */
-    for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--)
-    {
-        if (Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
+    
+     /* Calculate the Number of bits in the Counter */
+    for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
+        if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
-            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + (INDEX * 8);
+            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + INDEX * 8;
             break;
         }
     }
-
+   
     *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
 
     return E_OK;
 }
+
 
 Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
@@ -66,7 +65,9 @@ uint32* SecOCFreshnessValueLength) {
             Freshnes index and counter Index --> index to copy the value from counter to pointer
             last index t
          */
+
         uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID])) ? (FreshnessValueLengthBytes ) :  (BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]));
+
         uint32 FreshnessIndex = FreshnessValueLengthBytes- 1, FreshnessCounterIndex; 
         for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
         {
@@ -74,6 +75,8 @@ uint32* SecOCFreshnessValueLength) {
             FreshnessIndex--;
         }
         /* Update Length */
+
+
         *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
         
     }
@@ -228,3 +231,4 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
     }
     return result;
 }
+

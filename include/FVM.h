@@ -41,6 +41,7 @@ Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFres
 uint32* SecOCFreshnessValueLength);
 
 
+
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -73,5 +74,6 @@ Std_ReturnType FVM_GetRxFreshness(
  *******************************************************/
 Std_ReturnType FVM_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* SecOCTruncatedFreshnessValueLength);
+
 
 #endif /* INCLUDE_FVM_H_ */
