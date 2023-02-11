@@ -125,9 +125,9 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
 
     // Truncated freshness value
-    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH] = {0};
+    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength;
-    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    result = SecOC_GetTxFreshnessTruncData(TxPduId, FreshnessVal, &SecOC_TxPduProcessing.SecOCFreshnessValueLength, FreshnessVal, FreshnesslenBits);
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength);
 
