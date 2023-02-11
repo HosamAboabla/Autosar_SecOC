@@ -405,7 +405,7 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
         // drop message
         SecPdu->SduDataPtr = NULL;
         SecPdu->SduLength = 0;
-        result = SECOC_VERIFICATIONFAILURE;
+        result = SECOC_FRESHNESSFAILURE;
     }
     return result;
 }
