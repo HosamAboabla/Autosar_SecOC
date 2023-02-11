@@ -266,7 +266,6 @@ void SecOC_MainFunctionRx(void)
         if ( SecOC_Buffer_Rx[idx].SduLength > 0 ) {
             
             result = verify(idx , &SecOC_Buffer_Rx[idx] ,&SecOC_RxPduProcessing ,&macResult);
-            printf(" verify result %d\n" , result);
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
                 PduR_SecOCIfRxIndication(idx,  &SecOC_Buffer_Rx[idx]);
