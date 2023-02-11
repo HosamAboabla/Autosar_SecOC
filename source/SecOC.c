@@ -65,7 +65,7 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
 
-    memcpy(&DataToAuth[*DataToAuthLen], &FreshnessVal[SecOC_TxPduProcessing.SecOCFreshnessValueLength - FreshnesslenBytes], FreshnesslenBytes);
+    memcpy(&DataToAuth[*DataToAuthLen], FreshnessVal, FreshnesslenBytes);
     *DataToAuthLen += FreshnesslenBytes;
 
     return E_OK;
