@@ -11,7 +11,7 @@
 #include "Rte_SecOC_Type.h"
 #include "PduR_Com.h"
 #include "PduR_SecOC.h"
-
+#include "Pdur_CanTP.h"
 
 #include <string.h>
 
