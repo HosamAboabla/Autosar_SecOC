@@ -12,6 +12,7 @@
 #include "PduR_Com.h"
 #include "PduR_SecOC.h"
 #include "Pdur_CanTP.h"
+#include "PduR_CanIf.h"
 
 #include <string.h>
 
