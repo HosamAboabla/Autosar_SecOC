@@ -11,11 +11,12 @@
 #include "Rte_SecOC_Type.h"
 #include "PduR_Com.h"
 #include "PduR_SecOC.h"
-
+#include "Pdur_CanTP.h"
 
 #include <string.h>
 
 extern SecOC_TxPduProcessingType SecOC_TxPduProcessing;
+
 
 static PduInfoType SecOC_Buffer[SECOC_BUFFERLENGTH];
 
@@ -56,8 +57,7 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
     // Complete Freshness Value
     uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueLength;
-
-    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    result = SecOC_GetTxFreshness(SecOC_TxPduProcessing.SecOCFreshnessValueId, FreshnessVal, &FreshnesslenBits);
     if(result != E_OK)
     {
         return result;
@@ -65,7 +65,7 @@ static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(FreshnesslenBits);
 
-    memcpy(&DataToAuth[*DataToAuthLen], &FreshnessVal[SecOC_TxPduProcessing.SecOCFreshnessValueLength - FreshnesslenBytes], FreshnesslenBytes);
+    memcpy(&DataToAuth[*DataToAuthLen], FreshnessVal, FreshnesslenBytes);
     *DataToAuthLen += FreshnesslenBytes;
 
     return E_OK;
@@ -118,15 +118,16 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     uint8  authenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
     uint32  authenticatorLen = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCAuthInfoTruncLength);
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
-
+    
     // Create secured IPDU
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
     SecPdu->SduLength = SECOC_SECPDU_MAX_LENGTH;
 
     // Truncated freshness value
-    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH] = {0};
+    uint8 FreshnessVal[SECOC_TX_FRESHNESS_VALUE_LENGTH] = {0};
     uint32 FreshnesslenBits = SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength;
-    result = SecOC_GetTxFreshness(TxPduId, FreshnessVal, &FreshnesslenBits);
+    uint32 SecOCFreshnessValueLength = SecOC_TxPduProcessing.SecOCFreshnessValueLength;
+    result = SecOC_GetTxFreshnessTruncData(SecOC_TxPduProcessing.SecOCFreshnessValueId, FreshnessVal, &SecOCFreshnessValueLength, FreshnessVal, &FreshnesslenBits);
 
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOC_TxPduProcessing.SecOCFreshnessValueTruncLength);
 
@@ -237,7 +238,7 @@ extern void SecOC_MainFunctionTx(void) {
     }
     PduIdType idx;
     PduInfoType transmitPduInfo;
-    uint8 temp[8];
+    uint8 temp[12];
     transmitPduInfo.SduDataPtr = temp;
     
 
@@ -251,6 +252,28 @@ extern void SecOC_MainFunctionTx(void) {
 
         }
     }
+}
+
+void SecOC_MainFunctionRx(void)
+{
+    PduIdType idx = 0;
+    SecOC_VerificationResultType result ,macResult;
+    extern SecOC_RxPduProcessingType SecOC_RxPduProcessing; 
+
+    
+    for (idx = 0 ; idx < SECOC_BUFFERLENGTH ; idx++) {
+        // check if there is data
+        if ( SecOC_Buffer_Rx[idx].SduLength > 0 ) {
+            
+            result = verify(idx , &SecOC_Buffer_Rx[idx] ,&SecOC_RxPduProcessing ,&macResult);
+            if( result == SECOC_VERIFICATIONSUCCESS )
+            {
+                PduR_SecOCIfRxIndication(idx,  &SecOC_Buffer_Rx[idx]);
+            }
+
+        }
+    }
+
 }
 
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
@@ -285,6 +308,7 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 
 
+
 void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {   /* The SecOC copies the Authentic I-PDU to its own buffer */
     if (RxPduId < SECOC_BUFFERLENGTH) SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr;
@@ -292,34 +316,100 @@ void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 
 
-#define MAX_COUNTER_FRESHNESS_IDS   10
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
 {
-    Std_ReturnType result = E_OK; 
-    if (SecOCFreshnessValueID > (MAX_COUNTER_FRESHNESS_IDS-1)) 
-    {
-        result = E_NOT_OK;
-    }
-    else if (*SecOCTruncatedFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE) 
-    {
-        result = E_NOT_OK;
-    }
-    SecOC_FreshnessArrayType counter[MAX_COUNTER_FRESHNESS_IDS] = {0};
-    uint32 Datalength = SECOC_MAX_FRESHNESS_SIZE - (*SecOCTruncatedFreshnessValueLength);
-    
-    int DataIndex = (SECOC_MAX_FRESHNESS_SIZE - 1); 
-    uint8 big_End_index =0;
-    for ( ; ((DataIndex >= Datalength) && (big_End_index < (*SecOCTruncatedFreshnessValueLength))); DataIndex-- , big_End_index++) 
-    {
-        SecOCTruncatedFreshnessValue[big_End_index] = counter[SecOCFreshnessValueID][DataIndex];
-    }
+    Std_ReturnType result = FVM_GetTxFreshnessTruncData(SecOCFreshnessValueID, SecOCFreshnessValue , SecOCFreshnessValueLength,
+    SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength);
     return result;
 }
 
 
+Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* SecOCTruncatedFreshnessValue,uint32 SecOCTruncatedFreshnessValueLength,
+    uint16 SecOCAuthVerifyAttempts,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength)
+{
+    FVM_GetRxFreshness(SecOCFreshnessValueID,SecOCTruncatedFreshnessValue,SecOCTruncatedFreshnessValueLength,
+    SecOCAuthVerifyAttempts,SecOCFreshnessValue,SecOCFreshnessValueLength);
+}
+
+
+Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu,SecOC_RxPduProcessingType *SecOCRxPduProcessing, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes)
+{
+    //*DataToAuthLen = 0;
+	//copy the Id to buffer Data to Auth
+    memcpy(&DataToAuth[*DataToAuthLen], &RxPduId, sizeof(RxPduId));
+    *DataToAuthLen += sizeof(RxPduId);	
+
+    // copy the data to buffer Data to Auth
+    memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
+    *DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
+
+    uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX_LENGTH;
+    uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
+    const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH);
+    uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing->SecOCFreshnessValueTruncLength;
+    *TruncatedLength_Bytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
+    Std_ReturnType Freshness_result;
+    uint16 authVeriAttempts = 0;
+    // Std_ReturnType Freshness_result = E_OK;
+
+    Freshness_result = SecOC_GetRxFreshness(SecOCRxPduProcessing->SecOCFreshnessValueId,
+    SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
+    SecOCFreshnessValue, &SecOCFreshnessValueLength);
+
+    // copy the freshness value to buffer Data to Auth
+    memcpy(&DataToAuth[*DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCFreshnessValueLength));
+    *DataToAuthLen += (BIT_TO_BYTES(SecOCFreshnessValueLength));
+
+    return Freshness_result;
+}
+
+// header - auth_data - Freshness - MAC
+Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcessingType *SecOCRxPduProcessing, SecOC_VerificationResultType *verification_result)
+{
+    uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
+    uint32 DataToAuthLen = 0;
+    uint8 TruncatedLength_Bytes;
+    
+    Std_ReturnType FV_result = construct_RX_DataToAuthenticator(RxPduId, SecPdu, SecOCRxPduProcessing, DataToAuth, &DataToAuthLen, &TruncatedLength_Bytes);
+
+    uint32 mac_length_bit = SecOCRxPduProcessing->SecOCAuthInfoTruncLength;
+    uint8 mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8] = {0};
+    // copy mac from secured data to MAC buffer
+    memcpy(mac, (SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
+
+    SecOC_VerificationResultType result;
+    Crypto_VerifyResultType verify_var;
+
+    if(FV_result == E_OK)
+    {
+        Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing->SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
+        if (Mac_verify == E_OK) 
+        {
+            *verification_result = CRYPTO_E_VER_OK;
+            SecPdu->SduLength = SECOC_AUTHPDU_MAX_LENGTH;
+            result = SECOC_VERIFICATIONSUCCESS;
+        }
+        else 
+        {
+            // drop message
+            SecPdu->SduDataPtr = NULL;
+            SecPdu->SduLength = 0;
+            *verification_result = CRYPTO_E_VER_NOT_OK;
+            result = SECOC_VERIFICATIONFAILURE;
+        }
+    }
+    else
+    {
+        // drop message
+        SecPdu->SduDataPtr = NULL;
+        SecPdu->SduLength = 0;
+        result = SECOC_FRESHNESSFAILURE;
+    }
+    return result;
+}
+
 void SecOC_test()
 {
-    
 }
