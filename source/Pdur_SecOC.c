@@ -21,6 +21,7 @@
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
+   /*Check the SecOC Mode*/
    if(*(PduInfoPtr->MetaDataPtr) == DIRECT_TRANSMISSION_MODE)
    {
       return CanIf_Transmit(TxPduId,PduInfoPtr);
