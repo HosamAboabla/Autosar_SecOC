@@ -229,7 +229,6 @@ void SecOCMainFunctionRx(void)
 {
     PduIdType idx = 0;
     SecOC_VerificationResultType result ,macResult;
-    extern SecOC_RxPduProcessingType SecOC_RxPduProcessing; 
 
     
     for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
@@ -396,7 +395,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 
 #include <stdio.h>
 
-
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
@@ -441,7 +439,6 @@ void SecOC_test()
     uint32 ayhaga = 20;
     //FVM_IncreaseCounter(SecOCTxPduProcessing[0].SecOCFreshnessValueId, &ayhaga);
     SecOCMainFunctionTx();
-    printf("sizeof tx %d\n", sizeof(*SecOCTxPduProcessing));
     for(int i = 0; i < secured->SduLength; i++)
         printf("%d ", secured->SduDataPtr[i]);
     printf("\n");
