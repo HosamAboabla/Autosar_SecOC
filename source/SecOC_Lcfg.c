@@ -253,7 +253,8 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         &SecOC_RxSecuredPduLayer[0],
         &SecOC_RxAuthenticPduLayer[0],
         //&SecOC_RxPduSecuredArea
-    }
+    },
+    
 };
 
 
