@@ -285,11 +285,11 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {   
     /* The SecOC copies the Authentic I-PDU to its own buffer */
-    PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
-    memcpy(authPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
-    authPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
-    authPdu->SduLength = PduInfoPtr->SduLength;
+    memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
+    securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
+    securedPdu->SduLength = PduInfoPtr->SduLength;
     
 }
 
