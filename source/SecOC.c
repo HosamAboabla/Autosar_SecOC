@@ -209,7 +209,7 @@ void SecOC_Init(const SecOC_ConfigType *config)
 void SecOCMainFunctionTx(void) {
 
     PduIdType idx;
-    for (idx = 0 ; idx < 1 ; idx++) 
+    for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
     {
 
         PduInfoType *authPdu = &(SecOCTxPduProcessing[idx].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
@@ -232,7 +232,7 @@ void SecOCMainFunctionRx(void)
     extern SecOC_RxPduProcessingType SecOC_RxPduProcessing; 
 
     
-    for (idx = 0 ; idx < 1 ; idx++) 
+    for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
     {
 
         PduInfoType *authPdu = &(SecOCRxPduProcessing[idx].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
@@ -283,18 +283,15 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 
 
-void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {   
     /* The SecOC copies the Authentic I-PDU to its own buffer */
-   // if (RxPduId < SECOC_BUFFERLENGTH) SecOC_Buffer_Rx[RxPduId] = *PduInfoPtr;
-    Std_ReturnType result = E_OK;
-
     PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
-    memcpy(authPdu, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
+
+    memcpy(authPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     authPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     authPdu->SduLength = PduInfoPtr->SduLength;
     
-    return result;
 }
 
 
@@ -444,7 +441,7 @@ void SecOC_test()
     uint32 ayhaga = 20;
     //FVM_IncreaseCounter(SecOCTxPduProcessing[0].SecOCFreshnessValueId, &ayhaga);
     SecOCMainFunctionTx();
-
+    printf("sizeof tx %d\n", sizeof(*SecOCTxPduProcessing));
     for(int i = 0; i < secured->SduLength; i++)
         printf("%d ", secured->SduDataPtr[i]);
     printf("\n");
