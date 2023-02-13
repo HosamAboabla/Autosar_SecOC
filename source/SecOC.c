@@ -319,8 +319,8 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 {
     BufReq_ReturnType result = BUFREQ_OK;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    static PduLengthType bufferRemainIndex = 0;
-    PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex;
+    static PduLengthType bufferRemainIndex[SECOC_SECPDU_MAX_LENGTH] = {0}; /* array of pduS  */
+    PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex[id];
     /* - Check if there is data in the buffer to be copy */
     if(securedPdu->SduLength > 0)
     {
@@ -343,19 +343,18 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 
                             /* indicates that all data that has been copied before this call is confirmed and 
                             can be removed from the TP buffer. Data copied by this API call is excluded and will be confirmed later */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex, info->SduLength);
-                            bufferRemainIndex += info->SduLength;
-                            remainingBytes -= info->SduLength;
+                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                            bufferRemainIndex[id] += info->SduLength;
                             break;
                         case TP_CONFPENDING:
                             /* the previously copied data must remain in the TP buffer to be available for error recovery */
                             /* do nothing */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex - info->SduLength, info->SduLength);
+                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - info->SduLength, info->SduLength);
                             break;
                         case TP_DATARETRY:
                             /* indicates that this API call shall copy previously copied data in order to recover from an error. 
                             In this case TxTpDataCnt specifies the offset in bytes from the current data copy position */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex - retry->TxTpDataCnt, info->SduLength);
+                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - retry->TxTpDataCnt, info->SduLength);
                             break;
                         default:
                             result = BUFREQ_E_NOT_OK;
@@ -365,8 +364,8 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
                 else
                 {
                     /* Copy data then remove from the buffer */
-                    memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex, info->SduLength);
-                    bufferRemainIndex += info->SduLength;
+                    memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                    bufferRemainIndex[id] += info->SduLength;
                 }
                 *availableDataPtr = remainingBytes;
             }
@@ -460,6 +459,79 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
     return result;
 }
 
+
 void SecOC_test()
-{  
+{
+    extern SecOC_ConfigType SecOC_Config;
+    SecOC_Init(&SecOC_Config);
+    /* First test */
+    PduIdType pduid = 0;
+    uint8 sdata[5] = {0};
+    uint8 mdata[5] = {0};
+    PduLengthType length = 5;
+    PduInfoType info = {sdata,mdata,length};
+    TpDataStateType retrystate = TP_DATACONF;
+    PduLengthType retrycout = 0;
+    RetryInfoType retry = {retrystate,retrycout};
+    PduLengthType availableDataPtr = 0;
+    uint8 buffersdata[10] = {1,2,3,4,5,6,7,8,9,10};
+    uint8 buffermdata[10] = {1,2,3,4,5,6,7,8,9,10};
+    PduLengthType bufferlength = 10;
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[pduid].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+
+    securedPdu->SduDataPtr = buffersdata;
+    securedPdu->MetaDataPtr = buffermdata;
+    securedPdu->SduLength = bufferlength;
+    for(int i = 0; i < length; i++)
+        printf("before info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("before : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n%d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
+    for(int i = 0; i < length; i++)
+        printf("after info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("after : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n#####\n");
+    printf("\n%d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
+    for(int i = 0; i < length; i++)
+        printf("after info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("after : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n#####\n");
+
+    /* second test */
+    retry.TpDataState = TP_CONFPENDING;
+    for(int i = 0; i < length; i++)
+        info.SduDataPtr[i] = 9-i;
+    for(int i = 0; i < length; i++)
+        printf("before info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("before : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n%d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
+    for(int i = 0; i < length; i++)
+        printf("after info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("after : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n#####\n");
+
+    /* Third teets */
+    retry.TpDataState = TP_DATARETRY;
+    retry.TxTpDataCnt = 5;
+    for(int i = 0; i < length; i++)
+        printf("before info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("before : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n%d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
+    for(int i = 0; i < length; i++)
+        printf("after info: %d\t",info.SduDataPtr[i]);
+    printf("\n");
+    for(int i = 0; i < bufferlength; i++)
+        printf("after : %d\t",securedPdu->SduDataPtr[i]);
+    printf("\n#####\n");
 }
