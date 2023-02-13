@@ -201,12 +201,12 @@
 /*
 * Configuration Parameter for SecOC_DataId
 */
-#define SECOC_RX_DATA_ID        ((uint16)20)
+#define SECOC_RX_DATA_ID        ((uint16)0)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
 */
-#define SECOC_FRESHNESSVALUE_ID      ((uint16)1)
+#define SECOC_FRESHNESSVALUE_ID      ((uint16)10)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
@@ -216,7 +216,7 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueTruncLength
 */
-#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)0)
+#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)14)
 
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
