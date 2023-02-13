@@ -391,57 +391,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
     return result;
 }
 
-
-
-
-#include <stdio.h>
-
-extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{
-     //FVM_IncreaseCounter(0, 100);
-   // uint8_t adata[100] = "hello, world";
-    // uint8_t adata[100] = {0, 1, 2, 3, 9, 5, 6, 7, 8, 9, 10, 11, 12};
-    // uint8_t sdata[100];
-    // PduInfoType AuthPdu, SecPdu;
-    // uint8 x = 0;
-    // AuthPdu.SduDataPtr = adata;
-    // AuthPdu.SduLength = SECOC_AUTHPDU_MAX_LENGTH;
-    // AuthPdu.MetaDataPtr = &x;
-    uint16 SecOCFreshnessValueID = 10;
-
-    uint8 SecOCFreshnessValue[8]={0};
-    uint32 SecOCFreshnessValueLength = 8 * 8;
-    
-    for(int i = 0; i < 0x12C; i++)
-        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
-		
-	uint8 buff[16]={1,1,1,1};
-    PduLengthType len = 4;
-    PduInfoType SPDU;
-    SPDU.SduDataPtr = buff;
-    SPDU.SduLength = len;
-    
-    SecOC_Init(&SecOC_Config);
-    SecOC_IfTransmit(0, &SPDU);
-    // Changing parameters: Authentic I-PDU(constant for now), Freshness Value, Authenticator
-    //SecOC_TxPduProcessing[0].SecOCFreshnessValueTruncLength = 16;
-    //SecOC_TxPduProcessing[0].SecOCAuthInfoTruncLength = 32; // BITS
-
-    for(int i = 0; i < SPDU.SduLength; i++)
-        printf("%d ", SPDU.SduDataPtr[i]);
-    printf("\n");
-
-    // main function
-    
-    PduInfoType *secured = &(SecOCTxPduProcessing[0].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    PduInfoType *auth = &(SecOCTxPduProcessing[0].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
-    //authenticate(0, auth, secured);
-    uint32 ayhaga = 20;
-    //FVM_IncreaseCounter(SecOCTxPduProcessing[0].SecOCFreshnessValueId, &ayhaga);
-    SecOCMainFunctionTx();
-    for(int i = 0; i < secured->SduLength; i++)
-        printf("%d ", secured->SduDataPtr[i]);
-    printf("\n");
-    printf("done");   
+{  
 }
