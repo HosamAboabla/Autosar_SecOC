@@ -345,6 +345,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
                             can be removed from the TP buffer. Data copied by this API call is excluded and will be confirmed later */
                             memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
                             bufferRemainIndex[id] += info->SduLength;
+                            remainingBytes -= info->SduLength;
                             break;
                         case TP_CONFPENDING:
                             /* the previously copied data must remain in the TP buffer to be available for error recovery */
@@ -366,6 +367,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
                     /* Copy data then remove from the buffer */
                     memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
                     bufferRemainIndex[id] += info->SduLength;
+                    remainingBytes -= info->SduLength;
                 }
                 *availableDataPtr = remainingBytes;
             }
