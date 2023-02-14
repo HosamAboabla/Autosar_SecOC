@@ -224,7 +224,10 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
         }
         *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
         /* Trunc the LSBs from freshness and store in the Freshness and update it length*/
-        memcpy(SecOCTruncatedFreshnessValue, SecOCFreshnessValue, acctualFreshnessTruncVallength - 1);
+        if(acctualFreshnessTruncVallength > 0)
+        {
+            memcpy(SecOCTruncatedFreshnessValue, SecOCFreshnessValue, acctualFreshnessTruncVallength - 1);
+        }
         uint8 bitTrunc = 8 - ((acctualFreshnessTruncVallength * 8) - *SecOCTruncatedFreshnessValueLength);
         SecOCTruncatedFreshnessValue[acctualFreshnessTruncVallength - 1] = (SecOCFreshnessValue[acctualFreshnessTruncVallength - 1] & (~(0xFF << bitTrunc)));
         *SecOCTruncatedFreshnessValueLength = acctualFreshnessTruncVallength * 8;
