@@ -410,6 +410,11 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxPduProcess
     return result;
 }
 
+BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr)
+{
+    
+}
+
 void SecOC_test()
 {
 }
