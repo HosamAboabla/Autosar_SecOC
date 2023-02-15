@@ -319,7 +319,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 {
     BufReq_ReturnType result = BUFREQ_OK;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    static PduLengthType bufferRemainIndex[SECOC_SECPDU_MAX_LENGTH] = {0}; /* array of pduS  */
+    static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0}; /* array of pduS  */
     PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex[id];
     /* - Check if there is data in the buffer to be copy */
     if(securedPdu->SduLength > 0)
