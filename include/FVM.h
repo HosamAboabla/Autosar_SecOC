@@ -7,7 +7,7 @@
 
 
 /* SecOCFreshnessValueID MAX NUMBER */
-#define ID_MAX 100
+#define SecOC_FreshnessValue_ID_MAX 100
 
 
 
