@@ -398,13 +398,13 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     /*@req [SWS_SecOC_00082]*/
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     
-    static PduLengthType securedBufferCursor = 0;
-    static PduLengthType infoBufferCursor = 0;
+    static PduLengthType securedBufferCursor[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+    static PduLengthType infoBufferCursor[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
     /*@req [SWS_SecOC_00083]*/
-    memcpy(securedPdu->SduDataPtr + securedBufferCursor, info->SduDataPtr + infoBufferCursor, info->SduLength);
-    infoBufferCursor += info->SduLength;
-    securedBufferCursor += securedPdu->SduLength;
+    memcpy(securedPdu->SduDataPtr + securedBufferCursor[id], info->SduDataPtr + infoBufferCursor[id], info->SduLength);
+    infoBufferCursor[id] += info->SduLength;
+    securedBufferCursor[id] += securedPdu->SduLength;
     *bufferSizePtr = securedPdu->SduDataPtr - securedBufferCursor;
 
     /* An SduLength of 0 can be used to query the
