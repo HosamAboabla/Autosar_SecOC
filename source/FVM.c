@@ -50,6 +50,18 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
     return E_OK;
 }
 
+/* Set the Counter Value to new Value */
+Std_ReturnType FVM_UpdateCounter(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32 SecOCFreshnessValueLength)
+{
+    uint32 freshnessCounterIndex, SecOCFreshnessValueLengthBytes = BIT_TO_BYTES(SecOCFreshnessValueLength);
+    for(freshnessCounterIndex = 0; freshnessCounterIndex < SecOCFreshnessValueLengthBytes;freshnessCounterIndex++)
+    {
+        Freshness_Counter[SecOCFreshnessValueID][freshnessCounterIndex] = SecOCFreshnessValue[freshnessCounterIndex];
+    }
+    Freshness_Counter_length[SecOCFreshnessValueID] = SecOCFreshnessValueLength;
+}
+
 
 Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
