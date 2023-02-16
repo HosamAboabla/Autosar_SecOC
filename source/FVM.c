@@ -178,9 +178,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
         {
             if (Freshness_Counter[SecOCFreshnessValueID][counterIndex] == SecOCFreshnessValue[counterIndex])
             {
-                result = E_OK;
-                break;
-
+                continue;
             }
             else if (Freshness_Counter[SecOCFreshnessValueID][counterIndex] < SecOCFreshnessValue[counterIndex])
             {
