@@ -26,7 +26,6 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
 
     /* increase the counter by 1 */
     uint8 INDEX = 0;
-    for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX ++)
     uint8 maxIndex = BIT_TO_BYTES(SECOC_MAX_FRESHNESS_SIZE);
     for (; INDEX < maxIndex; INDEX ++)
     {
