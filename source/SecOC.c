@@ -220,7 +220,8 @@ void SecOCMainFunctionTx(void) {
         if (authPdu->SduLength > 0) 
         {
             authenticate(idx , authPdu , securedPdu);
-            FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, &SecOCTxPduProcessing[idx].SecOCFreshnessValueLength);
+            
+            FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
             PduR_SecOCTransmit(idx , securedPdu);
 
         }

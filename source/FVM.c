@@ -44,8 +44,10 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
             break;
         }
     }
-   
-    *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
+    if(SecOCFreshnessValueLength != NULL)
+    {
+        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
+    }
 
     return E_OK;
 }
