@@ -66,19 +66,15 @@ uint32* SecOCFreshnessValueLength) {
             Freshnes index and counter Index --> index to copy the value from counter to pointer
             last index t
          */
-
-        uint32 AcctualFreshnessVallength = (FreshnessValueLengthBytes <= BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID])) ? (FreshnessValueLengthBytes ) :  (BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]));
-
-        uint32 FreshnessIndex = FreshnessValueLengthBytes- 1, FreshnessCounterIndex; 
-        for (FreshnessCounterIndex = 0; (FreshnessCounterIndex < AcctualFreshnessVallength);FreshnessCounterIndex++) 
+        uint32 acctualFreshnessVallength = (*SecOCFreshnessValueLength <= Freshness_Counter_length[SecOCFreshnessValueID]) ? (*SecOCFreshnessValueLength ) :  (Freshness_Counter_length[SecOCFreshnessValueID]);
+        uint32 acctualFreshnessVallengthBytes = BIT_TO_BYTES(acctualFreshnessVallength);
+        uint32 freshnessCounterIndex; 
+        for (freshnessCounterIndex = 0; freshnessCounterIndex < acctualFreshnessVallengthBytes;freshnessCounterIndex++) 
         {
-            SecOCFreshnessValue[FreshnessIndex] = Freshness_Counter[SecOCFreshnessValueID][FreshnessCounterIndex];
-            FreshnessIndex--;
+            SecOCFreshnessValue[freshnessCounterIndex] = Freshness_Counter[SecOCFreshnessValueID][freshnessCounterIndex];
         }
         /* Update Length */
-
-
-        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
+        *SecOCFreshnessValueLength = acctualFreshnessVallength;
         
     }
     return result;
