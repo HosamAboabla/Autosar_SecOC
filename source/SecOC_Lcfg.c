@@ -59,8 +59,8 @@ SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
 
 SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
 {
-    SECOC_AUTHPDU_HEADERLENGTH,
-    SECOC_RXAUTHENTIC_PDUID,
+    SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
+    SECOC_CRYPTO_RXAUTHENTIC_PDUID,
     //&EcuC_Pdu
 };
 
