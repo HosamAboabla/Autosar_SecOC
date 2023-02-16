@@ -319,7 +319,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 {
     BufReq_ReturnType result = BUFREQ_OK;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0}; /* array of pduS  */
+    static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
     PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex[id];
     /* - Check if there is data in the buffer to be copy */
     if(securedPdu->SduLength > 0)
@@ -343,19 +343,19 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 
                             /* indicates that all data that has been copied before this call is confirmed and 
                             can be removed from the TP buffer. Data copied by this API call is excluded and will be confirmed later */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
                             bufferRemainIndex[id] += info->SduLength;
                             remainingBytes -= info->SduLength;
                             break;
                         case TP_CONFPENDING:
                             /* the previously copied data must remain in the TP buffer to be available for error recovery */
                             /* do nothing */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - info->SduLength, info->SduLength);
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - info->SduLength, info->SduLength);
                             break;
                         case TP_DATARETRY:
                             /* indicates that this API call shall copy previously copied data in order to recover from an error. 
                             In this case TxTpDataCnt specifies the offset in bytes from the current data copy position */
-                            memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - retry->TxTpDataCnt, info->SduLength);
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - retry->TxTpDataCnt, info->SduLength);
                             break;
                         default:
                             result = BUFREQ_E_NOT_OK;
@@ -365,7 +365,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
                 else
                 {
                     /* Copy data then remove from the buffer */
-                    memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                    (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
                     bufferRemainIndex[id] += info->SduLength;
                     remainingBytes -= info->SduLength;
                 }
