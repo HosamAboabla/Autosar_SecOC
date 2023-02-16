@@ -85,7 +85,7 @@ uint32* SecOCFreshnessValueLength);
 
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
-Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes);
+Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength );
 
 /*******************************************************
  *          * Function Info *                           *
