@@ -392,7 +392,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 
 BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr)
 {
-    /*Save the result of copying the data*/
     BufReq_ReturnType result = BUFREQ_OK;
 
     /*Create a pointer to the secured I-PDU buffer that we will store the data into it*/
@@ -402,33 +401,17 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     static PduLengthType securedBufferCursor = 0;
     static PduLengthType infoBufferCursor = 0;
 
-    /*Check if there is data in the source buffer "info" to copy*/
     /*@req [SWS_SecOC_00083]*/
-    if (info->SduDataPtr > 0)
-    {
-        /**/
-        if (securedPdu->SduLength <= remainingBytes)
-        {
-            /* An SduLength of 0 can be used to query the
-             * current amount of available buffer in the upper layer module. In this
-             * case, the SduDataPtr may be a NULL_PTR.*/
-            if (info->SduLength == 0)
-            {
-                *bufferSizePtr = remainingBytes;
-            }
-            else
-            {
-                memcpy(securedPdu->SduDataPtr, info->SduDataPtr + remainingBufferIndex[id], securedPdu->SduLength);
-                remainingBufferIndex[id] += securedPdu->SduLength;
-                remainingBytes -= info->SduLength;
-                *bufferSizePtr = remainingBytes;
-            }
-        }
-    }
-    else
-    {
-        result = BUFREQ_E_NOT_OK;
-    }
+    memcpy(securedPdu->SduDataPtr + securedBufferCursor, info->SduDataPtr + infoBufferCursor, info->SduLength);
+    infoBufferCursor += info->SduLength;
+    securedBufferCursor += securedPdu->SduLength;
+    *bufferSizePtr = securedPdu->SduDataPtr - securedBufferCursor;
+
+    /* An SduLength of 0 can be used to query the
+     * current amount of available buffer in the upper layer module. In this
+     * case, the SduDataPtr may be a NULL_PTR.
+     */
+
 
     return result;
 }
