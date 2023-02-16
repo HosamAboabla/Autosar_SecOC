@@ -21,8 +21,7 @@ const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
 
-
-
+const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 /****************************************************
  *          * Function Info *                           *
@@ -393,7 +392,15 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 
 BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr)
 {
+    /*Save the result of copying the data*/
+    BufReq_ReturnType result = BUFREQ_OK;
+
+    /*Create a pointer to the secured I-PDU buffer that we will store the data into it*/
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     
+    
+    
+
 }
 
 void SecOC_test()
