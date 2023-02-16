@@ -5,8 +5,8 @@
 
 
 /* Freshness Counter */
-static SecOC_FreshnessArrayType Freshness_Counter[ID_MAX] = {0};
-static uint32 Freshness_Counter_length [ID_MAX] = {0};
+static SecOC_FreshnessArrayType Freshness_Counter[SecOC_FreshnessValue_ID_MAX] = {0};
+static uint32 Freshness_Counter_length [SecOC_FreshnessValue_ID_MAX] = {0};
 
 /* Shitf Right by 1 to divide by 2
         untill there is no number
@@ -27,6 +27,8 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
     /* increase the counter by 1 */
     uint8 INDEX = 0;
     for (; INDEX < SECOC_MAX_FRESHNESS_SIZE; INDEX ++)
+    uint8 maxIndex = BIT_TO_BYTES(SECOC_MAX_FRESHNESS_SIZE);
+    for (; INDEX < maxIndex; INDEX ++)
     {
         Freshness_Counter[SecOCFreshnessValueID][INDEX] ++;
         if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
@@ -36,7 +38,7 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFr
     }
     
      /* Calculate the Number of bits in the Counter */
-    for (INDEX = SECOC_MAX_FRESHNESS_SIZE - 1; INDEX >= 0; INDEX--) {
+    for (INDEX = maxIndex - 1; INDEX >= 0; INDEX--) {
         if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
         {
             Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + INDEX * 8;
@@ -54,10 +56,10 @@ Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFres
 uint32* SecOCFreshnessValueLength) {
 
     Std_ReturnType result = E_OK;
-    uint32 FreshnessValueLengthBytes = (BIT_TO_BYTES(*SecOCFreshnessValueLength));
-    if (SecOCFreshnessValueID > ID_MAX) {
+    
+    if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX) {
         result =  E_NOT_OK;
-    } else if ( FreshnessValueLengthBytes > SECOC_MAX_FRESHNESS_SIZE ) {
+    } else if ( *SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE ) {
         result = E_NOT_OK;
     } else {
         
@@ -87,12 +89,11 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                                   uint16 SecOCAuthVerifyAttempts, uint8 *SecOCFreshnessValue, uint32 *SecOCFreshnessValueLength)
 {
     Std_ReturnType result = E_OK;
-    uint32 FreshnessValueLengthBytes = (BIT_TO_BYTES(*SecOCFreshnessValueLength));
-    if (SecOCFreshnessValueID > ID_MAX)
+    if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX)
     {
         result = E_NOT_OK;
     }
-    else if (FreshnessValueLengthBytes > SECOC_MAX_FRESHNESS_SIZE)
+    else if (*SecOCFreshnessValueLength > SECOC_MAX_FRESHNESS_SIZE)
     {
         result = E_NOT_OK;
     }
@@ -198,7 +199,7 @@ Std_ReturnType FVM_GetTxFreshnessTruncData(uint16 SecOCFreshnessValueID, uint8* 
 uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* SecOCTruncatedFreshnessValueLength)
 {
     Std_ReturnType result = E_OK; 
-    if (SecOCFreshnessValueID > ID_MAX) 
+    if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX) 
     {
         result = E_NOT_OK;
     }
