@@ -5,7 +5,7 @@ BufReq_ReturnType PduR_CanTpCopyTxData (PduIdType id,const PduInfoType* info,con
 PduLengthType* availableDataPtr)
 {
    /* SWS_CanTp_00086 */
-   SecOC_CopyTxData(id, info, retry, availableDataPtr);
+   return SecOC_CopyTxData(id, info, retry, availableDataPtr);
 }
 
 
