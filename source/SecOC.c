@@ -398,7 +398,19 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     /*Create a pointer to the secured I-PDU buffer that we will store the data into it*/
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     
-    
+    static PduLengthType remainingBufferIndex[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+
+    PduLengthType remainingBytes = info->SduLength - remainingBufferIndex[id];
+
+    /*Check if there is data in the buffer to copy*/
+    if(info->SduDataPtr > 0)
+    {
+
+    }
+    else
+    {
+        return BUFREQ_E_NOT_OK;
+    }
     
 
 }
