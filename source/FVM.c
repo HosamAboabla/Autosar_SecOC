@@ -215,7 +215,7 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
         uint32 truncFreshnessVallengthBytes = BIT_TO_BYTES(*SecOCTruncatedFreshnessValueLength);
         uint32 acctualFreshnessTruncVallength = (truncFreshnessVallengthBytes <= acctualFreshnessVallengthBytes) ? (truncFreshnessVallengthBytes ) :  (acctualFreshnessVallengthBytes);
         /* get freshness from counter and its length */
-        for(freshnessCounterIndex = 0; freshnessCounterIndex < acctualFreshnessVallength; freshnessCounterIndex++)
+        for(freshnessCounterIndex = 0; freshnessCounterIndex < acctualFreshnessVallengthBytes; freshnessCounterIndex++)
         {
             SecOCFreshnessValue[freshnessCounterIndex] = Freshness_Counter[SecOCFreshnessValueID][freshnessCounterIndex];
         }
@@ -227,7 +227,7 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
             uint8 bitTrunc = 8 - ((acctualFreshnessTruncVallength * 8) - *SecOCTruncatedFreshnessValueLength);
             SecOCTruncatedFreshnessValue[acctualFreshnessTruncVallength - 1] = (SecOCFreshnessValue[acctualFreshnessTruncVallength - 1] & (~(0xFF << bitTrunc)));
         }
-        *SecOCTruncatedFreshnessValueLength = acctualFreshnessTruncVallength;
+        //*SecOCTruncatedFreshnessValueLength = acctualFreshnessTruncVallength;
     }
     return result;
 }
