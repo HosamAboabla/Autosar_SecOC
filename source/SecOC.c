@@ -399,23 +399,38 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     /*@req [SWS_SecOC_00082]*/
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     
-    static PduLengthType remainingBufferIndex[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
-
-    PduLengthType remainingBytes = info->SduLength - remainingBufferIndex[id];
+    static PduLengthType securedBufferCursor = 0;
+    static PduLengthType infoBufferCursor = 0;
 
     /*Check if there is data in the source buffer "info" to copy*/
     /*@req [SWS_SecOC_00083]*/
-    if(info->SduDataPtr > 0)
+    if (info->SduDataPtr > 0)
     {
-
-
+        /**/
+        if (securedPdu->SduLength <= remainingBytes)
+        {
+            /* An SduLength of 0 can be used to query the
+             * current amount of available buffer in the upper layer module. In this
+             * case, the SduDataPtr may be a NULL_PTR.*/
+            if (info->SduLength == 0)
+            {
+                *bufferSizePtr = remainingBytes;
+            }
+            else
+            {
+                memcpy(securedPdu->SduDataPtr, info->SduDataPtr + remainingBufferIndex[id], securedPdu->SduLength);
+                remainingBufferIndex[id] += securedPdu->SduLength;
+                remainingBytes -= info->SduLength;
+                *bufferSizePtr = remainingBytes;
+            }
+        }
     }
     else
     {
-        return BUFREQ_E_NOT_OK;
+        result = BUFREQ_E_NOT_OK;
     }
-    
 
+    return result;
 }
 
 void SecOC_test()
