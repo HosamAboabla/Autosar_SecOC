@@ -5,7 +5,7 @@
 #include "Std_Types.h"
 #include "FVM.h"
 
-#define SECOC_MAX_FRESHNESS_SIZE 100
+#define SECOC_MAX_FRESHNESS_SIZE 32
 
 typedef uint8                 SecOC_FreshnessArrayType[SECOC_MAX_FRESHNESS_SIZE];
 
