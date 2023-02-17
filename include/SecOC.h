@@ -153,6 +153,20 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
  *******************************************************/
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TpRxIndication          *
+ * Function_Index       : 8.4.2                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is Called after *
+ * an I-PDU has been received via the TP API,           *
+ * the result indicates whether                         *
+ * the transmission was successful or not.              *
+ *******************************************************/
+
+
+void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
 
 
 #define SECOC_E_UNINIT 					0x02

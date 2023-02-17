@@ -278,6 +278,18 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
+{
+    PduInfoType *authPdu = &(SecOCTxPduProcessing[Id].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[Id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+
+    if (result==E_NOT_OK)
+    {
+        // clear buffer
+        authPdu->SduLength = 0;
+        securedPdu->SduLength = 0;
+    }
+}
 
 
 
