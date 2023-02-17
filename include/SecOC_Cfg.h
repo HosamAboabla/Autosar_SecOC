@@ -254,7 +254,7 @@
 /*
 * Configuration Parameter for SecOC_AuthPduHeaderLength
 */
-#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)1)
+#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)0)
 
 /*
 * Configuration Parameter for SecOC_RxSecuredLayerPduId
@@ -363,7 +363,7 @@
  * Container_Index       : 10.1.16                            *
  **************************************************************/
 
-#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)1)
+#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)0)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
 
 
