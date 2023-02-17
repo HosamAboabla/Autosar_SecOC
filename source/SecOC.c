@@ -250,6 +250,7 @@ void SecOCMainFunctionRx(void)
             result = verify(idx, securedPdu, &macResult);
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
+                printf("Verify success for id: %d\n", idx);
                 PduR_SecOCIfRxIndication(idx,  securedPdu);
             }
 
@@ -330,11 +331,11 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
 
     // Get data length from configuration or header if found
     uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    uint32 dataLen;
+    uint32 dataLen = 0;
     if(headerLen > 0)
     {
         // [SWS_SecOC_00259]
-        memcpy(&dataLen, &secPdu->SduDataPtr, headerLen);
+        memcpy(&dataLen, secPdu->SduDataPtr, headerLen);
     }
     else
     {
@@ -381,11 +382,11 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 
     // Get data length from configuration or header if found
     uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    uint32 dataLen;
+    uint32 dataLen = 0;
     if(headerLen > 0)
     {
         // [SWS_SecOC_00259]
-        memcpy(&dataLen, &SecPdu->SduDataPtr, headerLen);
+        memcpy(&dataLen, SecPdu->SduDataPtr, headerLen);
     }
     else
     {
@@ -393,7 +394,7 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
         dataLen =  SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
     }
     // copy mac from secured data to MAC buffer
-    memcpy(mac, (SecPdu->SduDataPtr+dataLen+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
+    memcpy(mac, (SecPdu->SduDataPtr+headerLen+dataLen+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
 
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
@@ -443,11 +444,11 @@ void SecOC_test()
     uint8 SecOCFreshnessValue[8]={0};
     uint32 SecOCFreshnessValueLength = 8 * 8;
     
-    for(int i = 0; i < 0x12C; i++)
-        FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
+  //  for(int i = 0; i < 0x12C; i++)
+    //    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
 		
 	uint8 buff[16]={1,1,1,1, 9};
-    PduLengthType len = 7;
+    PduLengthType len = 4;
     PduInfoType SPDU;
     SPDU.SduDataPtr = buff;
     SPDU.SduLength = len;
@@ -473,5 +474,8 @@ void SecOC_test()
     for(int i = 0; i < secured->SduLength; i++)
         printf("%d ", secured->SduDataPtr[i]);
     printf("\n");
-    printf("done");   
+    printf("done transmission\n"); 
+
+    SecOC_RxIndication(0, secured);
+    SecOCMainFunctionRx();
 }
