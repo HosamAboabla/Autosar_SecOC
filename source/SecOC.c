@@ -328,13 +328,27 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
     memcpy(&DataToAuth[*DataToAuthLen], &RxPduId, sizeof(RxPduId));
     *DataToAuthLen += sizeof(RxPduId);	
 
+    // Get data length from configuration or header if found
+    uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    uint32 dataLen;
+    if(headerLen > 0)
+    {
+        // [SWS_SecOC_00259]
+        memcpy(&dataLen, &secPdu->SduDataPtr, headerLen);
+    }
+    else
+    {
+        // [SWS_SecOC_00257]
+        dataLen =  SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+    }
+
     // copy the data to buffer Data to Auth
-    memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr), SECOC_AUTHPDU_MAX_LENGTH);
-    *DataToAuthLen += SECOC_AUTHPDU_MAX_LENGTH;
+    memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr+headerLen), dataLen);
+    *DataToAuthLen += dataLen;
 
     uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX_LENGTH;
     uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
-    const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH);
+    const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+dataLen);
     uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength;
     *TruncatedLength_Bytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
     Std_ReturnType Freshness_result;
@@ -361,10 +375,25 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
     
     Std_ReturnType FV_result = construct_RX_DataToAuthenticator(RxPduId, SecPdu, DataToAuth, &DataToAuthLen, &TruncatedLength_Bytes);
 
+
     uint32 mac_length_bit = SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength;
     uint8 mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8] = {0};
+
+    // Get data length from configuration or header if found
+    uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    uint32 dataLen;
+    if(headerLen > 0)
+    {
+        // [SWS_SecOC_00259]
+        memcpy(&dataLen, &SecPdu->SduDataPtr, headerLen);
+    }
+    else
+    {
+        // [SWS_SecOC_00257]
+        dataLen =  SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+    }
     // copy mac from secured data to MAC buffer
-    memcpy(mac, (SecPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
+    memcpy(mac, (SecPdu->SduDataPtr+dataLen+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
 
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
@@ -375,13 +404,12 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
         if (Mac_verify == E_OK) 
         {
             *verification_result = CRYPTO_E_VER_OK;
-            SecPdu->SduLength = SECOC_AUTHPDU_MAX_LENGTH;
+            SecPdu->SduLength = dataLen;
             result = SECOC_VERIFICATIONSUCCESS;
         }
         else 
         {
             // drop message
-            SecPdu->SduDataPtr = NULL;
             SecPdu->SduLength = 0;
             *verification_result = CRYPTO_E_VER_NOT_OK;
             result = SECOC_VERIFICATIONFAILURE;
@@ -390,7 +418,6 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
     else
     {
         // drop message
-        SecPdu->SduDataPtr = NULL;
         SecPdu->SduLength = 0;
         result = SECOC_FRESHNESSFAILURE;
     }
@@ -420,7 +447,7 @@ void SecOC_test()
         FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
 		
 	uint8 buff[16]={1,1,1,1, 9};
-    PduLengthType len = 5;
+    PduLengthType len = 7;
     PduInfoType SPDU;
     SPDU.SduDataPtr = buff;
     SPDU.SduLength = len;
