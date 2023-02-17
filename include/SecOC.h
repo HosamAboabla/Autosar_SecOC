@@ -168,6 +168,22 @@ void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
 void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_IfCancelTransmit        *
+ * Function_Index       : 8.3.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Requests cancellation of an   *
+ * ongoing transmission of a PDU in a lower layer       *
+ * communication module.                               *
+ *******************************************************/
+
+
+Std_ReturnType SecOC_IfCancelTransmit(
+    PduIdType                  TxPduId
+);
+
 
 #define SECOC_E_UNINIT 					0x02
 

@@ -280,8 +280,8 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
 {
-    PduInfoType *authPdu = &(SecOCTxPduProcessing[Id].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
-    PduInfoType *securedPdu = &(SecOCTxPduProcessing[Id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[Id].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[Id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
     if (result==E_NOT_OK)
     {
@@ -292,6 +292,15 @@ void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
 }
 
 
+Std_ReturnType SecOC_IfCancelTransmit(PduIdType TxPduId)
+{
+    Std_ReturnType result = E_OK;
+
+    PduInfoType *authpdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+    
+    authpdu->SduLength = 0;
+    return result;
+}
 
 
 
@@ -300,10 +309,9 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     /* The SecOC copies the Authentic I-PDU to its own buffer */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
-    memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
+    (void)memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     securedPdu->SduLength = PduInfoPtr->SduLength;
-    
 }
 
 
