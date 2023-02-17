@@ -7,7 +7,7 @@
 
 
 /* SecOCFreshnessValueID MAX NUMBER */
-#define ID_MAX 100
+#define SecOC_FreshnessValue_ID_MAX 100
 
 
 
@@ -18,13 +18,26 @@
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : FVM_IncreaseCounter           *
- * Function_Index       : 8.5.3 [SWS_SecOC_00126]       *
- * Function_File        : SWS of SecOC                  *
+ * Function_Index       :                               *
+ * Function_File        :                               *
  * Function_Descripton  : This API Increase the counter *
  *                                                      *
  *******************************************************/
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength);
 
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : FVM_UpdateCounter             *
+ * Function_Index       :                               *
+ * Function_File        :                               *
+ * Function_Descripton  : Set the Counter Value to      *
+ * new Value                                            *
+ *                                                      *
+ *******************************************************/
+Std_ReturnType FVM_UpdateCounter(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
+uint32 SecOCFreshnessValueLength);
 
 /********************************************************
  *          * Function Info *                           *
