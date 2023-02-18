@@ -491,6 +491,9 @@ void SecOC_test()
     printf("done transmission\n"); 
 
 
-   // SecOC_RxIndication(0, secured);
-  //  SecOCMainFunctionRx();
+    SecOC_RxIndication(0, secured);
+    SecOCMainFunctionRx();
+
+        SecOC_RxIndication(0, secured);
+    SecOCMainFunctionRx();
 }
