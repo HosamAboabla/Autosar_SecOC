@@ -254,7 +254,7 @@
 /*
 * Configuration Parameter for SecOC_AuthPduHeaderLength
 */
-#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)0)
+#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)1)
 
 /*
 * Configuration Parameter for SecOC_RxSecuredLayerPduId
@@ -363,7 +363,7 @@
  * Container_Index       : 10.1.16                            *
  **************************************************************/
 
-#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)0)
+#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)1)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
 
 
@@ -444,7 +444,7 @@
 #define SECOC_AUTHENTICATION_BUILD_ATTEMPTS                         ((uint16) 5)
 #define SECOC_TX_AUTH_INFO_TRUNC_LENGTH                             ((uint16) 32)
 #define SECOC_TX_DATA_ID                                            ((uint16) 0)
-#define SECOC_TX_FRESHNESS_VALUE_ID                                 ((uint16) 10)
+#define SECOC_TX_FRESHNESS_VALUE_ID                                 ((uint16) 9)
 #define SECOC_TX_FRESHNESS_VALUE_LENGTH                             ((uint8) 24)
 #define SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH                       ((uint8 ) 20)
 #define SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE                  ((boolean) 1)

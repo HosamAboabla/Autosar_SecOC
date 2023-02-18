@@ -228,7 +228,7 @@ void SecOCMainFunctionTx(void) {
             authenticate(idx , authPdu , securedPdu);
             
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
-            PduR_SecOCTransmit(idx , securedPdu);
+            //PduR_SecOCTransmit(idx , securedPdu);
 
         }
     }
@@ -349,9 +349,7 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
     memcpy(&DataToAuth[*DataToAuthLen], (secPdu->SduDataPtr+headerLen), dataLen);
     *DataToAuthLen += dataLen;
 
-    uint32 SecOCFreshnessValueLength = SECOC_FRESHNESS_MAX_LENGTH;
-    uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
-    const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+SECOC_AUTHPDU_MAX_LENGTH);
+    const uint8* SecOCTruncatedFreshnessValue = (secPdu->SduDataPtr+headerLen+dataLen);
     uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength;
     *TruncatedLength_Bytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
     Std_ReturnType Freshness_result;
@@ -362,8 +360,8 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
     SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength, authVeriAttempts,
     SecOCFreshnessValue, SecOCFreshnessValueLength);
     // copy the freshness value to buffer Data to Auth
-    memcpy(&DataToAuth[*DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(*SecOCFreshnessValueLength));
-    *DataToAuthLen += (BIT_TO_BYTES(*SecOCFreshnessValueLength));
+    memcpy(&DataToAuth[*DataToAuthLen], SecOCFreshnessValue, BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength));
+    *DataToAuthLen += (BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength));
 
     return Freshness_result;
 }
@@ -447,15 +445,19 @@ void SecOC_test()
     uint8 SecOCFreshnessValue[8]={0};
     uint32 SecOCFreshnessValueLength = 8 * 8;
     
-  //  for(int i = 0; i < 0x12C; i++)
-    //    FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
+ //   for(int i = 0; i < 0x12C; i++)
+ //       FVM_IncreaseCounter(SecOCFreshnessValueID, &SecOCFreshnessValueLength);
 		
 	uint8 buff[16]={1,1,1,1, 9};
-    PduLengthType len = 4;
+    PduLengthType len = 5;
     PduInfoType SPDU;
     SPDU.SduDataPtr = buff;
     SPDU.SduLength = len;
-    
+     //   FVM_IncreaseCounter(9, NULL);
+
+    uint8 meta = 0;
+    SPDU.MetaDataPtr = &meta;
+
     SecOC_Init(&SecOC_Config);
     SecOC_IfTransmit(0, &SPDU);
     // Changing parameters: Authentic I-PDU(constant for now), Freshness Value, Authenticator
@@ -473,12 +475,22 @@ void SecOC_test()
     //authenticate(0, auth, secured);
     uint32 ayhaga = 20;
     //FVM_IncreaseCounter(SecOCTxPduProcessing[0].SecOCFreshnessValueId, &ayhaga);
-    SecOCMainFunctionTx();
+    SecOCMainFunctionTx(); // data 44, freshness 45
     for(int i = 0; i < secured->SduLength; i++)
         printf("%d ", secured->SduDataPtr[i]);
     printf("\n");
     printf("done transmission\n"); 
 
     SecOC_RxIndication(0, secured);
-    SecOCMainFunctionRx();
+    SecOCMainFunctionRx(); // freshness 44
+
+    SecOCMainFunctionTx();
+    for(int i = 0; i < secured->SduLength; i++)
+        printf("%d ", secured->SduDataPtr[i]);
+      printf("\n");
+    printf("done transmission\n"); 
+
+
+   // SecOC_RxIndication(0, secured);
+  //  SecOCMainFunctionRx();
 }

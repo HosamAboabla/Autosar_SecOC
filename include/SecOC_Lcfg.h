@@ -7,7 +7,7 @@
 #include "SecOC_Cfg.h"
 
 // Derived configuration
-#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 4)
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 20)
 #define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
 #define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
 
