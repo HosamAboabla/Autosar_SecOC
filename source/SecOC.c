@@ -207,6 +207,13 @@ void SecOC_Init(const SecOC_ConfigType *config)
     SecOCGeneral = config->General;
     SecOCTxPduProcessing = config->SecOCTxPduProcessings;
     SecOCRxPduProcessing = config->SecOCRxPduProcessings;
+
+    uint8 idx;
+    for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
+    {      
+        FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
+    }
+
     
 }                   
 
@@ -228,7 +235,7 @@ void SecOCMainFunctionTx(void) {
             authenticate(idx , authPdu , securedPdu);
             
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
-            //PduR_SecOCTransmit(idx , securedPdu);
+            PduR_SecOCTransmit(idx , securedPdu);
 
         }
     }
@@ -494,6 +501,6 @@ void SecOC_test()
     SecOC_RxIndication(0, secured);
     SecOCMainFunctionRx();
 
-        SecOC_RxIndication(0, secured);
+    SecOC_RxIndication(0, secured);
     SecOCMainFunctionRx();
 }
