@@ -174,9 +174,9 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
         sint8 INDEX = 0;
         uint8 maxIndex = BIT_TO_BYTES(32);
         for (INDEX = maxIndex - 1; INDEX >= 0; INDEX--) {
-        if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
+        if(SecOCFreshnessValue[INDEX] != 0)
         {
-            *SecOCFreshnessValueLength = countBits(SecOCFreshnessValueLength[INDEX]) + (INDEX * 8);
+            *SecOCFreshnessValueLength = countBits(SecOCFreshnessValue[INDEX]) + (INDEX * 8);
             break;
         }
     }
