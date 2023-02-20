@@ -215,6 +215,7 @@ void SecOC_DeInit(void)
 
     SecOCState = SECOC_UNINIT;
 
+    // [SWS_SecOC_00157]
     // Emptying Tx/Rx buffers
     PduIdType idx;
     for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING; idx++) 
@@ -231,8 +232,6 @@ void SecOC_DeInit(void)
         securedPdu->SduLength = 0;
     }
 
-
-    // [SWS_SecOC_00157]
     SecOCGeneral = NULL;
     SecOCTxPduProcessing = NULL;
     SecOCRxPduProcessing = NULL;
