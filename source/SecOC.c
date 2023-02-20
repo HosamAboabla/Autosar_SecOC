@@ -411,10 +411,11 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
         Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
         if (Mac_verify == E_OK) 
         {
-            *verification_result = CRYPTO_E_VER_OK;
-            SecPdu->SduLength = dataLen;
-            result = SECOC_VERIFICATIONSUCCESS;
+            memcpy((SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduDataPtr),(SecPdu->SduDataPtr+headerLen),dataLen);
+            SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength = dataLen;
             FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCFreshnessValue, SecOCFreshnessValueLength);
+            *verification_result = CRYPTO_E_VER_OK;
+            result = SECOC_VERIFICATIONSUCCESS;
         }
         else 
         {
