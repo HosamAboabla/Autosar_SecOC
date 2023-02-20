@@ -261,7 +261,7 @@ void SecOCMainFunctionRx(void)
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
                 printf("Verify success for id: %d\n", idx);
-                PduR_SecOCIfRxIndication(idx,  securedPdu);
+                PduR_SecOCIfRxIndication(idx,  authPdu);
             }
 
         }
