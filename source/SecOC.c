@@ -210,12 +210,10 @@ void SecOC_Init(const SecOC_ConfigType *config)
 
 void SecOC_DeInit(void)
 {
-    SecOCState = SECOC_UNINIT;
+    if(SecOCState != SECOC_INIT)
+        return;
 
-    // [SWS_SecOC_00157]
-    SecOCGeneral = NULL;
-    SecOCTxPduProcessing = NULL;
-    SecOCRxPduProcessing = NULL;
+    SecOCState = SECOC_UNINIT;
 
     // Emptying Tx/Rx buffers
     PduIdType idx;
@@ -233,6 +231,11 @@ void SecOC_DeInit(void)
         securedPdu->SduLength = 0;
     }
 
+
+    // [SWS_SecOC_00157]
+    SecOCGeneral = NULL;
+    SecOCTxPduProcessing = NULL;
+    SecOCRxPduProcessing = NULL;
 
 }
 
