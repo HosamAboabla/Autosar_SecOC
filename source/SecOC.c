@@ -30,14 +30,14 @@ const SecOC_GeneralType             *SecOCGeneral;
  * Function_Name        : constructDataToAuthenticator  *
  * Function_Index       : SecOC internal                *
  * Parameter in         : TxPduId                       *
- * Parameter in/out     : DataToAuth                    *
+ * Parameter in         : DataToAuth                    *
  * Parameter in/out     : DataToAuthLen                 *
  * Parameter in         : AuthPdu                       *
  * Function_Descripton  : This function constructs the  *
  * DataToAuthenticator using Data Identifier, secured   *
  * part of the * Authentic I-PDU, and freshness value   *
  *******************************************************/
-static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, uint8 *DataToAuth, uint32 *DataToAuthLen, const PduInfoType* AuthPdu)
+static Std_ReturnType constructDataToAuthenticator(const PduIdType TxPduId, const uint8 *DataToAuth, uint32 *DataToAuthLen, const PduInfoType* AuthPdu)
 {
     Std_ReturnType result;
     *DataToAuthLen = 0;
