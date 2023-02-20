@@ -91,7 +91,6 @@ uint32* SecOCFreshnessValueLength) {
 
         /* Update Length */
         *SecOCFreshnessValueLength = acctualFreshnessVallength;
-        
     }
     return result;
 }
@@ -113,9 +112,13 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
         /* The FVM module shall construct Freshness Verify Value (i.e. the Freshness Value to be used for Verification) and
          provide it to SecOC */
         uint32 freshnessVallengthBytes = BIT_TO_BYTES(Freshness_Counter_length[SecOCFreshnessValueID]);
+
+        /* Update Trunc Length  */
         uint32 truncedFreshnessLengthBytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
+        SecOCTruncatedFreshnessValueLength = countSizeBits(SecOCTruncatedFreshnessValue, truncedFreshnessLengthBytes);
+        truncedFreshnessLengthBytes = BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength); 
+
         uint32 maxTruncedIndex = (truncedFreshnessLengthBytes > 0) ? (truncedFreshnessLengthBytes - 1) : (0);
-        uint32 counterIndex;
 
 
         if (Freshness_Counter_length[SecOCFreshnessValueID] == SecOCTruncatedFreshnessValueLength)
@@ -134,13 +137,10 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             {
                 /* most significant bits of FreshnessValue corresponding to FreshnessValueID |
                 FreshnessValue parsed from Secured I-PDU */
-                for(counterIndex = 0; counterIndex < maxTruncedIndex; counterIndex++)
-                {
-                    SecOCFreshnessValue[counterIndex] = SecOCTruncatedFreshnessValue[counterIndex];
-                }
                 (void)memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, maxTruncedIndex);
                 uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
                 SecOCFreshnessValue[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (Freshness_Counter[SecOCFreshnessValueID][maxTruncedIndex] & (0xFF << remainingBitsTrunc));
+                *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
             }
             else
             {
@@ -164,19 +164,9 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     MSBsCounter = MSBsCounter << remainingBitsTrunc;
                     SecOCFreshnessValue[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (MSBsCounter);
                 }
+                *SecOCFreshnessValueLength = countSizeBits(SecOCFreshnessValue, freshnessVallengthBytes + 1);
             }
         }
-        //*SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
-        //*SecOCFreshnessValueLength = countBits()
-        sint8 INDEX = 0;
-        uint8 maxIndex = BIT_TO_BYTES(32);
-        for (INDEX = maxIndex - 1; INDEX >= 0; INDEX--) {
-        if(SecOCFreshnessValue[INDEX] != 0)
-        {
-            *SecOCFreshnessValueLength = countBits(SecOCFreshnessValue[INDEX]) + (INDEX * 8);
-            break;
-        }
-    }
         /* verified that the constructed FreshnessVerifyValue is larger than the last stored notion of the Freshness Value */
         /* If it is not larger than the last stored notion of the Freshness Value,
          the FVM shall stop the verification and drop the Secured I-PDU */
@@ -221,7 +211,7 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
             uint8 bitTrunc = 8 - ((acctualFreshnessTruncVallength * 8) - *SecOCTruncatedFreshnessValueLength);
             SecOCTruncatedFreshnessValue[acctualFreshnessTruncVallength - 1] = (SecOCFreshnessValue[acctualFreshnessTruncVallength - 1] & (~(0xFF << bitTrunc)));
         }
-        //*SecOCTruncatedFreshnessValueLength = acctualFreshnessTruncVallength;
+        *SecOCTruncatedFreshnessValueLength = countSizeBits(SecOCTruncatedFreshnessValue, truncFreshnessVallengthBytes);
     }
     return result;
 }
