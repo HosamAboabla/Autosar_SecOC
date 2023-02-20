@@ -20,7 +20,7 @@ const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
-
+static SecOC_StateType SecOCState = SECOC_UNINIT;
 
 
 
@@ -198,9 +198,12 @@ Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFre
 
 void SecOC_Init(const SecOC_ConfigType *config)
 {
+    // [SWS_SecOC_00054]
     SecOCGeneral = config->General;
     SecOCTxPduProcessing = config->SecOCTxPduProcessings;
     SecOCRxPduProcessing = config->SecOCRxPduProcessings;
+
+    SecOCState = SECOC_INIT;
     
 }                   
 
