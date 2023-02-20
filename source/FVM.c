@@ -22,6 +22,22 @@ uint8 countBits(uint8 n) {
     return count;
 }
 
+/*
+Count the Number of bit in array of bytes */
+uint8 countSizeBits(uint8* arrayBytes, uint8 maxSize)
+{
+    sint8 INDEX;
+    uint8 length = 0;
+    for (INDEX = maxSize - 1; INDEX >= 0; INDEX--) {
+        if(arrayBytes[INDEX] != 0)
+        {
+            length = countBits(arrayBytes[INDEX]) + (INDEX * 8);
+            break;
+        }
+    }
+    return length;
+}
+
 
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID) {  
 

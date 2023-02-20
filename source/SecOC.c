@@ -212,7 +212,7 @@ void SecOC_Init(const SecOC_ConfigType *config)
     uint8 idx;
     for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
     {      
-        FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
+        FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
     }
 
     
@@ -235,7 +235,7 @@ void SecOCMainFunctionTx(void) {
         {
             authenticate(idx , authPdu , securedPdu);
             
-            FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
+            FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
             PduR_SecOCTransmit(idx , securedPdu);
 
         }
@@ -439,13 +439,24 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
+    //FVM_IncreaseCounter(0, 100);
+    // uint8_t adata[100] = "hello, world";
+    // uint8_t adata[100] = {0, 1, 2, 3, 9, 5, 6, 7, 8, 9, 10, 11, 12};
+    // uint8_t sdata[100];
+    // PduInfoType AuthPdu, SecPdu;
+    // uint8 x = 0;
+    // AuthPdu.SduDataPtr = adata;
+    // AuthPdu.SduLength = SECOC_AUTHPDU_MAX_LENGTH;
+    // AuthPdu.MetaDataPtr = &x;
+    uint16 SecOCFreshnessValueID = 10;
+
     uint8 SecOCFreshnessValue[8]={0};
     uint32 SecOCFreshnessValueLength = 8 * 8;
     
    for(int i = 0; i < 0x32C; i++)
-       FVM_IncreaseCounter(10, &SecOCFreshnessValueLength);
+       FVM_IncreaseCounter(10);
     for(int i = 0; i < 0x32C; i++)
-       FVM_IncreaseCounter(9, &SecOCFreshnessValueLength);
+       FVM_IncreaseCounter(9);
     
 	uint8 buff[16]={10,100,200,250};
     PduLengthType len = 4;
@@ -492,6 +503,12 @@ void SecOC_test()
         printf("%d ", auth_RX->SduDataPtr[i]);
     printf("\n");
     
+    SecOCMainFunctionRx();
+    
+    printf("after verification :\n");  
+    for(int i = 0; i < auth_RX->SduLength; i++)
+        printf("%d ", auth_RX->SduDataPtr[i]);
+    printf("\n");
     
     // printf("after verification :\n");  
     // for(int i = 0; i < auth_RX->SduLength; i++)
