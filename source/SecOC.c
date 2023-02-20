@@ -208,6 +208,33 @@ void SecOC_Init(const SecOC_ConfigType *config)
 }                   
 
 
+void SecOC_DeInit(void)
+{
+    SecOCState = SECOC_UNINIT;
+
+    // [SWS_SecOC_00157]
+    SecOCGeneral = NULL;
+    SecOCTxPduProcessing = NULL;
+    SecOCRxPduProcessing = NULL;
+
+    // Emptying Tx/Rx buffers
+    PduIdType idx;
+    for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING; idx++) 
+    {
+
+        PduInfoType *authPdu = &(SecOCTxPduProcessing[idx].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+        authPdu->SduLength = 0;
+    }
+
+    for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
+    {
+
+        PduInfoType *securedPdu = &(SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+        securedPdu->SduLength = 0;
+    }
+
+
+}
 
 
 void SecOCMainFunctionTx(void) {
