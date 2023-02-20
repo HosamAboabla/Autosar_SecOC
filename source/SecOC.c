@@ -237,8 +237,13 @@ void SecOC_DeInit(void)
 }
 
 
-void SecOCMainFunctionTx(void) {
+void SecOCMainFunctionTx(void) 
+{
 
+    // [SWS_SecOC_00177]
+    if(SecOCState == SECOC_UNINIT)
+        return;
+        
     PduIdType idx;
     for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
     {
@@ -260,6 +265,10 @@ void SecOCMainFunctionTx(void) {
 
 void SecOCMainFunctionRx(void)
 {
+    // [SWS_SecOC_00172]
+    if(SecOCState == SECOC_UNINIT)
+        return;
+
     PduIdType idx = 0;
     SecOC_VerificationResultType result ,macResult;
 
