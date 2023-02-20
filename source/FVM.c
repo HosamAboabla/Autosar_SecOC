@@ -23,7 +23,7 @@ uint8 countBits(uint8 n) {
 }
 
 
-Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength) {  
+Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID) {  
 
     /* increase the counter by 1 */
     uint8 INDEX = 0;
