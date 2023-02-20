@@ -64,11 +64,9 @@ uint32 SecOCFreshnessValueLength)
 {
     uint32 freshnessCounterIndex; 
     uint32 SecOCFreshnessValueLengthBytes = BIT_TO_BYTES(SecOCFreshnessValueLength);
-    for(freshnessCounterIndex = 0; freshnessCounterIndex < SecOCFreshnessValueLengthBytes;freshnessCounterIndex++)
-    {
-        Freshness_Counter[SecOCFreshnessValueID][freshnessCounterIndex] = SecOCFreshnessValue[freshnessCounterIndex];
-    }
-    Freshness_Counter_length[SecOCFreshnessValueID] = SecOCFreshnessValueLength;
+    (void)memcpy(Freshness_Counter[SecOCFreshnessValueID], SecOCFreshnessValue, SecOCFreshnessValueLengthBytes);
+    /* Calculate the Number of bits in the Counter */
+    Freshness_Counter_length[SecOCFreshnessValueID] = countSizeBits(Freshness_Counter[SecOCFreshnessValueID], SecOCFreshnessValueLengthBytes);
 }
 
 
