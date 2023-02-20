@@ -53,19 +53,8 @@ Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID) {
         }
     }
     
-     /* Calculate the Number of bits in the Counter */
-    for (INDEX = maxIndex - 1; INDEX >= 0; INDEX--) {
-        if(Freshness_Counter[SecOCFreshnessValueID][INDEX] != 0)
-        {
-            Freshness_Counter_length[SecOCFreshnessValueID] = countBits(Freshness_Counter[SecOCFreshnessValueID][INDEX]) + (INDEX * 8);
-            break;
-        }
-    }
-    if(SecOCFreshnessValueLength != NULL)
-    {
-        *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
-    }
-
+    /* Calculate the Number of bits in the Counter */
+    Freshness_Counter_length[SecOCFreshnessValueID] = countSizeBits(Freshness_Counter[SecOCFreshnessValueID], maxIndex);
     return E_OK;
 }
 
