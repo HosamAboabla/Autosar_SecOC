@@ -442,37 +442,20 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     uint8 TruncatedLength_Bytes;
     uint8 SecOCFreshnessValue[SECOC_FRESHNESS_MAX_LENGTH / 8] = {0};
     uint32 SecOCFreshnessValueLength = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength;
-    Std_ReturnType FV_result = constructDataToAuthenticatorRx(RxPduId, SecPdu, DataToAuth, &DataToAuthLen, &TruncatedLength_Bytes, SecOCFreshnessValue, &SecOCFreshnessValueLength);
+    constructDataToAuthenticatorRx(RxPduId, SecPdu, DataToAuth, &DataToAuthLen, &TruncatedLength_Bytes, SecOCFreshnessValue, &SecOCFreshnessValueLength);
 
-    uint32 mac_length_bit = SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength;
-    uint8 mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8] = {0};
 
-    // Get data length from configuration or header if found
-    uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    uint32 dataLen = 0;
-    if(headerLen > 0)
-    {
-        // [SWS_SecOC_00259]
-        memcpy(&dataLen, SecPdu->SduDataPtr, headerLen);
-    }
-    else
-    {
-        // [SWS_SecOC_00257]
-        dataLen =  SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
-    }
-    // copy mac from secured data to MAC buffer
-    memcpy(mac, (SecPdu->SduDataPtr+headerLen+dataLen+TruncatedLength_Bytes), BIT_TO_BYTES(mac_length_bit));
 
     SecOC_VerificationResultType result;
     Crypto_VerifyResultType verify_var;
 
-    if(FV_result == E_OK)
+    if(SecOCIntermediate.freshnessResult == E_OK)
     {
-        Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, mac, mac_length_bit, &verify_var);
+        Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, SecOCIntermediate.mac, SecOCIntermediate.macLenBits, &verify_var);
         if (Mac_verify == E_OK) 
         {
-            memcpy((SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduDataPtr),(SecPdu->SduDataPtr+headerLen),dataLen);
-            SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength = dataLen;
+            memcpy((SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduDataPtr), SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
+            SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength = SecOCIntermediate.authenticPduLen;
             FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCFreshnessValue, SecOCFreshnessValueLength);
             *verification_result = CRYPTO_E_VER_OK;
             result = SECOC_VERIFICATIONSUCCESS;
