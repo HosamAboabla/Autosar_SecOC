@@ -135,7 +135,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             /* construction of Freshness Value */
             sint16 index;
             sint8 equalityFlag = memcmp(SecOCTruncatedFreshnessValue, Freshness_Counter[SecOCFreshnessValueID], truncedFreshnessLengthBytes);
-            for(index = truncedFreshnessLengthBytes -1; index >= 0; index--)
+            for(index = maxTruncedIndex; index >= 0; index--)
             {
                 if(SecOCTruncatedFreshnessValue[index] > Freshness_Counter[SecOCFreshnessValueID][index])
                 {
