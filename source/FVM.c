@@ -165,8 +165,21 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     else
                     {
                         uint8 MSBsCounter = (Freshness_Counter[SecOCFreshnessValueID][maxTruncedIndex] >> remainingBitsTrunc) + 1;
-                        MSBsCounter = MSBsCounter << remainingBitsTrunc;
-                        SecOCFreshnessValue[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (MSBsCounter);
+                        uint8 MSBsCounterShift = MSBsCounter << remainingBitsTrunc;
+                        uint8 index;
+                        SecOCFreshnessValue[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (MSBsCounterShift);
+                        if((MSBsCounterShift == 0) && (MSBsCounter > 0))
+                        {
+                            for (index = maxTruncedIndex + 1; index < freshnessVallengthBytes+1; index ++)
+                            {
+                                SecOCFreshnessValue[index] ++;
+                                if(SecOCFreshnessValue[index] != 0)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        
                     }
                     *SecOCFreshnessValueLength = countSizeBits(SecOCFreshnessValue, freshnessVallengthBytes + 1);
                 }
