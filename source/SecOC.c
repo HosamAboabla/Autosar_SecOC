@@ -365,7 +365,8 @@ static Std_ReturnType parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, Se
     const uint8* SecOCTruncatedFreshnessValue = &SecPdu->SduDataPtr[SecCursor];
     uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength;
     SecOCIntermediate->freshnessLenBits = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength;
-    memset(SecOCIntermediate->freshness, 0, (SECOC_FRESHNESS_MAX_LENGTH / 8));
+    // init freshness in struct SecOCIntermediate with 0
+    memset(SecOCIntermediate->freshness, 0, sizeof(SecOCIntermediate->freshness));
 
     SecOCIntermediate->freshnessResult = SecOC_GetRxFreshness(
             SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId,
