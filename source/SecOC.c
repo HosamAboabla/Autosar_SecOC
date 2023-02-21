@@ -24,11 +24,10 @@ const SecOC_GeneralType             *SecOCGeneral;
 
 
 
-
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : constructDataToAuthenticator  *
+ * Function_Name        : constructDataToAuthenticatorTx*
  * Function_Index       : SecOC internal                *
  * Parameter in         : TxPduId                       *
  * Parameter in         : DataToAuth                    *
@@ -112,7 +111,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     // DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value
     uint8 DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
     uint32 DataToAuthLen = 0;
-    result = constructDataToAuthenticator(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
     result = constructDataToAuthenticatorTx(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
 
     // Authenticator generation
@@ -332,8 +330,56 @@ Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* Se
     SecOCAuthVerifyAttempts,SecOCFreshnessValue,SecOCFreshnessValueLength);
 }
 
+static Std_ReturnType parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxIntermediateType *SecOCIntermediate)
+{
+    uint8 SecCursor = 0; // Track the current byte of secured to be parsed
 
-Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength )
+    // Get data length from configuration or header if found
+    uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    SecOCIntermediate->authenticPduLen = 0;
+    if(headerLen > 0)
+    {
+        // [SWS_SecOC_00259]
+        memcpy((void*)SecOCIntermediate->authenticPduLen, &SecPdu->SduDataPtr[SecCursor], headerLen);
+        SecCursor += headerLen;
+    }
+    else
+    {
+        // [SWS_SecOC_00257]
+        SecOCIntermediate->authenticPduLen =  SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+    }
+
+    // Copy authenticPdu to intermediate
+    memcpy(SecOCIntermediate->authenticPdu, &SecPdu->SduDataPtr[SecCursor], SecOCIntermediate->authenticPduLen);
+    SecCursor += SecOCIntermediate->authenticPduLen;
+
+    uint16 authVeriAttempts = 0;
+    // Get Rx freshness from FVM using the truncated freshness in SecPdu 
+    const uint8* SecOCTruncatedFreshnessValue = &SecPdu->SduDataPtr[SecCursor];
+    uint32 SecOCTruncatedFreshnessValueLength = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength;
+    SecOCIntermediate->freshnessLenBits = SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength;
+
+    SecOCIntermediate->freshnessResult = SecOC_GetRxFreshness(
+            SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId,
+            SecOCTruncatedFreshnessValue, 
+            SecOCTruncatedFreshnessValueLength, 
+            authVeriAttempts,
+            SecOCIntermediate->freshness, 
+            &SecOCIntermediate->freshnessLenBits
+    );
+
+    SecCursor += BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength);
+
+    // Copy Mac to intermediate
+    SecOCIntermediate->macLenBits = SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength;
+
+    memcpy(SecOCIntermediate->mac, &SecPdu->SduDataPtr[SecCursor], BIT_TO_BYTES(SecOCIntermediate->macLenBits));
+    SecCursor += BIT_TO_BYTES(SecOCIntermediate->macLenBits);
+
+    return E_OK;
+}
+
+static Std_ReturnType constructDataToAuthenticatorRx(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength )
 {
     //*DataToAuthLen = 0;
 	//copy the Id to buffer Data to Auth
@@ -378,6 +424,11 @@ Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* 
 // header - auth_data - Freshness - MAC
 static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
 {
+
+    SecOC_RxIntermediateType    SecOCIntermediate;
+    parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
+
+
     uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
     uint32 DataToAuthLen = 0;
 
