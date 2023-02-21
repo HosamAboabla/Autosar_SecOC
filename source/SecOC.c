@@ -435,6 +435,7 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
         PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
 
+        // Copy authenticPdu from secured layer to the authentic layer
         memcpy(authPdu->SduDataPtr, SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
         authPdu->SduLength = SecOCIntermediate.authenticPduLen;
         authPdu->MetaDataPtr = SecPdu->MetaDataPtr;
