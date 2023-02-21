@@ -144,7 +144,8 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     (void)memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, maxTruncedIndex);
                     uint8 remainingBitsTrunc = 8 - ((truncedFreshnessLengthBytes * 8) - SecOCTruncatedFreshnessValueLength);
                     SecOCFreshnessValue[maxTruncedIndex] = (SecOCTruncatedFreshnessValue[maxTruncedIndex] & (~(0xFF << remainingBitsTrunc))) | (Freshness_Counter[SecOCFreshnessValueID][maxTruncedIndex] & (0xFF << remainingBitsTrunc));
-                    *SecOCFreshnessValueLength = Freshness_Counter_length[SecOCFreshnessValueID];
+                    uint8 maxLength = (freshnessVallengthBytes > truncedFreshnessLengthBytes) ? (freshnessVallengthBytes) : (truncedFreshnessLengthBytes);
+                    *SecOCFreshnessValueLength = countSizeBits(SecOCFreshnessValue,  maxLength);
                 }
                 else if (SecOCTruncatedFreshnessValue[index] < Freshness_Counter[SecOCFreshnessValueID][index] || equalityFlag == 0)
                 {
