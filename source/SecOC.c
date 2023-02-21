@@ -20,7 +20,7 @@ const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
-
+static SecOC_StateType SecOCState = SECOC_UNINIT;
 
 
 
@@ -198,17 +198,54 @@ Std_ReturnType result = PTR(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFre
 
 void SecOC_Init(const SecOC_ConfigType *config)
 {
+    // [SWS_SecOC_00054]
     SecOCGeneral = config->General;
     SecOCTxPduProcessing = config->SecOCTxPduProcessings;
     SecOCRxPduProcessing = config->SecOCRxPduProcessings;
+
+    SecOCState = SECOC_INIT;
     
 }                   
 
 
+void SecOC_DeInit(void)
+{
+    if(SecOCState != SECOC_INIT)
+        return;
+
+    SecOCState = SECOC_UNINIT;
+
+    // [SWS_SecOC_00157]
+    // Emptying Tx/Rx buffers
+    PduIdType idx;
+    for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING; idx++) 
+    {
+
+        PduInfoType *authPdu = &(SecOCTxPduProcessing[idx].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+        authPdu->SduLength = 0;
+    }
+
+    for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
+    {
+
+        PduInfoType *securedPdu = &(SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+        securedPdu->SduLength = 0;
+    }
+
+    SecOCGeneral = NULL;
+    SecOCTxPduProcessing = NULL;
+    SecOCRxPduProcessing = NULL;
+
+}
 
 
-void SecOCMainFunctionTx(void) {
+void SecOCMainFunctionTx(void) 
+{
 
+    // [SWS_SecOC_00177]
+    if(SecOCState == SECOC_UNINIT)
+        return;
+        
     PduIdType idx;
     for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
     {
@@ -230,6 +267,10 @@ void SecOCMainFunctionTx(void) {
 
 void SecOCMainFunctionRx(void)
 {
+    // [SWS_SecOC_00172]
+    if(SecOCState == SECOC_UNINIT)
+        return;
+
     PduIdType idx = 0;
     SecOC_VerificationResultType result ,macResult;
 
