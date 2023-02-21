@@ -347,7 +347,7 @@ static Std_ReturnType parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, Se
     if(headerLen > 0)
     {
         // [SWS_SecOC_00259]
-        memcpy((void*)SecOCIntermediate->authenticPduLen, &SecPdu->SduDataPtr[SecCursor], headerLen);
+        memcpy(&SecOCIntermediate->authenticPduLen, &SecPdu->SduDataPtr[SecCursor], headerLen);
         SecCursor += headerLen;
     }
     else
