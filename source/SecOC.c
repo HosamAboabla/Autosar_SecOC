@@ -357,6 +357,76 @@ Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID,const uint8* Se
     SecOCAuthVerifyAttempts,SecOCFreshnessValue,SecOCFreshnessValueLength);
 }
 
+BufReq_ReturnType SecOC_CopyTxData (PduIdType id,const PduInfoType* info,
+const RetryInfoType* retry, PduLengthType* availableDataPtr)
+{
+    BufReq_ReturnType result = BUFREQ_OK;
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
+    PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex[id];
+    /* - Check if there is data in the buffer to be copy */
+    if(securedPdu->SduLength > 0)
+    {
+        /*  If not enough transmit data is available, no data is copied by the upper layer module 
+        and BUFREQ_E_BUSY is returned */
+        if(info->SduLength <= remainingBytes)
+        {
+            if(info->SduLength == 0)
+            {
+                /* Querey amount of avalible data in upperlayer */
+                *availableDataPtr = remainingBytes;
+            }
+            else
+            {
+                if(retry != NULL)
+                {
+                    switch (retry->TpDataState)
+                    {
+                        case TP_DATACONF:
+
+                            /* indicates that all data that has been copied before this call is confirmed and 
+                            can be removed from the TP buffer. Data copied by this API call is excluded and will be confirmed later */
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                            bufferRemainIndex[id] += info->SduLength;
+                            remainingBytes -= info->SduLength;
+                            break;
+                        case TP_CONFPENDING:
+                            /* the previously copied data must remain in the TP buffer to be available for error recovery */
+                            /* do nothing */
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - info->SduLength, info->SduLength);
+                            break;
+                        case TP_DATARETRY:
+                            /* indicates that this API call shall copy previously copied data in order to recover from an error. 
+                            In this case TxTpDataCnt specifies the offset in bytes from the current data copy position */
+                            (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id] - retry->TxTpDataCnt, info->SduLength);
+                            break;
+                        default:
+                            result = BUFREQ_E_NOT_OK;
+                        break;  
+                    }
+                }
+                else
+                {
+                    /* Copy data then remove from the buffer */
+                    (void)memcpy(info->SduDataPtr, securedPdu->SduDataPtr + bufferRemainIndex[id], info->SduLength);
+                    bufferRemainIndex[id] += info->SduLength;
+                    remainingBytes -= info->SduLength;
+                }
+                *availableDataPtr = remainingBytes;
+            }
+        }
+        else
+        {
+            result = BUFREQ_E_BUSY;
+        }
+    }
+    else
+    {
+        result = BUFREQ_E_NOT_OK;
+    }
+
+    return result;
+}
 
 Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength )
 {
@@ -435,6 +505,8 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
     return result;
 }
 
+
 void SecOC_test()
-{  
+{
+
 }
