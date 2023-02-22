@@ -186,8 +186,8 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
     if (result == E_OK) {
         // clear buffer
-        // authPdu->SduLength = 0;
-        // securedPdu->SduLength = 0;
+        authPdu->SduLength = 0;
+        securedPdu->SduLength = 0;
     }
 
     PduR_SecOCIfTxConfirmation(TxPduId, result);
