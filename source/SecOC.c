@@ -14,6 +14,7 @@
 #include "Pdur_CanTP.h"
 #include "PduR_CanIf.h"
 
+#include <stdio.h>
 #include <string.h>
 
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
