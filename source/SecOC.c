@@ -357,16 +357,6 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     
 }
 
-void SecOC_TpTxConfirmation(PduIdType TxPduId, Std_ReturnType result) {
-    if (result == E_OK) {
-        // clear buffer
-        SecOC_Buffer[TxPduId].MetaDataPtr = NULL;
-        SecOC_Buffer[TxPduId].SduDataPtr = NULL;
-        SecOC_Buffer[TxPduId].SduLength = 0;
-    }
-    PduR_SecOCIfTxConfirmation(TxPduId, result);
-}
-
 
 
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
