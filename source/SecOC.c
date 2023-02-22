@@ -571,5 +571,13 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
+    Std_ReturnType PduR_SecOCTransmitReturn;
+    PduIdType TxPduId = 4;
+    const PduInfoType* PduInfoPtr;
+    const PduInfoType PduInfo;
+    PduInfoPtr = &PduInfo;
 
+    *(PduInfoPtr->MetaDataPtr) = SECOC_TPPDU;
+
+    PduR_SecOCTransmitReturn = PduR_SecOCTransmit(TxPduId,PduInfoPtr);
 }
