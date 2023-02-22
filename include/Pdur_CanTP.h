@@ -55,7 +55,7 @@ BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,Pdu
 /****************************************************
  *          * Function Info *                       *
  *                                                  *
- * Function_Name        : PduR_CanTpCopyTxData      *
+ * Function_Name        : PduR_CanTpStartOfReception*
  * Function_Index       : 8.3.4.3 [SWS_PduR_00507]  *
  * Function_File        : SWS of Pdur               *
  * Function_Descripton  : This function is called   * 
