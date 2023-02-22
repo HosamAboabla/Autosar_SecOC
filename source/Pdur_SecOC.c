@@ -4,7 +4,9 @@
 #include "CanTp.h"
 #include "Dcm.h"
 #include "SecOC_Types.h"
+#include "SecOC.h"
 
+extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 
 /****************************************************
  *          * Function Info *                       *
@@ -16,19 +18,50 @@
  *              of a PDU                            *
  ***************************************************/
 
+#define CANIF 0
+#define CANFR 1
+#define CANTP 2
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
-   /*Check the SecOC Mode*/
-   if(*(PduInfoPtr->MetaDataPtr) == SECOC_IFPDU)
+   if (*(PduInfoPtr->MetaDataPtr) == CANIF)
    {
+      /*Check the SecOC Mode*/
+      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
+      {
       return CanIf_Transmit(TxPduId,PduInfoPtr);
-   } 
-   else if(*(PduInfoPtr->MetaDataPtr) == SECOC_TPPDU)
-   {
+      } 
+      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
+      {
       return CanTp_Transmit(TxPduId, PduInfoPtr);
+      }
    }
-    return E_NOT_OK;
+   else if (*(PduInfoPtr->MetaDataPtr) == CANFR)
+   {
+      /*Check the SecOC Mode*/
+      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
+      {
+      return CanIf_Transmit(TxPduId,PduInfoPtr);
+      } 
+      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
+      {
+      return CanTp_Transmit(TxPduId, PduInfoPtr);
+      }
+   }
+   else if (*(PduInfoPtr->MetaDataPtr) == CANTP)
+   {
+      /*Check the SecOC Mode*/
+      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
+      {
+      return CanIf_Transmit(TxPduId,PduInfoPtr);
+      } 
+      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
+      {
+      return CanTp_Transmit(TxPduId, PduInfoPtr);    
+      }  
+   }
+
+   return E_NOT_OK;
 }
 
 
