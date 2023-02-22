@@ -41,4 +41,20 @@ void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
  ***************************************************/
 BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,PduLengthType* bufferSizePtr);
 
+/****************************************************
+ *          * Function Info *                       *
+ *                                                  *
+ * Function_Name        : PduR_CanTpCopyTxData      *
+ * Function_Index       : 8.3.4.3 [SWS_PduR_00507]  *
+ * Function_File        : SWS of Pdur               *
+ * Function_Descripton  : This function is called   * 
+ * at the start of receiving an N-SDU. The N-SDU    *
+ * might be fragmented intomultiple N-PDUs          *
+ * (FF with one or more following CFs) or might     *
+ * consist of a single N-PDU (SF).The service shall *
+ * provide the currently available maximum buffer   *
+ * size when invoked with TpSduLength equal to 0    *
+ ***************************************************/
+BufReq_ReturnType PduR_CanTpStartOfReception(PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr);
+
 #endif /* INCLUDE_PDUR_CANTP_H_ */
