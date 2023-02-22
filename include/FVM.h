@@ -23,7 +23,7 @@
  * Function_Descripton  : This API Increase the counter *
  *                                                      *
  *******************************************************/
-Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID, uint32* SecOCFreshnessValueLength);
+Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID);
 
 
 /********************************************************
