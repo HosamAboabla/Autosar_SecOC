@@ -24,6 +24,17 @@
 BufReq_ReturnType PduR_CanTpCopyTxData (PduIdType id,const PduInfoType* info,const RetryInfoType* retry,
 PduLengthType* availableDataPtr);
 
+/****************************************************
+ *          * Function Info *                       *
+ *                                                  *
+ * Function_Name        : PduR_CanTpTxConfirmation  *
+ * Function_Index       : 8.3.4.5 [SWS_PduR_00381]  *
+ * Function_File        : SWS of Pdur               *
+ * Function_Descripton  : This function is called   *
+ * after the I-PDU has been transmitted on its      *
+ * network, the result indicates whether the        *
+ * transmission was successful or not               *
+ ***************************************************/
 void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
 /****************************************************
