@@ -26,4 +26,19 @@ PduLengthType* availableDataPtr);
 
 void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
+/****************************************************
+ *          * Function Info *                       *
+ *                                                  *
+ * Function_Name        : PduR_CanTpCopyTxData      *
+ * Function_Index       : 8.3.4.1 [SWS_PduR_00512]  *
+ * Function_File        : SWS of Pdur               *
+ * Function_Descripton  : This function is called   *
+ * to provide the received data of an I-PDU segment *
+ * (N-PDU) to the upper layer. Each call to this    *
+ * function provides the next part of the I-PDU     *
+ * data. The size of the remaining buffer is written*
+ *  to the position indicated by bufferSizePtr.     *
+ ***************************************************/
+BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,PduLengthType* bufferSizePtr);
+
 #endif /* INCLUDE_PDUR_CANTP_H_ */
