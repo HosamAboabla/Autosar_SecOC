@@ -10,6 +10,9 @@
 #include <stdint.h>
 #include "Det.h"
 
+
+
+
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
     const PduInfoType*         PduInfoPtr
@@ -25,6 +28,46 @@ void SecOC_Init(const SecOC_ConfigType *config);
 
 void SecOC_TpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_RxIndication            *
+ * Function_Index       : 8.4.1 [SWS_SecOC_00124]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : Indication of a received PDU  *
+ * from a lower layer communication interface module.   *
+ ***************************************************/
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetRxFreshness          *
+ * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This interface is used by the *
+ * SecOC to obtain the current freshness value          *
+ *******************************************************/
+
+Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8* SecOCTruncatedFreshnessValue,
+uint32 SecOCTruncatedFreshnessValueLength, uint16 SecOCAuthVerifyAttempts, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetRxFreshnessAuthData  *
+ * Function_Index       : 8.5.2 [SWS_SecOC_91006]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This interface is used by the *
+ * SecOC to obtain the current freshness value          *
+ *******************************************************/
+
+Std_ReturnType SecOC_GetRxFreshnessAuthData(uint16 SecOCFreshnessValueID , const uint8* SecOCTruncatedFreshnessValue ,
+uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessValue,
+ uint16 SecOCAuthDataFreshnessValueLength , uint16 SecOCAuthVerifyAttempts,
+ uint8* SecOCFreshnessValue, uint32* SecOCFreshnessValueLength);
+ 
 /********************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -85,6 +128,44 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint8* SecOCTruncatedFreshnessValue,
     uint32* SecOCTruncatedFreshnessValueLength
 );
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_CopyTxData              *
+ * Function_Index       : 8.4.7 [SWS_SecOC_00129]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called to    *
+ * acquire the transmit data of an I-PDU segment (N-PDU)*
+ * Each call to this function provides the next part of *
+ * the I-PDU data unless retry->Tp DataState is         *
+ * TP_DATARETRY. In this case the function restarts to  *
+ * copy the data beginning at the offset from the       *
+ * current position indicated by retry->TxTpDataCnt.    *
+ * The size of the remaining data is written to the     *
+ * position indicated by availableDataPtr.              *
+ *******************************************************/
+BufReq_ReturnType SecOC_CopyTxData (
+    PduIdType id,
+    const PduInfoType* info,
+    const RetryInfoType* retry,
+    PduLengthType* availableDataPtr
+);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TpTxConfirmation        *
+ * Function_Index       : 8.4.4                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called after *
+ * the I-PDU has been transmitted on its network, the   *
+ * result indicates whether the transmission was        *
+ * successful or not.                                   *
+ *******************************************************/
+void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
+
+
 
 #define SECOC_E_UNINIT 					0x02
 
