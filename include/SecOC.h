@@ -85,18 +85,7 @@ uint32* SecOCFreshnessValueLength);
 
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
-Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength );
 
-/*******************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : verify                        *
- * Function_Index       :  SecOC internal               *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : Verification of I-PDUs        *
- *******************************************************/
-
-Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
@@ -139,6 +128,28 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint32* SecOCTruncatedFreshnessValueLength
 );
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_CopyTxData              *
+ * Function_Index       : 8.4.7 [SWS_SecOC_00129]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called to    *
+ * acquire the transmit data of an I-PDU segment (N-PDU)*
+ * Each call to this function provides the next part of *
+ * the I-PDU data unless retry->Tp DataState is         *
+ * TP_DATARETRY. In this case the function restarts to  *
+ * copy the data beginning at the offset from the       *
+ * current position indicated by retry->TxTpDataCnt.    *
+ * The size of the remaining data is written to the     *
+ * position indicated by availableDataPtr.              *
+ *******************************************************/
+BufReq_ReturnType SecOC_CopyTxData (
+    PduIdType id,
+    const PduInfoType* info,
+    const RetryInfoType* retry,
+    PduLengthType* availableDataPtr
+);
 
 /*******************************************************
  *          * Function Info *                           *
