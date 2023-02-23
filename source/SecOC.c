@@ -571,15 +571,5 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    Std_ReturnType PduR_SecOCTransmitReturn;
-    PduIdType TxPduId = 4;
-    uint8 metaData = 2;
-    uint8 sduData [7] = {156, 44, 22, 45, 34, 23, 26};
-
-    const PduInfoType PduInfo = {sduData, &metaData, 7};
-
-    PduR_SecOCTransmitReturn = PduR_SecOCTransmit(TxPduId,&PduInfo);
-
-    printf("return value (garbage): %d\n", PduR_SecOCTransmitReturn);
     
 }
