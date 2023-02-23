@@ -570,6 +570,5 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{
-    
+{ 
 }

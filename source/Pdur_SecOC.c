@@ -4,7 +4,6 @@
 #include "CanTp.h"
 #include "Dcm.h"
 
-#include <stdio.h>
 
 /****************************************************
  *          * Function Info *                       *
