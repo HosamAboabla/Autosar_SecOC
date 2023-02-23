@@ -4,6 +4,7 @@
 #include "CanTp.h"
 #include "Dcm.h"
 
+#include <stdio.h>
 
 /****************************************************
  *          * Function Info *                       *
@@ -22,6 +23,14 @@
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
+   int i = 0;
+   for (i = 0; i < PduInfoPtr->SduLength; i++)
+   {
+      printf("%d ", PduInfoPtr->SduDataPtr[i]);
+   }
+
+   printf("\n");
+
    if(*(PduInfoPtr->MetaDataPtr) == CANIF)
    {
       return CanIf_Transmit(TxPduId,PduInfoPtr);

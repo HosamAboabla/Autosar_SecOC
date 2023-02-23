@@ -573,11 +573,13 @@ void SecOC_test()
 {
     Std_ReturnType PduR_SecOCTransmitReturn;
     PduIdType TxPduId = 4;
-    const PduInfoType* PduInfoPtr;
-    const PduInfoType PduInfo;
-    PduInfoPtr = &PduInfo;
+    uint8 metaData = 2;
+    uint8 sduData [7] = {156, 44, 22, 45, 34, 23, 26};
 
-    *(PduInfoPtr->MetaDataPtr) = SECOC_TPPDU;
+    const PduInfoType PduInfo = {sduData, &metaData, 7};
 
-    PduR_SecOCTransmitReturn = PduR_SecOCTransmit(TxPduId,PduInfoPtr);
+    PduR_SecOCTransmitReturn = PduR_SecOCTransmit(TxPduId,&PduInfo);
+
+    printf("return value (garbage): %d\n", PduR_SecOCTransmitReturn);
+    
 }
