@@ -29,6 +29,9 @@ void CanTP_MainFunctionRx(void)
                 break;
         }
 
+        if( Result != BUFREQ_OK)
+            continue;
+        
         if(CanTP_Buffer[idx].SduLength % TP_LENGTH !=0)
         {
             Result = PduR_CanTpCopyRxData(idx, &TP_PDU, &bufferSizePtr);
