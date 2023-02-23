@@ -3,10 +3,7 @@
 #include "CanIF.h"
 #include "CanTp.h"
 #include "Dcm.h"
-#include "SecOC_Types.h"
-#include "SecOC.h"
 
-extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 
 /****************************************************
  *          * Function Info *                       *
@@ -18,50 +15,26 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
  *              of a PDU                            *
  ***************************************************/
 
+/*FROM ROUTING TABLE WE KNOW PAGE 129*/
 #define CANIF 0
-#define CANFR 1
+#define FRIF 1
 #define CANTP 2
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
-   if (*(PduInfoPtr->MetaDataPtr) == CANIF)
+   if(*(PduInfoPtr->MetaDataPtr) == CANIF)
    {
-      /*Check the SecOC Mode*/
-      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
-      {
       return CanIf_Transmit(TxPduId,PduInfoPtr);
-      } 
-      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
-      {
-      return CanTp_Transmit(TxPduId, PduInfoPtr);
-      }
    }
-   else if (*(PduInfoPtr->MetaDataPtr) == CANFR)
+   else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
    {
-      /*Check the SecOC Mode*/
-      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
-      {
-      return CanIf_Transmit(TxPduId,PduInfoPtr);
-      } 
-      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
-      {
-      return CanTp_Transmit(TxPduId, PduInfoPtr);
-      }
-   }
-   else if (*(PduInfoPtr->MetaDataPtr) == CANTP)
+      // return FrIf_Transmit(TxPduId, PduInfoPtr);
+   }   
+   else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
    {
-      /*Check the SecOC Mode*/
-      if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
-      {
-      return CanIf_Transmit(TxPduId,PduInfoPtr);
-      } 
-      else if(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
-      {
-      return CanTp_Transmit(TxPduId, PduInfoPtr);    
-      }  
+       return CanTp_Transmit(TxPduId, PduInfoPtr);
    }
-
-   return E_NOT_OK;
+    return E_NOT_OK;
 }
 
 
