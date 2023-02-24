@@ -10,6 +10,8 @@ if (WIN32)
 elseif(UNIX)
     file(GLOB_RECURSE SCR_FILES CONFIGURE_DEPENDS  "source/*.c")
     file(GLOB_RECURSE HDR_FILES CONFIGURE_DEPENDS  "include/*.h")
+    set( CMAKE_CXX_COMPILER "/usr/bin/g++" )
+    set( CMAKE_C_COMPILER "/usr/bin/gcc" )
     set (CMAKE_GENERATOR "Unix Makefiles" CACHE INTERNAL "" FORCE)
 endif()
 
