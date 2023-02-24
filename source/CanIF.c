@@ -26,7 +26,7 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
 
-    PduR_CanIfTxConfirmation(TxPduId , result);
+    // PduR_CanIfTxConfirmation(TxPduId , result);
     if(STATUS_TRANSMISSION)
     {
         return E_OK;

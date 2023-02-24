@@ -13,6 +13,7 @@
 #include "PduR_SecOC.h"
 #include "Pdur_CanTP.h"
 #include "PduR_CanIf.h"
+#include "CanTp.h"
 
 #include <string.h>
 
@@ -259,7 +260,8 @@ void SecOCMainFunctionTx(void)
             authenticate(idx , authPdu , securedPdu);
             
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId, NULL);
-            PduR_SecOCTransmit(idx , securedPdu);
+            // PduR_SecOCTransmit(idx , securedPdu);
+            CanTp_Transmit(idx , securedPdu);
 
         }
     }
@@ -507,6 +509,23 @@ Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verification
 
 
 void SecOC_test()
-{
+{       
+    extern SecOC_ConfigType SecOC_Config;     
+    SecOC_Init(&SecOC_Config);
+    
+
+	uint8 buff[16]={1,12,111,112};
+    PduLengthType len = 4;
+    PduInfoType SPDU;
+    uint8 test_meta_data = 0;
+    SPDU.MetaDataPtr = &test_meta_data;
+    SPDU.SduDataPtr = buff;
+    SPDU.SduLength = len;
+
+
+    SecOC_IfTransmit(0, &SPDU);
+    SecOCMainFunctionTx();
+
+    CanTp_MainFunction();
 
 }
