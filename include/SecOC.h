@@ -26,7 +26,6 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
 void SecOC_Init(const SecOC_ConfigType *config);
 
-void SecOC_TpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
 /****************************************************
  *          * Function Info *                           *
