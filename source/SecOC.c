@@ -587,7 +587,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
     securedPdu->SduLength += info->SduLength;
 
-    *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+    *bufferSizePtr = MAX BUFFER SIZE - securedPdu->SduLength;
 
     /* An SduLength of 0 can be used to query the
      * current amount of available buffer in the upper layer module. In this
