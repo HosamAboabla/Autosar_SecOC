@@ -379,8 +379,6 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 
 
-
-
 Std_ReturnType SecOC_GetTxFreshnessTruncData (uint16 SecOCFreshnessValueID,uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength,uint8* SecOCTruncatedFreshnessValue,uint32* SecOCTruncatedFreshnessValueLength) 
 {
@@ -591,6 +589,5 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{
-
+{ 
 }
