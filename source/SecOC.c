@@ -609,8 +609,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     return result;
 }
 
-extern SecOC_ConfigType SecOC_Config;
+
 void SecOC_test()
 {
-
 }
