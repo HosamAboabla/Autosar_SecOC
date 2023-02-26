@@ -19,7 +19,7 @@ PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
     // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
-    Std_ReturnType result;
+    Std_ReturnType result = E_OK;
 
     
     #ifdef LINUX
