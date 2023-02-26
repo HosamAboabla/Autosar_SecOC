@@ -597,8 +597,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
         (void)memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
         securedPdu->SduLength += info->SduLength;
 
-        *bufferSizePtr =
-        SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+        *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     }
     else
     {
