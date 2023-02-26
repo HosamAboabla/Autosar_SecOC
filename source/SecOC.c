@@ -581,18 +581,24 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     /*Create a pointer to the secured I-PDU buffer that we will store the data into it*/
     /*[SWS_SecOC_00082]*/
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-    
 
-    /*[SWS_SecOC_00083]*/
-    memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
-    securedPdu->SduLength += info->SduLength;
 
-    *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+    if(info->SduLength == 0)
+    {
+        /* An SduLength of 0 can be used to query the
+        * current amount of available buffer in the upper layer module. In this
+        * case, the SduDataPtr may be a NULL_PTR.
+        */
+        *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+    }
+    else
+    {
+        /*[SWS_SecOC_00083]*/
+        memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
+        securedPdu->SduLength += info->SduLength;
 
-    /* An SduLength of 0 can be used to query the
-     * current amount of available buffer in the upper layer module. In this
-     * case, the SduDataPtr may be a NULL_PTR.
-     */
+        *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+    }
 
 
     return result;
