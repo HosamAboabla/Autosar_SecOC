@@ -17,8 +17,8 @@
  * interface module confirms  the transmission of a PDU *
  *        or the failure to transmit a PDU              *
  ***************************************************/
-void SecOC_MainFunctionTx(void);
+void SecOCMainFunctionTx(void);
 
-void SecOC_MainFunctionRx(void);
+void SecOCMainFunctionRx(void);
 
 #endif
