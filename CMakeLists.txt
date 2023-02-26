@@ -6,7 +6,7 @@ if (WIN32)
     file(GLOB_RECURSE HDR_FILES CONFIGURE_DEPENDS "include/*.h")
     list(REMOVE_ITEM SCR_FILES "${CMAKE_SOURCE_DIR}/source/ethernet.c")
     list(REMOVE_ITEM HDR_FILES "${CMAKE_SOURCE_DIR}/include/ethernet.h")
-    set (CMAKE_GENERATOR "MinGW Makefiles" CACHE INTERNAL "" FORCE)
+   # set (CMAKE_GENERATOR "MinGW Makefiles" CACHE INTERNAL "" FORCE)
 elseif(UNIX)
     file(GLOB_RECURSE SCR_FILES CONFIGURE_DEPENDS  "source/*.c")
     file(GLOB_RECURSE HDR_FILES CONFIGURE_DEPENDS  "include/*.h")
@@ -31,6 +31,28 @@ if(WIN32)
 elseif(UNIX)
     target_compile_definitions(SecOC PUBLIC LINUX)
 endif()
+
+# Adding unit tests
+enable_testing()
+
+# Add google test source code
+add_subdirectory(googletest)
+
+# Extract include directories from main target SecOC
+set(headerDirs "")
+get_target_property(headerDirs SecOC INCLUDE_DIRECTORIES)
+
+
+add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
+target_include_directories(SecOCLib PUBLIC ${headerDirs})
+
+# Add our test folder cmakelists
+add_subdirectory(test)
+
+
+
+
+
 
 
 
