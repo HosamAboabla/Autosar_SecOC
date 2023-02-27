@@ -341,8 +341,27 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 }
 
+void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
+{
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[Id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+
+    if (result==E_NOT_OK)
+    {
+        // clear buffer
+        securedPdu->SduLength = 0;
+    }
+}
 
 
+Std_ReturnType SecOC_IfCancelTransmit(PduIdType TxPduId)
+{
+    Std_ReturnType result = E_OK;
+
+    PduInfoType *authpdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+    
+    authpdu->SduLength = 0;
+    return result;
+}
 
 
 
@@ -351,10 +370,9 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     /* The SecOC copies the Authentic I-PDU to its own buffer */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
-    memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
+    (void)memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     securedPdu->SduLength = PduInfoPtr->SduLength;
-    
 }
 
 
@@ -572,5 +590,5 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-
+    
 }

@@ -164,6 +164,36 @@ BufReq_ReturnType SecOC_CopyTxData (
  *******************************************************/
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TpRxIndication          *
+ * Function_Index       : 8.4.2                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is Called after *
+ * an I-PDU has been received via the TP API,           *
+ * the result indicates whether                         *
+ * the transmission was successful or not.              *
+ *******************************************************/
+
+
+void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_IfCancelTransmit        *
+ * Function_Index       : 8.3.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Requests cancellation of an   *
+ * ongoing transmission of a PDU in a lower layer       *
+ * communication module.                               *
+ *******************************************************/
+
+
+Std_ReturnType SecOC_IfCancelTransmit(
+    PduIdType                  TxPduId
+);
 
 
 #define SECOC_E_UNINIT 					0x02
