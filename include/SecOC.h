@@ -167,6 +167,21 @@ void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
+ * Function_Name        : SecOC_CopyRxData        *
+ * Function_Index       : 8.4.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called to    *
+ * provide the received data of an I-PDU segment        *
+ * (N-PDU) to the upper layer. Each call to this        *
+ * function provides the next part of the I-PDU data.   *
+ * The size of the remaining buffer is written to the   *
+ * position indicated by bufferSizePtr.                 *
+ *******************************************************/
+BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
  * Function_Name        : SecOC_TpRxIndication          *
  * Function_Index       : 8.4.2                         *
  * Function_File        : SWS of SecOC                  *
