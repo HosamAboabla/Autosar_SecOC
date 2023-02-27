@@ -18,8 +18,8 @@ void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
 BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,PduLengthType* bufferSizePtr)
 {
-    // SWS_PduR_00428 
-    //SecOC_CopyRxData(id, info, bufferSizePtr);
+    /* SWS_PduR_00428 */
+    SecOC_CopyRxData(id, info, bufferSizePtr);
 }
 
 BufReq_ReturnType PduR_CanTpStartOfReception(PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr)
