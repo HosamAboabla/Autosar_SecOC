@@ -1,10 +1,10 @@
-#include "CanTp.h"
+#include "CanTP.h"
 #include "SecOC_Cfg.h"
 
 #ifdef LINUX
 #include "ethernet.h"
 #endif
-#include "PduR_CanTp.h"
+#include "Pdur_CanTP.h"
 
 Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
