@@ -18,5 +18,6 @@ void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
 void PduR_CanTpRxIndication (PduIdType id, Std_ReturnType result)
 {
+    // SWS_PduR_00207
     //SecOC_TpRxIndication(id, result);
 }
