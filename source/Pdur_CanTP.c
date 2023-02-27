@@ -24,6 +24,6 @@ BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,Pdu
 
 BufReq_ReturnType PduR_CanTpStartOfReception(PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr)
 {
-    // SWS_PduR_00549
+    /* SWS_PduR_00549 */
     //SecOC_StartOfReception(id, info, TpSduLength, bufferSizePtr);
 }
