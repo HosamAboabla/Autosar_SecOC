@@ -53,20 +53,6 @@ void PduR_CanTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 BufReq_ReturnType PduR_CanTpCopyRxData (PduIdType id,const PduInfoType* info,PduLengthType* bufferSizePtr);
 
 /****************************************************
- *         * Function Info *                        *
- *                                                  *
- * Function_Name        : PduR_CanTpRxIndication    *
- * Function_Index       : 8.3.4.2 [SWS_PduR_00512]  *
- * Function_File        : SWS of Pdur               *
- * Function_Descripton  : Called after an I-PDU has *
- * been received via the TP API, the result         *
- *  indicates whether the transmission was          *
- * successful or not.                               *
- ***************************************************/
-void PduR_CanTpRxIndication (PduIdType id, Std_ReturnType result);
-
-
-/****************************************************
  *          * Function Info *                       *
  *                                                  *
  * Function_Name        : PduR_CanTpStartOfReception*
@@ -81,5 +67,17 @@ void PduR_CanTpRxIndication (PduIdType id, Std_ReturnType result);
  * size when invoked with TpSduLength equal to 0    *
  ***************************************************/
 BufReq_ReturnType PduR_CanTpStartOfReception(PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr);
+
+/*****************************************************
+ *          * Function Info *                        *
+ *                                                   *
+ * Function_Name        : PduR_CanTpRxIndication     *
+ * Function_Index       : 8.3.4.2 [SWS_PduR_00375]   *
+ * Function_File        : SWS of Pdur                *
+ * Function_Descripton  : Called after an I-PDU has  *
+ * been received via the TP API, the result indicates* 
+ * whether the transmission was successful or not    *
+ ****************************************************/
+void PduR_CanTpRxIndication (PduIdType id, Std_ReturnType result);
 
 #endif /* INCLUDE_PDUR_CANTP_H_ */
