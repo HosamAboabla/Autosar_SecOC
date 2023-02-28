@@ -5,6 +5,7 @@
 #include "Dcm.h"
 #include "SoAd.h"
 
+
 /****************************************************
  *          * Function Info *                       *
  *                                                  *
@@ -34,7 +35,7 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
    }   
    else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
    {
-       return CanTp_Transmit(TxPduId, PduInfoPtr);
+      return CanTp_Transmit(TxPduId, PduInfoPtr);
    }
    else if(*(PduInfoPtr->MetaDataPtr) == SOADIF)
    {
