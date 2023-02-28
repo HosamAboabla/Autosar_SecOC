@@ -33,7 +33,7 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
    }   
    else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
    {
-      // return CanTp_Transmit(TxPduId, PduInfoPtr);
+      return CanTp_Transmit(TxPduId, PduInfoPtr);
    }
     return E_NOT_OK;
 }
