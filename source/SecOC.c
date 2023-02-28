@@ -22,7 +22,6 @@ const SecOC_GeneralType             *SecOCGeneral;
 
 
 
-const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
 
