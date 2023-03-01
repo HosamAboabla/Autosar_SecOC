@@ -356,53 +356,65 @@ void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
     }
 }
 
+
+
 BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr )
 {
-	uint8 AuthHeadlen,Alen,Freshnesslen,Maclen,Slen;
+	uint8 AuthHeadlen;
 	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-	Alen=SecOCRxPduProcessing[id].SecOCAuthDataFreshnessLen;
-	Freshnesslen=SecOCRxPduProcessing[id].SecOCFreshnessValueTruncLength;
-	Maclen=SecOCRxPduProcessing[id].SecOCAuthInfoTruncLength;
-	Slen=AuthHeadlen+Alen+Freshnesslen+Maclen;
-	BufReq_ReturnType r=BUFREQ_OK;
+    // [SWS_SecOC_00082]
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    
+    BufReq_ReturnType r=BUFREQ_OK;
 	if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
 		//r=PduR_SecOCTpStartOfReception();
 	}
 	else
     {
-		if(TpSduLength==0)
-		{
-			r=BUFREQ_E_NOT_OK;
-		}
-		else if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
-		{
-			r=BUFREQ_E_NOT_OK;
-		}
-		else if(AuthHeadlen<=0)
-		{
-			r=BUFREQ_E_NOT_OK;
-		}
-		else
-		{
-			if(info->SduLength==0)
-            {
-                info->SduLength=Slen;
-            }
-            else if(info->SduLength>0&&Slen>info->SduLength)
+        // [SWS_SecOC_00130] /*description*/
+        if((info->SduLength == 0) || (info->SduDataPtr == NULL))
+        {
+            r=BUFREQ_E_NOT_OK;
+        }
+        else
+        {
+            if(TpSduLength==0)
             {
                 r=BUFREQ_E_NOT_OK;
             }
-		}
+            //[SWS_SecOC_00215]
+            else if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
+            {
+                r=BUFREQ_E_NOT_OK;
+            }
+            //[SWS_SecOC_00263]
+            else if(AuthHeadlen<=0)
+            {
+                r=BUFREQ_E_NOT_OK;
+            }
+            else
+            {
+                if(securedPdu->SduLength==0)
+                {
+                    securedPdu->SduLength = info->SduLength;
+                }
+                else if(securedPdu->SduLength>0&&info->SduLength>securedPdu->SduLength)
+                {
+                    r=BUFREQ_E_NOT_OK;
+                }
+            }
+        }
 	}
-
+    if(r==BUFREQ_OK)
+    {
+        *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - info->SduLength;
+    }
+    else if (r==BUFREQ_E_NOT_OK)
+    {
+        securedPdu->SduLength = 0;   
+    }
 	return r;
-
-	/*if(success){
-			return BUFREQ_OK;
-		}else{
-			return BUFREQ_E_NOT_OK;
-		}//  BUFREQ_E_BUSY/ BUFREQ_E_OVFL*/
 }
 
 Std_ReturnType SecOC_IfCancelTransmit(PduIdType TxPduId)
@@ -672,6 +684,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 
     return result;
 }
+
 
 
 void SecOC_test()
