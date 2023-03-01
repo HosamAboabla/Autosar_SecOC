@@ -1,9 +1,24 @@
 #include "SecOC.h"
+#include "SecOC_Cfg.h"
 #include "Pdur_CanTP.h"
 #include "CanTP.h"
 
+#ifdef LINUX
+#include "ethernet.h"
+#endif
+
 PduInfoType CanTP_Buffer[BUFFER_SIZE];
 
+Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
+{
+    Std_ReturnType result;
+    
+    #ifdef LINUX
+    result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
+    #endif
+
+    return result;
+}
 
 void CanTP_MainFunctionRx(void)
 {
