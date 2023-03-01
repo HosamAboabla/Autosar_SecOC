@@ -342,6 +342,54 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 }
 
 
+BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr )
+{
+	uint8 AuthHeadlen,Alen,Freshnesslen,Maclen,Slen;
+	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+	Alen=SecOCRxPduProcessing[id].SecOCAuthDataFreshnessLen;
+	Freshnesslen=SecOCRxPduProcessing[id].SecOCFreshnessValueTruncLength;
+	Maclen=SecOCRxPduProcessing[id].SecOCAuthInfoTruncLength;
+	Slen=AuthHeadlen+Alen+Freshnesslen+Maclen;
+	BufReq_ReturnType r=BUFREQ_OK;
+	if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
+    {
+		//r=PduR_SecOCTpStartOfReception();
+	}
+	else
+    {
+		if(TpSduLength==0)
+		{
+			r=BUFREQ_E_NOT_OK;
+		}
+		else if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
+		{
+			r=BUFREQ_E_NOT_OK;
+		}
+		else if(AuthHeadlen<=0)
+		{
+			r=BUFREQ_E_NOT_OK;
+		}
+		else
+		{
+			if(info->SduLength==0)
+            {
+                info->SduLength=Slen;
+            }
+            else if(info->SduLength>0&&Slen>info->SduLength)
+            {
+                r=BUFREQ_E_NOT_OK;
+            }
+		}
+	}
+
+	return r;
+
+	/*if(success){
+			return BUFREQ_OK;
+		}else{
+			return BUFREQ_E_NOT_OK;
+		}//  BUFREQ_E_BUSY/ BUFREQ_E_OVFL*/
+}
 
 
 

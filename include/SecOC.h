@@ -165,6 +165,7 @@ BufReq_ReturnType SecOC_CopyTxData (
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
 
+BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr );
 
 #define SECOC_E_UNINIT 					0x02
 
