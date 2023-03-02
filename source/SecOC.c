@@ -412,10 +412,11 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
             }
         }
     }
-    else if (r==BUFREQ_E_NOT_OK)
+        
+    if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
-        securedPdu->SduLength = 0;   
-    }
+		//r=PduR_SecOCTpStartOfReception();
+	}
 	return r;
 }
 
