@@ -371,9 +371,11 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     {
         r=BUFREQ_E_OVFL;
     }
+    else if (TpSduLength == 0)
     {
-        // [SWS_SecOC_00130] /*description*/
-        if((info->SduLength == 0) || (info->SduDataPtr == NULL))
+        // [SWS_SecOC_00181] 
+        r=BUFREQ_E_NOT_OK;
+    }
         {
             r=BUFREQ_E_NOT_OK;
         }
