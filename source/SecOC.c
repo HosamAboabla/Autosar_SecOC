@@ -394,16 +394,16 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
                 else
                 {
                     //[SWS_SecOC_00263] /*check if dynamic*/
-                    if(AuthHeadlen<=0)
-                    {
-                        securedPdu->SduLength = info->SduLength;
-                    }
-                    else
+                    if(AuthHeadlen>0)
                     {
                         if(info->SduLength>securedPdu->SduLength)
                         {
                             r=BUFREQ_E_NOT_OK;
                         }
+                    }
+                    else
+                    {
+                        securedPdu->SduLength = info->SduLength;
                     }
                 }
             }
