@@ -362,6 +362,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
 {
 	uint8 AuthHeadlen;
 	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH;
     // [SWS_SecOC_00082]
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     
@@ -379,29 +380,31 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         }
         else
         {
-            if(TpSduLength==0)
-            {
-                r=BUFREQ_E_NOT_OK;
-            }
-            //[SWS_SecOC_00215]
-            else if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
-            {
-                r=BUFREQ_E_NOT_OK;
-            }
-            //[SWS_SecOC_00263]
-            else if(AuthHeadlen<=0)
+            if(TpSduLength<*bufferSizePtr)
             {
                 r=BUFREQ_E_NOT_OK;
             }
             else
             {
-                if(securedPdu->SduLength==0)
-                {
-                    securedPdu->SduLength = info->SduLength;
-                }
-                else if(securedPdu->SduLength>0&&info->SduLength>securedPdu->SduLength)
+                //[SWS_SecOC_00215]
+                if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
                 {
                     r=BUFREQ_E_NOT_OK;
+                }
+                else
+                {
+                    //[SWS_SecOC_00263] /*check if dynamic*/
+                    if(AuthHeadlen<=0)
+                    {
+                        securedPdu->SduLength = info->SduLength;
+                    }
+                    else
+                    {
+                        if(info->SduLength>securedPdu->SduLength)
+                        {
+                            r=BUFREQ_E_NOT_OK;
+                        }
+                    }
                 }
             }
         }
