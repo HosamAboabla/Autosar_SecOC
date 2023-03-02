@@ -380,7 +380,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         }
         else
         {
-            if(TpSduLength<*bufferSizePtr)
+            if(TpSduLength>*bufferSizePtr)
             {
                 r=BUFREQ_E_NOT_OK;
             }
