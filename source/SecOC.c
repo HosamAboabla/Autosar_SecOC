@@ -366,11 +366,11 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType r=BUFREQ_OK;
-	if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
+    // [SWS_SecOC_00130] /*description*/
+    if(TpSduLength>*bufferSizePtr)
     {
-		//r=PduR_SecOCTpStartOfReception();
-	}
-	else
+        r=BUFREQ_E_OVFL;
+    }
     {
         // [SWS_SecOC_00130] /*description*/
         if((info->SduLength == 0) || (info->SduDataPtr == NULL))
