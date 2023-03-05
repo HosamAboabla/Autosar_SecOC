@@ -13,6 +13,7 @@
 #include "PduR_SecOC.h"
 #include "Pdur_CanTP.h"
 #include "PduR_CanIf.h"
+#include "SecOC_Debug.h"
 
 #include <string.h>
 
@@ -310,7 +311,9 @@ void SecOCMainFunctionRx(void)
             result = verify(idx, securedPdu, &macResult);
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
+                #ifdef SECOC_DEBUG
                 printf("Verify success for id: %d\n", idx);
+                #endif
                 PduR_SecOCIfRxIndication(idx,  authPdu);
             }
 
