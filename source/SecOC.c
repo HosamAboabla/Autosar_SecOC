@@ -410,7 +410,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
 
                 case 3:
                     datalen=((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
                     {
                         r=BUFREQ_E_NOT_OK;
                     }
