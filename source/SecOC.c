@@ -514,8 +514,12 @@ void SecOC_test()
     SecOC_Init(&SecOC_Config);
     
 
-	uint8 buff[16]={1,12,111,112};
-    PduLengthType len = 4;
+	uint8 buff[20];
+    for(uint8 i = 0; i < 20 ; i++)
+    {
+        buff[i] = i;
+    }
+    PduLengthType len = 20;
     PduInfoType SPDU;
     uint8 test_meta_data = 0;
     SPDU.MetaDataPtr = &test_meta_data;
@@ -523,7 +527,7 @@ void SecOC_test()
     SPDU.SduLength = len;
 
 
-    SecOC_IfTransmit(0, &SPDU);
+    SecOC_IfTransmit(1, &SPDU);
     SecOCMainFunctionTx();
 
     CanTp_MainFunction();
