@@ -42,9 +42,9 @@ void CanTP_MainFunctionRx(void)
         /* Check if can Receive  */
         if (PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr) == BUFREQ_OK)
         {
-            uint8 LastFrame = ceil((float32)TpSduLength/BUS_LENGTH);
-            /* send Data */
-           for(int i = 0; i < LastFrame; i++)
+            uint8 LastFrame_idx = ceil((float32)TpSduLength/BUS_LENGTH) - 1;
+           /* send Data */
+           for(int i = 0; i <= LastFrame_idx; i++)
            {
                 Result = PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
                 if( Result != BUFREQ_OK)
