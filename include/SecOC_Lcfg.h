@@ -7,7 +7,7 @@
 #include "SecOC_Cfg.h"
 
 // Derived configuration
-#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 4)
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 20)
 #define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
 #define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
 
@@ -17,7 +17,7 @@
 
 #define SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1))
 
-#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (1)
+#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (2)
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
 typedef SecOC_StatusPropagationMode_Type SecOC_ClientServerVerificationStatusPropagationMode_Type;
