@@ -51,6 +51,7 @@ void CanTP_MainFunctionRx(void)
                 {
                     break;
                 }
+                
                 /* Update length before last frame */
                 if( ((TpSduLength % BUS_LENGTH) != 0) && (i == (LastFrame_idx - 1)) )
                 {
