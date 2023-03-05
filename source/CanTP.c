@@ -51,7 +51,11 @@ void CanTP_MainFunctionRx(void)
                 {
                     break;
                 }
-                if(((TpSduLength % BUS_LENGTH != 0) && (i == LastFrame - 1)))
+                if(i == LastFrame - 1)
+                {
+                    break;
+                }
+                if(((TpSduLength % BUS_LENGTH != 0) && (i == LastFrame - 2)))
                 {
                     Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
                 }
