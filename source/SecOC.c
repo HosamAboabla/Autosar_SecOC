@@ -366,7 +366,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType r=BUFREQ_OK;
-    uint64 datalen=0;
+    uint32 datalen=0;
     // [SWS_SecOC_00130] /*description*/
     if(TpSduLength>*bufferSizePtr)
     {
@@ -390,37 +390,42 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
             //[SWS_SecOC_00263] /*check if dynamic*/            
             if(AuthHeadlen>0)
             {
-                if (AuthHeadlen==1)
+                switch (AuthHeadlen)
                 {
+                case 1:
                     datalen=info->SduDataPtr[0];
                     if((uint8)datalen > SECOC_AUTHPDU_MAX_LENGTH)
                     {
                         r=BUFREQ_E_NOT_OK;
                     }
-                }
-                else if (AuthHeadlen==2)
-                {
+                    break;
+
+                case 2:
                     datalen=((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
                     if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
                     {
                         r=BUFREQ_E_NOT_OK;
                     }
-                }
-                else if (AuthHeadlen==4)
-                {
+                    break;
+
+                case 3:
+                    datalen=((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                    break;
+
+                case 4:
                     datalen=((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
                     if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
                     {
                         r=BUFREQ_E_NOT_OK;
                     }
-                }
-                else if (AuthHeadlen==8)
-                {
-                    datalen=((info->SduDataPtr[7])<<56)|((info->SduDataPtr[6])<<48)|((info->SduDataPtr[5])<<40)|((info->SduDataPtr[4])<<32)|((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if(datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
+                    break;
+
+                default:
+                    break;
                 }
             }
         }
