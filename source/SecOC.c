@@ -357,6 +357,87 @@ void SecOC_TpRxIndication(PduIdType Id,Std_ReturnType result)
 }
 
 
+
+BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr )
+{
+	uint8 AuthHeadlen;
+	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    // [SWS_SecOC_00082]
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+    BufReq_ReturnType r=BUFREQ_OK;
+    uint32 datalen=0;
+    // [SWS_SecOC_00130] /*description*/
+    if(TpSduLength>*bufferSizePtr)
+    {
+        r=BUFREQ_E_OVFL;
+        //[SWS_SecOC_00215]
+        if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
+        {
+            r=BUFREQ_E_NOT_OK;
+        }
+    }
+    else if (TpSduLength == 0)
+    {
+        // [SWS_SecOC_00181] 
+        r=BUFREQ_E_NOT_OK;
+    }
+    else
+    {
+        //receiving first Byte if not Null
+        if((info->SduDataPtr != NULL))
+        {
+            //[SWS_SecOC_00263] /*check if dynamic*/            
+            if(AuthHeadlen>0)
+            {
+                switch (AuthHeadlen)
+                {
+                case 1:
+                    datalen=info->SduDataPtr[0];
+                    if((uint8)datalen > SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                    break;
+
+                case 2:
+                    datalen=((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                    break;
+
+                case 3:
+                    datalen=((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                    break;
+
+                case 4:
+                    datalen=((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+    }
+        
+    if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
+    {
+		//r=PduR_SecOCTpStartOfReception();
+	}
+	return r;
+}
+
 Std_ReturnType SecOC_IfCancelTransmit(PduIdType TxPduId)
 {
     Std_ReturnType result = E_OK;
@@ -626,6 +707,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 }
 
 
+extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
     
