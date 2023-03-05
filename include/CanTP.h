@@ -28,4 +28,8 @@ void CanTp_MainFunction(void);
  *******************************************************/
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr);
 
+
+
+void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+
 #endif

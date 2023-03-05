@@ -3,11 +3,14 @@
 #include "SecOC.h"
 #include <stdio.h>
 #include "CanIF.h"
+#include "Std_Types.h"
 
 #define CANTP_BUFFER_SIZE       255
-
-
 #define BUS_LENGTH              8
+
+Std_ReturnType last_pdu;
+
+
 
 PduInfoType CanTp_Buffer[CANTP_BUFFER_SIZE];
 
@@ -41,19 +44,31 @@ void CanTp_MainFunction(void)
         {
             printf("Start sending id = %d\n" , idx);
             printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);
+            
+            
+            printf("All Data to be Sent: \n");
+            for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
+            {
+                printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
+            }
+            printf("\n\n\n");
+
+
             for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
             {
                 // Request CopyTxData
                 SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
                 // Send data using CanIf
-                printf("info length %d\n",info.SduLength);
+                printf("Sending %d part with length %d \n" , i, info.SduLength);
+
                 for(int j = 0; j < info.SduLength; j++)
                     printf("%d\t",info.SduDataPtr[j]);
                 
                 printf("\n");
 
                 CanIf_Transmit(idx , &info);
-                printf("Send %d part successfully\n" , i);
+
+                printf("Transmit Result = %d\n" , last_pdu);
             }
 
             if( (CanTp_Buffer[idx].SduLength % BUS_LENGTH) != 0)
@@ -62,7 +77,8 @@ void CanTp_MainFunction(void)
                 info.SduLength = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
                 SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
 
-                printf("info length %d\n",info.SduLength);
+
+                printf("Sending remaider part with length %d \n", info.SduLength);
                 for(int j = 0; j < info.SduLength; j++)
                     printf("%d\t",info.SduDataPtr[j]);
                 printf("\n");
@@ -71,12 +87,20 @@ void CanTp_MainFunction(void)
                 // Send data using CanIf
                 CanIf_Transmit(idx , &info);
 
-                printf("Sent reminder part successfully\n");
+                printf("Transmit Result = %d\n" , last_pdu);
+
                 
             }
 
-            // PduR_CanTpTxConfirmation(idx , result);
+            PduR_CanTpTxConfirmation(idx , E_OK);
 
         }
     }
+}
+
+
+
+void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+    last_pdu = result;
 }
