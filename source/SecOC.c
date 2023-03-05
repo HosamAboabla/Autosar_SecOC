@@ -319,7 +319,7 @@ void SecOCMainFunctionRx(void)
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
                 #ifdef SECOC_DEBUG
-                printf("Verify success for id: %d\n", idx);
+                (void)printf("Verify success for id: %d\n", idx);
                 #endif
                 PduR_SecOCIfRxIndication(idx,  authPdu);
             }
