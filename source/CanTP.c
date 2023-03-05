@@ -51,15 +51,16 @@ void CanTP_MainFunctionRx(void)
                 {
                     break;
                 }
-                if(i == LastFrame - 1)
-                {
-                    break;
-                }
-                if(((TpSduLength % BUS_LENGTH != 0) && (i == LastFrame - 2)))
+                /* Update length before last frame */
+                if( ((TpSduLength % BUS_LENGTH) != 0) && (i == (LastFrame_idx - 1)) )
                 {
                     Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
                 }
-                ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength);
+
+                if(i != LastFrame_idx)
+                {
+                    ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength);
+                }
            }
            /* Send Confirm to last of data */
            PduR_CanTpRxIndication(idx,Result);
