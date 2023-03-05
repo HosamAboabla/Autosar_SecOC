@@ -8,7 +8,7 @@
 #define FAILED      (0u)
 #define TP_TRANSMISSION_STATUS SUCCESS
 
-#define TP_LENGTH       4
+#define BUS_LENGTH       8
 #define BUFFER_SIZE     200
 
 #define CANTP_BUFFERLENGTH  ((uint32)500)
