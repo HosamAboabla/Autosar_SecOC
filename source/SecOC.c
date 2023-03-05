@@ -302,7 +302,8 @@ void SecOCMainFunctionRx(void)
     }
 
     PduIdType idx = 0;
-    SecOC_VerificationResultType result ,macResult;
+    SecOC_VerificationResultType result;
+    SecOC_VerificationResultType macResult;
 
     
     for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
