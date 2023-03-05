@@ -26,6 +26,7 @@ BufReq_ReturnType PduR_CanTpStartOfReception(PduIdType id, const PduInfoType* in
 {
     /* SWS_PduR_00549 */
     //SecOC_StartOfReception(id, info, TpSduLength, bufferSizePtr);
+    return BUFREQ_OK;
 }
 
 void PduR_CanTpRxIndication (PduIdType id, Std_ReturnType result)
