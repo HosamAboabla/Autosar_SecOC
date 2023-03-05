@@ -21,7 +21,6 @@
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
 
-
 typedef struct
 {
    uint8                   authenticPdu[SECOC_AUTHPDU_MAX_LENGTH];

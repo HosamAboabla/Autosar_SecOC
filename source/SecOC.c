@@ -366,10 +366,16 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType r=BUFREQ_OK;
+    uint64 datalen=0;
     // [SWS_SecOC_00130] /*description*/
     if(TpSduLength>*bufferSizePtr)
     {
         r=BUFREQ_E_OVFL;
+        //[SWS_SecOC_00215]
+        if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
+        {
+            r=BUFREQ_E_NOT_OK;
+        }
     }
     else if (TpSduLength == 0)
     {
@@ -378,36 +384,43 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     }
     else
     {
-        //[SWS_SecOC_00215]
-        if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
+        //receiving first Byte if not Null
+        if((info->SduDataPtr != NULL))
         {
-            r=BUFREQ_E_NOT_OK;
-        }
-        else
-        {
-            //receiving first Byte if not Null
-            if((info->SduDataPtr != NULL))
+            //[SWS_SecOC_00263] /*check if dynamic*/            
+            if(AuthHeadlen>0)
             {
-                //[SWS_SecOC_00263] /*check if dynamic*/
-                
-                if(AuthHeadlen>0)
+                if (AuthHeadlen==1)
                 {
-                    if(info->SduDataPtr[0] > SECOC_AUTHPDU_MAX_LENGTH)
+                    datalen=info->SduDataPtr[0];
+                    if((uint8)datalen > SECOC_AUTHPDU_MAX_LENGTH)
                     {
                         r=BUFREQ_E_NOT_OK;
                     }
-                    else
+                }
+                else if (AuthHeadlen==2)
+                {
+                    datalen=((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
                     {
-                        (void)memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
-                        securedPdu->SduLength += info->SduLength;
-                        *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+                        r=BUFREQ_E_NOT_OK;
                     }
                 }
-                else
+                else if (AuthHeadlen==4)
                 {
-                    (void)memcpy(securedPdu->SduDataPtr + securedPdu->SduLength, info->SduDataPtr, info->SduLength);
-                    securedPdu->SduLength += info->SduLength;
-                    *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
+                    datalen=((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
+                }
+                else if (AuthHeadlen==8)
+                {
+                    datalen=((info->SduDataPtr[7])<<56)|((info->SduDataPtr[6])<<48)|((info->SduDataPtr[5])<<40)|((info->SduDataPtr[4])<<32)|((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
+                    if(datalen> SECOC_AUTHPDU_MAX_LENGTH)
+                    {
+                        r=BUFREQ_E_NOT_OK;
+                    }
                 }
             }
         }
