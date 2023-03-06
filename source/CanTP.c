@@ -34,7 +34,7 @@ void CanTP_MainFunctionRx(void)
     Tp_Spdu.SduLength = BUS_LENGTH;
     PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
-    uint8 LastFrame_idx;
+    uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH)  - 1;
 
     BufReq_ReturnType Result;
     for(idx = 0; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++)
@@ -43,13 +43,9 @@ void CanTP_MainFunctionRx(void)
         /* Check if can Receive  */
         if (PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr) == BUFREQ_OK)
         {
-            if( (TpSduLength%BUS_LENGTH) != 0 )
+            if( (TpSduLength % BUS_LENGTH) != 0 )
             {
-                LastFrame_idx = (TpSduLength/BUS_LENGTH) +1 - 1;
-            }
-            else
-            {
-                LastFrame_idx = (TpSduLength/BUS_LENGTH)  - 1;
+                LastFrame_idx ++;
             }
            /* send Data */
            for(int i = 0; i <= LastFrame_idx; i++)
