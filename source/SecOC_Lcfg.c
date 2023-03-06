@@ -1,11 +1,14 @@
 /******************************************************************************
- * File Name   : SecOC_Lcfg                                                    *
+ * File Name   : SecOC_Lcfg                                                   *
  * Description : Header file of SecOC configuration                           *
- * Created on  : November 9, 2022                                                *
+ * Created on  : November 9, 2022                                             *
  ******************************************************************************/
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
 
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store the Authentic I-PDU and the outgoing Secured I-PDU */ 
+/* [SWS_SecOC_00146] The SecOC module shall provide separate buffers for the Authentic I-PDU and the Secured I-PDU. */
+/* [SWS_SecOC_00058] */
 uint8_t AuthPdu0BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu0BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
