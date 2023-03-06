@@ -3,6 +3,6 @@
 
 #include <stdio.h>      /*in order to use printf statements for debugging*/
 
-#define SECOC_DEBUG 1       /*Comment this line if you want to deploy your code*/
+#define SECOC_DEBUG       /*Comment this line if you want to deploy your code*/
 
 #endif
