@@ -30,7 +30,7 @@ Std_ReturnType ethernet_send(unsigned char id, unsigned char* data , unsigned ch
 
 }
 
-Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen)
+Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, unsigned char* id)
 {
     // create a socket
     int server_socket, client_socket;
@@ -51,8 +51,10 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen)
     client_socket = accept(server_socket , NULL , NULL);
 
     // Receive data
-    recv( client_socket , data , dataLen , 0);
-
+    unsigned char recData [dataLen + 1];
+    recv( client_socket , recData , (dataLen + 1) , 0);
+    *id = recData[dataLen];
+    memcpy(data, recData, dataLen);
 
     // close the socket
     close(server_socket);
