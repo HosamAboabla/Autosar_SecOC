@@ -2,7 +2,7 @@
 #include "SecOC_Cfg.h"
 #include "Pdur_CanTP.h"
 #include "CanTP.h"
-#include <math.h>
+
 
 #ifdef LINUX
 #include "ethernet.h"
@@ -32,9 +32,10 @@ void CanTP_MainFunctionRx(void)
     Tp_Spdu.SduDataPtr = ReciveDATA;
     Tp_Spdu.MetaDataPtr = &Meta_data;
     Tp_Spdu.SduLength = BUS_LENGTH;
-    PduLengthType TpSduLength = SECOC_SECPDU_MAX_LENGTH;
+    PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
-    
+    uint8 LastFrame_idx;
+
     BufReq_ReturnType Result;
     for(idx = 0; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++)
     {  
@@ -42,7 +43,14 @@ void CanTP_MainFunctionRx(void)
         /* Check if can Receive  */
         if (PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr) == BUFREQ_OK)
         {
-            uint8 LastFrame_idx = ceil((float32)TpSduLength/BUS_LENGTH) - 1;
+            if( (TpSduLength%BUS_LENGTH) != 0 )
+            {
+                LastFrame_idx = (TpSduLength/BUS_LENGTH) +1 - 1;
+            }
+            else
+            {
+                LastFrame_idx = (TpSduLength/BUS_LENGTH)  - 1;
+            }
            /* send Data */
            for(int i = 0; i <= LastFrame_idx; i++)
            {
