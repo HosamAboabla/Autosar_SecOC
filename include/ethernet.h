@@ -10,9 +10,9 @@
 
 #define PORT_NUMBER 12345
 
-Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen);
+Std_ReturnType ethernet_send(unsigned char id, unsigned char* data , unsigned char dataLen);
 
-Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen);
+Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, unsigned char* id);
 
 
 
