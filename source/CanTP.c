@@ -8,7 +8,7 @@
 
 Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
-    Std_ReturnType result;
+    Std_ReturnType result = E_OK;
     
     #ifdef LINUX
     result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
