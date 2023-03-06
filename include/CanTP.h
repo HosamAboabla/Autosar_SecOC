@@ -11,8 +11,6 @@
 #define BUS_LENGTH       8
 #define BUFFER_SIZE     200
 
-#define CANTP_BUFFERLENGTH  ((uint32)500)
-
 /****************************************************
  *          * Function Info *                       *
  *                                                  *
