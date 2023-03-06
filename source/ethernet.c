@@ -1,7 +1,7 @@
 #include "ethernet.h"
 
 
-Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
+Std_ReturnType ethernet_send(unsigned char id, unsigned char* data , unsigned char dataLen) {
     // create a socket
     int network_sockect;
     network_sockect = socket(AF_INET , SOCK_STREAM , 0);
@@ -18,8 +18,11 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
         return E_NOT_OK;
     }
 
-
-    send(network_sockect , data , dataLen , 0);
+    /* Prepare For Send */
+    uint8 sendData[dataLen + 1];
+    (void)memcpy(sendData, data, dataLen);
+    sendData[dataLen] = id;
+    send(network_sockect , sendData , (dataLen + 1) , 0);
 
     // close the connection
     close(network_sockect);
