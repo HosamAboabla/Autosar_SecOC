@@ -713,6 +713,6 @@ void SecOC_test()
     uint8 data[100] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
     for (int i = 0; i < 3; i ++)
     {      
-        ethernet_send(i,data,17);
+        while(ethernet_send(i,data,17) != E_OK);
     }
 }
