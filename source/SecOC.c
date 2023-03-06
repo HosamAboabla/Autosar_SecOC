@@ -710,5 +710,14 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    
+    uint8 data[100];
+    uint8 id;
+    for (int i = 0; i < 3; i ++)
+    {      
+        ethernet_receive(data,17,&id);
+        printf("The recieve ID is %d and the data : ", id);
+        for(int k =0; k < 17; k ++)
+            printf("%d ", data[k]);
+        printf("\n");
+    }
 }
