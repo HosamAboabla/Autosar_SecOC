@@ -34,7 +34,7 @@ void CanTp_MainFunction(void)
     PduInfoType info = {sdata,mdata,length};
 
     TpDataStateType retrystate = TP_DATACONF;
-    PduLengthType retrycout = 0;
+    PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
 
@@ -57,7 +57,7 @@ void CanTp_MainFunction(void)
             for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
             {
                 // Request CopyTxData
-                SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
+                SecOC_CopyTxData(idx, &info, &retry, &availableDataPtr);
                 // Send data using CanIf
                 printf("Sending %d part with length %d \n" , i, info.SduLength);
 
@@ -67,7 +67,15 @@ void CanTp_MainFunction(void)
                 printf("\n");
 
                 CanIf_Transmit(idx , &info);
-
+                if(last_pdu == E_NOT_OK)
+                {
+                    retry.TpDataState = TP_DATARETRY;
+                    i--;
+                }
+                else if(last_pdu == E_OK)
+                {
+                    retry.TpDataState = TP_DATACONF;
+                }
                 printf("Transmit Result = %d\n" , last_pdu);
             }
 
@@ -86,6 +94,14 @@ void CanTp_MainFunction(void)
 
                 // Send data using CanIf
                 CanIf_Transmit(idx , &info);
+
+                while(last_pdu == E_NOT_OK)
+                {
+                    retry.TxTpDataCnt = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
+                    retry.TpDataState = TP_DATARETRY;
+                    SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
+                    CanIf_Transmit(idx , &info);
+                }
 
                 printf("Transmit Result = %d\n" , last_pdu);
 
