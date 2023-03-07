@@ -708,7 +708,6 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 }
 
 
-extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {       
     extern SecOC_ConfigType SecOC_Config;     
@@ -727,7 +726,7 @@ void SecOC_test()
     // }
     PduLengthType len = 19;
     PduInfoType SPDU;
-    uint8 test_meta_data = 0;
+    uint8 test_meta_data = 2;
     SPDU.MetaDataPtr = &test_meta_data;
     SPDU.SduDataPtr = buff;
     SPDU.SduLength = len;
