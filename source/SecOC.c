@@ -334,6 +334,7 @@ void SecOCMainFunctionRx(void)
         /* Check if there is data */
         if ( securedPdu->SduLength > 0 ) {
             
+            /* [SWS_SecOC_00079] */
             result = verify(idx, securedPdu, &macResult);
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
@@ -341,7 +342,7 @@ void SecOCMainFunctionRx(void)
                 (void)printf("Verify success for id: %d\n", idx);
                 #endif
 
-                /* [SWS_SecOC_00050] */
+                /* [SWS_SecOC_00050], [SWS_SecOC_00080] */
                 PduR_SecOCIfRxIndication(idx,  authPdu);
             }
 
@@ -416,7 +417,9 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
     (void)memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
-    securedPdu->SduLength = PduInfoPtr->SduLength;
+
+    /* [SWS_SecOC_00078] */
+    securedPdu->SduLength = MIN(PduInfoPtr->SduLength, securedPdu->SduLength);
 }
 
 
