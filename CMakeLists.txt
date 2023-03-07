@@ -36,7 +36,7 @@ endif()
 enable_testing()
 
 # Add google test source code
-add_subdirectory(googletest)
+add_subdirectory(googletest/googletest)
 
 # Extract include directories from main target SecOC
 set(headerDirs "")
