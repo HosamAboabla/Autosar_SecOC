@@ -85,18 +85,7 @@ uint32* SecOCFreshnessValueLength);
 
 #define SECOC_END_SEC_GetTxFreshness_CODE
 
-Std_ReturnType construct_RX_DataToAuthenticator(PduIdType RxPduId, PduInfoType* secPdu, uint8 *DataToAuth, uint32 *DataToAuthLen, uint8 *TruncatedLength_Bytes,uint8* SecOCFreshnessValue,uint32* SecOCFreshnessValueLength );
 
-/*******************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : verify                        *
- * Function_Index       :  SecOC internal               *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : Verification of I-PDUs        *
- *******************************************************/
-
-Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
 //void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
@@ -175,7 +164,71 @@ BufReq_ReturnType SecOC_CopyTxData (
  *******************************************************/
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_CopyRxData        *
+ * Function_Index       : 8.4.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called to    *
+ * provide the received data of an I-PDU segment        *
+ * (N-PDU) to the upper layer. Each call to this        *
+ * function provides the next part of the I-PDU data.   *
+ * The size of the remaining buffer is written to the   *
+ * position indicated by bufferSizePtr.                 *
+ *******************************************************/
+BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr);
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TpRxIndication          *
+ * Function_Index       : 8.4.2                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is Called after *
+ * an I-PDU has been received via the TP API,           *
+ * the result indicates whether                         *
+ * the transmission was successful or not.              *
+ *******************************************************/
+
+
+void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_IfCancelTransmit        *
+ * Function_Index       : 8.3.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Requests cancellation of an   *
+ * ongoing transmission of a PDU in a lower layer       *
+ * communication module.                                *
+ *******************************************************/
+
+
+Std_ReturnType SecOC_IfCancelTransmit(
+    PduIdType                  TxPduId
+);
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_StartOfReception        *
+ * Function_Index       : 8.4.8                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called at    *
+ * the start of receiving an N-SDU. The N-SDU might be  *
+ * fragmented into multiple N-PDUs                      *
+ * (FF with one or more following CFs) or might consist *
+ * of a single N-PDU (SF).                              *
+ *******************************************************/
+
+
+BufReq_ReturnType SecOC_StartOfReception ( 
+    PduIdType id, 
+    const PduInfoType* info, 
+    PduLengthType TpSduLength, 
+    PduLengthType* bufferSizePtr );
 
 #define SECOC_E_UNINIT 					0x02
 

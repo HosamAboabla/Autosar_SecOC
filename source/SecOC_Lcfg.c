@@ -67,8 +67,8 @@ SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
 
 SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
 {
-    SECOC_AUTHPDU_HEADERLENGTH,
-    SECOC_RXAUTHENTIC_PDUID,
+    SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
+    SECOC_CRYPTO_RXAUTHENTIC_PDUID,
     //&EcuC_Pdu
 };
 
@@ -93,7 +93,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
     {
         SECOC_RX_PDUTYPE,
         SECOC_RXAUTHENTICLAYER_PDUID,
-        {AuthPdu0BufferRx, NULL, 0},
+        {AuthPdu0BufferRx, NULL, 4},
     }
 };
 

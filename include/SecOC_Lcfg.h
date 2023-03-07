@@ -20,6 +20,21 @@
 #define SECOC_NUM_OF_TX_PDU_PROCESSING                               (2)
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
+
+typedef struct
+{
+   uint8                   authenticPdu[SECOC_AUTHPDU_MAX_LENGTH];
+   uint32                  authenticPduLen;
+
+   uint8                   freshness[SECOC_FRESHNESS_MAX_LENGTH / 8];
+   uint32                  freshnessLenBits;
+   Std_ReturnType          freshnessResult;
+   
+   uint8                   mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8];
+   uint32                  macLenBits;
+} SecOC_RxIntermediateType;
+
+
 typedef SecOC_StatusPropagationMode_Type SecOC_ClientServerVerificationStatusPropagationMode_Type;
 typedef SecOC_StatusPropagationMode_Type SecOC_VerificationStatusPropagationMode_Type;
 
