@@ -715,7 +715,7 @@ void SecOC_test()
 
 	// TX
     uint16 SecOCFreshnessValueID = 9;
-    uint8 arr[] = {0x1,0xff,0xfe};
+    uint8 arr[] = {0xfe,0xff,0x1};
 
     FVM_UpdateCounter(SecOCFreshnessValueID,arr,17);
 
