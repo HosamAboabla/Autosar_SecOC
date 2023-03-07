@@ -361,21 +361,9 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
         authPdu->SduLength = 0;
         securedPdu->SduLength = 0;
     }
-
-    if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
-    {
-        /* [SWS_SecOC_00063] */
-        PduR_SecOCTpTxConfirmation(TxPduId, result);
-    }
-    else if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
-    {
-        /* [SWS_SecOC_00063] */
-        PduR_SecOCIfTxConfirmation(TxPduId, result);
-    }
-    else
-    {
-        /* DET Report Error */
-    }
+       
+    /* [SWS_SecOC_00063] */
+    PduR_SecOCTpTxConfirmation(TxPduId, result);
 
 }
 
