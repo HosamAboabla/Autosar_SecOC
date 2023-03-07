@@ -32,7 +32,7 @@ void CanTP_MainFunctionRx(void)
     Tp_Spdu.SduDataPtr = ReciveDATA;
     Tp_Spdu.MetaDataPtr = &Meta_data;
     Tp_Spdu.SduLength = BUS_LENGTH;
-    PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
+    PduLengthType TpSduLength = 27; // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
     uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH)  - 1;
     if( (TpSduLength % BUS_LENGTH) != 0 )
