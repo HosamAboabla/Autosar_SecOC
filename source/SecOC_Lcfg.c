@@ -98,7 +98,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
         SECOC_AUTHPDU_HEADERLENGTH,
         SECOC_RX_SECUREDLAYER_PDUID,
         SECOC_SECURED_RX_PDUVERIFICATION,
-        {SecPdu0BufferRx, NULL, 0},
+        {SecPdu0BufferRx, NULL, SECOC_SECPDU_MAX_LENGTH},
     }
 };
 
