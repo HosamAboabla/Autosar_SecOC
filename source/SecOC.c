@@ -313,6 +313,14 @@ void SecOCMainFunctionRx(void)
                 printf("Verify success for id: %d\n", idx);
                 PduR_SecOCIfRxIndication(idx,  authPdu);
             }
+            else if( result == SECOC_VERIFICATIONFAILURE )
+            {
+                printf("MAC failed for id: %d\n", idx);
+            }
+            else
+            {
+                printf("FV failed for id: %d\n", idx);
+            }
 
         }
     }
