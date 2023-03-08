@@ -61,7 +61,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     {
         *id |= (recData[dataLen+indx] << (8 * indx));
     }
-    memcpy(data, recData, dataLen);
+    (void)memcpy(data, recData, dataLen);
 
     // close the socket
     close(server_socket);
