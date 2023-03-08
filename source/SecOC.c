@@ -362,7 +362,7 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
         securedPdu->SduLength = 0;
     }
 
-
+    /* [SWS_SecOC_00074] */
     if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
     {
         /* [SWS_SecOC_00063] */
