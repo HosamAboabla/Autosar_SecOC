@@ -1,7 +1,7 @@
 #include "ethernet.h"
 
 
-Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
+Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     // create a socket
     int network_sockect;
     network_sockect = socket(AF_INET , SOCK_STREAM , 0);
@@ -18,8 +18,14 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
         return E_NOT_OK;
     }
 
-
-    send(network_sockect , data , dataLen , 0);
+    /* Prepare For Send */
+    uint8 sendData[dataLen + sizeof(id)];
+    (void)memcpy(sendData, data, dataLen);
+    for(unsigned char indx = 0; indx < sizeof(id); indx++)
+    {
+        sendData[dataLen+indx] = (id >> (8 * indx));
+    }
+    send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
 
     // close the connection
     close(network_sockect);
@@ -27,7 +33,7 @@ Std_ReturnType ethernet_send(unsigned char* data , unsigned char dataLen) {
 
 }
 
-Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen)
+Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, unsigned short* id)
 {
     // create a socket
     int server_socket, client_socket;
@@ -48,8 +54,14 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen)
     client_socket = accept(server_socket , NULL , NULL);
 
     // Receive data
-    recv( client_socket , data , dataLen , 0);
-
+    unsigned char recData [dataLen + sizeof(id)];
+    recv( client_socket , recData , (dataLen + sizeof(id)) , 0);
+    *id = 0;
+    for(unsigned char indx = 0; indx < sizeof(id); indx++)
+    {
+        *id |= (recData[dataLen+indx] << (8 * indx));
+    }
+    memcpy(data, recData, dataLen);
 
     // close the socket
     close(server_socket);
