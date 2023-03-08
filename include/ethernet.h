@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "Std_Types.h"
+#include <string.h>
 
 #define PORT_NUMBER 12345
 
