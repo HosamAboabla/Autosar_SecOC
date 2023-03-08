@@ -7,7 +7,6 @@
 #define SUCCESS     (1u)
 #define FAILED      (0u)
 
-#define STATUS_TRANSMISSION SUCCESS
 
 #define CANIF_BUFFERLENGTH  ((uint32)100)
 
