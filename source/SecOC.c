@@ -492,7 +492,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
 
     /* [SWS_SecOC_00268] static Pdu*/
-    if(headerLen == 0 && PduInfoPtr->SduLength != securedPdu->SduLength)
+    if(headerLen == 0 && (PduInfoPtr->SduLength < securedPdu->SduLength))
     {
         return;
     }
@@ -760,9 +760,9 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 }
 
 #ifdef SECOC_DEBUG
-extern SecOC_ConfigType SecOC_Config;  
+extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    
+
 }
 #endif
