@@ -667,7 +667,7 @@ static Std_ReturnType constructDataToAuthenticatorRx(PduIdType RxPduId, uint8 *D
 
 static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
 {
-    /* [SWS_SecOC_00031] verifcation steps */
+    /* [SWS_SecOC_00040] verifcation steps */
 
     SecOC_RxIntermediateType    SecOCIntermediate;
 
