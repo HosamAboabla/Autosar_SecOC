@@ -24,7 +24,7 @@ uint8 countBits(uint8 n) {
 
 /*
 Count the Number of bit in array of bytes */
-uint8 countSizeBits(uint8* arrayBytes, uint8 maxSize)
+uint8 countSizeBits(const uint8* arrayBytes, uint8 maxSize)
 {
     sint8 INDEX;
     uint8 length = 0;
