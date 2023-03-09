@@ -25,6 +25,7 @@ const SecOC_GeneralType             *SecOCGeneral;
 
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
+static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
 
 // Internal functions
 static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, uint8 *DataToAuth, uint32 *DataToAuthLen, const PduInfoType* AuthPdu);
@@ -329,6 +330,7 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
         // clear buffer
         authPdu->SduLength = 0;
         securedPdu->SduLength = 0;
+        bufferRemainIndex[TxPduId] = 0;
     }
 
     if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
@@ -486,7 +488,6 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
 {
     BufReq_ReturnType result = BUFREQ_OK;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
     PduLengthType remainingBytes = securedPdu->SduLength - bufferRemainIndex[id];
     /* - Check if there is data in the buffer to be copy */
     if(securedPdu->SduLength > 0)
