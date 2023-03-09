@@ -721,18 +721,20 @@ void SecOC_test()
     // rx
     SecOC_Init(&SecOC_Config);
     
-    uint16 SecOCFreshnessValueID = 10;
-    for(int i = 0; i < 0x1ff; i++)
-        FVM_IncreaseCounter(SecOCFreshnessValueID);
+    uint8 count = 3;
+    while(count)
+    {
+        CanTP_MainFunctionRx();
+        
+        PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
-    CanTP_MainFunctionRx();
-    
-    PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+        printf("Secured Data %d \n", securedPdu->SduLength);
+        for(int j = 0; j < securedPdu->SduLength; j++)
+            printf("%d\t",securedPdu->SduDataPtr[j]);
+        printf("\n");
 
-    printf("Secured Data %d \n", securedPdu->SduLength);
-    for(int j = 0; j < securedPdu->SduLength; j++)
-        printf("%d\t",securedPdu->SduDataPtr[j]);
-    printf("\n");
-
-    SecOCMainFunctionRx();
+        SecOCMainFunctionRx();
+        
+        count--;
+    }
 }
