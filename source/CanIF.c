@@ -44,5 +44,5 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     }
 
 
-    return E_OK;
+    return result;
 }
