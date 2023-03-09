@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "CanIF.h"
 #include "Std_Types.h"
+#include "SecOC_Debug.h"
 
 #define CANTP_BUFFER_SIZE       255
 #define BUS_LENGTH              8
@@ -37,11 +38,15 @@ void CanTp_MainFunction(void)
     PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
-    
+    #ifdef SECOC_DEBUG
+        printf("###### In tp main Function Strat ######\n");
+        printf("\n");
+    #endif
     for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
     {
         if( CanTp_Buffer[idx].SduLength > 0)
         {
+            #ifdef SECOC_DEBUG
             printf("Start sending id = %d\n" , idx);
             printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);
             
@@ -52,7 +57,7 @@ void CanTp_MainFunction(void)
                 printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
             }
             printf("\n\n\n");
-
+            #endif
 
             for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
             {
@@ -63,7 +68,7 @@ void CanTp_MainFunction(void)
 
 
                 // Send data using CanIf
-                printf("CopyTX Result %d\n", result);
+                // printf("CopyTX Result %d\n", result);
                 // printf("Sending %d part with length %d \n" , i, info.SduLength);
 
                 // for(int j = 0; j < info.SduLength; j++)
@@ -82,7 +87,9 @@ void CanTp_MainFunction(void)
                 {
                     retry.TpDataState = TP_DATACONF;
                 }
-                printf("Transmit Result = %d\n" , last_pdu);
+                #ifdef SECOC_DEBUG
+                    printf("Transmit Result = %d\n" , last_pdu);
+                #endif
             }
 
             if( (CanTp_Buffer[idx].SduLength % BUS_LENGTH) != 0)
@@ -91,12 +98,13 @@ void CanTp_MainFunction(void)
                 info.SduLength = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
                 SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
 
-
-                printf("Sending remaider part with length %d \n", info.SduLength);
-                for(int j = 0; j < info.SduLength; j++)
-                    printf("%d\t",info.SduDataPtr[j]);
-                printf("\n");
-
+                #ifdef SECOC_DEBUG
+                    printf("Sending remaider part with length %d \n", info.SduLength);
+                    for(int j = 0; j < info.SduLength; j++)
+                        printf("%d\t",info.SduDataPtr[j]);
+                    printf("\n");
+                #endif
+                
 
                 // Send data using CanIf
                 CanIf_Transmit(idx , &info);
@@ -109,9 +117,9 @@ void CanTp_MainFunction(void)
                     CanIf_Transmit(idx , &info);
                 }
                 retry.TpDataState = TP_DATACONF;
-                printf("Transmit Result = %d\n" , last_pdu);
-
-                
+                #ifdef SECOC_DEBUG
+                    printf("Transmit Result = %d\n" , last_pdu);
+                #endif
             }
 
             PduR_CanTpTxConfirmation(idx , E_OK);

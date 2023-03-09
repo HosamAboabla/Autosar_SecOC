@@ -130,7 +130,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
 
     /* [SWS_SecOC_00034] */
     result = constructDataToAuthenticatorTx(TxPduId, DataToAuth, &DataToAuthLen, AuthPdu);
-
     /* Authenticator generation */
     uint8  authenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
     uint32  authenticatorLen = BIT_TO_BYTES(SecOCTxPduProcessing[TxPduId].SecOCAuthInfoTruncLength);
@@ -196,6 +195,13 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
     authpdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     authpdu->SduLength = PduInfoPtr->SduLength;
 
+    #ifdef SECOC_DEBUG
+        printf("###### Getting The Auth PDU  ######\n");
+        for(int i = 0; i < authpdu->SduLength; i++)
+            printf("%d ", authpdu->SduDataPtr[i]);
+        printf("\n");
+
+    #endif
 
     return result;
 }
@@ -302,6 +308,9 @@ void SecOCMainFunctionTx(void)
         /* Check if there is data */
         if (authPdu->SduLength > 0) 
         {
+            #ifdef SECOC_DEBUG
+                printf("###### In main Tx  ######\n");
+            #endif
             /* [SWS_SecOC_00060], [SWS_SecOC_00061] */
             authenticate(idx , authPdu , securedPdu);
             
@@ -357,7 +366,9 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
     PduInfoType *authPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-
+    #ifdef SECOC_DEBUG
+        printf("#####  In confirmation ####\n result is %d \n" , result);
+    #endif
     if (result == E_OK) {
         /* Clear buffer */
         authPdu->SduLength = 0;
@@ -593,7 +604,13 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
     {
         result = BUFREQ_E_NOT_OK;
     }
-
+    #ifdef SECOC_DEBUG
+        printf("Here in Copy Tx\n");
+        printf("The result is %d \n and the info have : ",result );
+        for(int h = 0; h < info->SduLength; h++)
+            printf("%d ", info->SduDataPtr[h]);
+        printf("\n");
+    #endif
     return result;
 }
 
@@ -772,10 +789,9 @@ void SecOC_test()
     while(count--)
     {
         uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-        // for(uint8 i = 0; i < 20 ; i++)
-        // {
-        //     buff[i] = i;
-        // }
+        #ifdef SECOC_DEBUG
+        printf("###### Send %i ######\n",count);
+        #endif
         PduLengthType len = 16;
         PduInfoType SPDU;
         uint8 test_meta_data = 2;
@@ -783,16 +799,34 @@ void SecOC_test()
         SPDU.SduDataPtr = buff;
         SPDU.SduLength = len;
 
+        #ifdef SECOC_DEBUG
+            printf("###### If Transmit  ######\n");
+        #endif
         SecOC_IfTransmit(0, &SPDU);
+        #ifdef SECOC_DEBUG
+            printf("###### main Tx  ######\n");
+        #endif
         SecOCMainFunctionTx();
         PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
+        #ifdef SECOC_DEBUG
+            printf("###### Secure PDU  ######\n");
+                for(int i = 0; i < securedPdu->SduLength; i++)
+                    printf("%d ", securedPdu->SduDataPtr[i]);
+            printf("\n");
+        #endif
 
-
+        #ifdef SECOC_DEBUG
+            printf("###### Main TP Function  ######\n");
+        #endif
         CanTp_MainFunction();
-        long long int delay = 600000000;
-        printf("Delay...\n");
-        while(delay--);
+        #ifdef SECOC_DEBUG
+            printf("###### Finsh Trinsmition  ######\n");
+            printf("Delay...\n");
+            long long int delay = 600000000;
+            while(delay--);
+        #endif
+        
     }
 
 }
