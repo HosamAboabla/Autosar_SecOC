@@ -18,7 +18,7 @@
 
 #include <string.h>
 
-static const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
+const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 static const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 static const SecOC_GeneralType             *SecOCGeneral;
 
@@ -767,28 +767,32 @@ void SecOC_test()
     extern SecOC_ConfigType SecOC_Config;     
     SecOC_Init(&SecOC_Config);
 
-	// TX
-    uint16 SecOCFreshnessValueID = 9;
-    uint8 arr[] = {0xfe,0xff,0x1};
 
-    FVM_UpdateCounter(SecOCFreshnessValueID,arr,17);
+    uint8 count = 3;
+    while(count--)
+    {
+        uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+        // for(uint8 i = 0; i < 20 ; i++)
+        // {
+        //     buff[i] = i;
+        // }
+        PduLengthType len = 16;
+        PduInfoType SPDU;
+        uint8 test_meta_data = 2;
+        SPDU.MetaDataPtr = &test_meta_data;
+        SPDU.SduDataPtr = buff;
+        SPDU.SduLength = len;
 
-	uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
-    // for(uint8 i = 0; i < 20 ; i++)
-    // {
-    //     buff[i] = i;
-    // }
-    PduLengthType len = 19;
-    PduInfoType SPDU;
-    uint8 test_meta_data = 2;
-    SPDU.MetaDataPtr = &test_meta_data;
-    SPDU.SduDataPtr = buff;
-    SPDU.SduLength = len;
+        SecOC_IfTransmit(0, &SPDU);
+        SecOCMainFunctionTx();
+        PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
 
-    SecOC_IfTransmit(0, &SPDU);
-    SecOCMainFunctionTx();
 
-    CanTp_MainFunction();
+        CanTp_MainFunction();
+        long long int delay = 600000000;
+        printf("Delay...\n");
+        while(delay--);
+    }
 
 }
