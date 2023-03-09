@@ -41,6 +41,9 @@ void CanTP_MainFunctionRx(void)
         LastFrame_idx ++;
     }
 
+    #ifdef SECOC_DEBUG
+        printf("######## in main tp Rx  in num : %d ########\n", count);
+    #endif
     BufReq_ReturnType Result;
 
     ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
