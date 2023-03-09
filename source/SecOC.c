@@ -13,7 +13,6 @@
 #include "PduR_SecOC.h"
 #include "Pdur_CanTP.h"
 #include "PduR_CanIf.h"
-#include "CanTp.h"
 #include "CanTP.h"
 #include "SecOC_Debug.h"
 
