@@ -27,7 +27,7 @@ Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTx
 void CanTp_MainFunction(void)
 {
     PduIdType idx;
-
+    uint8 result;
     uint8 sdata[BUS_LENGTH] = {0};
     uint8 mdata[BUS_LENGTH] = {0};
     PduLengthType length = BUS_LENGTH;
@@ -37,7 +37,7 @@ void CanTp_MainFunction(void)
     PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
-
+    
     for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
     {
         if( CanTp_Buffer[idx].SduLength > 0)
@@ -57,16 +57,22 @@ void CanTp_MainFunction(void)
             for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
             {
                 // Request CopyTxData
-                SecOC_CopyTxData(idx, &info, &retry, &availableDataPtr);
-                // Send data using CanIf
-                printf("Sending %d part with length %d \n" , i, info.SduLength);
-
-                for(int j = 0; j < info.SduLength; j++)
-                    printf("%d\t",info.SduDataPtr[j]);
-                
-                printf("\n");
+                result = SecOC_CopyTxData(idx, &info, &retry, &availableDataPtr);
 
                 CanIf_Transmit(idx , &info);
+
+
+                // Send data using CanIf
+                printf("CopyTX Result %d\n", result);
+                // printf("Sending %d part with length %d \n" , i, info.SduLength);
+
+                // for(int j = 0; j < info.SduLength; j++)
+                //     printf("%d\t",info.SduDataPtr[j]);
+                
+                // printf("\n");
+                
+                
+                
                 if(last_pdu == E_NOT_OK)
                 {
                     retry.TpDataState = TP_DATARETRY;
@@ -102,7 +108,7 @@ void CanTp_MainFunction(void)
                     SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
                     CanIf_Transmit(idx , &info);
                 }
-
+                retry.TpDataState = TP_DATACONF;
                 printf("Transmit Result = %d\n" , last_pdu);
 
                 

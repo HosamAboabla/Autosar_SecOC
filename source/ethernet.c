@@ -25,6 +25,13 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     {
         sendData[dataLen+indx] = (id >> (8 * indx));
     }
+
+    for(int j = 0; j < (dataLen + sizeof(id)) ; j++)
+        printf("%d\t",sendData[j]);
+    
+    printf("\n");
+
+    
     send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
 
     // close the connection

@@ -150,12 +150,12 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
 
-        {AuthPdu0BufferTx, NULL, SECOC_AUTHPDU_MAX_LENGTH},
+        {AuthPdu0BufferTx, NULL, 0},
     },
     {   
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
-        {AuthPdu1BufferTx, NULL, SECOC_AUTHPDU_MAX_LENGTH},
+        {AuthPdu1BufferTx, NULL, 0},
     }
 };
 
