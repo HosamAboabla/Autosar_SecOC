@@ -14,6 +14,7 @@
 #include "Pdur_CanTP.h"
 #include "PduR_CanIf.h"
 #include "CanTp.h"
+#include "CanTP.h"
 #include "SecOC_Debug.h"
 
 #include <string.h>
@@ -318,6 +319,7 @@ void SecOCMainFunctionTx(void)
 
             /* [SWS_SecOC_00062] */
             PduR_SecOCTransmit(idx , securedPdu);
+            
 
         }
     }
@@ -605,7 +607,7 @@ const RetryInfoType* retry, PduLengthType* availableDataPtr)
         result = BUFREQ_E_NOT_OK;
     }
     #ifdef SECOC_DEBUG
-        printf("Here in Copy Tx\n");
+        printf("### Here in Copy Tx ###\n");
         printf("The result is %d \n and the info have : ",result );
         for(int h = 0; h < info->SduLength; h++)
             printf("%d ", info->SduDataPtr[h]);
@@ -790,7 +792,7 @@ void SecOC_test()
     {
         uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
         #ifdef SECOC_DEBUG
-        printf("###### Send %i ######\n",count);
+        printf("############### Send %i ###############\n",count);
         #endif
         PduLengthType len = 16;
         PduInfoType SPDU;
@@ -809,19 +811,13 @@ void SecOC_test()
         SecOCMainFunctionTx();
         PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
-        #ifdef SECOC_DEBUG
-            printf("###### Secure PDU  ######\n");
-                for(int i = 0; i < securedPdu->SduLength; i++)
-                    printf("%d ", securedPdu->SduDataPtr[i]);
-            printf("\n");
-        #endif
-
+        
         #ifdef SECOC_DEBUG
             printf("###### Main TP Function  ######\n");
         #endif
         CanTp_MainFunction();
         #ifdef SECOC_DEBUG
-            printf("###### Finsh Trinsmition  ######\n");
+            printf("############### Finsh Trinsmition  ###############\n");
             printf("Delay...\n");
             long long int delay = 600000000;
             while(delay--);

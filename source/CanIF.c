@@ -28,7 +28,13 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
     Std_ReturnType result = E_OK;
 
-    
+    #ifdef SECOC_DEBUG
+        printf("###### Secure PDU  ######\n");
+            for(int i = 0; i < PduInfoPtr->SduLength; i++)
+                printf("%d ", PduInfoPtr->SduDataPtr[i]);
+        printf("\n");
+    #endif
+
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
