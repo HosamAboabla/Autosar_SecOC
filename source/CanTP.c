@@ -32,7 +32,8 @@ void CanTP_MainFunctionRx(void)
     Tp_Spdu.SduDataPtr = ReciveDATA;
     Tp_Spdu.MetaDataPtr = &Meta_data;
     Tp_Spdu.SduLength = BUS_LENGTH;
-    PduLengthType TpSduLength = 27; // SECOC_SECPDU_MAX_LENGTH;
+
+    PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
     uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH)  - 1;
     if( (TpSduLength % BUS_LENGTH) != 0 )
@@ -41,34 +42,41 @@ void CanTP_MainFunctionRx(void)
     }
 
     BufReq_ReturnType Result;
-    for(idx = 0; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++)
-    {  
-        ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength);
-        /* Check if can Receive  */
-        if (PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr) == BUFREQ_OK)
-        {
-           /* send Data */
-           for(int i = 0; i <= LastFrame_idx; i++)
-           {
-                Result = PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
-                if( Result != BUFREQ_OK)
-                {
-                    break;
-                }
-                
-                /* Update length before last frame */
-                if( ((TpSduLength % BUS_LENGTH) != 0) && (i == (LastFrame_idx - 1)) )
-                {
-                    Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
-                }
 
-                if(i != LastFrame_idx)
-                {
-                    ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength);
-                }
-           }
-           /* Send Confirm to last of data */
-           PduR_CanTpRxIndication(idx,Result);
-        }  
-    }
+    ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+    /* Check if can Receive  */
+    BufReq_ReturnType result= PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr);
+    printf("StartOfReception return value: %d\n",result);
+    if (result == BUFREQ_OK)
+    {
+        /* send Data */
+        for(int i = 0; i <= LastFrame_idx; i++)
+        {
+            printf("Info Received idx=%d: \n",i);
+            for(int j  = 0 ; j < Tp_Spdu.SduLength ; j++)
+            {
+                printf("%d ",Tp_Spdu.SduDataPtr[j]);
+            }
+            printf("\n\n\n");
+            Result = PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
+            if( Result != BUFREQ_OK)
+            {
+                break;
+            }
+            
+            /* Update length before last frame */
+            if( ((TpSduLength % BUS_LENGTH) != 0) && (i == (LastFrame_idx - 1)) )
+            {
+                Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
+            }
+
+            if(i != LastFrame_idx)
+            {
+                ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+            }
+        }
+        
+        /* Send Confirm to last of data */
+        PduR_CanTpRxIndication(idx,Result);
+    }  
 }

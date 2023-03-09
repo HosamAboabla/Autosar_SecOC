@@ -54,15 +54,24 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     client_socket = accept(server_socket , NULL , NULL);
 
     // Receive data
-    unsigned char recData [dataLen + sizeof(id)];
-    recv( client_socket , recData , (dataLen + sizeof(id)) , 0);
-    *id = 0;
-    for(unsigned char indx = 0; indx < sizeof(id); indx++)
+    unsigned char recData [dataLen + 2];
+    recv( client_socket , recData , (dataLen + 2) , 0);
+    printf("Info Received: \n");
+    for(int j  = 0 ; j < (dataLen+2) ; j++)
     {
-        *id |= (recData[dataLen+indx] << (8 * indx));
+        printf("%d ",recData[j]);
     }
-    (void)memcpy(data, recData, dataLen);
+    printf("\n\n\n");
 
+
+    *id = 0;
+    (void)memcpy(id, recData+dataLen, 2);
+    // for(unsigned char indx = 0; indx < sizeof(id); indx++)
+    // {
+    //     *id |= (recData[dataLen+indx] << (8 * indx));
+    // }
+    (void)memcpy(data, recData, dataLen);
+    printf("id = %d ###########################################\n\n",*id);
     // close the socket
     close(server_socket);
     return E_OK;
