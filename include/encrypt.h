@@ -22,5 +22,5 @@ void KeyExpansion(unsigned char inputKey[16], unsigned char expandedKeys[176]);
 void addPadding(const uint8* message , int messageLen , uint8* paddedMessage);
 void startEncryption(const uint8* message , uint32 messageLen, uint8* macPtr, uint32* macLengthPtr);
 
-// #endif
-#endif  // ENCRYPTION_ENCRYPT_H_
+/* #endif*/
+#endif  /* ENCRYPTION_ENCRYPT_H_*/

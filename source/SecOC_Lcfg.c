@@ -43,9 +43,9 @@ SecOC_GeneralType SecOC_General =
     SECOC_OVERRIDE_STATUS_WITH_DATA_ID,
     SECOC_PROPAGATE_ONLY_FINAL_VERIFICATION_STATUS,
     SECOC_QUERY_FRESHNESS_VALUE,
-    // SECOC_VERIFICATION_STATUS_CALLOUT,
+    /* SECOC_VERIFICATION_STATUS_CALLOUT,*/
     SECOC_VERSION_INFO_API,
-    //SECOC_SECURITY_EVENT_REFS, /* can't have the container of it */
+    /*SECOC_SECURITY_EVENT_REFS,*/ /* can't have the container of it */
 
 };
 
@@ -54,14 +54,14 @@ SecOC_GeneralType SecOC_General =
 SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
 {
     SECOC_RX_CRYPTOGRAPHIC_PDUID,
-    //&EcuC_Pdu
+    /*&EcuC_Pdu*/
 };
 
 SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
 {
     SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
     SECOC_CRYPTO_RXAUTHENTIC_PDUID,
-    //&EcuC_Pdu
+    /*&EcuC_Pdu*/
 };
 
 
@@ -153,7 +153,7 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
 
 
 
-// Crypto not available now
+/* Crypto not available now*/
 /*
 SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu=
 {
@@ -162,7 +162,7 @@ SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu=
 };
 */
 
-// This is related to crypto(the authentic part)
+/* This is related to crypto(the authentic part)*/
 /*
 SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu=
 {
@@ -181,7 +181,7 @@ SecOC_TxSecuredPduCollectionType SecOC_TxSecuredPduCollection=
 };
 */
 
-// This block is commented as the whole authentic I-Pdu is included in authenticating algorithm
+/* This block is commented as the whole authentic I-Pdu is included in authenticating algorithm*/
 /*
 SecOC_TxPduSecuredAreaType SecOC_TxPduSecuredArea=
 {
@@ -217,13 +217,13 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT,
         SECOC_TX_PDU_UNUSED_AREAS_DEFAULT,
         SECOC_USE_TX_CONFIRMATION,
-        //                                                  SecOCSameBufferPduRef;
-        //                                                  SecOCTxAuthServiceConfigRef
-        //                                                  SecOCTxPduMainFunctionRef;
+        /*                                                  SecOCSameBufferPduRef;*/
+        /*                                                  SecOCTxAuthServiceConfigRef*/
+        /*                                                  SecOCTxPduMainFunctionRef;*/
         &SecOC_TxAuthenticPduLayer[0],
         &SecOC_TxSecuredPduLayer[0],
-        //&SecOC_TxPduSecuredArea,
-        // &EcuC_Pdu,
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
     }
 };
 
@@ -231,8 +231,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
 
 SecOC_RxPduProcessingType SecOC_RxPduProcessing[] = 
 {
-    
-    {        
+    {
         SECOC_AUTHDATA_FRESHNESSLEN,
         SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
         SECOC_AUTHENTICATION_BUILDATTEMPTS,
@@ -252,9 +251,8 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         &SecOC_SameBufferPduRef,
         &SecOC_RxSecuredPduLayer[0],
         &SecOC_RxAuthenticPduLayer[0],
-        //&SecOC_RxPduSecuredArea
+        /*&SecOC_RxPduSecuredArea*/
     },
-    
 };
 
 

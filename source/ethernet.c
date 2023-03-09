@@ -2,15 +2,15 @@
 
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
-    // create a socket
+    /*create a socket*/
     int network_sockect;
     network_sockect = socket(AF_INET , SOCK_STREAM , 0);
 
-    // specify an address for the socket
+    /*specify an address for the socket*/
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT_NUMBER);
-    server_address.sin_addr.s_addr = INADDR_ANY; //inet_addr("192.168.1.2");
+    server_address.sin_addr.s_addr = INADDR_ANY; /*inet_addr("192.168.1.2");*/
 
     int connection_status = connect(network_sockect , (struct sockaddr* ) &server_address , sizeof(server_address) );
 
@@ -27,7 +27,7 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     }
     send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
 
-    // close the connection
+    /* close the connection*/
     close(network_sockect);
     return E_OK;
 
@@ -35,25 +35,26 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
 
 Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, unsigned short* id)
 {
-    // create a socket
-    int server_socket, client_socket;
+    /* create a socket*/
+    int server_socket;
+    int client_socket;
     server_socket = socket(AF_INET , SOCK_STREAM , 0);
 
-    // specify an address for the socket
+    /* specify an address for the socket*/
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT_NUMBER);
-    server_address.sin_addr.s_addr = INADDR_ANY; // inet_addr("192.168.1.2");
+    server_address.sin_addr.s_addr = INADDR_ANY; /* inet_addr("192.168.1.2");*/
 
 
-    // bind the socket to our specified IP and Port
+    /* bind the socket to our specified IP and Port*/
     bind(server_socket , (struct sockaddr* ) &server_address , sizeof(server_address) );
     
     listen(server_socket , 5);
 
     client_socket = accept(server_socket , NULL , NULL);
 
-    // Receive data
+    /* Receive data*/
     unsigned char recData [dataLen + sizeof(id)];
     recv( client_socket , recData , (dataLen + sizeof(id)) , 0);
     *id = 0;
@@ -63,7 +64,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     }
     memcpy(data, recData, dataLen);
 
-    // close the socket
+    /* close the socket*/
     close(server_socket);
     return E_OK;
 

@@ -6,6 +6,6 @@ int main(void)
 {
     SecOC_test();
 
-    printf("Program ran successfully\n");
+    (void)printf("Program ran successfully\n");
     return 0;
 }

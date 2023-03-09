@@ -25,7 +25,7 @@ const SecOC_GeneralType             *SecOCGeneral;
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
 
-/**/ Internal functions
+/*Internal functions*/ 
 static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, uint8 *DataToAuth, uint32 *DataToAuthLen, const PduInfoType* AuthPdu);
 static Std_ReturnType generateMAC(const PduIdType TxPduId, uint8 const *DataToAuth, const uint32 *DataToAuthLen, uint8  *authenticatorPtr, uint32  *authenticatorLen);
 static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu);
@@ -61,7 +61,7 @@ static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, ui
     (void)memcpy(&DataToAuth[*DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
     *DataToAuthLen += AuthPdu->SduLength;
     
-    /Complete Freshness Value
+    /*Complete Freshness Value*/
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX_LENGTH/8] = {0};
 
     uint32 FreshnesslenBits = SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueLength;
@@ -637,7 +637,7 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         return result;
     }
 
-    uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  // CAN payload
+    uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};  /* CAN payload*/
     uint32 DataToAuthLen = 0;
 
     constructDataToAuthenticatorRx(RxPduId, DataToAuth, &DataToAuthLen, &SecOCIntermediate);

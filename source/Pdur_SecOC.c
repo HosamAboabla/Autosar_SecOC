@@ -29,11 +29,15 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
    }
    else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
    {
-      // return FrIf_Transmit(TxPduId, PduInfoPtr);
+      /* return FrIf_Transmit(TxPduId, PduInfoPtr);*/
    }   
    else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
    {
       return CanTp_Transmit(TxPduId, PduInfoPtr);
+   }
+   else
+   {
+
    }
     return E_NOT_OK;
 }
@@ -54,6 +58,6 @@ void PduR_SecOCIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 void PduR_SecOCTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
-	// Com_TxConfirmation(TxPduId, result);
+	/* Com_TxConfirmation(TxPduId, result);*/
    Dcm_TpTxConfirmation(TxPduId, result);
 }
