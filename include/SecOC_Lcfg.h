@@ -21,6 +21,7 @@
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
 
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
 typedef struct
 {
    uint8                   authenticPdu[SECOC_AUTHPDU_MAX_LENGTH];
