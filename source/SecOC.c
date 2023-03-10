@@ -782,46 +782,4 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 
 void SecOC_test()
 {       
-    extern SecOC_ConfigType SecOC_Config;     
-    SecOC_Init(&SecOC_Config);
-
-
-    uint8 count = 3;
-    while(count--)
-    {
-        uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-        #ifdef SECOC_DEBUG
-        printf("############### Send %i ###############\n",count);
-        #endif
-        PduLengthType len = 16;
-        PduInfoType SPDU;
-        uint8 test_meta_data = 2;
-        SPDU.MetaDataPtr = &test_meta_data;
-        SPDU.SduDataPtr = buff;
-        SPDU.SduLength = len;
-
-        #ifdef SECOC_DEBUG
-            printf("###### If Transmit  ######\n");
-        #endif
-        SecOC_IfTransmit(0, &SPDU);
-        #ifdef SECOC_DEBUG
-            printf("###### main Tx  ######\n");
-        #endif
-        SecOCMainFunctionTx();
-        PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-
-        
-        #ifdef SECOC_DEBUG
-            printf("###### Main TP Function  ######\n");
-        #endif
-        CanTp_MainFunction();
-        #ifdef SECOC_DEBUG
-            printf("############### Finsh Trinsmition  ###############\n");
-            printf("Delay...\n");
-            long long int delay = 600000000;
-            while(delay--);
-        #endif
-        
-    }
-
 }
