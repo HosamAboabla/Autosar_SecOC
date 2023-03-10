@@ -155,11 +155,13 @@ void CanTP_MainFunctionRx(void)
     }
 
     #ifdef SECOC_DEBUG
-        printf("######## in main tp Rx  in num : %d ########\n", count);
+        printf("######## in main tp Rx  in num : %d ########\n", idx);
     #endif
     BufReq_ReturnType Result;
 
+    #ifdef LINUX
     ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+    #endif
     /* Check if can Receive  */
     BufReq_ReturnType result= PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr);
     if (result == BUFREQ_OK)
@@ -189,7 +191,9 @@ void CanTP_MainFunctionRx(void)
 
             if(i != LastFrame_idx)
             {
+                #ifdef LINUX
                 ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+                #endif
             }
         }
         
