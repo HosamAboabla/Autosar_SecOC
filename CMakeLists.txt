@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 set(CMAKE_BUILD_TYPE Debug)
 
+
+
 if (WIN32)
     file(GLOB_RECURSE SCR_FILES CONFIGURE_DEPENDS "source/*.c")
     file(GLOB_RECURSE HDR_FILES CONFIGURE_DEPENDS "include/*.h")
@@ -17,6 +19,7 @@ endif()
 
 project(SecOC)
 
+
 add_executable(SecOC ${SCR_FILES})
 
 foreach (_file ${HDR_FILES})
@@ -32,11 +35,19 @@ elseif(UNIX)
     target_compile_definitions(SecOC PUBLIC LINUX)
 endif()
 
+
+
 # Adding unit tests
 enable_testing()
 
-# Add google test source code
-add_subdirectory(googletest/googletest)
+include(FetchContent)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.11.0
+)
+FetchContent_MakeAvailable(googletest)
 
 # Extract include directories from main target SecOC
 set(headerDirs "")
