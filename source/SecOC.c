@@ -794,5 +794,29 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
+    // rx
+    SecOC_Init(&SecOC_Config);
+    #ifdef SECOC_DEBUG
+        printf("############### Starting Receive ###############\n");
+    #endif
+    uint8 count = 3;
+    while(count)
+    {
+        #ifdef SECOC_DEBUG
+            printf("######## Starting main Tp Rx at count %d ########\n", count);
+        #endif
+        CanTP_MainFunctionRx();
+        
+        PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+
+        printf("Secured Data %d \n", securedPdu->SduLength);
+        for(int j = 0; j < securedPdu->SduLength; j++)
+            printf("%d\t",securedPdu->SduDataPtr[j]);
+        printf("\n");
+
+        SecOCMainFunctionRx();
+        
+        count--;
+    }
 }
 #endif
