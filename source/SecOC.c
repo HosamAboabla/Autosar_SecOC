@@ -358,7 +358,7 @@ void SecOCMainFunctionRx(void)
                 PduR_SecOCIfRxIndication(idx,  authPdu);
                 /* [SWS_SecOC_00087] */
                 // clear the buffer 
-                // securedPdu->SduLength = 0;
+                securedPdu->SduLength = 0;
             }
             else if( result == SECOC_VERIFICATIONFAILURE )
             {
@@ -794,42 +794,29 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {       
+    // rx
     SecOC_Init(&SecOC_Config);
-
-
+    #ifdef SECOC_DEBUG
+        printf("############### Starting Receive ###############\n");
+    #endif
     uint8 count = 3;
-    while(count--)
+    while(count)
     {
-        uint8 buff[20] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
         #ifdef SECOC_DEBUG
-        printf("############### Send %i ###############\n",count);
+            printf("######## Starting main Tp Rx at count %d ########\n", count);
         #endif
-        PduLengthType len = 16;
-        PduInfoType SPDU;
-        uint8 test_meta_data = 2;
-        SPDU.MetaDataPtr = &test_meta_data;
-        SPDU.SduDataPtr = buff;
-        SPDU.SduLength = len;
-
-        #ifdef SECOC_DEBUG
-            printf("###### If Transmit  ######\n");
-        #endif
-        SecOC_IfTransmit(0, &SPDU);
-        #ifdef SECOC_DEBUG
-            printf("###### main Tx  ######\n");
-        #endif
-        SecOCMainFunctionTx();
+        CanTP_MainFunctionRx();
+        
         PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
 
+        printf("Secured Data %d \n", securedPdu->SduLength);
+        for(int j = 0; j < securedPdu->SduLength; j++)
+            printf("%d\t",securedPdu->SduDataPtr[j]);
+        printf("\n");
+
+        SecOCMainFunctionRx();
         
-        #ifdef SECOC_DEBUG
-            printf("###### Main TP Function  ######\n");
-        #endif
-        CanTp_MainFunction();
-        #ifdef SECOC_DEBUG
-            printf("############### Finsh Trinsmition  ###############\n");
-        #endif
-        
+        count--;
     }
 }
 #endif
