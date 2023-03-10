@@ -4,6 +4,12 @@
 #include "Std_Types.h"
 #include "ComStack_Types.h"
 
+#define SUCCESS     (1u)
+#define FAILED      (0u)
+#define TP_TRANSMISSION_STATUS SUCCESS
+
+#define CANTP_BUFFER_SIZE       255
+#define BUS_LENGTH              8
 
 /*******************************************************\
  *          * Function Info *                           *
@@ -32,4 +38,6 @@ Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTx
 
 void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
-#endif
+void CanTP_MainFunctionRx(void);
+
+#endif /*INCLUDE_CANTP_H_*/

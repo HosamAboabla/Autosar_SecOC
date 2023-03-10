@@ -211,7 +211,7 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
 */
-#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)16)
+#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)24)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueTruncLength

@@ -356,6 +356,17 @@ void SecOCMainFunctionRx(void)
 
                 /* [SWS_SecOC_00050], [SWS_SecOC_00080] */
                 PduR_SecOCIfRxIndication(idx,  authPdu);
+                /* [SWS_SecOC_00087] */
+                // clear the buffer 
+                // securedPdu->SduLength = 0;
+            }
+            else if( result == SECOC_VERIFICATIONFAILURE )
+            {
+                printf("MAC failed for id: %d\n", idx);
+            }
+            else
+            {
+                printf("FV failed for id: %d\n", idx);
             }
 
         }
@@ -779,7 +790,9 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
     return result;
 }
 
-
+#ifdef SECOC_DEBUG
+extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{       
+{
 }
+#endif
