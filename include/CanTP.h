@@ -1,25 +1,43 @@
-#ifndef INCLUDE_CANTP_H_
-#define INCLUDE_CANTP_H_
+#ifndef INCLUDE_CANT_TP_H_
+#define INCLUDE_CANT_TP_H_
 
 #include "Std_Types.h"
 #include "ComStack_Types.h"
 
 #define SUCCESS     (1u)
 #define FAILED      (0u)
-
 #define TP_TRANSMISSION_STATUS SUCCESS
 
-#define CANTP_BUFFERLENGTH  ((uint32)500)
+#define CANTP_BUFFER_SIZE       255
+#define BUS_LENGTH              8
 
-/****************************************************
- *          * Function Info *                       *
- *                                                  *
- * Function_Name        : CanTp_Transmit            *
- * Function_Index       : 8.3.4 [SWS_CANTransportLayer]   *
- * Function_File        : SWS_CanTp_00212      *
- * Function_Descripton  : Requests transmission     *
- *              of a PDU                            *
- ***************************************************/
-Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr);
+/*******************************************************\
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : CanTp_MainFunction            *
+ * Function_Index       : 8.3.9 [CANTP213]              *
+ * Function_File        : SWS of CanTp                  *
+ * Function_Descripton  : The main function for         *
+ * scheduling the CAN TP                                *
+ *******************************************************/
+void CanTp_MainFunction(void);
 
-#endif
+
+/*******************************************************\
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : CanTp_Transmit                *
+ * Function_Index       : 8.3.4 [CANTP212]              *
+ * Function_File        : SWS of CanTp                  *
+ * Function_Descripton  : This service is used to       * 
+ * request the transfer of segmented data               *
+ *******************************************************/
+Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr);
+
+
+
+void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+
+void CanTP_MainFunctionRx(void);
+
+#endif /*INCLUDE_CANTP_H_*/

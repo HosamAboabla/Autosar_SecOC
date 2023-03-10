@@ -1,16 +1,27 @@
 /******************************************************************************
- * File Name   : SecOC_Lcfg                                                    *
+ * File Name   : SecOC_Lcfg                                                   *
  * Description : Header file of SecOC configuration                           *
- * Created on  : November 9, 2022                                                *
+ * Created on  : November 9, 2022                                             *
  ******************************************************************************/
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
 
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store the Authentic I-PDU and the outgoing Secured I-PDU */ 
+/* [SWS_SecOC_00146] The SecOC module shall provide separate buffers for the Authentic I-PDU and the Secured I-PDU. */
+/* [SWS_SecOC_00058] */
 uint8_t AuthPdu0BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu0BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
 uint8_t AuthPdu0BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu0BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
+
+uint8_t AuthPdu1BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu1BufferTx[SECOC_SECPDU_MAX_LENGTH];
+
+uint8_t AuthPdu1BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu1BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
 /*
 * Start Of General
 */
@@ -138,7 +149,13 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
     {   
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
+
         {AuthPdu0BufferTx, NULL, 0},
+    },
+    {   
+        SECOC_TX_PDUTYPE,
+        SECOC_TX_AUTHENTIC_LAYER_PDUID,
+        {AuthPdu1BufferTx, NULL, 0},
     }
 };
 
@@ -148,6 +165,11 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
         SECOC_AUTH_PDUHEADER_LENGTH,
         SECOC_TX_SECURED_LAYER_PDUID,
         {SecPdu0BufferTx, NULL, 0},
+    },
+    {
+        SECOC_AUTH_PDUHEADER_LENGTH,
+        SECOC_TX_SECURED_LAYER_PDUID,
+        {SecPdu1BufferTx, NULL, 0},
     }
 };
 
@@ -202,6 +224,10 @@ SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
     {
         &SecOC_TxSecuredPdu[0],
         NULL,
+    },
+    {
+        &SecOC_TxSecuredPdu[1],
+        NULL,
     }
 };
 
@@ -222,6 +248,25 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         //                                                  SecOCTxPduMainFunctionRef;
         &SecOC_TxAuthenticPduLayer[0],
         &SecOC_TxSecuredPduLayer[0],
+        //&SecOC_TxPduSecuredArea,
+        // &EcuC_Pdu,
+    },
+    {
+        SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
+        SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
+        SECOC_TX_DATA_ID,
+        SECOC_TX_FRESHNESS_VALUE_ID,
+        SECOC_TX_FRESHNESS_VALUE_LENGTH,
+        SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH,
+        SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE,
+        SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT,
+        SECOC_TX_PDU_UNUSED_AREAS_DEFAULT,
+        SECOC_USE_TX_CONFIRMATION,
+        //                                                  SecOCSameBufferPduRef;
+        //                                                  SecOCTxAuthServiceConfigRef
+        //                                                  SecOCTxPduMainFunctionRef;
+        &SecOC_TxAuthenticPduLayer[1],
+        &SecOC_TxSecuredPduLayer[1],
         //&SecOC_TxPduSecuredArea,
         // &EcuC_Pdu,
     }

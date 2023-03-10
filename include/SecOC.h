@@ -202,7 +202,7 @@ void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
  * Function_File        : SWS of SecOC                  *
  * Function_Descripton  : Requests cancellation of an   *
  * ongoing transmission of a PDU in a lower layer       *
- * communication module.                               *
+ * communication module.                                *
  *******************************************************/
 
 
@@ -210,6 +210,25 @@ Std_ReturnType SecOC_IfCancelTransmit(
     PduIdType                  TxPduId
 );
 
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_StartOfReception        *
+ * Function_Index       : 8.4.8                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called at    *
+ * the start of receiving an N-SDU. The N-SDU might be  *
+ * fragmented into multiple N-PDUs                      *
+ * (FF with one or more following CFs) or might consist *
+ * of a single N-PDU (SF).                              *
+ *******************************************************/
+
+
+BufReq_ReturnType SecOC_StartOfReception ( 
+    PduIdType id, 
+    const PduInfoType* info, 
+    PduLengthType TpSduLength, 
+    PduLengthType* bufferSizePtr );
 
 #define SECOC_E_UNINIT 					0x02
 

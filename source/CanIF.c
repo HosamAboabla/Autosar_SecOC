@@ -1,10 +1,17 @@
 #include "CanIF.h"
 // #include "OSconfig.h"
+#include "SecOC.h"
 
 #ifdef LINUX
 #include "ethernet.h"
 #endif
 #include "PduR_CanIf.h"
+
+
+
+extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
+
+
 
 /****************************************************
  *          * Function Info *                       *
@@ -19,20 +26,29 @@ PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
     // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
-    Std_ReturnType result;
+    Std_ReturnType result = E_OK;
 
-    
-    #ifdef LINUX
-    result = ethernet_send(PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
+    #ifdef SECOC_DEBUG
+        printf("###### Secure PDU  ######\n");
+            for(int i = 0; i < PduInfoPtr->SduLength; i++)
+                printf("%d ", PduInfoPtr->SduDataPtr[i]);
+        printf("\n");
     #endif
 
-    PduR_CanIfTxConfirmation(TxPduId , result);
-    if(STATUS_TRANSMISSION)
+    #ifdef LINUX
+    result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
+    #endif
+
+
+    if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
     {
-        return E_OK;
+        CanTp_TxConfirmation(TxPduId, result);
     }
-    else
+    else if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
     {
-        return E_NOT_OK;
+        PduR_CanIfTxConfirmation(TxPduId , result);
     }
+
+
+    return result;
 }
