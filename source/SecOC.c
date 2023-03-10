@@ -793,30 +793,28 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 #ifdef SECOC_DEBUG
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{
-    // rx
+{       
+    extern SecOC_ConfigType SecOC_Config;     
     SecOC_Init(&SecOC_Config);
-    #ifdef SECOC_DEBUG
-        printf("############### Starting Receive ###############\n");
-    #endif
-    uint8 count = 3;
-    while(count)
+    
+
+	uint8 buff[20];
+    for(uint8 i = 0; i < 20 ; i++)
     {
-        #ifdef SECOC_DEBUG
-            printf("######## Starting main Tp Rx at count %d ########\n", count);
-        #endif
-        CanTP_MainFunctionRx();
-        
-        PduInfoType *securedPdu = &(SecOCRxPduProcessing[0].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-
-        printf("Secured Data %d \n", securedPdu->SduLength);
-        for(int j = 0; j < securedPdu->SduLength; j++)
-            printf("%d\t",securedPdu->SduDataPtr[j]);
-        printf("\n");
-
-        SecOCMainFunctionRx();
-        
-        count--;
+        buff[i] = i;
     }
+    PduLengthType len = 20;
+    PduInfoType SPDU;
+    uint8 test_meta_data = 0;
+    SPDU.MetaDataPtr = &test_meta_data;
+    SPDU.SduDataPtr = buff;
+    SPDU.SduLength = len;
+
+
+    SecOC_IfTransmit(1, &SPDU);
+    SecOCMainFunctionTx();
+
+    CanTp_MainFunction();
+
 }
 #endif
