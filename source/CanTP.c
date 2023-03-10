@@ -49,18 +49,19 @@ void CanTP_MainFunctionRx(void)
     ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
     /* Check if can Receive  */
     BufReq_ReturnType result= PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr);
-    printf("StartOfReception return value: %d\n",result);
     if (result == BUFREQ_OK)
     {
         /* send Data */
         for(int i = 0; i <= LastFrame_idx; i++)
         {
+            #ifdef SECOC_DEBUG
             printf("Info Received idx=%d: \n",i);
             for(int j  = 0 ; j < Tp_Spdu.SduLength ; j++)
             {
                 printf("%d ",Tp_Spdu.SduDataPtr[j]);
             }
             printf("\n\n\n");
+            #endif
             Result = PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
             if( Result != BUFREQ_OK)
             {

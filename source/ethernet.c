@@ -54,12 +54,12 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     client_socket = accept(server_socket , NULL , NULL);
 
     // Receive data
-    unsigned char recData [dataLen + 2];
-    recv( client_socket , recData , (dataLen + 2) , 0);
+    unsigned char recData [dataLen + sizeof(unsigned short)];
+    recv( client_socket , recData , (dataLen + sizeof(unsigned short)) , 0);
     #ifdef SECOC_DEBUG
         printf("######## in Recieve Ethernet ########\n");
         printf("Info Received: \n");
-        for(int j  = 0 ; j < (dataLen+2) ; j++)
+        for(int j  = 0 ; j < (dataLen+sizeof(unsigned short)) ; j++)
         {
             printf("%d ",recData[j]);
         }
@@ -68,12 +68,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     
 
 
-    *id = 0;
-    (void)memcpy(id, recData+dataLen, 2);
-    // for(unsigned char indx = 0; indx < sizeof(id); indx++)
-    // {
-    //     *id |= (recData[dataLen+indx] << (8 * indx));
-    // }
+    (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef SECOC_DEBUG
         printf("id = %d ###########################################\n\n",*id);
