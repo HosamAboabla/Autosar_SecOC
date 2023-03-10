@@ -1,24 +1,137 @@
-#include "SecOC.h"
-#include "SecOC_Cfg.h"
-#include "Pdur_CanTP.h"
 #include "CanTP.h"
+#include "Pdur_CanTP.h"
+#include "SecOC.h"
+#include <stdio.h>
+#include "CanIF.h"
+#include "Std_Types.h"
+#include "SecOC_Debug.h"
+#include "SecOC_Cfg.h"
 
 
 #ifdef LINUX
 #include "ethernet.h"
 #endif
 
-PduInfoType CanTP_Buffer[BUFFER_SIZE];
 
-Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
+Std_ReturnType last_pdu;
+
+
+
+PduInfoType CanTp_Buffer[CANTP_BUFFER_SIZE];
+
+
+
+
+Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
-    Std_ReturnType result = E_OK;
-    
-    #ifdef LINUX
-    result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
-    #endif
+    CanTp_Buffer[CanTpTxSduId] = *CanTpTxInfoPtr;
+}
 
-    return result;
+
+void CanTp_MainFunction(void)
+{
+    PduIdType idx;
+    uint8 result;
+    uint8 sdata[BUS_LENGTH] = {0};
+    uint8 mdata[BUS_LENGTH] = {0};
+    PduLengthType length = BUS_LENGTH;
+    PduInfoType info = {sdata,mdata,length};
+
+    TpDataStateType retrystate = TP_DATACONF;
+    PduLengthType retrycout = BUS_LENGTH;
+    RetryInfoType retry = {retrystate,retrycout};
+    PduLengthType availableDataPtr = 0;
+    #ifdef SECOC_DEBUG
+        printf("###### In tp main Function Strat ######\n");
+        printf("\n");
+    #endif
+    for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
+    {
+        if( CanTp_Buffer[idx].SduLength > 0)
+        {
+            #ifdef SECOC_DEBUG
+            printf("Start sending id = %d\n" , idx);
+            printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);       
+            printf("All Data to be Sent: \n");
+            for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
+            {
+                printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
+            }
+            printf("\n\n\n");
+            #endif
+
+            for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
+            {
+                // Request CopyTxData
+                result = SecOC_CopyTxData(idx, &info, &retry, &availableDataPtr);
+
+                CanIf_Transmit(idx , &info);
+
+                #ifdef SECOC_DEBUG
+                printf("Delay...\n");
+                #endif
+                long long int delay = 60000000;
+                while(delay--);
+
+                
+                if(last_pdu == E_NOT_OK)
+                {
+                    retry.TpDataState = TP_DATARETRY;
+                    i--;
+                }
+                else if(last_pdu == E_OK)
+                {
+                    retry.TpDataState = TP_DATACONF;
+                }
+                #ifdef SECOC_DEBUG
+                    printf("Transmit Result = %d\n" , last_pdu);
+                #endif
+            }
+
+            if( (CanTp_Buffer[idx].SduLength % BUS_LENGTH) != 0)
+            {
+                // Request CopyTxData with length (CanTp_Buffer[idx].SduLength % BUS_LENGTH) 
+                info.SduLength = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
+                SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
+
+                #ifdef SECOC_DEBUG
+                    printf("Sending remaider part with length %d \n", info.SduLength);
+                    for(int j = 0; j < info.SduLength; j++)
+                        printf("%d\t",info.SduDataPtr[j]);
+                    printf("\n");
+                #endif
+                
+
+                // Send data using CanIf
+                CanIf_Transmit(idx , &info);
+                printf("Delay...\n");
+                long long int delay = 60000000;
+                while(delay--);
+
+                while(last_pdu == E_NOT_OK)
+                {
+                    retry.TxTpDataCnt = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
+                    retry.TpDataState = TP_DATARETRY;
+                    SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
+                    CanIf_Transmit(idx , &info);
+                }
+                retry.TpDataState = TP_DATACONF;
+                #ifdef SECOC_DEBUG
+                    printf("Transmit Result = %d\n" , last_pdu);
+                #endif
+            }
+
+            PduR_CanTpTxConfirmation(idx , E_OK);
+
+        }
+    }
+}
+
+
+
+void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
+{
+    last_pdu = result;
 }
 
 void CanTP_MainFunctionRx(void)
@@ -42,11 +155,13 @@ void CanTP_MainFunctionRx(void)
     }
 
     #ifdef SECOC_DEBUG
-        printf("######## in main tp Rx  in num : %d ########\n", count);
+        printf("######## in main tp Rx  in num : %d ########\n", idx);
     #endif
     BufReq_ReturnType Result;
 
+    #ifdef LINUX
     ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+    #endif
     /* Check if can Receive  */
     BufReq_ReturnType result= PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr);
     if (result == BUFREQ_OK)
@@ -76,7 +191,9 @@ void CanTP_MainFunctionRx(void)
 
             if(i != LastFrame_idx)
             {
+                #ifdef LINUX
                 ethernet_receive(Tp_Spdu.SduDataPtr, Tp_Spdu.SduLength,&idx);
+                #endif
             }
         }
         

@@ -1,5 +1,5 @@
 #include "ethernet.h"
-
+#include "SecOC_Debug.h"
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     // create a socket
@@ -25,6 +25,17 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     {
         sendData[dataLen+indx] = (id >> (8 * indx));
     }
+
+
+    #ifdef SECOC_DEBUG
+        printf("### in Ethernet Send ###");
+        for(int j = 0; j < (dataLen + sizeof(id)) ; j++)
+            printf("%d\t",sendData[j]);
+        printf("\n");
+    #endif
+    
+
+    
     send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
 
     // close the connection
