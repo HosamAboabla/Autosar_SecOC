@@ -21,5 +21,10 @@
 
 void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
-	
+	printf("Data Recieve in Com : ");
+	for(uint8 i = 0; i < PduInfoPtr->SduLength; i++)
+	{
+		printf("%d ",PduInfoPtr->SduDataPtr[i]);
+	}
+	printf("\n");
 }

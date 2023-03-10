@@ -6,10 +6,10 @@
 
 #define SUCCESS     (1u)
 #define FAILED      (0u)
-
 #define TP_TRANSMISSION_STATUS SUCCESS
 
-#define CANTP_BUFFERLENGTH  ((uint32)500)
+#define BUS_LENGTH       8
+#define BUFFER_SIZE     200
 
 /****************************************************
  *          * Function Info *                       *
@@ -22,4 +22,6 @@
  ***************************************************/
 Std_ReturnType CanTp_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr);
 
-#endif
+void CanTP_MainFunctionRx(void);
+
+#endif /*INCLUDE_CANTP_H_*/
