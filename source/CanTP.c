@@ -48,9 +48,7 @@ void CanTp_MainFunction(void)
         {
             #ifdef SECOC_DEBUG
             printf("Start sending id = %d\n" , idx);
-            printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);
-            
-            
+            printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);       
             printf("All Data to be Sent: \n");
             for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
             {
@@ -66,17 +64,12 @@ void CanTp_MainFunction(void)
 
                 CanIf_Transmit(idx , &info);
 
+                #ifdef SECOC_DEBUG
+                printf("Delay...\n");
+                #endif
+                long long int delay = 60000000;
+                while(delay--);
 
-                // Send data using CanIf
-                // printf("CopyTX Result %d\n", result);
-                // printf("Sending %d part with length %d \n" , i, info.SduLength);
-
-                // for(int j = 0; j < info.SduLength; j++)
-                //     printf("%d\t",info.SduDataPtr[j]);
-                
-                // printf("\n");
-                
-                
                 
                 if(last_pdu == E_NOT_OK)
                 {
@@ -108,6 +101,9 @@ void CanTp_MainFunction(void)
 
                 // Send data using CanIf
                 CanIf_Transmit(idx , &info);
+                printf("Delay...\n");
+                long long int delay = 60000000;
+                while(delay--);
 
                 while(last_pdu == E_NOT_OK)
                 {
