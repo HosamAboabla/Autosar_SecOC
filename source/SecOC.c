@@ -505,6 +505,13 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     (void)memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
 
+    uint8 arr[]={0};
+    for (uint8 i=securedPdu->SduLength;i>0;i--)
+    {
+        arr[i-1]=*(securedPdu->SduDataPtr+(securedPdu->SduLength-i));
+    }
+    (void)memcpy(securedPdu->SduDataPtr, arr, PduInfoPtr->SduLength);
+
     /* [SWS_SecOC_00078] */
     securedPdu->SduLength = MIN(PduInfoPtr->SduLength, securedPdu->SduLength);
 }
