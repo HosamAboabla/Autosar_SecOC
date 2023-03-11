@@ -17,7 +17,7 @@
 
 #define SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1))
 
-#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (1)
+#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (2)
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
 
