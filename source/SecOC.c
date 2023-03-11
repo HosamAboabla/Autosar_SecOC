@@ -356,8 +356,6 @@ void SecOCMainFunctionRx(void)
 
                 /* [SWS_SecOC_00050], [SWS_SecOC_00080] */
                 PduR_SecOCIfRxIndication(idx,  authPdu);
-                /* [SWS_SecOC_00087] */
-                securedPdu->SduLength = 0;
             }
             else if( result == SECOC_VERIFICATIONFAILURE )
             {
@@ -738,7 +736,8 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         (void)memcpy(authPdu->SduDataPtr, SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
         authPdu->SduLength = SecOCIntermediate.authenticPduLen;
         authPdu->MetaDataPtr = SecPdu->MetaDataPtr;
-
+        /* [SWS_SecOC_00087] */
+        SecPdu->SduLength = 0;
         FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCIntermediate.freshness, SecOCIntermediate.freshnessLenBits);
     }
     else 
