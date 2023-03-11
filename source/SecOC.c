@@ -193,7 +193,12 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
     (void)memcpy(authpdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     authpdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     authpdu->SduLength = PduInfoPtr->SduLength;
-
+    uint8 arr[]={0};
+    for (uint8 i=authpdu->SduLength;i>0;i--)
+    {
+        arr[i-1]=*(authpdu->SduDataPtr+(authpdu->SduLength-i));
+    }
+    (void)memcpy(authpdu->SduDataPtr, arr, PduInfoPtr->SduLength);
 
     return result;
 }
