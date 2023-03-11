@@ -19,8 +19,8 @@
 #include <string.h>
 
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
-static const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
-static const SecOC_GeneralType             *SecOCGeneral;
+const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
+const SecOC_GeneralType             *SecOCGeneral;
 
 
 
@@ -356,8 +356,6 @@ void SecOCMainFunctionRx(void)
 
                 /* [SWS_SecOC_00050], [SWS_SecOC_00080] */
                 PduR_SecOCIfRxIndication(idx,  authPdu);
-                /* [SWS_SecOC_00087] */
-                securedPdu->SduLength = 0;
             }
             else if( result == SECOC_VERIFICATIONFAILURE )
             {
@@ -526,7 +524,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
 
     /* [SWS_SecOC_00078] */
-    securedPdu->SduLength = MIN(PduInfoPtr->SduLength, securedPdu->SduLength);
+    securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
 }
 
 
@@ -738,7 +736,8 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         (void)memcpy(authPdu->SduDataPtr, SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
         authPdu->SduLength = SecOCIntermediate.authenticPduLen;
         authPdu->MetaDataPtr = SecPdu->MetaDataPtr;
-
+        /* [SWS_SecOC_00087] */
+        SecPdu->SduLength = 0;
         FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCIntermediate.freshness, SecOCIntermediate.freshnessLenBits);
     }
     else 
@@ -788,6 +787,7 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 
     return result;
 }
+
 
 #ifdef SECOC_DEBUG
 extern SecOC_ConfigType SecOC_Config;
