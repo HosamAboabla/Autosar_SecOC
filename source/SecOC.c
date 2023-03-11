@@ -19,8 +19,8 @@
 #include <string.h>
 
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
-static const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
-static const SecOC_GeneralType             *SecOCGeneral;
+const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
+const SecOC_GeneralType             *SecOCGeneral;
 
 
 
