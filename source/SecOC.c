@@ -524,7 +524,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
 
     /* [SWS_SecOC_00078] */
-    securedPdu->SduLength = MIN(PduInfoPtr->SduLength, securedPdu->SduLength);
+    securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
 }
 
 
