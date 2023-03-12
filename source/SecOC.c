@@ -202,14 +202,7 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
     (void)memcpy(authpdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     authpdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     authpdu->SduLength = PduInfoPtr->SduLength;
-    
-    // uint8 arr[20]={0};
-    // for (uint8 i=authpdu->SduLength;i>0;i--)
-    // {
-    //     arr[i-1]=*(authpdu->SduDataPtr+(authpdu->SduLength-i));
-    // }
-    // (void)memcpy(authpdu->SduDataPtr, arr, authpdu->SduLength);
-//swap in the same buffer
+
     #ifdef SECOC_DEBUG
         printf("###### Getting The Auth PDU  ######\n");
         for(int i = 0; i < authpdu->SduLength; i++)
