@@ -182,6 +182,14 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     return result;
 }
 
+void convert_endianess(uint16 *arr, uint16 size) {
+    for (uint16 i = 0; i < (size/2); i++) {
+        uint16 num = arr[i];
+		arr[i]=arr[size-1-i];
+		arr[size-1-i]=num;
+    }
+}
+
 
 Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr) 
 {
@@ -195,13 +203,13 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
     authpdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
     authpdu->SduLength = PduInfoPtr->SduLength;
     
-    uint8 arr[]={0};
-    for (uint8 i=authpdu->SduLength;i>0;i--)
-    {
-        arr[i-1]=*(authpdu->SduDataPtr+(authpdu->SduLength-i));
-    }
-    (void)memcpy(authpdu->SduDataPtr, arr, PduInfoPtr->SduLength);
-
+    // uint8 arr[20]={0};
+    // for (uint8 i=authpdu->SduLength;i>0;i--)
+    // {
+    //     arr[i-1]=*(authpdu->SduDataPtr+(authpdu->SduLength-i));
+    // }
+    // (void)memcpy(authpdu->SduDataPtr, arr, authpdu->SduLength);
+//swap in the same buffer
     #ifdef SECOC_DEBUG
         printf("###### Getting The Auth PDU  ######\n");
         for(int i = 0; i < authpdu->SduLength; i++)
@@ -322,6 +330,10 @@ void SecOCMainFunctionTx(void)
             authenticate(idx , authPdu , securedPdu);
             
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
+            
+            /*convert from little endian to big endian*/
+            convert_endianess(authPdu->SduDataPtr, authPdu->SduLength);
+
 
             /* [SWS_SecOC_00062] */
             PduR_SecOCTransmit(idx , securedPdu);
@@ -529,16 +541,12 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
     (void)memcpy(securedPdu->SduDataPtr, PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength);
     securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
-
-    uint8 arr[]={0};
-    for (uint8 i=securedPdu->SduLength;i>0;i--)
-    {
-        arr[i-1]=*(securedPdu->SduDataPtr+(securedPdu->SduLength-i));
-    }
-    (void)memcpy(securedPdu->SduDataPtr, arr, PduInfoPtr->SduLength);
-
     /* [SWS_SecOC_00078] */
     securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
+
+    /*convert from big endian to little endian*/
+    convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
+
 }
 
 
