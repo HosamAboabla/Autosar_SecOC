@@ -41,7 +41,6 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
 
 
     #ifdef SECOC_DEBUG
-        printf("### in Ethernet Send ###");
         for(int j = 0; j < (dataLen + sizeof(id)) ; j++)
             printf("%d\t",sendData[j]);
         printf("\n");
