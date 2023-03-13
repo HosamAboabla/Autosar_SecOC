@@ -11,7 +11,7 @@
 #define CANIF_DEBUG       /* Dubeg for CanIF */
 #define CANTP_DEBUG       /* Dubeg for CanTP */
 #define COM_DEBUG         /* Dubeg for COM */
-#define DCM_DEBUG         /* Dubeg for COM */ 
+#define DCM_DEBUG         /* Dubeg for DCM */ 
 #define ETHERNET_DEBUG    /* Dubeg for Ethernet */ 
 #define PDUR_DEBUG        /* Dubeg for PduR */ 
 #endif
