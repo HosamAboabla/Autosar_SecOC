@@ -6,18 +6,18 @@
 
  void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
  {
-	#ifdef SECOC_DEBUG
-        printf("######## in Com_TxConfirmation ########\n");
+	#ifdef COM_DEBUG
+        printf("######## in Com_TxConfirmation \n");
     #endif
 	if( result == E_OK )
 	{
-		#ifdef SECOC_DEBUG
+		#ifdef COM_DEBUG
 		printf("Returned confirmation 'E_OK' \n");
 		#endif
 	}
 	else
 	{
-		#ifdef SECOC_DEBUG
+		#ifdef COM_DEBUG
 		printf("Returned confirmation 'E_NOT_OK' \n");
 		#endif
 	}
@@ -26,8 +26,8 @@
 
 void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
-	#ifdef SECOC_DEBUG
-    printf("######## in Com_RxIndication ########\n");
+	#ifdef COM_DEBUG
+    printf("######## in Com_RxIndication\n");
 	printf("Data Recieve in Com : ");
 	for(uint8 i = 0; i < PduInfoPtr->SduLength; i++)
 	{

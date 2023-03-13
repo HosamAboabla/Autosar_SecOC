@@ -26,13 +26,13 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 PduInfoType* CanIF_Buffer[CANIF_BUFFERLENGTH];
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
-    #ifdef SECOC_DEBUG
-        printf("######## in CanIf_Transmit ########\n");
+    #ifdef CANIF_DEBUG
+        printf("######## in CanIf_Transmit \n");
     #endif
     // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
     Std_ReturnType result = E_OK;
 
-    #ifdef SECOC_DEBUG
+    #ifdef CANIF_DEBUG
         printf("Secure PDU -->\n");
             for(int i = 0; i < PduInfoPtr->SduLength; i++)
                 printf("%d ", PduInfoPtr->SduDataPtr[i]);

@@ -24,8 +24,8 @@
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
-   #ifdef SECOC_DEBUG
-        printf("######## in PduR_SecOCTransmit ########\n");
+   #ifdef PDUR_DEBUG
+        printf("######## in PduR_SecOCTransmit \n");
     #endif
    if(*(PduInfoPtr->MetaDataPtr) == CANIF)
    {
@@ -45,8 +45,8 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
 
 void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
-   #ifdef SECOC_DEBUG
-        printf("######## in PduR_SecOCIfTxConfirmation ########\n");
+   #ifdef PDUR_DEBUG
+        printf("######## in PduR_SecOCIfTxConfirmation \n");
     #endif
 	Com_TxConfirmation(TxPduId, result);
 }
@@ -55,8 +55,8 @@ void PduR_SecOCIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
 void PduR_SecOCIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
-   #ifdef SECOC_DEBUG
-        printf("######## in PduR_SecOCIfRxIndication ########\n");
+   #ifdef PDUR_DEBUG
+        printf("######## in PduR_SecOCIfRxIndication \n");
     #endif
    Com_RxIndication(RxPduId, PduInfoPtr);
 }
@@ -64,8 +64,8 @@ void PduR_SecOCIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 void PduR_SecOCTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
-   #ifdef SECOC_DEBUG
-        printf("######## in PduR_SecOCTpTxConfirmation ########\n");
+   #ifdef PDUR_DEBUG
+        printf("######## in PduR_SecOCTpTxConfirmation \n");
     #endif
 	// Com_TxConfirmation(TxPduId, result);
    Dcm_TpTxConfirmation(TxPduId, result);

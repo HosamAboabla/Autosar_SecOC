@@ -2,18 +2,18 @@
 #include "SecOC_Debug.h"
 void Dcm_TpTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
-	#ifdef SECOC_DEBUG
-        printf("######## in Dcm_TpTxConfirmation ########\n");
+	#ifdef DCM_DEBUG
+        printf("######## in Dcm_TpTxConfirmation\n");
     #endif
     if( result == E_OK )
 	{
-		#ifdef SECOC_DEBUG
+		#ifdef DCM_DEBUG
 		printf("DCM recevied data with status E_OK\n");
 		#endif
 	}
 	else
 	{
-		#ifdef SECOC_DEBUG
+		#ifdef DCM_DEBUG
 		printf("DCM recevied data with status E_NOT_OK\n");
 		#endif
 	}
