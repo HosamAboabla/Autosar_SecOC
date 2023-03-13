@@ -80,7 +80,17 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     server_address.sin_port = htons(PORT_NUMBER);
     server_address.sin_addr.s_addr = INADDR_ANY; // inet_addr("192.168.1.2");
 
+    
+    int opt = 1; 
+    if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) 
+    { 
+        #ifdef SECOC_DEBUG
+            printf("connect setsockopt Error \n"); 
+        #endif
+        return E_NOT_OK;
 
+    }
+    
     // bind the socket to our specified IP and Port
    
     if ( ( bind(server_socket , (struct sockaddr* ) &server_address , sizeof(server_address) )) < 0)
