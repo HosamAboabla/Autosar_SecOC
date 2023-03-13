@@ -1,5 +1,7 @@
 #include "FVM.h"
 #include <string.h>
+#include "SecOC_Debug.h"
+
 /* This is Stub for Freshness Value Manger that have the global counter */
 
 
@@ -40,7 +42,9 @@ uint8 countSizeBits(const uint8* arrayBytes, uint8 maxSize)
 
 
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID) {  
-
+    #ifdef SECOC_DEBUG
+        printf("######## FVM_IncreaseCounter ########\n");
+    #endif
     /* increase the counter by 1 */
     uint8 INDEX = 0;
     uint8 maxIndex = BIT_TO_BYTES(SECOC_MAX_FRESHNESS_SIZE);
@@ -72,7 +76,9 @@ uint32 SecOCFreshnessValueLength)
 
 Std_ReturnType FVM_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength) {
-
+    #ifdef SECOC_DEBUG
+        printf("######## in FVM_GetTxFreshness ########\n");
+    #endif
     Std_ReturnType result = E_OK;
     
     if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX) {
@@ -91,6 +97,15 @@ uint32* SecOCFreshnessValueLength) {
 
         /* Update Length */
         *SecOCFreshnessValueLength = acctualFreshnessVallength;
+        #ifdef SECOC_DEBUG
+        printf("return  : %d .. \n", result);
+        for(int i = 0; i < acctualFreshnessVallengthBytes; i++)
+        {
+            printf("Byte %d : %d ", i, SecOCFreshnessValue[i]);
+        }
+        printf("\n");
+
+        #endif
     }
     return result;
 }
@@ -98,6 +113,9 @@ uint32* SecOCFreshnessValueLength) {
 Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *SecOCTruncatedFreshnessValue, uint32 SecOCTruncatedFreshnessValueLength,
                                   uint16 SecOCAuthVerifyAttempts, uint8 *SecOCFreshnessValue, uint32 *SecOCFreshnessValueLength)
 {
+    #ifdef SECOC_DEBUG
+        printf("######## in FVM_GetRxFreshness ########\n");
+    #endif
     Std_ReturnType result = E_OK;
     if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX)
     {
@@ -209,10 +227,19 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                 break;
             }
         }
+        
         /* verified that the constructed FreshnessVerifyValue is larger than the last stored notion of the Freshness Value */
         /* If it is not larger than the last stored notion of the Freshness Value,
          the FVM shall stop the verification and drop the Secured I-PDU */
         sint16 index = BIT_TO_BYTES(*SecOCFreshnessValueLength) - 1;
+        #ifdef SECOC_DEBUG
+            printf("constructed FreshnessVerifyValue is  \n");
+            for(int i = 0; i <= index; i++)
+            {
+                printf("byte %d: %d  ", i , SecOCFreshnessValue[i]);
+            }
+            printf("\n");
+        #endif
         sint8 equalityFlag = memcmp(SecOCFreshnessValue, Freshness_Counter[SecOCFreshnessValueID], index + 1);
         for(; index >= 0; index --)
         {
@@ -231,13 +258,19 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             break;
         }
 
-    }   
+    }
+    #ifdef SECOC_DEBUG
+        printf("Result is %d  \n", result);
+    #endif
     return result;
 }
 
 Std_ReturnType FVM_GetTxFreshnessTruncData(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* SecOCTruncatedFreshnessValueLength)
 {
+    #ifdef SECOC_DEBUG
+        printf("######## in FVM_GetTxFreshnessTruncData ########\n");
+    #endif
     Std_ReturnType result = E_OK; 
     if (SecOCFreshnessValueID > SecOC_FreshnessValue_ID_MAX) 
     {
@@ -264,7 +297,22 @@ uint32* SecOCFreshnessValueLength, uint8* SecOCTruncatedFreshnessValue, uint32* 
             SecOCTruncatedFreshnessValue[acctualFreshnessTruncVallength - 1] = (SecOCFreshnessValue[acctualFreshnessTruncVallength - 1] & (~(0xFF << bitTrunc)));
         }
         *SecOCTruncatedFreshnessValueLength = countSizeBits(SecOCTruncatedFreshnessValue, truncFreshnessVallengthBytes);
+    #ifdef SECOC_DEBUG
+        printf("result is %d\n", result);
+        printf("FV is ");
+        for (int i = 0; i < acctualFreshnessVallengthBytes; i++)
+        {
+            printf("%d ",SecOCFreshnessValue[i]);
+        }
+        printf("\nTrunc FV is ");
+        for (int i = 0; i < acctualFreshnessTruncVallength; i++)
+        {
+            printf("%d ",SecOCTruncatedFreshnessValue[i]);
+        }
+        printf("\n");
+    #endif
     }
+    
     return result;
 }
 
