@@ -2,9 +2,18 @@
 #include "SecOC_Debug.h"
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
+    #ifdef SECOC_DEBUG
+        printf("######## in Sent Ethernet ########\n");
+    #endif
     // create a socket
     int network_sockect;
-    network_sockect = socket(AF_INET , SOCK_STREAM , 0);
+    if ( (    network_sockect = socket(AF_INET , SOCK_STREAM , 0)) < 0)
+    {
+        #ifdef SECOC_DEBUG
+            printf("Create Socket Error\n");
+        #endif
+        return E_NOT_OK;
+    }
 
     // specify an address for the socket
     struct sockaddr_in server_address;
@@ -15,7 +24,11 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     int connection_status = connect(network_sockect , (struct sockaddr* ) &server_address , sizeof(server_address) );
 
     if (connection_status != 0) {
+        #ifdef SECOC_DEBUG
+            printf("Connection Error\n");
+        #endif
         return E_NOT_OK;
+
     }
 
     /* Prepare For Send */
@@ -46,9 +59,20 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
 
 Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, unsigned short* id)
 {
+    
+    #ifdef SECOC_DEBUG
+        printf("######## in Recieve Ethernet ########\n");
+    #endif
     // create a socket
     int server_socket, client_socket;
-    server_socket = socket(AF_INET , SOCK_STREAM , 0);
+    if ( ( server_socket = socket(AF_INET , SOCK_STREAM , 0)) < 0)
+    {
+        #ifdef SECOC_DEBUG
+            printf("Create Socket Error\n");
+        #endif
+        return E_NOT_OK;
+
+    }
 
     // specify an address for the socket
     struct sockaddr_in server_address;
@@ -58,17 +82,39 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
 
 
     // bind the socket to our specified IP and Port
-    bind(server_socket , (struct sockaddr* ) &server_address , sizeof(server_address) );
+   
+    if ( ( bind(server_socket , (struct sockaddr* ) &server_address , sizeof(server_address) )) < 0)
+    {
+        #ifdef SECOC_DEBUG
+            printf("Bind Error\n");
+        #endif
+        return E_NOT_OK;
+
+    }
+
     
-    listen(server_socket , 5);
 
-    client_socket = accept(server_socket , NULL , NULL);
+    if ( (listen(server_socket , 5)) < 0)
+    {
+        #ifdef SECOC_DEBUG
+            printf("Listen Error\n");
+        #endif
+        return E_NOT_OK;
 
+    }
+   
+    if ( ( client_socket = accept(server_socket , NULL , NULL)) < 0)
+    {
+        #ifdef SECOC_DEBUG
+            printf("Accept Error\n");
+        #endif
+        return E_NOT_OK;
+    }
     // Receive data
     unsigned char recData [dataLen + sizeof(unsigned short)];
     recv( client_socket , recData , (dataLen + sizeof(unsigned short)) , 0);
     #ifdef SECOC_DEBUG
-        printf("######## in Recieve Ethernet ########\n");
+        printf("in Recieve Ethernet \t");
         printf("Info Received: \n");
         for(int j  = 0 ; j < (dataLen+sizeof(unsigned short)) ; j++)
         {
@@ -82,7 +128,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef SECOC_DEBUG
-        printf("id = %d ###########################################\n\n",*id);
+        printf("id = %d n\n",*id);
     #endif
     // close the socket
     close(server_socket);
