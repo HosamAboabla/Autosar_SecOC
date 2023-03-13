@@ -1,10 +1,12 @@
 
 #include "SecOC.h"
-#include <stdio.h>
+#include "SecOC_Debug.h"
 
 int main(void)
 {
-    SecOC_test();
+    #ifdef DEBUG_ALL
+        SecOC_test();
+    #endif
 
     printf("Program ran successfully\n");
     return 0;
