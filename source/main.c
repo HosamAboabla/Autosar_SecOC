@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    #ifdef SECOC_DEBUG
+    #ifdef DEBUG_ALL
         SecOC_test();
     #endif
 
