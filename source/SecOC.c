@@ -22,7 +22,8 @@ const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
-
+extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
+extern SecOC_RxCountersType         SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING];
 
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
