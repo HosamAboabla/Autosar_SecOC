@@ -181,12 +181,12 @@
 /*
 * Configuration Parameter for SecOC_AuthenticationBuildAttempts
 */
-#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)0)
+#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)3)
 
 /*
 * Configuration Parameter for SecOC_AuthenticationVerifyAttempts
 */
-#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)0)
+#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)3)
 
 /*
 * Configuration Parameter for SecOC_AuthInfoTruncLength
@@ -351,7 +351,7 @@
  * Container_Index       : 10.1.14                            *
  **************************************************************/
 
-#define SECOC_TX_PDUTYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
+#define SECOC_TX_PDUTYPE                    ((SecOC_PduType_Type)SECOC_IFPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
 
 
