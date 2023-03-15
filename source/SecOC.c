@@ -826,8 +826,6 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
     /* [SWS_SecOC_00042] Parsing */
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
-
-    *verification_result = E_OK;
  
     /* [SWS_SecOC_00256] */
     if(SecOCIntermediate.freshnessResult == E_OK)
