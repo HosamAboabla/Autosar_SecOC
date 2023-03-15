@@ -26,7 +26,10 @@ typedef struct
 
    uint8                   DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
    uint32                  DataToAuthLen;
-   
+
+   uint8                   AuthenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
+   uint32                  AuthenticatorLen;
+
 } SecOC_TxIntermediateType;
 
 /* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
