@@ -404,10 +404,9 @@ void SecOCMainFunctionTx(void)
             {
                 FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
 
-            /* [SWS_SecOC_00062] */
-            PduR_SecOCTransmit(idx , securedPdu);
-            
-
+                /* [SWS_SecOC_00062] */
+                PduR_SecOCTransmit(idx , securedPdu);
+            }
         }
     }
 }
