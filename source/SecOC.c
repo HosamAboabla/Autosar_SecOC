@@ -182,11 +182,11 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     return result;
 }
 
-void convert_endianess(uint16 *arr, uint16 size) 
+void convert_endianess(uint8 *arr, uint8 size) 
 {
-    for (uint16 i = 0; i < (size/2); i++) 
+    for (uint8 i = 0; i < (size/2); i++) 
     {
-        uint16 num = arr[i];
+        uint8 num = arr[i];
 		arr[i]=arr[size-1-i];
 		arr[size-1-i]=num;
     }
@@ -327,7 +327,7 @@ void SecOCMainFunctionTx(void)
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
             
             /*convert from little endian to big endian*/
-            convert_endianess(authPdu->SduDataPtr, authPdu->SduLength);
+            convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
 
 
             /* [SWS_SecOC_00062] */
@@ -810,37 +810,6 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    SecOC_Init(&SecOC_Config);
-    PduIdType id = 0;
-    uint8 dataRec[] = {19,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,255,1,55,66,77,88};
-    uint8 dataRec2[] = {5,2,3,4,5,6,20,255,1,55,66,77,88};
-    PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    PduInfoType *authPdu = &(SecOCTxPduProcessing[id].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
-    securedPdu->MetaDataPtr = 0;
-    securedPdu->SduDataPtr=dataRec;
-    securedPdu->SduLength = 26;
-    authPdu->MetaDataPtr = 0;
-    authPdu->SduDataPtr=dataRec2;
-    authPdu->SduLength = 13;
-    printf("\nTEST1\n");
-    printf("data Before transmission : \n");
-    for(int i=0; i< securedPdu->SduLength; i++)
-    {
-        printf("%d ",securedPdu->SduDataPtr[i]);
-    }
-
-    SecOCMainFunctionTx();
-    printf("\ndata after transmission and before reception : \n");
-    for(int i=0; i< securedPdu->SduLength; i++)
-    {
-        printf("%d ",securedPdu->SduDataPtr[i]);
-    }
-    SecOC_RxIndication (id,securedPdu);
-    printf("\ndata after reception : \n");
-    for(int i=0; i< securedPdu->SduLength; i++)
-    {
-        printf("%d ",securedPdu->SduDataPtr[i]);
-    }
-        
+    
 }
 #endif
