@@ -145,7 +145,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
 
     /* [SWS_SecOC_00035], [SWS_SecOC_00036]*/
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
-    result = E_NOT_OK;
+    // result = E_NOT_OK;
 
     /* Truncated freshness value */
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX_LENGTH/8] = {0};
