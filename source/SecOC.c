@@ -327,7 +327,7 @@ void SecOCMainFunctionTx(void)
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
             
             #ifdef SECOC_DEBUG
-            printf("before conversion : ");
+            printf("\ntransmission before conversion : ");
             for(int i=0; i< securedPdu->SduLength; i++)
             {
                 printf("%d ",securedPdu->SduDataPtr[i]);
@@ -339,7 +339,7 @@ void SecOCMainFunctionTx(void)
             convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
 
             #ifdef SECOC_DEBUG
-            printf("\nafter conversion : ");
+            printf("\ntransmission after conversion : ");
             for(int i=0; i< securedPdu->SduLength; i++)
             {
                 printf("%d ",securedPdu->SduDataPtr[i]);
@@ -557,7 +557,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
 
      #ifdef SECOC_DEBUG
-    printf("before conversion : ");
+    printf("\nreception before conversion : ");
     for(int i=0; i< securedPdu->SduLength; i++)
     {
         printf("%d ",securedPdu->SduDataPtr[i]);
@@ -569,11 +569,12 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
 
     #ifdef SECOC_DEBUG
-    printf("\nafter conversion : ");
+    printf("\nreception after conversion : ");
     for(int i=0; i< securedPdu->SduLength; i++)
     {
         printf("%d ",securedPdu->SduDataPtr[i]);
     }
+    printf("\n");
     #endif
 
 
@@ -856,9 +857,7 @@ void SecOC_test()
     authPdu->SduDataPtr=dataRec2;
     authPdu->SduLength = 13;
     printf("\nTEST1\n");
-    printf("data Before transmission : \n");
     SecOCMainFunctionTx();
     SecOC_RxIndication (id,securedPdu);
-    printf("\ndata after reception : \n");
 }
 #endif
