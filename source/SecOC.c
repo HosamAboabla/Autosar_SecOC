@@ -861,13 +861,63 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
         PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
 
-        /* Copy authenticPdu from secured layer to the authentic layer */
-        (void)memcpy(authPdu->SduDataPtr, SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
-        authPdu->SduLength = SecOCIntermediate.authenticPduLen;
-        authPdu->MetaDataPtr = SecPdu->MetaDataPtr;
-        /* [SWS_SecOC_00087] */
-        SecPdu->SduLength = 0;
-        FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCIntermediate.freshness, SecOCIntermediate.freshnessLenBits);
+            /* [SWS_SecOC_00087] */
+            SecPdu->SduLength = 0;
+
+            FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCIntermediate.freshness, SecOCIntermediate.freshnessLenBits);
+        }
+
+        else if ( (Mac_verify == E_BUSY) || (Mac_verify == QUEUE_FULL) )
+        {
+            /* [SWS_SecOC_00237] */
+            SecOC_RxCounters[RxPduId].AuthenticationCounter++;
+
+            #ifdef COUNTERS_DEBUG
+            printf("SecOC_RxCounters[%d].AuthenticationCounter = %d\n",RxPduId,SecOC_RxCounters[RxPduId].AuthenticationCounter);
+            printf("SecOCRxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",RxPduId,SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts);
+            #endif
+
+            /* [SWS_SecOC_00240] */
+            if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
+            {
+                SecPdu->SduLength = 0;
+                *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
+            }
+            else
+            {
+                /* [SWS_SecOC_00238] */ /* shall be retried in next call */
+            }
+        }
+
+        else if ( (Mac_verify == CRYPTO_E_KEY_NOT_VALID) || (Mac_verify == CRYPTO_E_KEY_EMPTY) )/* E_NOT_OK */
+        {
+            /* [SWS_SecOC_00239] */
+            SecOC_RxCounters[RxPduId].AuthenticationCounter = 0; 
+            SecOC_RxCounters[RxPduId].VerificationCounter++;
+
+            #ifdef COUNTERS_DEBUG
+            printf("SecOC_RxCounters[%d].VerificationCounter = %d\n",RxPduId,SecOC_RxCounters[RxPduId].VerificationCounter);
+            printf("SecOCRxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",RxPduId,SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts);
+            #endif
+
+            /* [SWS_SecOC_00241] */
+            if( SecOC_RxCounters[RxPduId].VerificationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts )
+            {
+                SecPdu->SduLength = 0;
+                *verification_result = SECOC_VERIFICATIONFAILURE;
+            }
+            else
+            {
+                /* [SWS_SecOC_00121] */
+            }
+        }
+
+        else /* E_NOT_OK || KEY_FAILURE */
+        {
+            /* [SWS_SecOC_00241] */
+            SecPdu->SduLength = 0;
+            *verification_result = SECOC_VERIFICATIONFAILURE;
+        }
     }
     else 
     {
