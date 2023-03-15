@@ -871,11 +871,25 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     }
     else 
     {
-        /* Drop message */
-        *verification_result = CRYPTO_E_VER_NOT_OK;
-        result = SECOC_VERIFICATIONFAILURE;
+        /* [SWS_SecOC_00236] */
+        SecOC_RxCounters[RxPduId].AuthenticationCounter++;
 
-        SecPdu->SduLength = 0;
+        #ifdef COUNTERS_DEBUG
+        printf("SecOC_RxCounters[%d].AuthenticationCounter = %d\n",RxPduId,SecOC_RxCounters[RxPduId].AuthenticationCounter);
+        printf("SecOCRxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",RxPduId,SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts);
+
+        #endif
+
+        /* [SWS_SecOC_00240] */
+        if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
+        {
+            SecPdu->SduLength = 0;
+            *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
+        }
+        else
+        {
+            /* [SWS_SecOC_00238]  should be retried in next call */
+        }
     }
 
     else
