@@ -220,7 +220,28 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
         }
     }
 
-    SecPdu->SduLength = SecPduLen;
+    else if( result_Fv == E_BUSY )
+    {
+        /* [SWS_SecOC_00227] */
+        SecOC_TxCounters[TxPduId].AuthenticationCounter++;
+        #ifdef COUNTERS_DEBUG
+        printf("SecOC_TxCounters[%d].AuthenticationCounter = %d\n",TxPduId,SecOC_TxCounters[TxPduId].AuthenticationCounter);
+        printf("SecOCTxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",TxPduId,SecOCTxPduProcessing[TxPduId].SecOCAuthenticationBuildAttempts);
+        #endif
+        if( SecOC_TxCounters[TxPduId].AuthenticationCounter == SecOCTxPduProcessing[TxPduId].SecOCAuthenticationBuildAttempts )
+        {
+            authenticationFailure = TRUE;
+        }
+        else
+        {
+            /* [SWS_SecOC_00228] */
+        }
+    }
+
+    else /* E_NOT_OK */
+    {
+        authenticationFailure = TRUE;
+    }
 
     /* [SWS_SecOC_00212] */
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
