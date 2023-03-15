@@ -917,7 +917,8 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
             *verification_result = SECOC_VERIFICATIONFAILURE;
         }
     }
-    else 
+
+    else if( SecOCIntermediate.freshnessResult == E_BUSY)
     {
         /* [SWS_SecOC_00236] */
         SecOC_RxCounters[RxPduId].AuthenticationCounter++;
