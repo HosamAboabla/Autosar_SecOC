@@ -884,7 +884,7 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
             }
             else
             {
-                /* [SWS_SecOC_00238] */ /* shall be retried in next call */
+                /* [SWS_SecOC_00238]  shall be retried in next call */
             }
         }
 
