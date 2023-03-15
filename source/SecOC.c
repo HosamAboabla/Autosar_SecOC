@@ -291,13 +291,11 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_TxConfirmation \n");
     #endif
-    PduInfoType *authPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
 
     /* [SWS_SecOC_00064] */
     if (result == E_OK) 
     {
-        authPdu->SduLength = 0;
         securedPdu->SduLength = 0;
     }
     /* [SWS_SecOC_00063] */
@@ -470,14 +468,12 @@ void SecOCMainFunctionRx(void)
 
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
-    PduInfoType *authPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     #ifdef SECOC_DEBUG
         printf("########  In SecOC_TpTxConfirmation \n result of SecOC_TpTxConfirmation is %d \n" , result);
     #endif
     if (result == E_OK) {
         /* Clear buffer */
-        authPdu->SduLength = 0;
         securedPdu->SduLength = 0;
         bufferRemainIndex[TxPduId] = 0;
     }
