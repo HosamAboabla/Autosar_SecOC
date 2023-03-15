@@ -425,8 +425,6 @@ void SecOCMainFunctionRx(void)
 
     PduIdType idx = 0;
     SecOC_VerificationResultType result;
-    SecOC_VerificationResultType macResult;
-
     
     for (idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING; idx++) 
     {
@@ -438,7 +436,7 @@ void SecOCMainFunctionRx(void)
         if ( securedPdu->SduLength > 0 ) {
             
             /* [SWS_SecOC_00079] */
-            result = verify(idx, securedPdu, &macResult);
+            verify(idx, securedPdu, &result);
             if( result == SECOC_VERIFICATIONSUCCESS )
             {
                 #ifdef SECOC_DEBUG
