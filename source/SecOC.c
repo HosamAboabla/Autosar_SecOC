@@ -888,7 +888,7 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
 
             #ifdef COUNTERS_DEBUG
             printf("SecOC_RxCounters[%d].VerificationCounter = %d\n",RxPduId,SecOC_RxCounters[RxPduId].VerificationCounter);
-            printf("SecOCRxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",RxPduId,SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts);
+            printf("SecOCRxPduProcessing[%d].SecOCAuthenticationVerifyAttempts = %d\n",RxPduId,SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts);
             #endif
 
             /* [SWS_SecOC_00241] */
