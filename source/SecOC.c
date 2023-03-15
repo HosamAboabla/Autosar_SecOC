@@ -947,7 +947,7 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         /* [SWS_SecOC_00248] */
         /* DET Report Error */
     }
-    
+
     printf("%d\n",*verification_result);
     return *verification_result;
 }
