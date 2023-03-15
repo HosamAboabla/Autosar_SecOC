@@ -164,11 +164,33 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
     uint32 headerLen = SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCAuthPduHeaderLength;
     if(headerLen > 0)
     {
-        /* [SWS_SecOC_00261] The Secured I-PDU Header shall indicate the length of the Authentic I-PDU in bytes */
-        (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], &AuthPdu->SduLength, headerLen);
-        SecPduLen += headerLen;        
-    }
-    
+        if( result == E_OK )
+        {
+
+            /* [SWS_SecOC_00262] Header */
+            uint32 headerLen = SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCAuthPduHeaderLength;
+            if(headerLen > 0)
+            {
+                /* [SWS_SecOC_00261] The Secured I-PDU Header shall indicate the length of the Authentic I-PDU in bytes */
+                (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], &AuthPdu->SduLength, headerLen);
+                SecPduLen += headerLen;        
+            }
+            /* AuthPdu */
+            (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
+            SecPduLen += AuthPdu->SduLength;
+
+            /* [SWS_SecOC_00094] TruncatedFreshnessValue */
+            (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], FreshnessVal, FreshnesslenBytes);
+            SecPduLen += FreshnesslenBytes;
+
+            /* Authenticator */
+            (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], authenticatorPtr, authenticatorLen);
+            SecPduLen += authenticatorLen;
+
+            SecPdu->SduLength = SecPduLen;
+
+            /* [SWS_SecOC_00212] */
+            SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
 
     /* AuthPdu */
     (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
