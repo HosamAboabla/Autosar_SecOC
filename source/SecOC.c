@@ -824,7 +824,8 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
 
     /* [SWS_SecOC_00042] Parsing */
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
- 
+
+    *verification_result = SECOC_NO_VERIFICATION;
     /* [SWS_SecOC_00256] */
     // SecOCIntermediate.freshnessResult = E_NOT_OK;
     if(SecOCIntermediate.freshnessResult == E_OK)
