@@ -250,7 +250,11 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
         {
             /* SecOC_SendDefaultAuthenticationInformation(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueId, TRUE) */
         }
-        AuthPdu->SduLength = 0;
+        /* [SWS_SecOC_00229]  If sending SecOCDefaultAuthenticationInformationPattern is not enabled */
+        else
+        {
+            AuthPdu->SduLength = 0;
+        }
     }
 
     #ifdef SECOC_DEBUG
