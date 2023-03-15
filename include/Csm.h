@@ -3,7 +3,6 @@
 
 #include "Std_Types.h"
 
-#define CRYPTO_E_BUSY               ((Std_ReturnType)0x02)
 #define CRYPTO_E_KEY_NOT_VALID      ((Std_ReturnType)0x09)
 #define CRYPTO_E_KEY_SIZE_MISMATCH  ((Std_ReturnType)0x0A)
 #define CRYPTO_E_KEY_EMPTY          ((Std_ReturnType)0x0D)
