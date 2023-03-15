@@ -36,7 +36,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
 
 static Std_ReturnType parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxIntermediateType *SecOCIntermediate);
 static Std_ReturnType constructDataToAuthenticatorRx(PduIdType RxPduId, uint8 *DataToAuth, uint32 *DataToAuthLen, SecOC_RxIntermediateType *SecOCIntermediate);
-static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
+static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
 
 /********************************************************
@@ -815,7 +815,7 @@ static Std_ReturnType constructDataToAuthenticatorRx(PduIdType RxPduId, uint8 *D
     return E_OK;
 }
 
-static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
+static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
 {
     #ifdef SECOC_DEBUG
         printf("######## in verify \n");
