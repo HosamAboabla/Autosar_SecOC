@@ -214,9 +214,11 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
             }
         }
 
-    /* Authenticator */
-    (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], authenticatorPtr, authenticatorLen);
-    SecPduLen += authenticatorLen;
+        else
+        {
+            authenticationFailure = TRUE;
+        }
+    }
 
     SecPdu->SduLength = SecPduLen;
 
