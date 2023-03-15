@@ -160,9 +160,9 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
     /* [SWS_SecOC_00037] SECURED = HEADER(OPTIONAL) + AuthPdu + TruncatedFreshnessValue(OPTIONAL) + Authenticator */
     PduLengthType SecPduLen = 0;
 
-    /* [SWS_SecOC_00262] Header */
-    uint32 headerLen = SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCAuthPduHeaderLength;
-    if(headerLen > 0)
+    boolean authenticationFailure = FALSE; 
+ 
+    if(result_Fv == E_OK)
     {
         if( result == E_OK )
         {
