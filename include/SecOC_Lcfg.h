@@ -24,6 +24,12 @@
 typedef struct
 {
 
+   uint8                   Freshness[SECOC_FRESHNESS_MAX_LENGTH/8];  /* Complete Freshness Value */
+   uint32                  FreshnessLenBits;
+
+   uint8                   FreshnessTrunc[SECOC_FRESHNESS_MAX_LENGTH/8];   /* Truncated freshness value */
+   uint32                  FreshnessTruncLenBits;
+
    uint8                   DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
    uint32                  DataToAuthLen;
 
@@ -440,7 +446,7 @@ typedef struct
     boolean SecOCEnableForcedPassOverride;
     boolean SecOCEnableSecurityEventReporting;
     boolean SecOCIgnoreVerificationResult;
-    uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
+    uint8   SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
     boolean SecOCOverrideStatusWithDataId;
     boolean SecOCPropagateOnlyFinalVerificationStatus;
     SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
