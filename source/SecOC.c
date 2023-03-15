@@ -145,7 +145,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
 
     /* [SWS_SecOC_00035], [SWS_SecOC_00036]*/
     result = generateMAC(TxPduId, DataToAuth, &DataToAuthLen, authenticatorPtr, &authenticatorLen);
-    // result = E_NOT_OK;
+    // result = E_NOT_OK; 
 
     /* Truncated freshness value */
     uint8 FreshnessVal[SECOC_FRESHNESS_MAX_LENGTH/8] = {0};
@@ -154,7 +154,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
 
     /* [SWS_SecOC_00094] */
     result_Fv = SecOC_GetTxFreshnessTruncData(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueId, FreshnessVal, &SecOCFreshnessValueLength, FreshnessVal, &FreshnesslenBits);
-
+    // result_Fv = E_NOT_OK;
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueTruncLength);
 
     /* [SWS_SecOC_00037] SECURED = HEADER(OPTIONAL) + AuthPdu + TruncatedFreshnessValue(OPTIONAL) + Authenticator */
@@ -826,6 +826,7 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
  
     /* [SWS_SecOC_00256] */
+    // SecOCIntermediate.freshnessResult = E_NOT_OK;
     if(SecOCIntermediate.freshnessResult == E_OK)
     {
         uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};
@@ -838,7 +839,7 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
 
         /* [SWS_SecOC_00047] */
         Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, SecOCIntermediate.mac, SecOCIntermediate.macLenBits, &verify_var);
-
+        // Mac_verify = CRYPTO_E_KEY_NOT_VALID;
         if (Mac_verify == E_OK) 
         {
             /* [SWS_SecOC_00242] */
