@@ -130,7 +130,8 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
     #ifdef SECOC_DEBUG
         printf("######## in authenticate \n");
     #endif
-    Std_ReturnType result, result_Fv;
+    Std_ReturnType result = E_NOT_OK;
+    Std_ReturnType result_Fv;
     
     /* DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value */
     uint8 DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
