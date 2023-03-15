@@ -370,7 +370,7 @@ void SecOCMainFunctionTx(void)
 
 
             /* [SWS_SecOC_00062] */
-            PduR_SecOCTransmit(idx , securedPdu);
+            // PduR_SecOCTransmit(idx , securedPdu);
             
 
         }
