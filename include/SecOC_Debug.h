@@ -13,7 +13,8 @@
 #define COM_DEBUG         /* Dubeg for COM */
 // #define DCM_DEBUG         /* Dubeg for DCM */ 
 // #define ETHERNET_DEBUG    /* Dubeg for Ethernet */ 
-// #define PDUR_DEBUG        /* Dubeg for PduR */ 
+#define PDUR_DEBUG        /* Dubeg for PduR */ 
+#define COUNTERS_DEBUG    /* Debug for Auth && verify Counters */   
 #endif
 
 
