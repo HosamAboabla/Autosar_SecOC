@@ -836,11 +836,8 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     /* [SWS_SecOC_00256] */
     if(SecOCIntermediate.freshnessResult == E_OK)
     {
-        /* drop message */
-        SecPdu->SduLength = 0;
-        result = SECOC_FRESHNESSFAILURE;
-        return result;
-    }
+        uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};
+        uint32 DataToAuthLen = 0;
 
         /* [SWS_SecOC_00046] */
         constructDataToAuthenticatorRx(RxPduId, DataToAuth, &DataToAuthLen, &SecOCIntermediate);
