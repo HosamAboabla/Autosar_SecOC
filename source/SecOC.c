@@ -196,9 +196,23 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
     (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
     SecPduLen += AuthPdu->SduLength;
 
-    /* [SWS_SecOC_00094] TruncatedFreshnessValue */
-    (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], FreshnessVal, FreshnesslenBytes);
-    SecPduLen += FreshnesslenBytes;
+        else if( (result == E_BUSY) || (result == QUEUE_FULL) )
+        {
+            /* [SWS_SecOC_00227] */
+            SecOC_TxCounters[TxPduId].AuthenticationCounter++;
+            #ifdef COUNTERS_DEBUG
+            printf("SecOC_TxCounters[%d].AuthenticationCounter = %d\n",TxPduId,SecOC_TxCounters[TxPduId].AuthenticationCounter);
+            printf("SecOCTxPduProcessing[%d].SecOCAuthenticationBuildAttempts = %d\n",TxPduId,SecOCTxPduProcessing[TxPduId].SecOCAuthenticationBuildAttempts);
+            #endif
+            if( SecOC_TxCounters[TxPduId].AuthenticationCounter == SecOCTxPduProcessing[TxPduId].SecOCAuthenticationBuildAttempts )
+            {
+                authenticationFailure = TRUE;
+            }
+            else
+            {
+                /* [SWS_SecOC_00228] */
+            }
+        }
 
     /* Authenticator */
     (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], authenticatorPtr, authenticatorLen);
