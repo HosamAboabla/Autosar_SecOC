@@ -945,7 +945,6 @@ static void verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationRes
     }
 
     printf("%d\n",*verification_result);
-    return *verification_result;
 }
 
 
