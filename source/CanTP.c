@@ -1,7 +1,6 @@
 #include "CanTP.h"
 #include "Pdur_CanTP.h"
 #include "SecOC.h"
-#include <stdio.h>
 #include "CanIF.h"
 #include "Std_Types.h"
 #include "SecOC_Debug.h"
@@ -24,12 +23,18 @@ PduInfoType CanTp_Buffer[CANTP_BUFFER_SIZE];
 
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
+    #ifdef CANTP_DEBUG
+        printf("######## in CanTp_Transmit\n");
+    #endif
     CanTp_Buffer[CanTpTxSduId] = *CanTpTxInfoPtr;
 }
 
 
 void CanTp_MainFunction(void)
 {
+    #ifdef CANTP_DEBUG
+        printf("######## in CanTp_MainFunction\n");
+    #endif
     PduIdType idx;
     uint8 result;
     uint8 sdata[BUS_LENGTH] = {0};
@@ -41,23 +46,19 @@ void CanTp_MainFunction(void)
     PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
-    #ifdef SECOC_DEBUG
-        printf("###### In tp main Function Strat ######\n");
-        printf("\n");
-    #endif
     for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
     {
         if( CanTp_Buffer[idx].SduLength > 0)
         {
-            #ifdef SECOC_DEBUG
-            printf("Start sending id = %d\n" , idx);
-            printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);       
-            printf("All Data to be Sent: \n");
-            for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
-            {
-                printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
-            }
-            printf("\n\n\n");
+            #ifdef CANTP_DEBUG
+                printf("Start sending id = %d\n" , idx);
+                printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);       
+                printf("All Data to be Sent: \n");
+                for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
+                {
+                    printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
+                }
+                printf("\n\n\n");
             #endif
 
             for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
@@ -67,8 +68,8 @@ void CanTp_MainFunction(void)
 
                 CanIf_Transmit(idx , &info);
 
-                #ifdef SECOC_DEBUG
-                printf("Delay...\n");
+                #ifdef CANTP_DEBUG
+                    printf("Delay...\n");
                 #endif
                 long long int delay = 60000000;
                 while(delay--);
@@ -83,7 +84,7 @@ void CanTp_MainFunction(void)
                 {
                     retry.TpDataState = TP_DATACONF;
                 }
-                #ifdef SECOC_DEBUG
+                #ifdef CANTP_DEBUG
                     printf("Transmit Result = %d\n" , last_pdu);
                 #endif
             }
@@ -94,7 +95,7 @@ void CanTp_MainFunction(void)
                 info.SduLength = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
                 SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
 
-                #ifdef SECOC_DEBUG
+                #ifdef CANTP_DEBUG
                     printf("Sending remaider part with length %d \n", info.SduLength);
                     for(int j = 0; j < info.SduLength; j++)
                         printf("%d\t",info.SduDataPtr[j]);
@@ -116,7 +117,7 @@ void CanTp_MainFunction(void)
                     CanIf_Transmit(idx , &info);
                 }
                 retry.TpDataState = TP_DATACONF;
-                #ifdef SECOC_DEBUG
+                #ifdef CANTP_DEBUG
                     printf("Transmit Result = %d\n" , last_pdu);
                 #endif
             }
@@ -131,11 +132,17 @@ void CanTp_MainFunction(void)
 
 void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 {
+    #ifdef CANTP_DEBUG
+        printf("######## in CanTp_TxConfirmation \n");
+    #endif
     last_pdu = result;
 }
 
 void CanTP_MainFunctionRx(void)
 {
+    #ifdef CANTP_DEBUG
+        printf("######## in CanTP_MainFunctionRx\n");
+    #endif
     PduIdType idx = 0;
     
     PduInfoType Tp_Spdu;
@@ -154,8 +161,8 @@ void CanTP_MainFunctionRx(void)
         LastFrame_idx ++;
     }
 
-    #ifdef SECOC_DEBUG
-        printf("######## in main tp Rx  in num : %d ########\n", idx);
+    #ifdef CANTP_DEBUG
+        printf("######## in main tp Rx  in id : %d\n", idx);
     #endif
     BufReq_ReturnType Result;
 
@@ -169,7 +176,7 @@ void CanTP_MainFunctionRx(void)
         /* send Data */
         for(int i = 0; i <= LastFrame_idx; i++)
         {
-            #ifdef SECOC_DEBUG
+            #ifdef CANTP_DEBUG
             printf("Info Received idx=%d: \n",i);
             for(int j  = 0 ; j < Tp_Spdu.SduLength ; j++)
             {
