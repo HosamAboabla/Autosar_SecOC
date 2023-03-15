@@ -327,7 +327,7 @@ void SecOCMainFunctionTx(void)
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
             
             #ifdef SECOC_DEBUG
-            printf("\ntransmission before conversion : ");
+            printf("\ntransmission before conversion from little endian to big endian: ");
             for(int i=0; i< securedPdu->SduLength; i++)
             {
                 printf("%d ",securedPdu->SduDataPtr[i]);
@@ -339,7 +339,7 @@ void SecOCMainFunctionTx(void)
             convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
 
             #ifdef SECOC_DEBUG
-            printf("\ntransmission after conversion : ");
+            printf("\ntransmission after conversion from little endian to big endian: ");
             for(int i=0; i< securedPdu->SduLength; i++)
             {
                 printf("%d ",securedPdu->SduDataPtr[i]);
@@ -557,7 +557,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
 
      #ifdef SECOC_DEBUG
-    printf("\nreception before conversion : ");
+    printf("\nreception before conversion from big endian to little endian: ");
     for(int i=0; i< securedPdu->SduLength; i++)
     {
         printf("%d ",securedPdu->SduDataPtr[i]);
@@ -569,7 +569,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     convert_endianess(securedPdu->SduDataPtr, securedPdu->SduLength);
 
     #ifdef SECOC_DEBUG
-    printf("\nreception after conversion : ");
+    printf("\nreception after conversion from big endian to little endian: ");
     for(int i=0; i< securedPdu->SduLength; i++)
     {
         printf("%d ",securedPdu->SduDataPtr[i]);
