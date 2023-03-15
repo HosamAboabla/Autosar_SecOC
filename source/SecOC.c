@@ -192,9 +192,9 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
             /* [SWS_SecOC_00212] */
             SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
 
-    /* AuthPdu */
-    (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
-    SecPduLen += AuthPdu->SduLength;
+            /* clear Auth */
+            AuthPdu->SduLength = 0;
+        }
 
         else if( (result == E_BUSY) || (result == QUEUE_FULL) )
         {
@@ -243,8 +243,15 @@ static Std_ReturnType authenticate(const PduIdType TxPduId,  PduInfoType* AuthPd
         authenticationFailure = TRUE;
     }
 
-    /* [SWS_SecOC_00212] */
-    SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
+    if( authenticationFailure == TRUE )
+    {
+        /* [SWS_SecOC_00229] */
+        if( SecOCGeneral->SecOCDefaultAuthenticationInformationPattern > 0 )
+        {
+            /* SecOC_SendDefaultAuthenticationInformation(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueId, TRUE) */
+        }
+        AuthPdu->SduLength = 0;
+    }
 
     #ifdef SECOC_DEBUG
         printf("result of authenticate is %d\n", result);
