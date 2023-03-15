@@ -878,8 +878,19 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         SecPdu->SduLength = 0;
     }
 
+    else
+    {
+        /* [SWS_SecOC_00256] */
+        /* [SWS_SecOC_00248] */
+        SecPdu->SduLength = 0;
+        *verification_result = SECOC_FRESHNESSFAILURE;
 
-    return result;
+        /* [SWS_SecOC_00248] */
+        /* DET Report Error */
+    }
+    
+    printf("%d\n",*verification_result);
+    return *verification_result;
 }
 
 
