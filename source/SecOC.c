@@ -910,18 +910,6 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    SecOC_Init(&SecOC_Config);
-    PduIdType id = 0;
-    uint8 meta=0;
-    uint8 dataRec2[] = {5,2,3,4,5,6,20,255,1,55,66,77,88};
-    PduInfoType *securedPdu = &(SecOCTxPduProcessing[id].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    PduInfoType *authPdu = &(SecOCTxPduProcessing[id].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
-    securedPdu->MetaDataPtr =&meta;
-    authPdu->MetaDataPtr =&meta;
-    authPdu->SduDataPtr=dataRec2;
-    authPdu->SduLength = 13;
-    printf("\nTEST1\n");
-    SecOCMainFunctionTx();
-    SecOC_RxIndication (id,securedPdu);
+
 }
 #endif
