@@ -451,11 +451,15 @@ void SecOCMainFunctionRx(void)
                 printf("MAC failed for id: %d\n", idx);
                 #endif
             }
-            else
+            else if(result == SECOC_FRESHNESSFAILURE)
             {
                 #ifdef SECOC_DEBUG
                 printf("FV failed for id: %d\n", idx);
                 #endif
+            }
+            else
+            {
+
             }
 
         }
