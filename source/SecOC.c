@@ -834,7 +834,7 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     *verification_result = E_OK;
  
     /* [SWS_SecOC_00256] */
-    if(SecOCIntermediate.freshnessResult != E_OK)
+    if(SecOCIntermediate.freshnessResult == E_OK)
     {
         /* drop message */
         SecPdu->SduLength = 0;
@@ -842,24 +842,25 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         return result;
     }
 
-    uint8 DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH] = {0};
-    uint32 DataToAuthLen = 0;
+        /* [SWS_SecOC_00046] */
+        constructDataToAuthenticatorRx(RxPduId, DataToAuth, &DataToAuthLen, &SecOCIntermediate);
 
-    /* [SWS_SecOC_00046] */
-    constructDataToAuthenticatorRx(RxPduId, DataToAuth, &DataToAuthLen, &SecOCIntermediate);
+        Crypto_VerifyResultType verify_var;
 
-    Crypto_VerifyResultType verify_var;
+        /* [SWS_SecOC_00047] */
+        Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, SecOCIntermediate.mac, SecOCIntermediate.macLenBits, &verify_var);
 
-    /* [SWS_SecOC_00047] */
-    Std_ReturnType Mac_verify = Csm_MacVerify(SecOCRxPduProcessing[RxPduId].SecOCDataId, Crypto_stub, DataToAuth, DataToAuthLen, SecOCIntermediate.mac, SecOCIntermediate.macLenBits, &verify_var);
+        if (Mac_verify == E_OK) 
+        {
+            /* [SWS_SecOC_00242] */
+            *verification_result = SECOC_VERIFICATIONSUCCESS;
 
-    if (Mac_verify == E_OK) 
-    {
-        *verification_result = CRYPTO_E_VER_OK;
-        /* [SWS_SecOC_00242] */
-        result = SECOC_VERIFICATIONSUCCESS;
+            PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
 
-        PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+            /* Copy authenticPdu from secured layer to the authentic layer */
+            (void)memcpy(authPdu->SduDataPtr, SecOCIntermediate.authenticPdu, SecOCIntermediate.authenticPduLen);
+            authPdu->SduLength = SecOCIntermediate.authenticPduLen;
+            authPdu->MetaDataPtr = SecPdu->MetaDataPtr;
 
             /* [SWS_SecOC_00087] */
             SecPdu->SduLength = 0;
