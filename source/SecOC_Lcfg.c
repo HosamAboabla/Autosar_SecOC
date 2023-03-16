@@ -250,6 +250,25 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         &SecOC_TxSecuredPduLayer[0],
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
+    },
+    {
+        SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
+        SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
+        SECOC_TX_DATA_ID,
+        SECOC_TX_FRESHNESS_VALUE_ID,
+        SECOC_TX_FRESHNESS_VALUE_LENGTH,
+        SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH,
+        SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE,
+        SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT,
+        SECOC_TX_PDU_UNUSED_AREAS_DEFAULT,
+        SECOC_USE_TX_CONFIRMATION,
+        /*                                                  SecOCSameBufferPduRef;*/
+        /*                                                  SecOCTxAuthServiceConfigRef*/
+        /*                                                  SecOCTxPduMainFunctionRef;*/
+        &SecOC_TxAuthenticPduLayer[1],
+        &SecOC_TxSecuredPduLayer[1],
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
     }
 };
 
@@ -257,7 +276,8 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
 
 SecOC_RxPduProcessingType SecOC_RxPduProcessing[] = 
 {
-    {
+    
+    {        
         SECOC_AUTHDATA_FRESHNESSLEN,
         SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
         SECOC_AUTHENTICATION_BUILDATTEMPTS,
@@ -279,6 +299,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         &SecOC_RxAuthenticPduLayer[0],
         /*&SecOC_RxPduSecuredArea*/
     },
+    
 };
 
 
