@@ -4,8 +4,7 @@
 #include "CanTP.h"
 #include "Dcm.h"
 #include "SecOC_Debug.h"
-
-
+#include "SecOC_Lcfg.h"
 
 /****************************************************
  *          * Function Info *                       *
@@ -17,26 +16,33 @@
  *              of a PDU                            *
  ***************************************************/
 
-/*FROM ROUTING TABLE WE KNOW PAGE 129*/
-#define CANIF 0
-#define FRIF 1
-#define CANTP 2
 
+communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+{
+    CANIF,
+    CANTP,
+};
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
    #ifdef PDUR_DEBUG
-        printf("######## in PduR_SecOCTransmit \n");
+        printf("######## in PduR_SecOCTransmit for id %d \n", TxPduId);
     #endif
-   if(*(PduInfoPtr->MetaDataPtr) == CANIF)
+   if(TxComTypes[TxPduId] == CANIF)
    {
+      #ifdef PDUR_DEBUG
+        printf("sending CANIF \n");
+      #endif
       return CanIf_Transmit(TxPduId,PduInfoPtr);
    }
-   else if (*(PduInfoPtr->MetaDataPtr) == FRIF)
+   else if (TxComTypes[TxPduId] == FRIF)
    {
       // return FrIf_Transmit(TxPduId, PduInfoPtr);
    }   
-   else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
+   else if(TxComTypes[TxPduId] == CANTP)
    {
+      #ifdef PDUR_DEBUG
+        printf("sending CANTP \n");
+      #endif
       return CanTp_Transmit(TxPduId, PduInfoPtr);
    }
     return E_NOT_OK;
