@@ -148,46 +148,44 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
 
 }
 
-typedef enum
-{
-    DIRECT,
-    CANTP,
-    ETHERNET
-}communicate_Types;
 
-communicate_Types comTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
-    DIRECT,
+    CANIF,
     CANTP
 };
 
-void Receive_main(void)
+void ethernet_RecieveMainFunction(void)
 {
     uint8 dataRecieve [BUS_LENGTH_RECEIVE];
     uint16 id;
     ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
     PduInfoType PduInfoPtr = {
         .SduDataPtr = dataRecieve,
-        .MetaDataPtr = &comTypes[id],
+        .MetaDataPtr = &RxComTypes[id],
         .SduLength = BUS_LENGTH_RECEIVE,
     };
-    if (comTypes[id] == DIRECT)
+    if (RxComTypes[id] == CANIF)
     {
         #ifdef ETHERNET_DEBUG
             printf("here in Direct \n");
         #endif
         PduR_CanIfRxIndication(id, &PduInfoPtr);
     }
-    else if (comTypes[id] == CANTP)
+    else if (RxComTypes[id] == CANTP)
     {
         #ifdef ETHERNET_DEBUG
             printf("here in CANTP \n");
         #endif
         CanTp_RxIndication(id, &PduInfoPtr);
     }
-    else if (comTypes[id] == ETHERNET)
+    else if (RxComTypes[id] == SOAD)
     {
         // soAd interface
+    }
+    else if(RxComTypes[id] == FRIF)
+    {
+        // FRIF interface
     }
     
 }
