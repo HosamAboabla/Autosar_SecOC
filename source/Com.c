@@ -37,3 +37,46 @@ void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     #endif
 	
 }
+
+void ComMainTx(void)
+{
+	PduIdType id;
+	uint8 buff[20];
+	PduInfoType SPDU;
+	printf("enter   0:Direct    1:TP    --> \n");
+	scanf("%d", &id);
+ 	if(id == 1)
+	{
+		#ifdef COM_DEBUG
+    	printf("############### Send tp ###############\n");
+    	#endif
+		PduLengthType len = 16;
+		printf("data to send must be %d : ", len);
+		for(int i = 0; i < len; i++)
+		{
+			scanf("%d", &buff[i]);
+		}
+		uint8 test_meta_data = 2;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(id,&SPDU);
+	}
+	else if(id == 0)
+	{
+		printf("############### Send Direct ###############\n");
+		PduLengthType len = 2;
+		printf("data to send must be %d : ", len);
+		for(int i = 0; i < len; i++)
+		{
+			scanf("%d", &buff[i]);
+		}
+		PduInfoType SPDU;
+		uint8 test_meta_data = 0;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(id,&SPDU);
+	}
+
+}
