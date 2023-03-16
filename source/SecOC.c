@@ -383,7 +383,7 @@ void SecOCMainFunctionTx(void)
             if(result == E_OK )
             {
                 /* [SWS_SecOC_00062] */
-                //PduR_SecOCTransmit(idx , securedPdu);
+                PduR_SecOCTransmit(idx , securedPdu);
             }
             else if ((result == E_BUSY) || (result == QUEUE_FULL))
             {
