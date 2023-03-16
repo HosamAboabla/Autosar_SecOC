@@ -45,5 +45,7 @@ typedef double                  float64;
 typedef uint8 Std_ReturnType;
 #define E_OK            ((Std_ReturnType)0x00)
 #define E_NOT_OK        ((Std_ReturnType)0x01)
+#define E_BUSY          ((Std_ReturnType)0x02)
+#define QUEUE_FULL      ((Std_ReturnType)0x03)
 
 #endif /* INCLUDE_STD_TYPES_H_ */

@@ -181,12 +181,12 @@
 /*
 * Configuration Parameter for SecOC_AuthenticationBuildAttempts
 */
-#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)0)
+#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)3)
 
 /*
 * Configuration Parameter for SecOC_AuthenticationVerifyAttempts
 */
-#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)0)
+#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)3)
 
 /*
 * Configuration Parameter for SecOC_AuthInfoTruncLength
