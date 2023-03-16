@@ -159,6 +159,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
     SecOC_TxIntermediateType SecOCIntermediate;
 
     result = prepareFreshnessTx(TxPduId, &SecOCIntermediate);
+    
     /* [SWS_SecOC_00227] */
     if(( result == E_BUSY) ||  (result == E_NOT_OK))
     {
@@ -182,7 +183,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
     );
 
     /* [SWS_SecOC_00227] */
-    if( ((result == E_NOT_OK) || result == E_BUSY) || (result == QUEUE_FULL) )
+    if( (result == E_NOT_OK) || (result == E_BUSY) || (result == QUEUE_FULL) )
     {
         return result;
     }
@@ -930,7 +931,9 @@ static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
     FVM_UpdateCounter(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId, SecOCIntermediate.freshness, SecOCIntermediate.freshnessLenBits);
 
+    #ifdef SECOC_DEBUG
     printf("%d\n",*verification_result);
+    #endif
 
     return E_OK;
 }
