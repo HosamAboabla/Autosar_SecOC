@@ -29,6 +29,7 @@ static SecOC_StateType SecOCState = SECOC_UNINIT;
 static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
 
 /* Internal functions */
+static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate);
 static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate, const PduInfoType* AuthPdu);
 static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu);
 
@@ -69,28 +70,43 @@ static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, Se
     /* secured part of the Authentic I-PDU */
     (void)memcpy(&DataToAuth[*DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
     *DataToAuthLen += AuthPdu->SduLength;
-    
 
-    uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCIntermediate->FreshnessLenBits); // don't forget this one
+    uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCIntermediate->FreshnessLenBits);
     (void)memcpy(&DataToAuth[*DataToAuthLen], SecOCIntermediate->Freshness, FreshnesslenBytes);
     *DataToAuthLen += FreshnesslenBytes;
 
     return E_OK;
 }
 
-Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate)
+/************************************************************
+*          * Function Info *                                *
+*                                                           *
+* Function_Name       : prepareFreshnessTx                  *
+* Function_Index      : SecOC internal                      *
+* Parameter in        : TxPduId, SecOCIntermediate          *
+* Parameter in        : SecOCIntermediate                   *
+* Function_Descripton : This function prepares the          *
+* freshnes value for the secure communication. It           *
+* will query freshness data using SecOC_GetTxFreshness or   *
+* SecOC_GetTxFreshnessTruncData API based on configuration  *
+* and store it in Intermediate structure                    *
+************************************************************/                                         
+static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate)
 {
+    #ifdef SECOC_DEBUG
+        printf("######## in prepareFreshnessTx \n");
+    #endif
     Std_ReturnType result;
-
-    SecOCIntermediate->FreshnessLenBits = SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueLength;
-    SecOCIntermediate->FreshnessTruncLenBits = SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueTruncLength;
 
     (void)memset(SecOCIntermediate->Freshness, 0, sizeof(SecOCIntermediate->Freshness));
     (void)memset(SecOCIntermediate->FreshnessTrunc, 0, sizeof(SecOCIntermediate->FreshnessTrunc));
 
+    SecOCIntermediate->FreshnessLenBits = SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueLength;
+    SecOCIntermediate->FreshnessTruncLenBits = SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueTruncLength;
+
     if(SecOCGeneral->SecOCQueryFreshnessValue == SECOC_CFUNC)
     {
-        /* [SWS_SecOC_00221], [SWS_SecOC_00230] */
+        /* [SWS_SecOC_00221] */
         if(SecOCTxPduProcessing[TxPduId].SecOCProvideTxTruncatedFreshnessValue == TRUE)
         {
 
@@ -104,7 +120,7 @@ Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateT
             );
 
         }
-        /* [SWS_SecOC_00222], [SWS_SecOC_00231] */
+        /* [SWS_SecOC_00222] */
         else
         {
 
@@ -134,10 +150,10 @@ Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateT
  *******************************************************/
 static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* AuthPdu, PduInfoType* SecPdu)
 {
-    /* [SWS_SecOC_00031] authentication steps */
     #ifdef SECOC_DEBUG
         printf("######## in authenticate \n");
     #endif
+    /* [SWS_SecOC_00031] authentication steps */
     Std_ReturnType result;
 
     SecOC_TxIntermediateType SecOCIntermediate;
@@ -178,11 +194,12 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
     SecPduLen += AuthPdu->SduLength;
 
-    /* [SWS_SecOC_00094] TruncatedFreshnessValue */
+    /* [SWS_SecOC_00230], [SWS_SecOC_00231] */
     boolean IsFreshnessTruncated = (SecOCTxPduProcessing[TxPduId].SecOCProvideTxTruncatedFreshnessValue == TRUE);
     uint8 *MsgFreshness = (IsFreshnessTruncated) ? SecOCIntermediate.FreshnessTrunc : SecOCIntermediate.Freshness;
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueTruncLength);
 
+     /* [SWS_SecOC_00094] TruncatedFreshnessValue */
     (void)memcpy(&SecPdu->SduDataPtr[SecPduLen], MsgFreshness, FreshnesslenBytes);
     SecPduLen += FreshnesslenBytes;
 
