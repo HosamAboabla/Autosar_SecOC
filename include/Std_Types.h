@@ -38,6 +38,15 @@ typedef unsigned long long      uint64;         /*       0..18446744073709551615
 typedef float                   float32;
 typedef double                  float64;
 
+
+typedef enum
+{
+    CANIF,
+    CANTP,
+    FRIF,
+    SOAD
+}communicate_Types;
+
 #ifndef NULL
 #define NULL ((void*)0)
 #endif
