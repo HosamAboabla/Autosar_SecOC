@@ -111,7 +111,7 @@ typedef enum
 Where here `<MIP>` is the Capitalized module implementation prefix of this BSW Module `[SWS_BSW_00102]`, `<EN>` is the error name. Only capital letters shall be used. If `<EN>` consists of several words, they shall be separated by underscore.c `(SRS_BSW_-00327)`
 ## Example for error values 
 ```C
-#define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
+#define SECOC_BUFREQ_E_NOT_OK /* Data was not copied because an error occurred.*/
 ```
 <br/>
 
@@ -217,7 +217,7 @@ typedef enum
 
 ## Example for error values 
 ```C
-#define SECOC_BUFREQ_E_NOT_OK // Data was not copied because an error occurred.
+#define SECOC_BUFREQ_E_NOT_OK /* Data was not copied because an error occurred.*/
 ```
 
 

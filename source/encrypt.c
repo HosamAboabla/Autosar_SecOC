@@ -3,7 +3,7 @@
 
 
 
-// Encryption: Forward Rijndael S-box
+/* Encryption: Forward Rijndael S-box*/
 unsigned char s_box[256] = {
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
     0xCA, 0x82, 0xC9, 0x7D, 0xFA, 0x59, 0x47, 0xF0, 0xAD, 0xD4, 0xA2, 0xAF, 0x9C, 0xA4, 0x72, 0xC0,
@@ -23,7 +23,7 @@ unsigned char s_box[256] = {
     0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16
 };
 
-// Encryption: Multiply by 2 for MixColumns
+/*Encryption: Multiply by 2 for MixColumns*/
 unsigned char mul2[] = {
     0x00, 0x02, 0x04, 0x06, 0x08, 0x0a, 0x0c, 0x0e, 0x10, 0x12, 0x14, 0x16, 0x18, 0x1a, 0x1c, 0x1e,
     0x20, 0x22, 0x24, 0x26, 0x28, 0x2a, 0x2c, 0x2e, 0x30, 0x32, 0x34, 0x36, 0x38, 0x3a, 0x3c, 0x3e,
@@ -43,7 +43,7 @@ unsigned char mul2[] = {
     0xfb, 0xf9, 0xff, 0xfd, 0xf3, 0xf1, 0xf7, 0xf5, 0xeb, 0xe9, 0xef, 0xed, 0xe3, 0xe1, 0xe7, 0xe5
 };
 
-// Encryption: Multiply by 3 for MixColumns
+/*Encryption: Multiply by 3 for MixColumns*/
 unsigned char mul3[] = {
     0x00, 0x03, 0x06, 0x05, 0x0c, 0x0f, 0x0a, 0x09, 0x18, 0x1b, 0x1e, 0x1d, 0x14, 0x17, 0x12, 0x11,
     0x30, 0x33, 0x36, 0x35, 0x3c, 0x3f, 0x3a, 0x39, 0x28, 0x2b, 0x2e, 0x2d, 0x24, 0x27, 0x22, 0x21,
@@ -63,7 +63,7 @@ unsigned char mul3[] = {
     0x0b, 0x08, 0x0d, 0x0e, 0x07, 0x04, 0x01, 0x02, 0x13, 0x10, 0x15, 0x16, 0x1f, 0x1c, 0x19, 0x1a
 };
 
-// Used in KeyExpansion
+/* Used in KeyExpansion*/
 unsigned char rcon[256] = {
     0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
     0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39,
@@ -84,43 +84,43 @@ unsigned char rcon[256] = {
 };
 
 
-// Auxiliary function for KeyExpansion
+/* Auxiliary function for KeyExpansion*/
 void KeyExpansionCore(unsigned char * in, unsigned char i) {
-    // Rotate left by one byte: shift left
+    /*Rotate left by one byte: shift left*/ 
     unsigned char t = in[0];
     in[0] = in[1];
     in[1] = in[2];
     in[2] = in[3];
     in[3] = t;
 
-    // S-box 4 bytes
+    /*S-box 4 bytes*/ 
     in[0] = s_box[in[0]];
     in[1] = s_box[in[1]];
     in[2] = s_box[in[2]];
     in[3] = s_box[in[3]];
 
-    // RCon
+    /* RCon*/
     in[0] ^= rcon[i];
 }
 
 
 
 void KeyExpansion(unsigned char inputKey[16], unsigned char expandedKeys[176]) {
-// The first 128 bits are the original key
+/* The first 128 bits are the original key*/
     for (int i = 0; i < 16; i++) {
         expandedKeys[i] = inputKey[i];
     }
 
-    int bytesGenerated = 16;  // Bytes we've generated so far
-    int rconIteration = 1;  // Keeps track of rcon value
-    unsigned char tmpCore[4];  // Temp storage for core
+    int bytesGenerated = 16;  /* Bytes we've generated so far*/
+    int rconIteration = 1;  /* Keeps track of rcon value*/
+    unsigned char tmpCore[4];  /*Temp storage for core*/ 
 
     while (bytesGenerated < 176) {
         for (int i = 0; i < 4; i++) {
             tmpCore[i] = expandedKeys[i + bytesGenerated - 4];
         }
 
-        // Perform the core once for each 16 byte key
+        /* Perform the core once for each 16 byte key*/
         if ( (bytesGenerated % 16) == 0) {
             KeyExpansionCore(tmpCore, rconIteration++);
         }
@@ -147,7 +147,7 @@ void SubBytes(unsigned char * state) {
     }
 }
 
-// Shift left, adds diffusion
+/* Shift left, adds diffusion*/
 void ShiftRows(unsigned char * state) {
     unsigned char tmp[16];
 
@@ -234,7 +234,7 @@ void FinalRound(unsigned char * state, unsigned char * key) {
  * Organizes the confusion and diffusion steps into one function
  */
 void AESEncrypt(uint8* message, unsigned char * expandedKey, uint8* encryptedMessage) {
-    unsigned char state[16];  // Stores the first 16 bytes of original message
+    unsigned char state[16];  /* Stores the first 16 bytes of original message*/
 
     for (int i = 0; i < 16; i++) {
         state[i] = message[i];
@@ -242,7 +242,7 @@ void AESEncrypt(uint8* message, unsigned char * expandedKey, uint8* encryptedMes
 
     int numberOfRounds = 9;
 
-    AddRoundKey(state, expandedKey);  // Initial round
+    AddRoundKey(state, expandedKey);  /* Initial round*/
 
     for (int i = 0; i < numberOfRounds; i++) {
         Round(state, &expandedKey[(16 * (i+1))] );
@@ -250,7 +250,7 @@ void AESEncrypt(uint8* message, unsigned char * expandedKey, uint8* encryptedMes
 
     FinalRound(state, &expandedKey[160]);
 
-    // Copy encrypted state to buffer
+    /* Copy encrypted state to buffer*/
     for (int i = 0; i < 16; i++) {
         encryptedMessage[i] = state[i];
     }
@@ -258,7 +258,7 @@ void AESEncrypt(uint8* message, unsigned char * expandedKey, uint8* encryptedMes
 
 void addPadding(const uint8* message , int messageLen , uint8* paddedMessage)
 {
-    // Pad message to 16 bytes
+    /* Pad message to 16 bytes*/
     int originalLen = messageLen;
     int paddedMessageLen = originalLen;
     if ((paddedMessageLen % 16) != 0) {
@@ -282,7 +282,7 @@ void startEncryption(const uint8* message, uint32 messageLen, uint8* macPtr, uin
     uint8 expandedKey[176];
 
 
-    // Pad message to 16 bytes
+    /* Pad message to 16 bytes*/
     uint32 paddedMessageLen = messageLen;
     if ((paddedMessageLen % 16) != 0) {
         paddedMessageLen = ( (paddedMessageLen / 16) + 1) * 16;
@@ -300,16 +300,16 @@ void startEncryption(const uint8* message, uint32 messageLen, uint8* macPtr, uin
 
     sint32 macDiff = paddedMessageLen - (*macLengthPtr);
     uint8 macStart = (macDiff < 0) ? 0 : macDiff;
-    // Update macLength
+    /* Update macLength*/
     (*macLengthPtr) = paddedMessageLen - macStart;
-    // Copy generated MAC to the required destination
+    /* Copy generated MAC to the required destination*/
     memcpy(macPtr, &encryptedMessage[macStart], *macLengthPtr);
 
     if (*macLengthPtr > paddedMessageLen) {
         *macLengthPtr = paddedMessageLen;
     }
 
-    // Free memory
+    /*Free memory*/ 
     free(paddedMessage);
     free(encryptedMessage);
 }

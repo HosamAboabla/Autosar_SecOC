@@ -48,10 +48,10 @@ typedef enum {
 } SecOC_QueryFreshnessValue_Type;
 
 
-typedef enum       // SecOC status
+typedef enum       /* SecOC status*/
 {
-    SECOC_UNINIT,   // SecOC uninitialized
-    SECOC_INIT      // SecOC initialized
+    SECOC_UNINIT,   /* SecOC uninitialized*/
+    SECOC_INIT      /* SecOC initialized*/
 }SecOC_StateType;
 
 typedef struct 
