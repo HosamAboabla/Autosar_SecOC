@@ -7,7 +7,7 @@
 #define CRYPTO_E_KEY_SIZE_MISMATCH  ((Std_ReturnType)0x0A)
 #define CRYPTO_E_KEY_EMPTY          ((Std_ReturnType)0x0D)
 
-// Stub enumeration
+/* Stub enumeration*/
 typedef enum
 {    
     Crypto_stub
