@@ -7,12 +7,12 @@
 
 #ifdef DEBUG_ALL
 #define SECOC_DEBUG       /* Debug for SecOC */
-// #define FV_DEBUG          /* Dubeg for FreshnessValueManger */
-// #define CANIF_DEBUG       /* Dubeg for CanIF */
-// #define CANTP_DEBUG       /* Dubeg for CanTP */
+#define FV_DEBUG          /* Dubeg for FreshnessValueManger */
+#define CANIF_DEBUG       /* Dubeg for CanIF */
+#define CANTP_DEBUG       /* Dubeg for CanTP */
 #define COM_DEBUG         /* Dubeg for COM */
-// #define DCM_DEBUG         /* Dubeg for DCM */ 
-// #define ETHERNET_DEBUG    /* Dubeg for Ethernet */ 
+#define DCM_DEBUG         /* Dubeg for DCM */ 
+#define ETHERNET_DEBUG    /* Dubeg for Ethernet */ 
 #define PDUR_DEBUG        /* Dubeg for PduR */ 
 #define COUNTERS_DEBUG    /* Debug for Auth && verify Counters */   
 #endif
