@@ -184,7 +184,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
 
     /* [SWS_SecOC_00212] */
     SecPdu->MetaDataPtr = AuthPdu->MetaDataPtr;
-
     #ifdef SECOC_DEBUG
         printf("result of authenticate is %d\n", result);
     #endif
@@ -333,9 +332,16 @@ void SecOCMainFunctionTx(void)
         /* Check if there is data */
         if (authPdu->SduLength > 0) 
         {
+            #ifdef SECOC_DEBUG
+                printf("send data to ID %d and data is ",idx);
+                for(int k = 0; k < authPdu->SduLength; k++)
+                {
+                    printf("%d ", authPdu->SduDataPtr[k] );
+                }
+                printf("\n");
+            #endif
             /* [SWS_SecOC_00060], [SWS_SecOC_00061] */
             authenticate(idx , authPdu , securedPdu);
-            
             FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
 
             /* [SWS_SecOC_00062] */
