@@ -351,7 +351,7 @@
  * Container_Index       : 10.1.14                            *
  **************************************************************/
 
-#define SECOC_TX_PDUTYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
+#define SECOC_TX_PDUTYPE                    ((SecOC_PduType_Type)SECOC_IFPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
 
 
