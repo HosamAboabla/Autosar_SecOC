@@ -165,7 +165,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                     uint8 maxLength = (freshnessVallengthBytes > truncedFreshnessLengthBytes) ? (freshnessVallengthBytes) : (truncedFreshnessLengthBytes);
                     *SecOCFreshnessValueLength = countSizeBits(SecOCFreshnessValue,  maxLength);
                 }
-                else if (SecOCTruncatedFreshnessValue[index] < Freshness_Counter[SecOCFreshnessValueID][index] || equalityFlag == 0)
+                else if ((SecOCTruncatedFreshnessValue[index] < Freshness_Counter[SecOCFreshnessValueID][index]) || (equalityFlag == 0))
                 {
                     /*  most significant bits of (FreshnessValue corresponding to SecOCFreshnessValueID + 1) |
                     FreshnessValue parsed from payload */

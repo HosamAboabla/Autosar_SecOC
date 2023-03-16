@@ -88,7 +88,7 @@ uint32* SecOCFreshnessValueLength);
 
 
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
-//void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));
+/*void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));*/
 
 
 
@@ -232,4 +232,4 @@ BufReq_ReturnType SecOC_StartOfReception (
 
 #define SECOC_E_UNINIT 					0x02
 
-#endif  // INCLUDE_SECOC_H_
+#endif  /* INCLUDE_SECOC_H_*/
