@@ -56,7 +56,6 @@ static Std_ReturnType constructDataToAuthenticatorTx(const PduIdType TxPduId, Se
     #ifdef SECOC_DEBUG
         printf("######## in constructDataToAuthenticatorTx\n");
     #endif
-    Std_ReturnType result;
 
     uint8  *DataToAuth    = SecOCIntermediate->DataToAuth;
     uint32 *DataToAuthLen = &SecOCIntermediate->DataToAuthLen;
