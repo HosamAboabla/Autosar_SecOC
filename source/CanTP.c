@@ -158,8 +158,6 @@ void CanTP_MainFunctionRx(void)
     PduInfoType Tp_Spdu;
     uint8 Meta_data = 1;
     /* Here i recieve data */
-    
-    
     PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
     uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
