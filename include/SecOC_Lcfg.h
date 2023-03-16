@@ -20,6 +20,23 @@
 #define SECOC_NUM_OF_TX_PDU_PROCESSING                               (2)
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (1)
 
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
+typedef struct
+{
+
+   uint8                   Freshness[SECOC_FRESHNESS_MAX_LENGTH/8];  /* Complete Freshness Value */
+   uint32                  FreshnessLenBits;
+
+   uint8                   FreshnessTrunc[SECOC_FRESHNESS_MAX_LENGTH/8];   /* Truncated freshness value */
+   uint32                  FreshnessTruncLenBits;
+
+   uint8                   DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
+   uint32                  DataToAuthLen;
+
+   uint8                   AuthenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
+   uint32                  AuthenticatorLen;
+
+} SecOC_TxIntermediateType;
 
 typedef struct
 {
@@ -44,6 +61,10 @@ typedef struct
    
    uint8                   mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8];
    uint32                  macLenBits;
+
+   uint8                   DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH];
+   uint32                  DataToAuthLen ;
+
 } SecOC_RxIntermediateType;
 
 
@@ -440,7 +461,7 @@ typedef struct
    boolean SecOCEnableForcedPassOverride;
    boolean SecOCEnableSecurityEventReporting;
    boolean SecOCIgnoreVerificationResult;
-   uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
+   uint8   SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
    boolean SecOCOverrideStatusWithDataId;
    boolean SecOCPropagateOnlyFinalVerificationStatus;
    SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
