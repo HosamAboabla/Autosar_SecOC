@@ -38,7 +38,7 @@ void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 	
 }
 
-void ComMainTx(void)
+void Com_MainTx(void)
 {
 	PduIdType id;
 	uint8 buff[20];
