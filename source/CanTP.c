@@ -154,7 +154,7 @@ void CanTP_MainFunctionRx(void)
     #ifdef CANTP_DEBUG
         printf("######## in CanTP_MainFunctionRx\n");
     #endif
-    PduIdType idx = 1;
+
     PduInfoType Tp_Spdu;
     uint8 Meta_data = 1;
     /* Here i recieve data */
@@ -164,9 +164,9 @@ void CanTP_MainFunctionRx(void)
     PduLengthType bufferSizePtr;
     uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
     
-    for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
+    for(PduIdType idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
     {
-        if( (CanTp_Buffer_Rx_index[idx] > 0) && (CanTp_Buffer_Rx_index[idx] == TpSduLength))
+        if((CanTp_Buffer_Rx_index[idx] == TpSduLength))
         {
             Tp_Spdu.SduDataPtr = CanTp_Buffer_Rx[idx];
             Tp_Spdu.MetaDataPtr = &Meta_data;
