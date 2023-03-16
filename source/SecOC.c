@@ -96,7 +96,7 @@ static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxInterm
     #ifdef SECOC_DEBUG
         printf("######## in prepareFreshnessTx \n");
     #endif
-    Std_ReturnType result;
+    Std_ReturnType result = E_OK;
 
     /* [SWS_SecOC_00220] */
     (void)memset(SecOCIntermediate->Freshness, 0, sizeof(SecOCIntermediate->Freshness));
