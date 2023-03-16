@@ -30,6 +30,17 @@ Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTx
 }
 
 
+void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
+{
+    #ifdef CANTP_DEBUG
+        printf("######## in CanTp_RxIndication\n");
+    #endif
+    (void)memcpy(CanTp_Buffer_Rx[RxPduId] + CanTp_Buffer_Rx_index[RxPduId], PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength) ;
+    CanTp_Buffer_Rx_index[RxPduId] += PduInfoPtr->SduLength;
+}
+
+
+
 void CanTp_MainFunction(void)
 {
     #ifdef CANTP_DEBUG
