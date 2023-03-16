@@ -131,9 +131,10 @@ void CanTp_MainFunction(void)
                     printf("Transmit Result = %d\n" , last_pdu);
                 #endif
             }
-
+            
             PduR_CanTpTxConfirmation(idx , E_OK);
-
+            /* clear buffer */
+            CanTp_Buffer[idx].SduLength = 0;
         }
     }
 }
