@@ -16,6 +16,6 @@ Std_ReturnType PduR_ComTransmit(PduIdType PduID, const PduInfoType *PduInfo)
     #ifdef PDUR_DEBUG
         printf("######## in PduR_ComTransmit \n");
     #endif
-    // When SecOC is used, PduR routes the message to the SecOC 
+    /* When SecOC is used, PduR routes the message to the SecOC */
     SecOC_IfTransmit(PduID, PduInfo);
 }
