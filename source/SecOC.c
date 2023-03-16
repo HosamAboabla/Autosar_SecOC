@@ -97,7 +97,8 @@ static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxInterm
         printf("######## in prepareFreshnessTx \n");
     #endif
     Std_ReturnType result;
-
+    
+    /* [SWS_SecOC_00220] */
     (void)memset(SecOCIntermediate->Freshness, 0, sizeof(SecOCIntermediate->Freshness));
     (void)memset(SecOCIntermediate->FreshnessTrunc, 0, sizeof(SecOCIntermediate->FreshnessTrunc));
 
@@ -156,6 +157,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, const PduInfoType* A
     /* [SWS_SecOC_00031] authentication steps */
     Std_ReturnType result;
 
+    /* [SWS_SecOC_00033] */
     SecOC_TxIntermediateType SecOCIntermediate;
 
     result = prepareFreshnessTx(TxPduId, &SecOCIntermediate);
