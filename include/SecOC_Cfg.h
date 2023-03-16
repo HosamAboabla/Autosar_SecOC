@@ -127,11 +127,11 @@
 
 
 
-// /* NOTE i don't container  */
-// /* 
-// * Configration parameter for SecOCSecurityEventRefs 
-// */ 
-// #define SECOC_SECURITY_EVENT_REFS                                  ((SecOC_SecurityEventRefsType)NULL)
+/* NOTE i don't container  */
+/* 
+* Configration parameter for SecOCSecurityEventRefs 
+*/ 
+/* #define SECOC_SECURITY_EVENT_REFS                                  ((SecOC_SecurityEventRefsType)NULL)*/
 
 
 
@@ -351,7 +351,7 @@
  * Container_Index       : 10.1.14                            *
  **************************************************************/
 
-#define SECOC_TX_PDUTYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
+#define SECOC_TX_PDUTYPE                    ((SecOC_PduType_Type)SECOC_IFPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
 
 
@@ -387,7 +387,7 @@
  ***********************************************************/
 
 #define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
-#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)NULL) //((EcuC_PduType*)&EcuC_Pdu)
+#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)NULL) /*((EcuC_PduType*)&EcuC_Pdu)*/
 
 /************************************************************
  *          * Container Info *                              *
@@ -452,9 +452,9 @@
 #define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8) 0)
 #define SECOC_USE_TX_CONFIRMATION                                   (0)
 
-//                                                  SecOCSameBufferPduRef;
-//                                                  SecOCTxAuthServiceConfigRef
-//                                                  SecOCTxPduMainFunctionRef;
+/*                                                  SecOCSameBufferPduRef;*/
+/*                                                  SecOCTxAuthServiceConfigRef*/
+/*                                                  SecOCTxPduMainFunctionRef;*/
 
 
 

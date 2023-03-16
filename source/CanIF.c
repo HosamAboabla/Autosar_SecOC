@@ -29,7 +29,7 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef CANIF_DEBUG
         printf("######## in CanIf_Transmit \n");
     #endif
-    // CanIF_Buffer[TxPduId] = PduInfoPtr; //copy_buffer
+    /*CanIF_Buffer[TxPduId] = PduInfoPtr;*/ /*copy_buffer*/
     Std_ReturnType result = E_OK;
 
     #ifdef CANIF_DEBUG
