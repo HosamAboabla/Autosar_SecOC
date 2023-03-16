@@ -63,7 +63,7 @@ typedef struct
    uint32                  macLenBits;
 
    uint8                   DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH];
-   uint32                  DataToAuthLen ;
+   uint32                  DataToAuthLen;
 
 } SecOC_RxIntermediateType;
 
