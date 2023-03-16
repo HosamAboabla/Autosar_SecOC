@@ -1,5 +1,8 @@
 #include "ethernet.h"
 #include "SecOC_Debug.h"
+#include "SecOC_Lcfg.h"
+#include "CanTP.h"
+#include "PduR_CanIf.h"
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     #ifdef ETHERNET_DEBUG
@@ -137,7 +140,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef ETHERNET_DEBUG
-        printf("id = %d n\n",*id);
+        printf("id = %d \n",*id);
     #endif
     // close the socket
     close(server_socket);
