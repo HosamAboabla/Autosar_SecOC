@@ -162,7 +162,7 @@ void CanTP_MainFunctionRx(void)
     PduLengthType bufferSizePtr;
     uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
     
-    for(PduIdType idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
+    for(PduIdType idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING ; idx++)
     {
         if((CanTp_Buffer_Rx_index[idx] == TpSduLength))
         {
