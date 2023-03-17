@@ -97,6 +97,11 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         SECOC_RX_PDUTYPE,
         SECOC_RXAUTHENTICLAYER_PDUID,
         {AuthPdu0BufferRx, NULL, 4},
+    },
+    {
+        SECOC_RX_PDUTYPE,
+        SECOC_RXAUTHENTICLAYER_PDUID,
+        {AuthPdu1BufferRx, NULL, 4},
     }
 };
 
@@ -107,6 +112,12 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
         SECOC_RX_SECUREDLAYER_PDUID,
         SECOC_SECURED_RX_PDUVERIFICATION,
         {SecPdu0BufferRx, NULL, 0},
+    },
+    {
+        SECOC_AUTHPDU_HEADERLENGTH,
+        SECOC_RX_SECUREDLAYER_PDUID,
+        SECOC_SECURED_RX_PDUVERIFICATION,
+        {SecPdu1BufferRx, NULL, 0},
     }
 };
 
@@ -115,7 +126,11 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     {
         &SecOC_RxSecuredPdu[0],
         &SecOC_RxSecuredPduCollection  
-    }  
+    } ,
+    {
+        &SecOC_RxSecuredPdu[1],
+        &SecOC_RxSecuredPduCollection  
+    } 
 };
 
 
@@ -147,13 +162,13 @@ SecOC_SameBufferPduCollectionType SecOC_SameBufferPduRef=
 SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
 {
     {   
-        SECOC_TX_PDUTYPE,
+        .SecOCPduType = SECOC_IFPDU,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
 
         {AuthPdu0BufferTx, NULL, 0},
     },
     {   
-        SECOC_TX_PDUTYPE,
+        .SecOCPduType = SECOC_TPPDU,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
         {AuthPdu1BufferTx, NULL, 0},
     }
@@ -236,9 +251,9 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
         SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
         SECOC_TX_DATA_ID,
-        SECOC_TX_FRESHNESS_VALUE_ID,
+        .SecOCFreshnessValueId = 10,
         SECOC_TX_FRESHNESS_VALUE_LENGTH,
-        SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH,
+        .SecOCFreshnessValueTruncLength = 1,
         SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE,
         SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT,
         SECOC_TX_PDU_UNUSED_AREAS_DEFAULT,
@@ -255,7 +270,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
         SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
         SECOC_TX_DATA_ID,
-        .SecOCFreshnessValueId = 7,
+        .SecOCFreshnessValueId = 9,
         SECOC_TX_FRESHNESS_VALUE_LENGTH,
         SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH,
         SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE,
@@ -285,9 +300,9 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         SECOC_RX_AUTH_INFO_TRUNCLENGTH,
         SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE,
         SECOC_RX_DATA_ID,
-        SECOC_FRESHNESSVALUE_ID,
+        .SecOCFreshnessValueId = 10,
         SECOC_RX_FRESHNESS_VALUE_LENGTH,
-        SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH,
+        .SecOCFreshnessValueTruncLength = 1,
         SECOC_RECEPTION_OVERFLOW_STRATEGY,
         SECOC_RECEPTION_QUEUESIZE,
         SECOC_USE_AUTHDATA_FRESHNESS,
@@ -299,6 +314,28 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         &SecOC_RxAuthenticPduLayer[0],
         /*&SecOC_RxPduSecuredArea*/
     },
+    {        
+        SECOC_AUTHDATA_FRESHNESSLEN,
+        SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
+        SECOC_AUTHENTICATION_BUILDATTEMPTS,
+        SECOC_AUTHENTICATION_VERIFYATTEMPTS,
+        SECOC_RX_AUTH_INFO_TRUNCLENGTH,
+        SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE,
+        SECOC_RX_DATA_ID,
+        .SecOCFreshnessValueId = 9,
+        SECOC_RX_FRESHNESS_VALUE_LENGTH,
+        SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH,
+        SECOC_RECEPTION_OVERFLOW_STRATEGY,
+        SECOC_RECEPTION_QUEUESIZE,
+        SECOC_USE_AUTHDATA_FRESHNESS,
+        SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE,
+        &SecOC_RxAuthServiceConfigRef,
+        &SecOC_MainFunctionRx,
+        &SecOC_SameBufferPduRef,
+        &SecOC_RxSecuredPduLayer[1],
+        &SecOC_RxAuthenticPduLayer[1],
+        /*&SecOC_RxPduSecuredArea*/
+    }
     
 };
 

@@ -211,12 +211,12 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
 */
-#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)16)
+#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)24)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueTruncLength
 */
-#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)14)
+#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)17)
 
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
@@ -445,8 +445,8 @@
 #define SECOC_TX_AUTH_INFO_TRUNC_LENGTH                             ((uint16) 32)
 #define SECOC_TX_DATA_ID                                            ((uint16) 0)
 #define SECOC_TX_FRESHNESS_VALUE_ID                                 ((uint16) 9)
-#define SECOC_TX_FRESHNESS_VALUE_LENGTH                             ((uint8) 16)
-#define SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH                       ((uint8 ) 14)
+#define SECOC_TX_FRESHNESS_VALUE_LENGTH                             ((uint8) 24)
+#define SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH                       ((uint8 ) 17)
 #define SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE                  ((boolean) TRUE)
 #define SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT                ((boolean) 1)
 #define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8) 0)
