@@ -16,7 +16,7 @@ Std_ReturnType last_pdu;
 
 
 
-PduInfoType CanTp_Buffer[CANTP_BUFFER_SIZE];
+PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static uint8 CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING][CANTP_BUFFER_SIZE];
 static uint8 CanTp_Buffer_Rx_index[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
@@ -56,7 +56,7 @@ void CanTp_MainFunction(void)
     PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
-    for(idx = 0 ; idx < CANTP_BUFFER_SIZE ; idx++)
+    for(idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++)
     {
         if( CanTp_Buffer[idx].SduLength > 0)
         {
