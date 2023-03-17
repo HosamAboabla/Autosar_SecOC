@@ -46,13 +46,13 @@ const uint8* macPtr, const uint32 macLength, Crypto_VerifyResultType* verifyPtr)
         else 
         {
             result = E_NOT_OK;
-            *verifyPtr = E_NOT_OK;
+            *verifyPtr = CRYPTO_E_VER_NOT_OK;
         }
     } 
     else 
     {
         result = E_NOT_OK;
-        *verifyPtr = E_NOT_OK;
+        *verifyPtr = CRYPTO_E_VER_NOT_OK;
     }
     return result;
 }

@@ -38,6 +38,17 @@ typedef struct
 
 } SecOC_TxIntermediateType;
 
+typedef struct
+{
+   uint16 AuthenticationCounter;
+} SecOC_TxCountersType;
+
+typedef struct
+{
+   uint16 AuthenticationCounter;
+   uint16 VerificationCounter;
+} SecOC_RxCountersType;
+
 /* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
 typedef struct
 {
@@ -52,7 +63,7 @@ typedef struct
    uint32                  macLenBits;
 
    uint8                   DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH];
-   uint32                  DataToAuthLen ;
+   uint32                  DataToAuthLen;
 
 } SecOC_RxIntermediateType;
 
@@ -445,18 +456,18 @@ typedef struct
 
 typedef struct 
 {
-    uint8   SecOCDefaultAuthenticationInformationPattern;
-    boolean SecOCDevErrorDetect;
-    boolean SecOCEnableForcedPassOverride;
-    boolean SecOCEnableSecurityEventReporting;
-    boolean SecOCIgnoreVerificationResult;
-    uint8   SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
-    boolean SecOCOverrideStatusWithDataId;
-    boolean SecOCPropagateOnlyFinalVerificationStatus;
-    SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
-    /* SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;*/
-    boolean SecOCVersionInfoApi;
-    /*SecOC_SecurityEventRefsType *SecOCSecurityEventRefs;*/ /* can't have the container of it */
+   uint8   SecOCDefaultAuthenticationInformationPattern;
+   boolean SecOCDevErrorDetect;
+   boolean SecOCEnableForcedPassOverride;
+   boolean SecOCEnableSecurityEventReporting;
+   boolean SecOCIgnoreVerificationResult;
+   uint8   SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
+   boolean SecOCOverrideStatusWithDataId;
+   boolean SecOCPropagateOnlyFinalVerificationStatus;
+   SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
+   /* SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;*/
+   boolean SecOCVersionInfoApi;
+   /*SecOC_SecurityEventRefsType *SecOCSecurityEventRefs;*/ /* can't have the container of it */
 
 }SecOC_GeneralType;
 
