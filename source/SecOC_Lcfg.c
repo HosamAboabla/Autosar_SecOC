@@ -365,5 +365,10 @@ SecOC_RxCountersType SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING] =
         /* [SWS_SecOC_00235] */
         .AuthenticationCounter = 0,
         .VerificationCounter = 0
+    },
+    {
+        /* [SWS_SecOC_00235] */
+        .AuthenticationCounter = 0,
+        .VerificationCounter = 0
     }
 };
