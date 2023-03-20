@@ -130,13 +130,13 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
 
 SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] = 
 {
-    {
+    { /* direct */
         SECOC_AUTHPDU_HEADERLENGTH,
         SECOC_RX_SECUREDLAYER_PDUID,
         SECOC_SECURED_RX_PDUVERIFICATION,
         {SecPdu0BufferRx, NULL, 0},
     },
-    {
+    { /* for Tp */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 11),
         .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
@@ -151,11 +151,11 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
 
 SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
 {
-    {
+    { /* direct */
         &SecOC_RxSecuredPdu[0],
         &SecOC_RxSecuredPduCollection  
     },
-    {
+    { /* for Tp */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[1],
         .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
     } 
@@ -189,12 +189,12 @@ SecOC_SameBufferPduCollectionType SecOC_SameBufferPduRef=
 
 SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
 {
-    {   
+    { /* direct */  
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
         {AuthPdu0BufferTx, NULL, 0},
     },
-    {   
+    { /* for Tp */
         .SecOCPduType =                 SECOC_TPPDU,
         .SecOCTxAuthenticLayerPduId =   ((uint16) 1),
         .SecOCTxAuthenticLayerPduRef = 
@@ -208,12 +208,12 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
 
 SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
 {
-    {
+    { /* direct */
         SECOC_AUTH_PDUHEADER_LENGTH,
         SECOC_TX_SECURED_LAYER_PDUID,
         {SecPdu0BufferTx, NULL, 0},
     },
-    {
+    { /* for Tp */
         .SecOCAuthPduHeaderLength =     ((uint8) 1),
         .SecOCTxSecuredLayerPduId =     ((uint16) 1),
         .SecOCTxSecuredLayerPduRef = 
@@ -273,18 +273,18 @@ SecOC_RxPduSecuredAreaType SecOC_RxPduSecuredArea=
 
 SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
 {
-    {
+    { /* direct */
         &SecOC_TxSecuredPdu[0],
         NULL,
     },
-    {
+    { /* for Tp */
         .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[1],
         .SecOCTxSecuredPduCollection =  NULL
     }
 };
 
 SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
-    {
+    { /* direct */
         SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
         SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
         SECOC_TX_DATA_ID,
@@ -303,7 +303,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
     },
-    {
+    { /* for Tp */
         .SecOCAuthenticationBuildAttempts =             ((uint16) 3),
         .SecOCAuthInfoTruncLength =                     ((uint16) 32),
         .SecOCDataId =                                  ((uint16) 1),
@@ -329,7 +329,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
 SecOC_RxPduProcessingType SecOC_RxPduProcessing[] = 
 {
     
-    {        
+    { /* direct */     
         SECOC_AUTHDATA_FRESHNESSLEN,
         SECOC_AUTHDATA_FRESHNESS_STARTPOSITION,
         SECOC_AUTHENTICATION_BUILDATTEMPTS,
@@ -351,7 +351,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         &SecOC_RxAuthenticPduLayer[0],
         /*&SecOC_RxPduSecuredArea*/
     },
-    {
+    { /* for Tp */
         .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
         .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
         .SecOCAuthenticationBuildAttempts =                     ((uint16) 3),
@@ -385,11 +385,11 @@ SecOC_ConfigType SecOC_Config=
 
 SecOC_TxCountersType SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING] = 
 {
-    {
+    { /* direct */
         /* [SWS_SecOC_00226] */
         .AuthenticationCounter = ((uint16) 0),
     },
-    {
+    { /* for Tp */
         /* [SWS_SecOC_00226] */
         .AuthenticationCounter = ((uint16) 0),
     }
