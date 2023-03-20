@@ -113,7 +113,17 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         {
             .SduDataPtr =               AuthPdu1BufferRx,
             .MetaDataPtr =              NULL,
-            .SduLength =                ((PduLengthType) 4)
+            .SduLength =                ((PduLengthType) 16)
+        }
+    },
+    { /* for SOAD "Ethernet APIs" */
+        .SecOCPduType =                 SECOC_IFPDU,
+        .SecOCRxAuthenticLayerPduId =   ((uint16)12),
+        .SecOCRxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu2BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 20)
         }
     }
 };
