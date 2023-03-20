@@ -101,12 +101,12 @@ SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection =
 
 SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] = 
 {
-    {
+    { /* direct */
         SECOC_RX_PDUTYPE,
         SECOC_RXAUTHENTICLAYER_PDUID,
         {AuthPdu0BufferRx, NULL, 4},
     },
-    {
+    { /* for Tp */
         .SecOCPduType =                 SECOC_TPPDU,
         .SecOCRxAuthenticLayerPduId =   ((uint16)11),
         .SecOCRxAuthenticLayerPduRef = 
