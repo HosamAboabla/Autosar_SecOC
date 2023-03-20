@@ -14,11 +14,13 @@
 
 Std_ReturnType last_pdu;
 
+extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 
 PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static uint8 CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING][CANTP_BUFFER_SIZE];
 static uint8 CanTp_Buffer_Rx_index[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+static uint32 CanTp_SduLength_conf[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
@@ -34,7 +36,22 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     #ifdef CANTP_DEBUG
         printf("######## in CanTp_RxIndication\n");
     #endif
+    uint8 AuthHeadlen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
     (void)memcpy(CanTp_Buffer_Rx[RxPduId] + CanTp_Buffer_Rx_index[RxPduId], PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength) ;
+    
+    if(CanTp_Buffer_Rx_index[RxPduId] == 0)
+    {
+        if(AuthHeadlen > 0)
+        {
+            printf("header len is %d",AuthHeadlen);
+            memcpy((uint8*)&CanTp_SduLength_conf[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
+            printf(" - %d\n",CanTp_SduLength_conf[RxPduId]);
+        }
+        else
+        {
+            CanTp_SduLength_conf[RxPduId] = SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+        }
+    }
     CanTp_Buffer_Rx_index[RxPduId] += PduInfoPtr->SduLength;
 }
 
@@ -58,6 +75,7 @@ void CanTp_MainFunction(void)
     PduLengthType availableDataPtr = 0;
     for(idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++)
     {
+        
         if( CanTp_Buffer[idx].SduLength > 0)
         {
             #ifdef CANTP_DEBUG
@@ -158,13 +176,13 @@ void CanTP_MainFunctionRx(void)
     PduInfoType Tp_Spdu;
     uint8 Meta_data = 1;
     /* Here i recieve data */
-    PduLengthType TpSduLength = 24; // SECOC_SECPDU_MAX_LENGTH;
+     // SECOC_SECPDU_MAX_LENGTH;
     PduLengthType bufferSizePtr;
-    uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
-    
-    for(PduIdType idx = 0 ; idx < SECOC_NUM_OF_RX_PDU_PROCESSING ; idx++)
+    for(PduIdType RxPduId = 0 ; RxPduId < SECOC_NUM_OF_RX_PDU_PROCESSING ; RxPduId++)
     {
-        if((CanTp_Buffer_Rx_index[idx] == TpSduLength))
+        PduLengthType TpSduLength = CanTp_SduLength_conf[RxPduId] + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + 5;
+        printf("for id %d that sdulen =  %d ,and in buffer is %d\n", RxPduId,TpSduLength,CanTp_Buffer_Rx_index[RxPduId]);
+        if((CanTp_Buffer_Rx_index[RxPduId] >= TpSduLength))
         {
             uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
             Tp_Spdu.SduDataPtr = CanTp_Buffer_Rx[RxPduId];
