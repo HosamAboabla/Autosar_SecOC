@@ -315,6 +315,10 @@ SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
     { /* for Tp */
         .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[1],
         .SecOCTxSecuredPduCollection =  NULL
+    },
+    { /* for SOAD "Ethernet APIs" */
+        .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[2],
+        .SecOCTxSecuredPduCollection =  NULL
     }
 };
 
