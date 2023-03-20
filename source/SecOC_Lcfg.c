@@ -360,6 +360,25 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[1],
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
+    },
+    { /* for SOAD "Ethernet APIs" */
+        .SecOCAuthenticationBuildAttempts =             ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                     ((uint16) 32),
+        .SecOCDataId =                                  ((uint16) 2),
+        .SecOCFreshnessValueId =                        ((uint16) 20),
+        .SecOCFreshnessValueLength =                    ((uint8) 32),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 24),
+        .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
+        .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
+        .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
+        .SecOCUseTxConfirmation =                       ((boolean) FALSE),
+        /*                                              SecOCSameBufferPduRef;*/
+        /*                                              SecOCTxAuthServiceConfigRef*/
+        /*                                              SecOCTxPduMainFunctionRef;*/
+        .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[2],
+        .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[2],
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
     }
 };
 
