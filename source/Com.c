@@ -1,7 +1,7 @@
 #include "Com.h"
 #include "PduR_Com.h"
 #include "Std_Types.h"
-
+#include<stdio.h>
 #include "SecOC_Debug.h"
 
  void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
@@ -31,7 +31,7 @@ void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 	printf("Data Recieve in Com : ");
 	for(uint8 i = 0; i < PduInfoPtr->SduLength; i++)
 	{
-		printf("%d ",PduInfoPtr->SduDataPtr[i]);
+		printf("%c ",PduInfoPtr->SduDataPtr[i]);
 	}
 	printf("\n");
     #endif
@@ -41,42 +41,38 @@ void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 void Com_MainTx(void)
 {
 	PduIdType id;
-	uint8 buff[20];
+	uint8 buff[20] = {0};
 	PduInfoType SPDU;
-	printf("enter   0:Direct    1:TP    --> \n");
-	scanf("%d", &id);
- 	if(id == 1)
+	PduLengthType len = 16;
+	printf("Enter data : ");
+	fgets(buff, 20, stdin);
+	len = strlen(buff) - 1;
+	for(int i = 0; i < len; i++)
 	{
-		#ifdef COM_DEBUG
-    	printf("############### Send tp ###############\n");
-    	#endif
-		PduLengthType len = 16;
-		printf("data to send must be %d : ", len);
-		for(int i = 0; i < len; i++)
-		{
-			scanf("%d", &buff[i]);
-		}
-		uint8 test_meta_data = 2;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(id,&SPDU);
+		printf("%d ", buff[i]);
+
 	}
-	else if(id == 0)
+	printf("\n");
+	if (len <= 2)
 	{
 		printf("############### Send Direct ###############\n");
-		PduLengthType len = 2;
-		printf("data to send must be %d : ", len);
-		for(int i = 0; i < len; i++)
-		{
-			scanf("%d", &buff[i]);
-		}
 		PduInfoType SPDU;
 		uint8 test_meta_data = 0;
 		SPDU.MetaDataPtr = &test_meta_data;
     	SPDU.SduDataPtr = buff;
     	SPDU.SduLength = len;
-		PduR_ComTransmit(id,&SPDU);
+		PduR_ComTransmit(0,&SPDU);
+	}
+	else
+	{
+		#ifdef COM_DEBUG
+    		printf("############### Send tp ###############\n");
+    	#endif
+		uint8 test_meta_data = 2;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(1,&SPDU);
 	}
 
 }
