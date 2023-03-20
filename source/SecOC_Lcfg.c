@@ -465,17 +465,31 @@ SecOC_TxCountersType SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING] =
 {
     { /* direct */
         /* [SWS_SecOC_00226] */
-        .AuthenticationCounter = ((uint16) 0),
+        .AuthenticationCounter = ((uint16) 0)
     },
     { /* for Tp */
         /* [SWS_SecOC_00226] */
-        .AuthenticationCounter = ((uint16) 0),
+        .AuthenticationCounter = ((uint16) 0)
+    },
+    { /* for SOAD "Ethernet APIs" */
+        /* [SWS_SecOC_00226] */
+        .AuthenticationCounter = ((uint16) 0)
     }
 };
 
 SecOC_RxCountersType SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING] = 
 {
-    {
+    { /* direct */
+        /* [SWS_SecOC_00235] */
+        .AuthenticationCounter = ((uint16) 0),
+        .VerificationCounter =   ((uint16) 0)
+    },
+    { /* for Tp */
+        /* [SWS_SecOC_00235] */
+        .AuthenticationCounter = ((uint16) 0),
+        .VerificationCounter =   ((uint16) 0)
+    },
+    { /* for SOAD "Ethernet APIs" */
         /* [SWS_SecOC_00235] */
         .AuthenticationCounter = ((uint16) 0),
         .VerificationCounter =   ((uint16) 0)
