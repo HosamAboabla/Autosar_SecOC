@@ -117,6 +117,17 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
         SECOC_RX_SECUREDLAYER_PDUID,
         SECOC_SECURED_RX_PDUVERIFICATION,
         {SecPdu0BufferRx, NULL, 0},
+    },
+    {
+        .SecOCAuthPduHeaderLength =         ((uint8) 1),
+        .SecOCRxSecuredLayerPduId =         ((uint16) 11),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
+        .SecOCRxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =                   SecPdu1BufferRx,
+            .MetaDataPtr =                  NULL,
+            .SduLength =                    ((PduLengthType) 0)
+        }
     }
 };
 
