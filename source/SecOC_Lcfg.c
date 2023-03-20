@@ -247,6 +247,16 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         }
+    },
+    { /* for SOAD "Ethernet APIs" */
+        .SecOCAuthPduHeaderLength =     ((uint8) 1),
+        .SecOCTxSecuredLayerPduId =     ((uint16) 2),
+        .SecOCTxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =               SecPdu2BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
     }
 };
 
