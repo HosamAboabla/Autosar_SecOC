@@ -9,19 +9,21 @@
 /* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store the Authentic I-PDU and the outgoing Secured I-PDU */ 
 /* [SWS_SecOC_00146] The SecOC module shall provide separate buffers for the Authentic I-PDU and the Secured I-PDU. */
 /* [SWS_SecOC_00058] */
+/* direct */
 uint8_t AuthPdu0BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu0BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
 uint8_t AuthPdu0BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu0BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
-
+/* for Tp */
 uint8_t AuthPdu1BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu1BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
 uint8_t AuthPdu1BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu1BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+/* for SOAD "Ethernet APIs" */
 uint8_t AuthPdu2BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu2BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
