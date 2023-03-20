@@ -174,7 +174,6 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
     {   
         SECOC_TX_PDUTYPE,
         SECOC_TX_AUTHENTIC_LAYER_PDUID,
-
         {AuthPdu0BufferTx, NULL, 0},
     },
     {   
@@ -197,9 +196,14 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
         {SecPdu0BufferTx, NULL, 0},
     },
     {
-        SECOC_AUTH_PDUHEADER_LENGTH,
-        SECOC_TX_SECURED_LAYER_PDUID,
-        {SecPdu1BufferTx, NULL, 0},
+        .SecOCAuthPduHeaderLength =     ((uint8) 1),
+        .SecOCTxSecuredLayerPduId =     ((uint16) 1),
+        .SecOCTxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =               SecPdu1BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
     }
 };
 
