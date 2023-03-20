@@ -429,7 +429,27 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[1],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[1],
         /*&SecOC_RxPduSecuredArea*/
-
+    },
+    { /* for SOAD "Ethernet APIs" */
+        .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
+        .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
+        .SecOCAuthenticationBuildAttempts =                     ((uint16) 2),
+        .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                             ((uint16) 32),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCDataId =                                          ((uint16) 2),
+        .SecOCFreshnessValueId =                                ((uint16) 21),
+        .SecOCFreshnessValueLength =                            ((uint8) 32),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 24),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_QUEUE),
+        .SecOCReceptionQueueSize =                              ((uint16) 10),
+        .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
+        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[2],
+        .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[2],
+        /*&SecOC_RxPduSecuredArea*/
     }
 };
 
