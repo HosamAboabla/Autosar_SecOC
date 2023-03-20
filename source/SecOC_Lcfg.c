@@ -136,7 +136,11 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     {
         &SecOC_RxSecuredPdu[0],
         &SecOC_RxSecuredPduCollection  
-    }  
+    },
+    {
+        .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[1],
+        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+    } 
 };
 
 
