@@ -22,6 +22,12 @@ uint8_t SecPdu1BufferTx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPdu1BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu1BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+uint8_t AuthPdu2BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu2BufferTx[SECOC_SECPDU_MAX_LENGTH];
+
+uint8_t AuthPdu2BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu2BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
 /*
 * Start Of General
 */
