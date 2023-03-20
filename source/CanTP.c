@@ -166,20 +166,21 @@ void CanTP_MainFunctionRx(void)
     {
         if((CanTp_Buffer_Rx_index[idx] == TpSduLength))
         {
-            Tp_Spdu.SduDataPtr = CanTp_Buffer_Rx[idx];
+            uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
+            Tp_Spdu.SduDataPtr = CanTp_Buffer_Rx[RxPduId];
             Tp_Spdu.MetaDataPtr = &Meta_data;
             Tp_Spdu.SduLength = BUS_LENGTH;
             #ifdef CANTP_DEBUG
-                printf("######## in main tp Rx  in id : %d\n", idx);
-                printf("for id %d :",idx);
+                printf("######## in main tp Rx  in id : %d\n", RxPduId);
+                printf("for id %d :",RxPduId);
                 for(int l = 0; l < TpSduLength; l++)
                 {
-                    printf("%d ", CanTp_Buffer_Rx[idx][l]);
+                    printf("%d ", CanTp_Buffer_Rx[RxPduId][l]);
                 }
                 printf("\n");
             #endif
 
-            BufReq_ReturnType result= PduR_CanTpStartOfReception(idx, &Tp_Spdu,TpSduLength, &bufferSizePtr);
+            BufReq_ReturnType result= PduR_CanTpStartOfReception(RxPduId, &Tp_Spdu,TpSduLength, &bufferSizePtr);
             /* Check if can Receive  */
             if (result == BUFREQ_OK)
             {
@@ -194,7 +195,7 @@ void CanTP_MainFunctionRx(void)
                     }
                     printf("\n\n\n");
                     #endif
-                    result = PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
+                    result = PduR_CanTpCopyRxData(RxPduId, &Tp_Spdu, &bufferSizePtr);
                     if( result != BUFREQ_OK)
                     {
                         break;
@@ -205,16 +206,16 @@ void CanTP_MainFunctionRx(void)
                 if( ((TpSduLength % BUS_LENGTH) != 0))
                 {
                     Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
-                    PduR_CanTpCopyRxData(idx, &Tp_Spdu, &bufferSizePtr);
+                    PduR_CanTpCopyRxData(RxPduId, &Tp_Spdu, &bufferSizePtr);
                 }
 
                 /* Send Confirm to last of data */
-                PduR_CanTpRxIndication(idx,result);
-                CanTp_Buffer_Rx_index[idx] = 0;
+                PduR_CanTpRxIndication(RxPduId,result);
+                CanTp_Buffer_Rx_index[RxPduId] = 0;
             }
             else
             {
-                CanTp_Buffer_Rx_index[idx] = 0;
+                CanTp_Buffer_Rx_index[RxPduId] = 0;
             }  
         }
     }
