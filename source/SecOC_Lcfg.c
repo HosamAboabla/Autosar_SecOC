@@ -286,21 +286,21 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         /* &EcuC_Pdu,*/
     },
     {
-        SECOC_AUTHENTICATION_BUILD_ATTEMPTS,
-        SECOC_TX_AUTH_INFO_TRUNC_LENGTH,
-        SECOC_TX_DATA_ID,
-        .SecOCFreshnessValueId = 7,
-        SECOC_TX_FRESHNESS_VALUE_LENGTH,
-        SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH,
-        SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE,
-        SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT,
-        SECOC_TX_PDU_UNUSED_AREAS_DEFAULT,
-        SECOC_USE_TX_CONFIRMATION,
-        /*                                                  SecOCSameBufferPduRef;*/
-        /*                                                  SecOCTxAuthServiceConfigRef*/
-        /*                                                  SecOCTxPduMainFunctionRef;*/
-        &SecOC_TxAuthenticPduLayer[1],
-        &SecOC_TxSecuredPduLayer[1],
+        .SecOCAuthenticationBuildAttempts =             ((uint16) 3),
+        .SecOCAuthInfoTruncLength =                     ((uint16) 32),
+        .SecOCDataId =                                  ((uint16) 1),
+        .SecOCFreshnessValueId =                        ((uint16) 7),
+        .SecOCFreshnessValueLength =                    ((uint8) 16),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 14),
+        .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
+        .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
+        .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
+        .SecOCUseTxConfirmation =                       ((boolean) FALSE),
+        /*                                              SecOCSameBufferPduRef;*/
+        /*                                              SecOCTxAuthServiceConfigRef*/
+        /*                                              SecOCTxPduMainFunctionRef;*/
+        .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[1],
+        .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[1],
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
     }
