@@ -369,11 +369,11 @@ SecOC_TxCountersType SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING] =
 {
     {
         /* [SWS_SecOC_00226] */
-        .AuthenticationCounter = 0,
+        .AuthenticationCounter = ((uint16) 0),
     },
     {
         /* [SWS_SecOC_00226] */
-        .AuthenticationCounter = 0,
+        .AuthenticationCounter = ((uint16) 0),
     }
 };
 
@@ -381,7 +381,7 @@ SecOC_RxCountersType SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
     {
         /* [SWS_SecOC_00235] */
-        .AuthenticationCounter = 0,
-        .VerificationCounter = 0
+        .AuthenticationCounter = ((uint16) 0),
+        .VerificationCounter =   ((uint16) 0)
     }
 };
