@@ -260,8 +260,8 @@ SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
         NULL,
     },
     {
-        &SecOC_TxSecuredPdu[1],
-        NULL,
+        .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[1],
+        .SecOCTxSecuredPduCollection =  NULL
     }
 };
 
