@@ -35,23 +35,23 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     }
 
     /* Prepare For Send */
-    uint8 sendData[dataLen + sizeof(id)];
+    uint8 sendData[10] = {0};
     (void)memcpy(sendData, data, dataLen);
     for(unsigned char indx = 0; indx < sizeof(id); indx++)
     {
-        sendData[dataLen+indx] = (id >> (8 * indx));
+        sendData[8+indx] = (id >> (8 * indx));
     }
 
 
     #ifdef ETHERNET_DEBUG
-        for(int j = 0; j < (dataLen + sizeof(id)) ; j++)
+        for(int j = 0; j < 10 ; j++)
             printf("%d\t",sendData[j]);
         printf("\n");
     #endif
     
 
     
-    send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
+    send(network_sockect , sendData , 10 , 0);
 
     /* close the connection*/
     close(network_sockect);
