@@ -40,6 +40,9 @@ void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 void Com_MainTx(void)
 {
+	#ifdef COM_DEBUG
+	printf("######## in Com_MainTx\n");
+	#endif
 	PduIdType id;
 	uint8 buff[20] = {0};
 	PduInfoType SPDU;
