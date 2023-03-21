@@ -52,7 +52,11 @@ FetchContent_MakeAvailable(googletest)
 set(headerDirs "")
 get_target_property(headerDirs SecOC INCLUDE_DIRECTORIES)
 
+# Print include directories one per line for cppchecke extension 
+string(REPLACE ";"  "\n" cppincludes "${headerDirs}")
+file(WRITE "${CMAKE_SOURCE_DIR}/build/cppcheck_includes.txt" ${cppincludes})
 
+# Create library for linking with other projects
 add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
 target_include_directories(SecOCLib PUBLIC ${headerDirs})
 
