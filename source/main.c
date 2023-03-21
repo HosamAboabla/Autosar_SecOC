@@ -7,42 +7,63 @@
 
 void* tx_com()
 {
-    Com_MainTx();
+    while (1)
+    {
+        Com_MainTx();
+    }
 }
 
 void* tx_secoc()
 {
-    SecOCMainFunctionTx();
+    while (1)
+    {
+        SecOCMainFunctionTx();
+    }
 }
 
 void* tx_tp()
 {
-    CanTp_MainFunction();
+    while (1)
+    {
+        CanTp_MainFunction();
+    }
+
 }
 void* rx_ethernet()
 {
-    ethernet_RecieveMainFunction();
+    while (1)
+    {
+        //ethernet_RecieveMainFunction();
+    }
 }
 
 void* rx_tp()
 {
-    CanTP_MainFunctionRx();
+    while (1)
+    {
+        CanTP_MainFunctionRx();
+    }
+    
+    
 }
 void* rx_secoc()
 {
-    SecOCMainFunctionRx();
+    while (1)
+    {
+         SecOCMainFunctionRx();
+    }
 }
 
 
 
-boolean create_thread (pthread_t *thread, *void fn() )
+boolean create_thread (pthread_t *thread, void *fn() )
 {
     if(pthread_create(thread , NULL, fn, NULL) != 0)
     {
         printf("error create thread");
         return 1;
     }
-    return 0
+    return 0;
 }
 
 boolean join_thread (pthread_t *thread)
@@ -61,7 +82,7 @@ int main(void)
 {
     SecOC_Init(&SecOC_Config);
     pthread_t t[6];
-    void (*fn_p[6])() = {tx_com, tx_secoc, tx_tp, rx_ethernet, rx_tp, rx_secoc};
+    void *(*fn_p[6])() = {tx_com, tx_secoc, tx_tp, rx_ethernet, rx_tp, rx_secoc};
 
     /* Creating Threads */
     for (int i = 0; i < 6; i++)
