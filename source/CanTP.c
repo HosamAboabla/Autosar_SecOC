@@ -20,7 +20,7 @@ extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static uint8 CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING][CANTP_BUFFER_SIZE];
 static uint8 CanTp_Buffer_Rx_index[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
-static uint32 CanTp_SduLength_conf[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+static uint32 CanTp_AuthLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
@@ -44,12 +44,12 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
         if(AuthHeadlen > 0)
         {
             printf("header len is %d",AuthHeadlen);
-            memcpy((uint8*)&CanTp_SduLength_conf[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
-            printf(" - %d\n",CanTp_SduLength_conf[RxPduId]);
+            memcpy((uint8*)&CanTp_AuthLength_Recieve[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
+            printf(" - %d\n",CanTp_AuthLength_Recieve[RxPduId]);
         }
         else
         {
-            CanTp_SduLength_conf[RxPduId] = SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+            CanTp_AuthLength_Recieve[RxPduId] = SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
         }
     }
     CanTp_Buffer_Rx_index[RxPduId] += PduInfoPtr->SduLength;
@@ -180,8 +180,8 @@ void CanTP_MainFunctionRx(void)
     PduLengthType bufferSizePtr;
     for(PduIdType RxPduId = 0 ; RxPduId < SECOC_NUM_OF_RX_PDU_PROCESSING ; RxPduId++)
     {
-        PduLengthType TpSduLength = CanTp_SduLength_conf[RxPduId] + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + 5;
-        printf("for id %d that sdulen =  %d ,and in buffer is %d\n", RxPduId,TpSduLength,CanTp_Buffer_Rx_index[RxPduId]);
+        uint8 AuthHeadlen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+        PduLengthType TpSduLength = AuthHeadlen + CanTp_AuthLength_Recieve[RxPduId] + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength);
         if((CanTp_Buffer_Rx_index[RxPduId] >= TpSduLength))
         {
             uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
