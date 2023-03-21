@@ -19,7 +19,20 @@ endif()
 project(SecOC)
 
 
+
+find_package(Threads REQUIRED)
+if(THREADS_HAVE_PTHREAD_ARG)
+  target_compile_options(SecOC PUBLIC "-pthread")
+endif()
+if(CMAKE_THREAD_LIBS_INIT)
+  target_link_libraries(SecOC "${CMAKE_THREAD_LIBS_INIT}")
+endif()
+
 add_executable(SecOC ${SCR_FILES})
+
+target_link_libraries(SecOC pthread)
+
+
 
 foreach (_file ${HDR_FILES})
     cmake_path(REMOVE_FILENAME _file)
