@@ -43,9 +43,7 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     {
         if(AuthHeadlen > 0)
         {
-            printf("header len is %d",AuthHeadlen);
             memcpy((uint8*)&CanTp_AuthLength_Recieve[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
-            printf(" - %d\n",CanTp_AuthLength_Recieve[RxPduId]);
         }
         else
         {
@@ -133,7 +131,9 @@ void CanTp_MainFunction(void)
 
                 // Send data using CanIf
                 CanIf_Transmit(idx , &info);
+                #ifdef CANTP_DEBUG
                 printf("Delay...\n");
+                #endif
                 long long int delay = 60000000;
                 while(delay--);
 
