@@ -155,7 +155,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         .SecOCRxAuthenticLayerPduId =   ((uint16)13),
         .SecOCRxAuthenticLayerPduRef = 
         {
-            .SduDataPtr =               AuthPdu3BufferRx,
+            .SduDataPtr =               AuthPdu4BufferRx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 19)
         }        
