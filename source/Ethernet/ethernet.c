@@ -35,11 +35,11 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     }
 
     /* Prepare For Send */
-    uint8 sendData[10] = {0};
+    uint8 sendData[BUS_LENGTH_RECEIVE + sizeof(id)] = {0};
     (void)memcpy(sendData, data, dataLen);
     for(unsigned char indx = 0; indx < sizeof(id); indx++)
     {
-        sendData[8+indx] = (id >> (8 * indx));
+        sendData[BUS_LENGTH_RECEIVE+indx] = (id >> (8 * indx));
     }
 
 
@@ -151,6 +151,9 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
 
 communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
+    CANIF,
+    CANTP,
+    SOAD,
     CANIF,
     CANTP
 };

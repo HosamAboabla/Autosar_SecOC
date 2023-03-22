@@ -19,8 +19,11 @@
 
 communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
-    CANIF,
-    CANTP,
+   CANIF,
+   CANTP,
+   SOAD,
+   CANIF,
+   CANTP
 };
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
