@@ -343,7 +343,7 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
         }
     },
     { /* direct without Trunc-FV and header*/
-        .SecOCAuthPduHeaderLength =     ((uint8) 1),
+        .SecOCAuthPduHeaderLength =     ((uint8) 0),
         .SecOCTxSecuredLayerPduId =     ((uint16) 3),
         .SecOCTxSecuredLayerPduRef = 
         {
