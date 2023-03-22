@@ -196,7 +196,7 @@
 /*
 * Configuration Parameter for SecOC_ClientServerVerificationStatusPropagationMode
 */
-#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       ((SecOC_StatusPropagationMode_Type)SECOC_NONE)
+#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       ((SecOC_StatusPropagationMode_Type)SECOC_BOTH)
 
 /*
 * Configuration Parameter for SecOC_DataId
@@ -221,7 +221,7 @@
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
 */
-#define SECOC_RECEPTION_OVERFLOW_STRATEGY       SECOC_QUEUE
+#define SECOC_RECEPTION_OVERFLOW_STRATEGY       SECOC_REPLACE
 
 /*
 * Configuration Parameter for SecOC_ReceptionQueueSize
@@ -236,7 +236,7 @@
 /*
 * Configuration Parameter for SecOC_VerificationStatusPropagationMode
 */
-#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        ((SecOC_StatusPropagationMode_Type)SECOC_NONE)
+#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        ((SecOC_StatusPropagationMode_Type)SECOC_BOTH)
 
 /*
 * Configuration Parameter for Csm_JobId
@@ -264,7 +264,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDUVERIFICATION        FALSE
+#define SECOC_SECURED_RX_PDUVERIFICATION        TRUE
 
 
 /*****************************************
