@@ -28,6 +28,7 @@ extern SecOC_RxCountersType         SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESS
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
 static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
+static PduLengthType authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
 /* Internal functions */
 static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate);
@@ -435,9 +436,12 @@ void SecOCMainFunctionRx(void)
     {
         PduInfoType *authPdu = &(SecOCRxPduProcessing[idx].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
         PduInfoType *securedPdu = &(SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-
+        
+        uint8 AuthHeadlen = SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+        PduLengthType securePduLength = AuthHeadlen + authRecieveLength[idx] + BIT_TO_BYTES(SecOCRxPduProcessing[idx].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[idx].SecOCAuthInfoTruncLength);
+        
         /* Check if there is data */
-        if ( securedPdu->SduLength > 0 ) 
+        if ( securedPdu->SduLength >= securePduLength ) 
         {       
             /* [SWS_SecOC_00079] */
             result = verify(idx, securedPdu, &result_ver);
@@ -616,6 +620,11 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
                 default:
                     break;
                 }
+                authRecieveLength[id] = datalen;
+            }
+            else
+            {
+                authRecieveLength[id] = SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
             }
         }
     }
@@ -991,3 +1000,5 @@ void SecOC_test()
 {  
 }
 #endif
+
+
