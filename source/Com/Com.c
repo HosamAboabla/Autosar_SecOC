@@ -44,12 +44,12 @@ void Com_MainTx(void)
 	printf("######## in Com_MainTx\n");
 	#endif
 	PduIdType id;
-	uint8 buff[20] = {0};
+	uint8 buff[21] = {49,50,55,56,57,85,85,21};
 	PduInfoType SPDU;
-	PduLengthType len = 16;
+	PduLengthType len = 8;
 	printf("Enter data : ");
-	fgets(buff, 20, stdin);
-	len = strlen(buff) - 1;
+	//fgets(buff, 21, stdin);
+	//len = strlen(buff) - 1;
 	for(int i = 0; i < len; i++)
 	{
 		printf("%d ", buff[i]);
@@ -58,7 +58,7 @@ void Com_MainTx(void)
 	printf("\n");
 	if (len <= 2)
 	{
-		printf("############### Send Direct ###############\n");
+		printf("############### Send Direct with header ###############\n");
 		PduInfoType SPDU;
 		uint8 test_meta_data = 0;
 		SPDU.MetaDataPtr = &test_meta_data;
@@ -66,10 +66,31 @@ void Com_MainTx(void)
     	SPDU.SduLength = len;
 		PduR_ComTransmit(0,&SPDU);
 	}
+	else if(len == 4)
+	{
+		printf("############### Send Direct without header and FV ###############\n");
+		PduInfoType SPDU;
+		uint8 test_meta_data = 0;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(3,&SPDU);
+	}
+	else if(len == 19)
+	{
+		#ifdef COM_DEBUG
+    		printf("############### Send tp without header ###############\n");
+    	#endif
+		uint8 test_meta_data = 2;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(4,&SPDU);
+	}
 	else
 	{
 		#ifdef COM_DEBUG
-    		printf("############### Send tp ###############\n");
+    		printf("############### Send tp with header ###############\n");
     	#endif
 		uint8 test_meta_data = 2;
 		SPDU.MetaDataPtr = &test_meta_data;
