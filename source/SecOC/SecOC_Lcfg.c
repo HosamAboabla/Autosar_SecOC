@@ -30,6 +30,12 @@ uint8_t SecPdu2BufferTx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPdu2BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu2BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+
+/* for RxSecuredPduCollection */
+uint8_t AuthPduCollection3BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t CryptoPduCollection3BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
+
 /*
 * Start Of General
 */
@@ -126,12 +132,12 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
             .SduLength =                ((PduLengthType) 20)
         }
     },
-    { /*for /* for RxSecuredPduCollection" */ */
+    { /*for /* for RxSecuredPduCollection" */
         .SecOCPduType =                 SECOC_IFPDU,
         .SecOCRxAuthenticLayerPduId =   ((uint16)12),
         .SecOCRxAuthenticLayerPduRef = 
         {
-            .SduDataPtr =               AuthPdu2BufferRx,
+            .SduDataPtr =               AuthPduCollection3BufferRx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 20)
         }
