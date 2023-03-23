@@ -240,7 +240,7 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
     },
     { /* for TxSecuredPduCollection */
         .SecOCPduType =                 SECOC_TX_PDUTYPE,
-        .SecOCTxAuthenticLayerPduId =   ((uint16) 2),
+        .SecOCTxAuthenticLayerPduId =   ((uint16) 3),
         .SecOCTxAuthenticLayerPduRef = 
         {
             .SduDataPtr =               AuthPdu3BufferTx,
