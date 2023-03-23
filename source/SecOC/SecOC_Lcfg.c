@@ -125,6 +125,16 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 20)
         }
+    },
+    { /*for /* for RxSecuredPduCollection" */ */
+        .SecOCPduType =                 SECOC_IFPDU,
+        .SecOCRxAuthenticLayerPduId =   ((uint16)12),
+        .SecOCRxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu2BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 20)
+        }
     }
 };
 
@@ -173,7 +183,11 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     { /* for SOAD "Ethernet APIs" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[2],
         .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
-    } 
+    },
+    { /* for RxSecuredPduCollection" */
+        .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
+        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+    }
 };
 
 
@@ -449,6 +463,27 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[2],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[2],
+        /*&SecOC_RxPduSecuredArea*/
+    },
+    { /* for RxSecuredPduCollection" */
+        .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
+        .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
+        .SecOCAuthenticationBuildAttempts =                     ((uint16) 2),
+        .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                             ((uint16) 32),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCDataId =                                          ((uint16) 2),
+        .SecOCFreshnessValueId =                                ((uint16) 21),
+        .SecOCFreshnessValueLength =                            ((uint8) 32),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 25),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_QUEUE),
+        .SecOCReceptionQueueSize =                              ((uint16) 10),
+        .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
+        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[3],
+        .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[3],
         /*&SecOC_RxPduSecuredArea*/
     }
 };
