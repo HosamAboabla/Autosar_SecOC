@@ -3,6 +3,7 @@
 #include "CanIF.h"
 #include "CanTP.h"
 #include "Dcm.h"
+#include "SoAd.h"
 #include "SecOC_Debug.h"
 
 
@@ -21,6 +22,8 @@
 #define CANIF 0
 #define FRIF 1
 #define CANTP 2
+#define SOADIF 3
+#define SOADTP 4
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
@@ -38,6 +41,14 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
    else if(*(PduInfoPtr->MetaDataPtr) == CANTP)
    {
       return CanTp_Transmit(TxPduId, PduInfoPtr);
+   }
+   else if(*(PduInfoPtr->MetaDataPtr) == SOADIF)
+   {
+      return SoAd_IfTransmit(TxPduId, PduInfoPtr);      
+   }
+   else if(*(PduInfoPtr->MetaDataPtr) == SOADTP)
+   {
+      return SoAd_TpTransmit(TxPduId, PduInfoPtr);      
    }
    else
    {
