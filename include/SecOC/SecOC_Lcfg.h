@@ -17,7 +17,7 @@
 
 #define SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1))
 
-#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (3)
+#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (4)
 #define SECOC_NUM_OF_RX_PDU_PROCESSING                               (3)
 
 /* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
@@ -152,7 +152,7 @@ typedef struct
 typedef struct
 {
    uint16                  SecOCTxCryptographicPduId;
-   PduInfoType            *SecOCTxCryptographicPduRef;
+   PduInfoType             SecOCTxCryptographicPduRef;
 } SecOC_TxCryptographicPduType;
 
 
@@ -169,7 +169,7 @@ typedef struct
 {
    uint8                         SecOCAuthPduHeaderLength;
    uint16                        SecOCTxAuthenticPduId;
-   PduInfoType                  *SecOCTxAuthenticPduRef;
+   PduInfoType                   SecOCTxAuthenticPduRef;
 } SecOC_TxAuthenticPduType;
 
 
