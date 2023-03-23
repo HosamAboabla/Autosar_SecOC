@@ -239,7 +239,7 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
         }
     },
     { /* for TxSecuredPduCollection */
-        .SecOCPduType =                 SECOC_TX_PDUTYPE,
+        .SecOCPduType =                 SECOC_IFPDU,
         .SecOCTxAuthenticLayerPduId =   ((uint16) 3),
         .SecOCTxAuthenticLayerPduRef = 
         {
