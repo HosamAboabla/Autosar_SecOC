@@ -269,15 +269,60 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_TxConfirmation \n");
     #endif
-    PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
 
-    /* [SWS_SecOC_00064] */
-    if (result == E_OK) 
+    static uint8 CryptoConfirmations[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
+
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    SecOC_TxSecuredPduCollectionType* securePduCollection = (SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection);
+    PduInfoType *AuthPduCollection;
+    PduInfoType *CryptoPduCollection;
+
+     /* [SWS_SecOC_00064] */
+    if(securePduCollection != NULL)
     {
-        securedPdu->SduLength = 0;
+        if(CryptoConfirmations[TxPduId] == 0)
+        {
+            AuthPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxAuthenticPdu->SecOCTxAuthenticPduRef);
+            AuthPduCollection->SduLength = 0;
+            if(result  == E_OK)
+            {
+                CryptoConfirmations[TxPduId] = 1;
+            }
+            else
+            {
+                CryptoConfirmations[TxPduId] =2;
+            }
+        }
+        else
+        {
+            CryptoPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxCryptographicPdu->SecOCTxCryptographicPduRef);
+            CryptoPduCollection->SduLength = 0;
+            CryptoConfirmations[TxPduId] = 0;
+
+            if( (result  == E_OK) && (CryptoConfirmations[TxPduId] == 2) )
+            {
+                CryptoConfirmations[TxPduId] = 0;
+                /* [SWS_SecOC_00063] */
+                PduR_SecOCIfTxConfirmation(TxPduId, E_NOT_OK);
+            }
+            else
+            {
+                /* [SWS_SecOC_00063] */
+                PduR_SecOCIfTxConfirmation(TxPduId, E_OK);
+            }
+            
+        }
     }
-    /* [SWS_SecOC_00063] */
-    PduR_SecOCIfTxConfirmation(TxPduId, result);
+    else
+    {
+        /* [SWS_SecOC_00064] */
+        if (result == E_OK) 
+        {
+            securedPdu->SduLength = 0;
+        }
+        /* [SWS_SecOC_00063] */
+        PduR_SecOCIfTxConfirmation(TxPduId, result);
+    }
 }
 
 
