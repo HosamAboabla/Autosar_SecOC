@@ -280,10 +280,10 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
      /* [SWS_SecOC_00064] */
     if(securePduCollection != NULL)
     {
+        AuthPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxAuthenticPdu->SecOCTxAuthenticPduRef);
+        CryptoPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxCryptographicPdu->SecOCTxCryptographicPduRef);
         if(CryptoConfirmations[TxPduId] == 0)
         {
-            AuthPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxAuthenticPdu->SecOCTxAuthenticPduRef);
-            AuthPduCollection->SduLength = 0;
             if(result  == E_OK)
             {
                 CryptoConfirmations[TxPduId] = 1;
@@ -295,22 +295,19 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else
         {
-            CryptoPduCollection = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxCryptographicPdu->SecOCTxCryptographicPduRef);
-            CryptoPduCollection->SduLength = 0;
-            CryptoConfirmations[TxPduId] = 0;
-
-            if( (result  == E_OK) && (CryptoConfirmations[TxPduId] == 2) )
+            if( (result  == E_OK) && (CryptoConfirmations[TxPduId] == 1) )
             {
-                CryptoConfirmations[TxPduId] = 0;
                 /* [SWS_SecOC_00063] */
-                PduR_SecOCIfTxConfirmation(TxPduId, E_NOT_OK);
+                AuthPduCollection->SduLength = 0;
+                CryptoPduCollection->SduLength = 0;
+                PduR_SecOCIfTxConfirmation(TxPduId, result);
             }
             else
             {
                 /* [SWS_SecOC_00063] */
-                PduR_SecOCIfTxConfirmation(TxPduId, E_OK);
+                PduR_SecOCIfTxConfirmation(TxPduId, E_NOT_OK);
             }
-            
+            CryptoConfirmations[TxPduId] = 0;
         }
     }
     else
