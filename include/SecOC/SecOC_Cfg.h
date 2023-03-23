@@ -375,8 +375,8 @@
  * Container_Index       : 10.1.20                          *
  ***********************************************************/
 
-#define SECOC_MESSAGE_LINKLEN               ((uint16)0)
-#define SECOC_MESSAGE_LINKPOS               ((uint16)0)
+#define SECOC_MESSAGE_LINKLEN               ((uint16)3)
+#define SECOC_MESSAGE_LINKPOS               ((uint16)5)
 
 /************************************************************
  *          * Container Info *                              *
