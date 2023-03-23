@@ -540,6 +540,10 @@ SecOC_TxCountersType SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING] =
     { /* for SOAD "Ethernet APIs" */
         /* [SWS_SecOC_00226] */
         .AuthenticationCounter = ((uint16) 0)
+    },
+    { /* for TxSecuredPduCollection */
+        /* [SWS_SecOC_00226] */
+        .AuthenticationCounter = ((uint16) 0)
     }
 };
 
