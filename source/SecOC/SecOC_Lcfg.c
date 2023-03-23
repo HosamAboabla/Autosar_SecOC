@@ -312,7 +312,7 @@ SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu[]=
 {
     {
         SECOC_AUTH_PDUHEADER_LENGTH,
-        0, // SECOC_TX_AUTHENTIC_PDUID,
+        3, // SECOC_TX_AUTHENTIC_PDUID,
         {
             .SduDataPtr =               AuthPduCollection3BufferRx,
             .MetaDataPtr =              NULL,
@@ -430,7 +430,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
     { /* for TxSecuredPduCollection */
         .SecOCAuthenticationBuildAttempts =             ((uint16) 2),
         .SecOCAuthInfoTruncLength =                     ((uint16) 32),
-        .SecOCDataId =                                  ((uint16) 2),
+        .SecOCDataId =                                  ((uint16) 3),
         .SecOCFreshnessValueId =                        ((uint16) 20),
         .SecOCFreshnessValueLength =                    ((uint8) 32),
         .SecOCFreshnessValueTruncLength =               ((uint8) 25),
