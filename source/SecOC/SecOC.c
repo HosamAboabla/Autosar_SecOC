@@ -459,7 +459,8 @@ void SecOCMainFunctionTx(void)
                     CryptoPduCollection->MetaDataPtr = securedPdu->MetaDataPtr;
                     CryptoPduCollection->SduLength = CryptoPduCollectionLen;
 
-
+                    /* Clear Secured Pdu*/
+                    securedPdu->SduLength = 0;
                     /* [SWS_SecOC_00062] */
                     PduR_SecOCTransmit(idx , AuthPduCollection);
                     PduR_SecOCTransmit(idx , CryptoPduCollection);
