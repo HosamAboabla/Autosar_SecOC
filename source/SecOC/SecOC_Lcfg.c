@@ -30,6 +30,20 @@ uint8_t SecPdu2BufferTx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPdu2BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu2BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+/* direct without Trunc-FV and header*/
+uint8_t AuthPdu3BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu3BufferTx[SECOC_SECPDU_MAX_LENGTH];
+
+uint8_t AuthPdu3BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu3BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
+/* Tp without header*/
+uint8_t AuthPdu4BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu4BufferTx[SECOC_SECPDU_MAX_LENGTH];
+
+uint8_t AuthPdu4BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu4BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
 /*
 * Start Of General
 */
@@ -123,8 +137,28 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         {
             .SduDataPtr =               AuthPdu2BufferRx,
             .MetaDataPtr =              NULL,
-            .SduLength =                ((PduLengthType) 20)
+            .SduLength =                ((PduLengthType) 3)
         }
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCPduType =                 SECOC_IFPDU,
+        .SecOCRxAuthenticLayerPduId =   ((uint16)13),
+        .SecOCRxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu3BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 4)
+        }
+    },
+    { /* Tp without header*/
+        .SecOCPduType =                 SECOC_TPPDU,
+        .SecOCRxAuthenticLayerPduId =   ((uint16)13),
+        .SecOCRxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu4BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 19)
+        }        
     }
 };
 
@@ -139,7 +173,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* for Tp */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 11),
-        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
+        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu1BufferRx,
@@ -150,10 +184,32 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* for SOAD "Ethernet APIs" */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 12),
-        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
+        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu2BufferRx,
+            .MetaDataPtr =                  NULL,
+            .SduLength =                    ((PduLengthType) 0)
+        }
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCAuthPduHeaderLength =         ((uint8) 0),
+        .SecOCRxSecuredLayerPduId =         ((uint16) 13),
+        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCRxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =                   SecPdu3BufferRx,
+            .MetaDataPtr =                  NULL,
+            .SduLength =                    ((PduLengthType) 0)
+        }
+    },
+    { /* Tp without header*/
+        .SecOCAuthPduHeaderLength =         ((uint8) 0),
+        .SecOCRxSecuredLayerPduId =         ((uint16) 14),
+        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCRxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =                   SecPdu4BufferRx,
             .MetaDataPtr =                  NULL,
             .SduLength =                    ((PduLengthType) 0)
         }
@@ -172,6 +228,14 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     },
     { /* for SOAD "Ethernet APIs" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[2],
+        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
+        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+    },
+    { /* Tp without header*/
+        .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[4],
         .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
     } 
 };
@@ -228,6 +292,26 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         }
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCPduType =                 SECOC_IFPDU,
+        .SecOCTxAuthenticLayerPduId =   ((uint16) 3),
+        .SecOCTxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu3BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
+    },
+    { /* Tp without header*/
+        .SecOCPduType =                 SECOC_TPPDU,
+        .SecOCTxAuthenticLayerPduId =   ((uint16) 4),
+        .SecOCTxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu4BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
     }
 };
 
@@ -254,6 +338,26 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
         .SecOCTxSecuredLayerPduRef = 
         {
             .SduDataPtr =               SecPdu2BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCAuthPduHeaderLength =     ((uint8) 0),
+        .SecOCTxSecuredLayerPduId =     ((uint16) 3),
+        .SecOCTxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =               SecPdu3BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
+    },
+    { /* Tp without header*/
+        .SecOCAuthPduHeaderLength =     ((uint8) 0),
+        .SecOCTxSecuredLayerPduId =     ((uint16) 4),
+        .SecOCTxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =               SecPdu4BufferTx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         }
@@ -319,6 +423,14 @@ SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
     { /* for SOAD "Ethernet APIs" */
         .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[2],
         .SecOCTxSecuredPduCollection =  NULL
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[3],
+        .SecOCTxSecuredPduCollection =  NULL
+    },
+    { /* Tp without header*/
+        .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[4],
+        .SecOCTxSecuredPduCollection =  NULL
     }
 };
 
@@ -367,7 +479,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         .SecOCDataId =                                  ((uint16) 2),
         .SecOCFreshnessValueId =                        ((uint16) 20),
         .SecOCFreshnessValueLength =                    ((uint8) 32),
-        .SecOCFreshnessValueTruncLength =               ((uint8) 25),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 8),
         .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
         .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
         .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
@@ -377,6 +489,44 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         /*                                              SecOCTxPduMainFunctionRef;*/
         .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[2],
         .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[2],
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCAuthenticationBuildAttempts =             ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                     ((uint16) 32),
+        .SecOCDataId =                                  ((uint16) 3),
+        .SecOCFreshnessValueId =                        ((uint16) 1),
+        .SecOCFreshnessValueLength =                    ((uint8) 16),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 0),
+        .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) FALSE),
+        .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
+        .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
+        .SecOCUseTxConfirmation =                       ((boolean) FALSE),
+        /*                                              SecOCSameBufferPduRef;*/
+        /*                                              SecOCTxAuthServiceConfigRef*/
+        /*                                              SecOCTxPduMainFunctionRef;*/
+        .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[3],
+        .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[3],
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
+    },
+    { /* Tp without header*/
+        .SecOCAuthenticationBuildAttempts =             ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                     ((uint16) 32),
+        .SecOCDataId =                                  ((uint16) 4),
+        .SecOCFreshnessValueId =                        ((uint16) 2),
+        .SecOCFreshnessValueLength =                    ((uint8) 32),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 30),
+        .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
+        .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
+        .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
+        .SecOCUseTxConfirmation =                       ((boolean) FALSE),
+        /*                                              SecOCSameBufferPduRef;*/
+        /*                                              SecOCTxAuthServiceConfigRef*/
+        /*                                              SecOCTxPduMainFunctionRef;*/
+        .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[4],
+        .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[4],
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
     }
@@ -415,15 +565,15 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCAuthenticationBuildAttempts =                     ((uint16) 3),
         .SecOCAuthenticationVerifyAttempts =                    ((uint16) 3),
         .SecOCAuthInfoTruncLength =                             ((uint16) 32),
-        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCDataId =                                          ((uint16) 1),
         .SecOCFreshnessValueId =                                ((uint16) 5),
         .SecOCFreshnessValueLength =                            ((uint8) 24),
         .SecOCFreshnessValueTruncLength =                       ((uint8) 18),
-        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_QUEUE),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
         .SecOCReceptionQueueSize =                              ((uint16) 10),
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
-        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
         .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[1],
@@ -436,19 +586,61 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCAuthenticationBuildAttempts =                     ((uint16) 2),
         .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
         .SecOCAuthInfoTruncLength =                             ((uint16) 32),
-        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCDataId =                                          ((uint16) 2),
         .SecOCFreshnessValueId =                                ((uint16) 21),
         .SecOCFreshnessValueLength =                            ((uint8) 32),
-        .SecOCFreshnessValueTruncLength =                       ((uint8) 25),
-        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_QUEUE),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 8),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
         .SecOCReceptionQueueSize =                              ((uint16) 10),
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
-        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_NONE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
         .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[2],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[2],
+        /*&SecOC_RxPduSecuredArea*/
+    },
+    { /* direct without Trunc-FV and header*/
+        .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
+        .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
+        .SecOCAuthenticationBuildAttempts =                     ((uint16) 2),
+        .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                             ((uint16) 32),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
+        .SecOCDataId =                                          ((uint16) 3),
+        .SecOCFreshnessValueId =                                ((uint16) 1),
+        .SecOCFreshnessValueLength =                            ((uint8) 16),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 0),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
+        .SecOCReceptionQueueSize =                              ((uint16) 10),
+        .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
+        .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
+        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[3],
+        .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[3],
+        /*&SecOC_RxPduSecuredArea*/
+    },
+    { /* Tp without header*/
+        .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
+        .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
+        .SecOCAuthenticationBuildAttempts =                     ((uint16) 2),
+        .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                             ((uint16) 32),
+        .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
+        .SecOCDataId =                                          ((uint16) 4),
+        .SecOCFreshnessValueId =                                ((uint16) 2),
+        .SecOCFreshnessValueLength =                            ((uint8) 32),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 30),
+        .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
+        .SecOCReceptionQueueSize =                              ((uint16) 10),
+        .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
+        .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
+        .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
+        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[4],
+        .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[4],
         /*&SecOC_RxPduSecuredArea*/
     }
 };
@@ -474,6 +666,14 @@ SecOC_TxCountersType SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING] =
     { /* for SOAD "Ethernet APIs" */
         /* [SWS_SecOC_00226] */
         .AuthenticationCounter = ((uint16) 0)
+    },
+    { /* direct without Trunc-FV and header*/
+        /* [SWS_SecOC_00226] */
+        .AuthenticationCounter = ((uint16) 0)
+    },
+    { /* Tp without header*/
+        /* [SWS_SecOC_00226] */
+        .AuthenticationCounter = ((uint16) 0)
     }
 };
 
@@ -490,6 +690,16 @@ SecOC_RxCountersType SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING] =
         .VerificationCounter =   ((uint16) 0)
     },
     { /* for SOAD "Ethernet APIs" */
+        /* [SWS_SecOC_00235] */
+        .AuthenticationCounter = ((uint16) 0),
+        .VerificationCounter =   ((uint16) 0)
+    },
+    { /* direct without Trunc-FV and header*/
+        /* [SWS_SecOC_00235] */
+        .AuthenticationCounter = ((uint16) 0),
+        .VerificationCounter =   ((uint16) 0)
+    },
+    { /* Tp without header*/
         /* [SWS_SecOC_00235] */
         .AuthenticationCounter = ((uint16) 0),
         .VerificationCounter =   ((uint16) 0)
