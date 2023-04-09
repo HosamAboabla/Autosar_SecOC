@@ -160,7 +160,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
     SecOC_TxIntermediateType SecOCIntermediate;
 
     result = prepareFreshnessTx(TxPduId, &SecOCIntermediate);
-    
     /* [SWS_SecOC_00227] */
     if(( result == E_BUSY) ||  (result == E_NOT_OK))
     {
@@ -878,8 +877,8 @@ static void constructDataToAuthenticatorRx(PduIdType RxPduId, SecOC_RxIntermedia
     *DataToAuthLen += SecOCIntermediate->authenticPduLen;
 
     /* copy the freshness value to buffer Data to Auth */
-    (void)memcpy(&DataToAuth[*DataToAuthLen], SecOCIntermediate->freshness, BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength));
-    *DataToAuthLen += (BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueLength));
+    (void)memcpy(&DataToAuth[*DataToAuthLen], SecOCIntermediate->freshness, BIT_TO_BYTES(SecOCIntermediate->freshnessLenBits));
+    *DataToAuthLen += (BIT_TO_BYTES(SecOCIntermediate->freshnessLenBits));
 
 }
 
