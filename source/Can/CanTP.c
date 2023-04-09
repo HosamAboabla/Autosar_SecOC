@@ -184,69 +184,58 @@ void CanTP_MainFunctionRx(void)
     #ifdef CANTP_DEBUG
         printf("######## in CanTP_MainFunctionRx\n");
     #endif
-
-    PduInfoType Tp_Spdu;
-    uint8 Meta_data = 1;
-    /* Here i recieve data */
-     // SECOC_SECPDU_MAX_LENGTH;
-    PduLengthType bufferSizePtr;
+    
+    // SECOC_SECPDU_MAX_LENGTH;
+    
     for(PduIdType RxPduId = 0 ; RxPduId < SECOC_NUM_OF_RX_PDU_PROCESSING ; RxPduId++)
     {
-        uint8 AuthHeadlen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-        PduLengthType TpSduLength = AuthHeadlen + CanTp_AuthLength_Recieve[RxPduId] + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength);
-        if((CanTp_Buffer_Rx_index[RxPduId] >= TpSduLength))
+        /*
+        Check there are a recieved frame for every RxPdu
+        if it recieved and there are a data in the buffer
+            before the first frame -> Send Start Of reception and wait for thre result
+            after the last frame -> send the Rx indication 
+            all frames must be send to copyRx
+        else
+            do nothing
+        */
+        BufReq_ReturnType result = BUFREQ_OK;
+        if((CanTp_Recieve_Counter[RxPduId] > 0) && (CanTp_Buffer_Rx[RxPduId].SduLength > 0))
         {
-            uint8 LastFrame_idx = (TpSduLength/BUS_LENGTH);
-            Tp_Spdu.SduDataPtr = CanTp_Buffer_Rx[RxPduId];
-            Tp_Spdu.MetaDataPtr = &Meta_data;
-            Tp_Spdu.SduLength = BUS_LENGTH;
+            uint8 lastFrameIndex = (CanTp_secureLength_Recieve[RxPduId] % BUS_LENGTH == 0)  ? (CanTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) : ((CanTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) + 1);
+            PduLengthType bufferSizePtr;
             #ifdef CANTP_DEBUG
                 printf("######## in main tp Rx  in id : %d\n", RxPduId);
                 printf("for id %d :",RxPduId);
-                for(int l = 0; l < TpSduLength; l++)
+                for(int l = 0; l < CanTp_Buffer_Rx[RxPduId].SduLength; l++)
                 {
-                    printf("%d ", CanTp_Buffer_Rx[RxPduId][l]);
+                    printf("%d ", CanTp_Buffer_Rx[RxPduId].SduDataPtr[l]);
                 }
                 printf("\n");
             #endif
-
-            BufReq_ReturnType result= PduR_CanTpStartOfReception(RxPduId, &Tp_Spdu,TpSduLength, &bufferSizePtr);
-            /* Check if can Receive  */
-            if (result == BUFREQ_OK)
+            if(CanTp_Recieve_Counter[RxPduId] == 1)
             {
-                /* send Data */
-                for(int i = 0; i < LastFrame_idx; i++)
+                result = PduR_CanTpStartOfReception(RxPduId, &CanTp_Buffer_Rx[RxPduId], CanTp_secureLength_Recieve[RxPduId], &bufferSizePtr);
+                if (result == BUFREQ_OK)
                 {
-                    #ifdef CANTP_DEBUG
-                    printf("Info Received idx=%d: \n",i);
-                    for(int j  = 0 ; j < Tp_Spdu.SduLength ; j++)
-                    {
-                        printf("%d ",Tp_Spdu.SduDataPtr[j]);
-                    }
-                    printf("\n\n\n");
-                    #endif
-                    result = PduR_CanTpCopyRxData(RxPduId, &Tp_Spdu, &bufferSizePtr);
-                    if( result != BUFREQ_OK)
-                    {
-                        break;
-                    }
-                    Tp_Spdu.SduDataPtr += BUS_LENGTH;
+                    result = PduR_CanTpCopyRxData(RxPduId, &CanTp_Buffer_Rx[RxPduId], &bufferSizePtr);
                 }
-                /* Update length before last frame */
-                if( ((TpSduLength % BUS_LENGTH) != 0))
+                else
                 {
-                    Tp_Spdu.SduLength = TpSduLength % BUS_LENGTH;
-                    PduR_CanTpCopyRxData(RxPduId, &Tp_Spdu, &bufferSizePtr);
+                    CanTp_Recieve_Counter[RxPduId] = 0;
                 }
-
-                /* Send Confirm to last of data */
-                PduR_CanTpRxIndication(RxPduId,result);
-                CanTp_Buffer_Rx_index[RxPduId] = 0;
+                CanTp_Buffer_Rx[RxPduId].SduLength = 0;
+            }
+            else if (CanTp_Recieve_Counter[RxPduId] == lastFrameIndex)
+            {
+                CanTp_Buffer_Rx[RxPduId].SduLength = (CanTp_secureLength_Recieve[RxPduId] % BUS_LENGTH == 0) ? (BUS_LENGTH) : (CanTp_secureLength_Recieve[RxPduId] % BUS_LENGTH);
+                result = PduR_CanTpCopyRxData(RxPduId, &CanTp_Buffer_Rx[RxPduId], &bufferSizePtr);
+                PduR_CanTpRxIndication(RxPduId, result);
+                CanTp_Recieve_Counter[RxPduId] = 0;
             }
             else
             {
-                CanTp_Buffer_Rx_index[RxPduId] = 0;
-            }  
+                result = PduR_CanTpCopyRxData(RxPduId, &CanTp_Buffer_Rx[RxPduId], &bufferSizePtr);
+            }
         }
     }
 
