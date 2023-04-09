@@ -836,7 +836,25 @@ static void parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxInte
 
     (void)memcpy(SecOCIntermediate->mac, &SecPdu->SduDataPtr[SecCursor], BIT_TO_BYTES(SecOCIntermediate->macLenBits));
     SecCursor += BIT_TO_BYTES(SecOCIntermediate->macLenBits);
-
+    #ifdef SECOC_DEBUG
+        printf("After Parsing \n");
+        printf("auth \n");
+        for(int i = 0; i < SecOCIntermediate->authenticPduLen; i++)
+        {
+            printf("%d ",SecOCIntermediate->authenticPdu[i] );
+        }
+        printf("\nFreshness and lenbit is %d :",SecOCIntermediate->freshnessLenBits);
+        for(int i = 0; i < BIT_TO_BYTES(SecOCIntermediate->freshnessLenBits); i++)
+        {
+            printf("%d ",SecOCIntermediate->freshness[i] );
+        }
+        printf("\nmac :");
+        for(int i = 0; i < BIT_TO_BYTES(SecOCIntermediate->macLenBits); i++)
+        {
+            printf("%d ",SecOCIntermediate->mac[i] );
+        }
+        printf("\n");
+    #endif
     return;
 }
 
