@@ -18,9 +18,9 @@ extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 
 PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
-static uint8 CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING][CANTP_BUFFER_SIZE];
-static uint8 CanTp_Buffer_Rx_index[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
-static uint32 CanTp_AuthLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+static PduInfoType CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING];
+static uint8 CanTp_Recieve_Counter[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+static PduLengthType CanTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
