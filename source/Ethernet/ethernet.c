@@ -160,7 +160,7 @@ communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 
 void ethernet_RecieveMainFunction(void)
 {
-    uint8 dataRecieve [BUS_LENGTH_RECEIVE];
+    static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
     uint16 id;
     ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
     PduInfoType PduInfoPtr = {
