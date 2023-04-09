@@ -36,21 +36,33 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     #ifdef CANTP_DEBUG
         printf("######## in CanTp_RxIndication\n");
     #endif
-    uint8 AuthHeadlen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    (void)memcpy(CanTp_Buffer_Rx[RxPduId] + CanTp_Buffer_Rx_index[RxPduId], PduInfoPtr->SduDataPtr, PduInfoPtr->SduLength) ;
+    /* copy to CanTp buffer */
+    CanTp_Buffer_Rx[RxPduId] = *PduInfoPtr;
     
-    if(CanTp_Buffer_Rx_index[RxPduId] == 0)
+    /* Check if it first frame :
+        Check if there are a header of no 
+            if there are a header 
+                get the auth length from the frame
+            else 
+                get the config length of data
+        then add the Freshness , Mac and Header length 
+        to the the whole Secure Frame Length to recieve
+    */
+    if(CanTp_Recieve_Counter[RxPduId] == 0)
     {
+        uint8 AuthHeadlen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+        PduLengthType SecureDataframe = AuthHeadlen + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength);
         if(AuthHeadlen > 0)
         {
-            memcpy((uint8*)&CanTp_AuthLength_Recieve[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
+            (void)memcpy((uint8*)&CanTp_secureLength_Recieve[RxPduId], PduInfoPtr->SduDataPtr, AuthHeadlen );
         }
         else
         {
-            CanTp_AuthLength_Recieve[RxPduId] = SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
+            CanTp_secureLength_Recieve[RxPduId] = SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef.SduLength;
         }
+        CanTp_secureLength_Recieve[RxPduId] += SecureDataframe;
     }
-    CanTp_Buffer_Rx_index[RxPduId] += PduInfoPtr->SduLength;
+    CanTp_Recieve_Counter[RxPduId] ++;
 }
 
 
