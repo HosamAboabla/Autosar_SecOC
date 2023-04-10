@@ -619,7 +619,6 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[2],
         /*&SecOC_RxPduSecuredArea*/
     },
-    { /* for RxSecuredPduCollection" */
     { /* direct without Trunc-FV and header*/
         .SecOCAuthDataFreshnessLen =                            ((uint16) 0),
         .SecOCAuthDataFreshnessStartPosition =                  ((uint16) 0),
