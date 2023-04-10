@@ -174,7 +174,7 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
 
     /* [SWS_SecOC_00035], [SWS_SecOC_00036]*/
     result = Csm_MacGenerate(
-        TxPduId,
+        SecOCTxPduProcessing[TxPduId].SecOCDataId,
         0,
         SecOCIntermediate.DataToAuth,
         SecOCIntermediate.DataToAuthLen,
