@@ -82,89 +82,75 @@ void CanTp_MainFunction(void)
     TpDataStateType retrystate = TP_DATACONF;
     PduLengthType retrycout = BUS_LENGTH;
     RetryInfoType retry = {retrystate,retrycout};
+
     PduLengthType availableDataPtr = 0;
-    for(idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++)
+    for(PduIdType TxPduId = 0 ; TxPduId < SECOC_NUM_OF_TX_PDU_PROCESSING ; TxPduId++)
     {
+        /*
+        if there is a data to send
+            loop to send all frames
+                copy data from upper layer
+                send it to CANIF
+                if result = E_OK
+                    continue sending 
+                else if NOT_E_OK
+                    make retrystate = TP_DATARETRY
+            send confirmationc
+            clear the buffer
+        else
+            do nothing
+        */
         
-        if( CanTp_Buffer[idx].SduLength > 0)
+        if( CanTp_Buffer[TxPduId].SduLength > 0)
         {
+            uint8 lastFrameIndex = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) : ((CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) + 1);
             #ifdef CANTP_DEBUG
-                printf("Start sending id = %d\n" , idx);
-                printf("PDU length = %d\n" , CanTp_Buffer[idx].SduLength);       
+                printf("Start sending id = %d\n" , TxPduId);
+                printf("PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
                 printf("All Data to be Sent: \n");
-                for(int i = 0 ; i < CanTp_Buffer[idx].SduLength; i++)
+                for(int i = 0 ; i < CanTp_Buffer[TxPduId].SduLength; i++)
                 {
-                    printf("%d  " , CanTp_Buffer[idx].SduDataPtr[i]);
+                    printf("%d  " , CanTp_Buffer[TxPduId].SduDataPtr[i]);
                 }
                 printf("\n\n\n");
             #endif
-
-            for(int i = 0; i < (CanTp_Buffer[idx].SduLength / BUS_LENGTH) ; i++)
+            for(int frameIndex = 0; frameIndex < lastFrameIndex ; frameIndex++)
             {
-                // Request CopyTxData
-                result = SecOC_CopyTxData(idx, &info, &retry, &availableDataPtr);
-
-                CanIf_Transmit(idx , &info);
-
-                #ifdef CANTP_DEBUG
-                    printf("Delay...\n");
-                #endif
-                long long int delay = 60000000;
-                while(delay--);
-
-                
-                if(last_pdu == E_NOT_OK)
+                if(frameIndex == lastFrameIndex - 1)
+                {
+                    info.SduLength = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (BUS_LENGTH) : (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH);
+                    #ifdef CANTP_DEBUG
+                    printf("last frame PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
+                    printf("All Data to be Sent: \n");
+                    for(int i = 0 ; i < info.SduLength; i++)
+                    {
+                        printf("%d  " , info.SduDataPtr[i]);
+                    }
+                    printf("\n");
+                    #endif
+                }
+                BufReq_ReturnType resultCopy = SecOC_CopyTxData(TxPduId, &info, &retry, &availableDataPtr);
+                Std_ReturnType resultTrasmit = CanIf_Transmit(TxPduId , &info);
+                int delay = 500000;
+                while (delay--);
+                if(resultTrasmit != E_OK || resultCopy!= BUFREQ_OK)
                 {
                     retry.TpDataState = TP_DATARETRY;
-                    i--;
+                    frameIndex--;
                 }
-                else if(last_pdu == E_OK)
+                else if(resultTrasmit == E_OK)
                 {
                     retry.TpDataState = TP_DATACONF;
                 }
-                #ifdef CANTP_DEBUG
-                    printf("Transmit Result = %d\n" , last_pdu);
-                #endif
-            }
-
-            if( (CanTp_Buffer[idx].SduLength % BUS_LENGTH) != 0)
-            {
-                // Request CopyTxData with length (CanTp_Buffer[idx].SduLength % BUS_LENGTH) 
-                info.SduLength = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
-                SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
 
                 #ifdef CANTP_DEBUG
-                    printf("Sending remaider part with length %d \n", info.SduLength);
-                    for(int j = 0; j < info.SduLength; j++)
-                        printf("%d\t",info.SduDataPtr[j]);
-                    printf("\n");
+                    printf("Transmit Result = %d\n" , resultTrasmit);
                 #endif
-                
+            }    
 
-                // Send data using CanIf
-                CanIf_Transmit(idx , &info);
-                #ifdef CANTP_DEBUG
-                printf("Delay...\n");
-                #endif
-                long long int delay = 60000000;
-                while(delay--);
-
-                while(last_pdu == E_NOT_OK)
-                {
-                    retry.TxTpDataCnt = (CanTp_Buffer[idx].SduLength % BUS_LENGTH);
-                    retry.TpDataState = TP_DATARETRY;
-                    SecOC_CopyTxData(idx, &info, NULL, &availableDataPtr);
-                    CanIf_Transmit(idx , &info);
-                }
-                retry.TpDataState = TP_DATACONF;
-                #ifdef CANTP_DEBUG
-                    printf("Transmit Result = %d\n" , last_pdu);
-                #endif
-            }
+            PduR_CanTpTxConfirmation(TxPduId , E_OK);
             
-            PduR_CanTpTxConfirmation(idx , E_OK);
-            /* clear buffer */
-            CanTp_Buffer[idx].SduLength = 0;
+            CanTp_Buffer[TxPduId].SduLength = 0;
         }
     }
 }
