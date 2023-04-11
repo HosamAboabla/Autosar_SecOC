@@ -149,14 +149,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
 }
 
 
-communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
-{
-    CANIF,
-    CANTP,
-    SOAD,
-    CANIF,
-    CANTP
-};
+extern communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
 
 void ethernet_RecieveMainFunction(void)
 {

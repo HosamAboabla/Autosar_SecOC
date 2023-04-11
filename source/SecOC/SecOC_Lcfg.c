@@ -44,6 +44,26 @@ uint8_t SecPdu4BufferTx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPdu4BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu4BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+/* This is the Protocol of Communication of every PDU depend on the ID */
+
+communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+{
+    CANIF,
+    CANTP,
+    SOAD,
+    CANIF,
+    CANTP
+};
+
+communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+{
+   CANIF,
+   CANTP,
+   SOAD,
+   CANIF,
+   CANTP
+};
+
 /*
 * Start Of General
 */

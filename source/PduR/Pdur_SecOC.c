@@ -17,14 +17,8 @@
  ***************************************************/
 
 
-communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
-{
-   CANIF,
-   CANTP,
-   SOAD,
-   CANIF,
-   CANTP
-};
+extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
+
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
    #ifdef PDUR_DEBUG
