@@ -12,6 +12,7 @@
 #define CANTP_DEBUG       /* Dubeg for CanTP */
 #define COM_DEBUG         /* Dubeg for COM */
 #define DCM_DEBUG         /* Dubeg for DCM */ 
+#define SOAD_DEBUG        /* Dubeg for SoAd */ 
 #define ETHERNET_DEBUG    /* Dubeg for Ethernet */ 
 #define PDUR_DEBUG        /* Dubeg for PduR */ 
 #define COUNTERS_DEBUG    /* Debug for Auth && verify Counters */  

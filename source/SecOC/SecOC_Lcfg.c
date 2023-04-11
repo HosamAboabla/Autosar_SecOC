@@ -157,7 +157,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         {
             .SduDataPtr =               AuthPdu2BufferRx,
             .MetaDataPtr =              NULL,
-            .SduLength =                ((PduLengthType) 20)
+            .SduLength =                ((PduLengthType) 3)
         }
     },
     { /* direct without Trunc-FV and header*/
@@ -499,7 +499,7 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         .SecOCDataId =                                  ((uint16) 2),
         .SecOCFreshnessValueId =                        ((uint16) 20),
         .SecOCFreshnessValueLength =                    ((uint8) 32),
-        .SecOCFreshnessValueTruncLength =               ((uint8) 25),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 8),
         .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
         .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
         .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
@@ -610,7 +610,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCDataId =                                          ((uint16) 2),
         .SecOCFreshnessValueId =                                ((uint16) 20),
         .SecOCFreshnessValueLength =                            ((uint8) 32),
-        .SecOCFreshnessValueTruncLength =                       ((uint8) 25),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 8),
         .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
         .SecOCReceptionQueueSize =                              ((uint16) 10),
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
