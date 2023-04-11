@@ -31,9 +31,6 @@ uint8_t AuthPdu2BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu2BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
 
-/* for RxSecuredPduCollection */
-uint8_t AuthPduCollection5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
-uint8_t CryptoPduCollection3BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
 /* direct without Trunc-FV and header*/
 uint8_t AuthPdu3BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
@@ -48,6 +45,14 @@ uint8_t SecPdu4BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
 uint8_t AuthPdu4BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu4BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
+
+/* for RxSecuredPduCollection */
+uint8_t AuthPdu5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu5BufferRx[SECOC_SECPDU_MAX_LENGTH];
+uint8_t AuthPduCollection5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t CryptoPduCollection5BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
 
 /*
 * Start Of General
@@ -170,7 +175,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         .SecOCRxAuthenticLayerPduId =   ((uint16)12),
         .SecOCRxAuthenticLayerPduRef = 
         {
-            .SduDataPtr =               AuthPduCollection5BufferRx,
+            .SduDataPtr =               AuthPdu5BufferRx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 20)
         }
@@ -225,6 +230,17 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu4BufferRx,
+            .MetaDataPtr =                  NULL,
+            .SduLength =                    ((PduLengthType) 0)
+        }
+    },
+    { /* for RxSecuredPduCollection */
+        .SecOCAuthPduHeaderLength =         ((uint8) 0),
+        .SecOCRxSecuredLayerPduId =         ((uint16) 15),
+        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCRxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =                   SecPdu5BufferRx,
             .MetaDataPtr =                  NULL,
             .SduLength =                    ((PduLengthType) 0)
         }
