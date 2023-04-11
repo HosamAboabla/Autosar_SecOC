@@ -23,6 +23,7 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
  * Function_Descripton  : Requests transmission     *
  *              of a PDU                            *
  ***************************************************/
+extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
 
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
@@ -44,11 +45,11 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #endif
 
 
-    if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_TPPDU)
+    if (TxComTypes[TxPduId] == CANTP)
     {
         CanTp_TxConfirmation(TxPduId, result);
     }
-    else if (SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCPduType == SECOC_IFPDU)
+    else if (TxComTypes[TxPduId] == CANIF)
     {
         PduR_CanIfTxConfirmation(TxPduId , result);
     }
