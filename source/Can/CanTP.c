@@ -129,7 +129,7 @@ void CanTp_MainFunctionTx(void)
                     printf("\n");
                     #endif
                 }
-                BufReq_ReturnType resultCopy = SecOC_CopyTxData(TxPduId, &info, &retry, &availableDataPtr);
+                BufReq_ReturnType resultCopy = PduR_CanTpCopyTxData(TxPduId, &info, &retry, &availableDataPtr);
                 Std_ReturnType resultTrasmit = CanIf_Transmit(TxPduId , &info);
                 int delay = 500000;
                 while (delay--);
@@ -224,5 +224,4 @@ void CanTP_MainFunctionRx(void)
         }
     }
 
-    
 }
