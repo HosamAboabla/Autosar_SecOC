@@ -97,14 +97,22 @@ SecOC_GeneralType SecOC_General =
 SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
 {
     SECOC_RX_CRYPTOGRAPHIC_PDUID,
-    /*&EcuC_Pdu*/
+    {
+        .SduDataPtr =               CryptoPduCollection5BufferRx,
+        .MetaDataPtr =              NULL,
+        .SduLength =                ((PduLengthType) 0)
+    },
 };
 
 SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
 {
     SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
     SECOC_CRYPTO_RXAUTHENTIC_PDUID,
-    /*&EcuC_Pdu*/
+    {
+        .SduDataPtr =               AuthPduCollection5BufferRx,
+        .MetaDataPtr =              NULL,
+        .SduLength =                ((PduLengthType) 20)
+    },
 };
 
 
