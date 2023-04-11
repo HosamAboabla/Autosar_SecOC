@@ -14,13 +14,13 @@
 /*******************************************************\
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : CanTp_MainFunction            *
+ * Function_Name        : CanTp_MainFunctionTx          *
  * Function_Index       : 8.3.9 [CANTP213]              *
  * Function_File        : SWS of CanTp                  *
  * Function_Descripton  : The main function for         *
  * scheduling the CAN TP                                *
  *******************************************************/
-void CanTp_MainFunction(void);
+void CanTp_MainFunctionTx(void);
 
 
 /*******************************************************\

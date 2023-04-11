@@ -67,7 +67,7 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
 
 
-void CanTp_MainFunction(void)
+void CanTp_MainFunctionTx(void)
 {
     #ifdef CANTP_DEBUG
         printf("######## in CanTp_MainFunction\n");
