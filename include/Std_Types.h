@@ -44,7 +44,9 @@ typedef enum
     CANIF,
     CANTP,
     FRIF,
-    SOAD
+    SOADTP,
+    SOADIF,
+
 }communicate_Types;
 
 #ifndef NULL

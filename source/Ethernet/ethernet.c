@@ -175,13 +175,19 @@ void ethernet_RecieveMainFunction(void)
         #endif
         CanTp_RxIndication(id, &PduInfoPtr);
     }
-    else if (RxComTypes[id] == SOAD)
+    else if (RxComTypes[id] == SOADTP)
     {
-        // soAd interface
+        #ifdef ETHERNET_DEBUG
+            printf("here in Ethernet SOADTP \n");
+        #endif
+        SoAdTp_RxIndication(id, &PduInfoPtr);
     }
-    else if(RxComTypes[id] == FRIF)
+    else if(RxComTypes[id] == SOADIF)
     {
-        // FRIF interface
+        #ifdef ETHERNET_DEBUG
+            printf("here in Ethernet SOADIF \n");
+        #endif
+        PduR_SoAdIfRxIndication(id, &PduInfoPtr);
     }
     
 }
