@@ -12,7 +12,7 @@
 #endif
 
 
-Std_ReturnType last_pdu;
+
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
@@ -72,8 +72,8 @@ void CanTp_MainFunction(void)
     #ifdef CANTP_DEBUG
         printf("######## in CanTp_MainFunction\n");
     #endif
-    PduIdType idx;
-    uint8 result;
+
+
     uint8 sdata[BUS_LENGTH] = {0};
     uint8 mdata[BUS_LENGTH] = {0};
     PduLengthType length = BUS_LENGTH;
@@ -176,7 +176,6 @@ void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     #ifdef CANTP_DEBUG
         printf("######## in CanTp_TxConfirmation \n");
     #endif
-    last_pdu = result;
 }
 
 void CanTP_MainFunctionRx(void)
