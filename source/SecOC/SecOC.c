@@ -64,9 +64,9 @@ static void constructDataToAuthenticatorTx(const PduIdType TxPduId, SecOC_TxInte
 
     *DataToAuthLen = 0;
     /* DataToAuthenticator = Data Identifier | secured part of the Authentic I-PDU | Complete Freshness Value */
-    /* Data Identifier */
-    (void)memcpy(&DataToAuth[*DataToAuthLen], &TxPduId, sizeof(TxPduId));
-    *DataToAuthLen += sizeof(TxPduId);
+    /* Data Identifier "SecOC dataId" */
+    (void)memcpy(&DataToAuth[*DataToAuthLen], &SecOCTxPduProcessing[TxPduId].SecOCDataId, sizeof(SecOCTxPduProcessing[TxPduId].SecOCDataId));
+    *DataToAuthLen += sizeof(SecOCTxPduProcessing[TxPduId].SecOCDataId);
 
     /* secured part of the Authentic I-PDU */
     (void)memcpy(&DataToAuth[*DataToAuthLen], AuthPdu->SduDataPtr, AuthPdu->SduLength);
@@ -868,8 +868,8 @@ static void constructDataToAuthenticatorRx(PduIdType RxPduId, SecOC_RxIntermedia
 
     *DataToAuthLen = 0;
 	/* Copy the Id to buffer Data to Auth */
-    (void)memcpy(&DataToAuth[*DataToAuthLen], &RxPduId, sizeof(RxPduId));
-    *DataToAuthLen += sizeof(RxPduId);	
+    (void)memcpy(&DataToAuth[*DataToAuthLen], &SecOCRxPduProcessing[RxPduId].SecOCDataId, sizeof(SecOCRxPduProcessing[RxPduId].SecOCDataId));
+    *DataToAuthLen += sizeof(SecOCRxPduProcessing[RxPduId].SecOCDataId);	
 
 
     /* copy the authenticPdu to buffer DatatoAuth */
