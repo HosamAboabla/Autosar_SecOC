@@ -43,7 +43,7 @@ uint8 countSizeBits(const uint8* arrayBytes, uint8 maxSize)
 
 Std_ReturnType FVM_IncreaseCounter(uint16 SecOCFreshnessValueID) {  
     #ifdef FV_DEBUG
-        printf("######## FVM_IncreaseCounter\n");
+        printf("######## FVM_IncreaseCounter for id %d\n", SecOCFreshnessValueID);
     #endif
     /* increase the counter by 1 */
     uint8 INDEX = 0;
@@ -138,10 +138,11 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
 
         uint32 maxTruncedIndex = (truncedFreshnessLengthBytes > 0) ? (truncedFreshnessLengthBytes - 1) : (0);
 
-
         if (Freshness_Counter_length[SecOCFreshnessValueID] == SecOCTruncatedFreshnessValueLength)
         {
-            
+            #ifdef FV_DEBUG
+            printf("length counter = length trunc\n");
+            #endif
             (void)memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, truncedFreshnessLengthBytes);
             *SecOCFreshnessValueLength = SecOCTruncatedFreshnessValueLength;
         }
@@ -157,6 +158,9 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             {
                 if(SecOCTruncatedFreshnessValue[index] > Freshness_Counter[SecOCFreshnessValueID][index])
                 {
+                    #ifdef FV_DEBUG
+                    printf("LSB  counter < LSB trunc\n");
+                    #endif
                     /* most significant bits of FreshnessValue corresponding to FreshnessValueID |
                     FreshnessValue parsed from Secured I-PDU */
                     (void)memcpy(SecOCFreshnessValue, SecOCTruncatedFreshnessValue, maxTruncedIndex);
@@ -167,6 +171,9 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
                 }
                 else if ((SecOCTruncatedFreshnessValue[index] < Freshness_Counter[SecOCFreshnessValueID][index]) || (equalityFlag == 0))
                 {
+                    #ifdef FV_DEBUG
+                    printf("LSB counter > LSB trunc\n");
+                    #endif
                     /*  most significant bits of (FreshnessValue corresponding to SecOCFreshnessValueID + 1) |
                     FreshnessValue parsed from payload */
 
