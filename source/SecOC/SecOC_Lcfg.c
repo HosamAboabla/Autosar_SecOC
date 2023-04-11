@@ -50,7 +50,7 @@ communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
     CANIF,
     CANTP,
-    SOADIF,
+    SOADTP,
     CANIF,
     CANTP
 };
@@ -59,7 +59,7 @@ communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
 {
    CANIF,
    CANTP,
-   SOADIF,
+   SOADTP,
    CANIF,
    CANTP
 };
