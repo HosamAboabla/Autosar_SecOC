@@ -270,7 +270,7 @@ typedef struct
 {
    uint8                 SecOCAuthPduHeaderLength;
    uint16                SecOCRxAuthenticPduId;
-   PduInfoType         *SecOCRxAuthenticPduRef;
+   PduInfoType         SecOCRxAuthenticPduRef;
 }SecOC_RxAuthenticPduType;
 
 /*****************************************
@@ -283,7 +283,7 @@ typedef struct
 typedef struct
 {
    uint16            SecOCRxCryptographicPduId;
-   PduInfoType     *SecOCRxCryptographicPduRef;
+   PduInfoType     SecOCRxCryptographicPduRef;
 }SecOC_RxCryptographicPduType;
 /*****************************************
  *          * Container Info *           *

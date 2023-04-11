@@ -123,12 +123,14 @@ SecOC_UseMessageLinkType SecOC_UseMessageLink=
     SECOC_MESSAGE_LINKPOS,
 };
 
-SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection =
+SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection[] =
 {
-    SECOC_SECURED_RX_PDU_VERIFICATION,
-    &SecOC_RxAuthenticPdu,
-    &SecOC_RxCryptographicPdu,
-    &SecOC_UseMessageLink
+    {
+        SECOC_SECURED_RX_PDU_VERIFICATION,
+        &SecOC_RxAuthenticPdu,
+        &SecOC_RxCryptographicPdu,
+        &SecOC_UseMessageLink
+    },
 };
 
 SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] = 
@@ -263,27 +265,27 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     },
     { /* for Tp */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[1],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  NULL
     },
     { /* for SOAD "Ethernet APIs" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[2],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  NULL
     },
     { /* for RxSecuredPduCollection" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  NULL
     },
     { /* direct without Trunc-FV and header*/
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  NULL
     },
     { /* Tp without header*/
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[4],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  NULL
     },
     { /* for RxSecuredPduCollection" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[5],
-        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection
+        .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection[0]
     } 
 };
 
