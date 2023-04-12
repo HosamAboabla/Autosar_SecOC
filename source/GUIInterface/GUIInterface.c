@@ -52,6 +52,11 @@ char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
 
 }
 
+char* GUIInterface_verify(uint8_t configId)
+{
+
+}
+
 uint8_t* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
 {
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
@@ -94,3 +99,20 @@ void GUIInterface_alterAuthenticator(uint8_t configId)
     
 }
 
+char* GUIInterface_transmit(uint8_t configId)
+{
+    Std_ReturnType result;
+
+    /* TO BE IMPLEMENTED*/
+
+    return errorString(result);
+}
+
+char* GUIInterface_receive(uint8_t configId)
+{
+    Std_ReturnType result;
+
+    /* TO BE IMPLEMENTED*/
+
+    return errorString(result);
+}
