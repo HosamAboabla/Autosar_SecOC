@@ -52,3 +52,10 @@ char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
 
 }
 
+uint8_t* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
+{
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    
+    *len = securedPdu->SduLength;
+    return securedPdu->SduDataPtr;
+}
