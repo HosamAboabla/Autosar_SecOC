@@ -59,3 +59,38 @@ uint8_t* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
     *len = securedPdu->SduLength;
     return securedPdu->SduDataPtr;
 }
+
+void GUIInterface_alterFreshness(uint8_t configId)
+{
+    uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCFreshnessValueTruncLength);
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+
+    if(FreshnesslenBytes == 0 || securedPdu->SduLength == 0)
+    {
+        return;
+    }
+
+
+    uint8_t macLen = BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCAuthInfoTruncLength);
+
+    /* Get the offset of last freshness byte */
+    uint8_t freshness_offset = securedPdu->SduLength - macLen - 1;
+
+    securedPdu->SduDataPtr[freshness_offset]++;
+
+}
+
+void GUIInterface_alterAuthenticator(uint8_t configId)
+{
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+
+    if(securedPdu->SduLength == 0)
+    {
+        return;
+    }
+
+    securedPdu->SduDataPtr[securedPdu->SduLength - 1]++;
+
+    
+}
+
