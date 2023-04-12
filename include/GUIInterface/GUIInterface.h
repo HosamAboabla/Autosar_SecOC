@@ -5,5 +5,6 @@
 
 void GUIInterface_init();
 
+char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len);
 
 #endif

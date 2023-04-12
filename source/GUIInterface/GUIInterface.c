@@ -9,6 +9,8 @@ const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
+extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
+
 static char* errorString(Std_ReturnType error)
 {
     switch(error)
@@ -32,3 +34,21 @@ void GUIInterface_init()
 {
     SecOC_Init(&SecOC_Config);
 }
+
+char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
+{
+
+    PduInfoType *authPdu = &(SecOCTxPduProcessing[configId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    
+    // Creating te Authentic PDU
+    memcpy(authPdu->SduDataPtr, data, len);
+    authPdu->SduLength = len;
+
+    Std_ReturnType result;
+    result = authenticate(configId , authPdu , securedPdu);
+
+    return errorString(result);
+
+}
+
