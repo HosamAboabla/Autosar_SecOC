@@ -2,6 +2,7 @@
 #define INCLUDE_CSM_H_
 
 #include "Std_Types.h"
+#include "SecOC_Debug.h"
 
 #define CRYPTO_E_KEY_NOT_VALID      ((Std_ReturnType)0x09)
 #define CRYPTO_E_KEY_SIZE_MISMATCH  ((Std_ReturnType)0x0A)

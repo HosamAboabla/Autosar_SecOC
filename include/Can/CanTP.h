@@ -14,13 +14,13 @@
 /*******************************************************\
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : CanTp_MainFunction            *
+ * Function_Name        : CanTp_MainFunctionTx          *
  * Function_Index       : 8.3.9 [CANTP213]              *
  * Function_File        : SWS of CanTp                  *
  * Function_Descripton  : The main function for         *
  * scheduling the CAN TP                                *
  *******************************************************/
-void CanTp_MainFunction(void);
+void CanTp_MainFunctionTx(void);
 
 
 /*******************************************************\
@@ -34,6 +34,17 @@ void CanTp_MainFunction(void);
  *******************************************************/
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr);
 
+
+/*******************************************************\
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : CanTp_RxIndication            *
+ * Function_Index       : 8.4.1  [SWS_CanTp_00214]      *
+ * Function_File        : SWS of CanTp                  *
+ * Function_Descripton  : ndication of a received PDU   *
+ * from a lower layer communication interface module.   *
+ *******************************************************/
+void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
 
 void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);

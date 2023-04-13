@@ -28,8 +28,8 @@ void PduR_SoAdTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 BufReq_ReturnType PduR_SoAdTpCopyRxData (PduIdType id,const PduInfoType* info,PduLengthType* bufferSizePtr);
 BufReq_ReturnType PduR_SoAdStartOfReception(PduIdType id, const PduInfoType* info, PduLengthType TpSduLength, PduLengthType* bufferSizePtr);
 void PduR_SoAdTpRxIndication (PduIdType id, Std_ReturnType result);
+void SoAdTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
-
-void SoAd_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+void SoAdTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 void SoAd_MainFunctionRx(void);
 #endif  // INCLUDE_SOAD_H_

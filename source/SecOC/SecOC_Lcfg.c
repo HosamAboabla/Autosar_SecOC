@@ -53,6 +53,25 @@ uint8_t SecPdu5BufferRx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPduCollection5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t CryptoPduCollection5BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+/* This is the Protocol of Communication of every PDU depend on the ID */
+
+communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+{
+    CANIF,
+    CANTP,
+    SOADTP,
+    CANIF,
+    CANTP
+};
+
+communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
+{
+   CANIF,
+   CANTP,
+   SOADTP,
+   CANIF,
+   CANTP
+};
 
 /*
 * Start Of General
@@ -138,7 +157,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
     { /* direct */
         SECOC_RX_PDUTYPE,
         SECOC_RXAUTHENTICLAYER_PDUID,
-        {AuthPdu0BufferRx, NULL, 4},
+        {AuthPdu0BufferRx, NULL, 3},
     },
     { /* for Tp */
         .SecOCPduType =                 SECOC_TPPDU,
@@ -616,7 +635,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCAuthInfoTruncLength =                             ((uint16) 32),
         .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCDataId =                                          ((uint16) 1),
-        .SecOCFreshnessValueId =                                ((uint16) 5),
+        .SecOCFreshnessValueId =                                ((uint16) 7),
         .SecOCFreshnessValueLength =                            ((uint8) 24),
         .SecOCFreshnessValueTruncLength =                       ((uint8) 18),
         .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
@@ -637,7 +656,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCAuthInfoTruncLength =                             ((uint16) 32),
         .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCDataId =                                          ((uint16) 2),
-        .SecOCFreshnessValueId =                                ((uint16) 21),
+        .SecOCFreshnessValueId =                                ((uint16) 20),
         .SecOCFreshnessValueLength =                            ((uint8) 32),
         .SecOCFreshnessValueTruncLength =                       ((uint8) 8),
         .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
