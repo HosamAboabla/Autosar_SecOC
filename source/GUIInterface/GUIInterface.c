@@ -10,6 +10,7 @@ const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
+extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
 static char* errorString(Std_ReturnType error)
 {
@@ -54,6 +55,14 @@ char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
 
 char* GUIInterface_verify(uint8_t configId)
 {
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[configId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+
+    SecOC_VerificationResultType result_ver;
+    Std_ReturnType result;
+    result = verify(configId, securedPdu, &result_ver);
+
+    return errorString(result);
 
 }
 
