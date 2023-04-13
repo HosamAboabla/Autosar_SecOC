@@ -9,4 +9,5 @@ int main(void)
     #endif
 
     (void)printf("Program ran successfully\n");
+    return 0;
 }
