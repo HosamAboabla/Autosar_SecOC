@@ -435,7 +435,7 @@ void SecOCMainFunctionRx(void)
     {
         PduInfoType *authPdu = &(SecOCRxPduProcessing[idx].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
         PduInfoType *securedPdu = &(SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-        
+
         uint8 AuthHeadlen = SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
         PduLengthType securePduLength = AuthHeadlen + authRecieveLength[idx] + BIT_TO_BYTES(SecOCRxPduProcessing[idx].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[idx].SecOCAuthInfoTruncLength);
         
@@ -450,6 +450,7 @@ void SecOCMainFunctionRx(void)
                 (void)printf("Verify success for id: %d\n", idx);
                 #endif
 
+                
                 /* [SWS_SecOC_00050], [SWS_SecOC_00080] */
                 PduR_SecOCIfRxIndication(idx,  authPdu);
             }
@@ -661,6 +662,10 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     /* The SecOC copies the Authentic I-PDU to its own buffer */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+
+    SecOC_RxSecuredPduCollectionType * securePduCollection = (SecOCRxPduProcessing[idx].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection);
+    PduInfoType *AuthPduCollection;
+    PduInfoType *CryptoPduCollection;
 
     /* [SWS_SecOC_00268] static Pdu*/
     if(headerLen == 0 && (PduInfoPtr->SduLength < securedPdu->SduLength))

@@ -160,7 +160,7 @@ SecOC_RxAuthenticPduLayerType SecOC_RxAuthenticPduLayer[] =
         {AuthPdu0BufferRx, NULL, 3},
     },
     { /* for Tp */
-        .SecOCPduType =                 SECOC_TPPDU,
+        .SecOCPduType =                 SECOC_IFPDU,
         .SecOCRxAuthenticLayerPduId =   ((uint16)11),
         .SecOCRxAuthenticLayerPduRef = 
         {
