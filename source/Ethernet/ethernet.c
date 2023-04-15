@@ -1,5 +1,8 @@
 #include "ethernet.h"
 #include "SecOC_Debug.h"
+#include "SecOC_Lcfg.h"
+#include "CanTP.h"
+#include "PduR_CanIf.h"
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     #ifdef ETHERNET_DEBUG
@@ -32,23 +35,23 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     }
 
     /* Prepare For Send */
-    uint8 sendData[dataLen + sizeof(id)];
+    uint8 sendData[BUS_LENGTH_RECEIVE + sizeof(id)] = {0};
     (void)memcpy(sendData, data, dataLen);
     for(unsigned char indx = 0; indx < sizeof(id); indx++)
     {
-        sendData[dataLen+indx] = (id >> (8 * indx));
+        sendData[BUS_LENGTH_RECEIVE+indx] = (id >> (8 * indx));
     }
 
 
     #ifdef ETHERNET_DEBUG
-        for(int j = 0; j < (dataLen + sizeof(id)) ; j++)
+        for(int j = 0; j < 10 ; j++)
             printf("%d\t",sendData[j]);
         printf("\n");
     #endif
     
 
     
-    send(network_sockect , sendData , (dataLen + sizeof(id)) , 0);
+    send(network_sockect , sendData , 10 , 0);
 
     /* close the connection*/
     close(network_sockect);
@@ -137,10 +140,54 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef ETHERNET_DEBUG
-        printf("id = %d n\n",*id);
+        printf("id = %d \n",*id);
     #endif
     /* close the socket*/
     close(server_socket);
     return E_OK;
 
+}
+
+
+extern communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
+
+void ethernet_RecieveMainFunction(void)
+{
+    static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
+    uint16 id;
+    ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
+    PduInfoType PduInfoPtr = {
+        .SduDataPtr = dataRecieve,
+        .MetaDataPtr = &RxComTypes[id],
+        .SduLength = BUS_LENGTH_RECEIVE,
+    };
+    if (RxComTypes[id] == CANIF)
+    {
+        #ifdef ETHERNET_DEBUG
+            printf("here in Direct \n");
+        #endif
+        PduR_CanIfRxIndication(id, &PduInfoPtr);
+    }
+    else if (RxComTypes[id] == CANTP)
+    {
+        #ifdef ETHERNET_DEBUG
+            printf("here in CANTP \n");
+        #endif
+        CanTp_RxIndication(id, &PduInfoPtr);
+    }
+    else if (RxComTypes[id] == SOADTP)
+    {
+        #ifdef ETHERNET_DEBUG
+            printf("here in Ethernet SOADTP \n");
+        #endif
+        SoAdTp_RxIndication(id, &PduInfoPtr);
+    }
+    else if(RxComTypes[id] == SOADIF)
+    {
+        #ifdef ETHERNET_DEBUG
+            printf("here in Ethernet SOADIF \n");
+        #endif
+        PduR_SoAdIfRxIndication(id, &PduInfoPtr);
+    }
+    
 }
