@@ -44,6 +44,38 @@ uint8_t SecPdu4BufferTx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPdu4BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t SecPdu4BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+
+/* for TxSecuredPduCollection */
+uint8_t AuthPdu5BufferTx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t SecPdu5BufferTx[SECOC_SECPDU_MAX_LENGTH];
+uint8_t AuthPduCollection5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
+uint8_t CryptoPduCollection5BufferRx[SECOC_SECPDU_MAX_LENGTH];
+
+
+SecOC_PduCollection PdusCollections[] = 
+{
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {
+        .Type =         SECOC_AUTH_COLLECTON_PDU,
+        .CollectionId =     5,
+        .AuthId =           6,
+        .CryptoId=          7,
+        .status=            0
+    },
+    {
+        .Type =         SECOC_CRYPTO_COLLECTON_PDU,
+        .CollectionId =     5,
+        .AuthId =           6,
+        .CryptoId=          7,
+        .status=            0
+    }
+};
+
 /* This is the Protocol of Communication of every PDU depend on the ID */
 
 communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
@@ -61,7 +93,10 @@ communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
    CANTP,
    SOADTP,
    CANIF,
-   CANTP
+   CANTP,
+   CANIF,
+   CANIF,
+   CANIF,
 };
 
 /*
@@ -334,6 +369,16 @@ SecOC_TxAuthenticPduLayerType SecOC_TxAuthenticPduLayer[]=
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         }
+    },
+    { /* for TxSecuredPduCollection */
+        .SecOCPduType =                 SECOC_IFPDU,
+        .SecOCTxAuthenticLayerPduId =   ((uint16) 5),
+        .SecOCTxAuthenticLayerPduRef = 
+        {
+            .SduDataPtr =               AuthPdu5BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
     }
 };
 
@@ -383,6 +428,16 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         }
+    },
+    { /* TxSecuredPduCollection */
+        .SecOCAuthPduHeaderLength =     ((uint8) 1),
+        .SecOCTxSecuredLayerPduId =     ((uint16) 5),
+        .SecOCTxSecuredLayerPduRef = 
+        {
+            .SduDataPtr =               SecPdu5BufferTx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        }
     }
 };
 
@@ -393,9 +448,9 @@ SecOC_TxSecuredPduType SecOC_TxSecuredPdu[]=
 SecOC_TxCryptographicPduType SecOC_TxCryptographicPdu[]=
 {
     {
-        SECOC_TX_CRYPTOGRAPHIC_PDUID,
+        7,
         {
-            .SduDataPtr =               CryptoPduCollection3BufferRx,
+            .SduDataPtr =               CryptoPduCollection5BufferRx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 0)
         },
@@ -409,9 +464,9 @@ SecOC_TxAuthenticPduType SecOC_TxAuthenticPdu[]=
 {
     {
         SECOC_AUTH_PDUHEADER_LENGTH,
-        3, // SECOC_TX_AUTHENTIC_PDUID,
+        6, // SECOC_TX_AUTHENTIC_PDUID,
         {
-            .SduDataPtr =               AuthPduCollection3BufferRx,
+            .SduDataPtr =               AuthPduCollection5BufferRx,
             .MetaDataPtr =              NULL,
             .SduLength =                ((PduLengthType) 20)
         },
@@ -467,6 +522,10 @@ SecOC_TxSecuredPduLayerType SecOC_TxSecuredPduLayer[]=
     { /* Tp without header*/
         .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[4],
         .SecOCTxSecuredPduCollection =  NULL
+    },
+    { /* for TxSecuredPduCollection */
+        .SecOCTxSecuredPdu =            &SecOC_TxSecuredPdu[5],
+        .SecOCTxSecuredPduCollection =  &SecOC_TxSecuredPduCollection[0]
     }
 };
 
@@ -563,6 +622,25 @@ SecOC_TxPduProcessingType SecOC_TxPduProcessing[] = {
         /*                                              SecOCTxPduMainFunctionRef;*/
         .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[4],
         .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[4],
+        /*&SecOC_TxPduSecuredArea,*/
+        /* &EcuC_Pdu,*/
+    },
+    { /* for TxSecuredPduCollection */
+        .SecOCAuthenticationBuildAttempts =             ((uint16) 2),
+        .SecOCAuthInfoTruncLength =                     ((uint16) 32),
+        .SecOCDataId =                                  ((uint16) 5),
+        .SecOCFreshnessValueId =                        ((uint16) 20),
+        .SecOCFreshnessValueLength =                    ((uint8) 24),
+        .SecOCFreshnessValueTruncLength =               ((uint8) 8),
+        .SecOCProvideTxTruncatedFreshnessValue =        ((boolean) TRUE),
+        .SecOCReAuthenticateAfterTriggerTransmit =      ((boolean) FALSE),
+        .SecOCTxPduUnusedAreasDefault =                 ((uint8) 0),
+        .SecOCUseTxConfirmation =                       ((boolean) FALSE),
+        /*                                              SecOCSameBufferPduRef;*/
+        /*                                              SecOCTxAuthServiceConfigRef*/
+        /*                                              SecOCTxPduMainFunctionRef;*/
+        .SecOCTxAuthenticPduLayer =                     &SecOC_TxAuthenticPduLayer[5],
+        .SecOCTxSecuredPduLayer =                       &SecOC_TxSecuredPduLayer[5],
         /*&SecOC_TxPduSecuredArea,*/
         /* &EcuC_Pdu,*/
     }

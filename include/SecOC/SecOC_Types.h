@@ -15,6 +15,11 @@ typedef enum {
 }SecOC_StatusPropagationMode_Type;
 
 
+typedef enum {
+    SECOC_AUTH_COLLECTON_PDU = 0,
+    SECOC_CRYPTO_COLLECTON_PDU,
+    SECOC_SECURED_PDU
+}SecOC_PduCollection_Type;
 
 
 typedef enum {
