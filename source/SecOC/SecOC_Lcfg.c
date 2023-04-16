@@ -53,6 +53,33 @@ uint8_t SecPdu5BufferRx[SECOC_SECPDU_MAX_LENGTH];
 uint8_t AuthPduCollection5BufferRx[SECOC_AUTHPDU_MAX_LENGTH];
 uint8_t CryptoPduCollection5BufferRx[SECOC_SECPDU_MAX_LENGTH];
 
+
+SecOC_PduCollection PdusCollections[] = 
+{
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU,0,0,0,0},
+    {
+        .Type =         SECOC_AUTH_COLLECTON_PDU,
+        .CollectionId =     5,
+        .AuthId =           6,
+        .CryptoId=          7,
+        .status=            0
+    },
+    {
+        .Type =         SECOC_CRYPTO_COLLECTON_PDU,
+        .CollectionId =     5,
+        .AuthId =           6,
+        .CryptoId=          7,
+        .status=            0
+    }
+};
+
+
+
 /* This is the Protocol of Communication of every PDU depend on the ID */
 
 communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =

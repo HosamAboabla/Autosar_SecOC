@@ -41,6 +41,16 @@ typedef enum {
 } SecOC_PduType_Type;
 
 
+typedef struct 
+{
+   SecOC_PduCollection_Type   Type;
+   uint16                     CollectionId;
+   uint16                     AuthId;
+   uint16                     CryptoId;
+   uint8                      status;
+} SecOC_PduCollection;
+
+
 
 typedef enum {
     SECOC_CFUNC,
