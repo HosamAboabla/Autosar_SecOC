@@ -155,7 +155,10 @@ void ethernet_RecieveMainFunction(void)
 {
     static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
     uint16 id;
-    ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
+    if ( ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id) != E_OK )
+    {
+        return;
+    }
     PduInfoType PduInfoPtr = {
         .SduDataPtr = dataRecieve,
         .MetaDataPtr = &RxComTypes[id],
