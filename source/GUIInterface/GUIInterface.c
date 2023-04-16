@@ -1,13 +1,12 @@
 #include "SecOC.h"
-#
 #include "SecOC_Lcfg.h"
 #include <stdio.h>
 
 extern SecOC_ConfigType SecOC_Config;
 
-const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
-const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
-const SecOC_GeneralType             *SecOCGeneral;
+extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
+extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
+extern const SecOC_GeneralType             *SecOCGeneral;
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
