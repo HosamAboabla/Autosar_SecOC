@@ -8,4 +8,6 @@ void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
 void Com_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
+void Com_MainTx(void);
+
 #endif
