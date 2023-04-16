@@ -35,34 +35,34 @@ elseif(UNIX)
 endif()
 
 
+if(WIN32)
+    # Adding unit tests
+    include(CTest)
 
-# Adding unit tests
-include(CTest)
+    include(FetchContent)
 
-include(FetchContent)
+    FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.11.0
+    )
+    FetchContent_MakeAvailable(googletest)
 
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.11.0
-)
-FetchContent_MakeAvailable(googletest)
+    # Extract include directories from main target SecOC
+    set(headerDirs "")
+    get_target_property(headerDirs SecOC INCLUDE_DIRECTORIES)
 
-# Extract include directories from main target SecOC
-set(headerDirs "")
-get_target_property(headerDirs SecOC INCLUDE_DIRECTORIES)
+    # Print include directories one per line for cppchecke extension 
+    string(REPLACE ";"  "\n" cppincludes "${headerDirs}")
+    file(WRITE "${CMAKE_SOURCE_DIR}/build/cppcheck_includes.txt" ${cppincludes})
 
-# Print include directories one per line for cppchecke extension 
-string(REPLACE ";"  "\n" cppincludes "${headerDirs}")
-file(WRITE "${CMAKE_SOURCE_DIR}/build/cppcheck_includes.txt" ${cppincludes})
+    # Create library for linking with other projects
+    add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
+    target_include_directories(SecOCLib PUBLIC ${headerDirs})
 
-# Create library for linking with other projects
-add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
-target_include_directories(SecOCLib PUBLIC ${headerDirs})
-
-# Add our test folder cmakelists
-add_subdirectory(test)
-
+    # Add our test folder cmakelists
+    add_subdirectory(test)
+endif()
 
 
 
