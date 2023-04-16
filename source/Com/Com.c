@@ -44,12 +44,12 @@ void Com_MainTx(void)
 	printf("######## in Com_MainTx\n");
 	#endif
 	PduIdType id;
-	uint8 buff[21] = {0};
+	uint8 buff[21] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
 	PduInfoType SPDU;
-	PduLengthType len = 8;
-	printf("Enter data : ");
-	fgets(buff, 21, stdin);
-	len = strlen(buff) - 1;
+	PduLengthType len = 19;
+	// printf("Enter data : ");
+	// fgets(buff, 21, stdin);
+	// len = strlen(buff) - 1;
 	for(int i = 0; i < len; i++)
 	{
 		printf("%d ", buff[i]);
