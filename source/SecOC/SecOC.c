@@ -395,7 +395,10 @@ void SecOCMainFunctionTx(void)
 
             if(result == E_OK )
             {
+                /* Using Freshness Value Based on Single Freshness Counter we need to keep it synchronise 
+                    increase counter before Broadcast as require */
                 FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
+
                 /* [SWS_SecOC_00062] */
                 PduR_SecOCTransmit(idx , securedPdu);
             }
