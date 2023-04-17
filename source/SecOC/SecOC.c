@@ -362,20 +362,16 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_OK) )
         {
-            PdusCollections[authCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
-            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
-            PdusCollections[authCollectionId].status = 0x02;
-            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
