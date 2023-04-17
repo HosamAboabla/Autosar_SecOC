@@ -21,6 +21,8 @@ typedef enum {
 }SecOC_PduCollection_Type;
 
 
+
+
 typedef enum {
     SECOC_QUEUE = 0,
     SECOC_REJECT,
@@ -53,6 +55,7 @@ typedef struct
    uint16                     CryptoId;
    uint8                      status;
 } SecOC_PduCollection;
+
 
 
 

@@ -79,7 +79,6 @@ SecOC_PduCollection PdusCollections[] =
 };
 
 
-
 /* This is the Protocol of Communication of every PDU depend on the ID */
 
 communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
