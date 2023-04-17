@@ -65,14 +65,14 @@ SecOC_PduCollection PdusCollections[] =
         .CollectionId =     5,
         .AuthId =           6,
         .CryptoId=          7,
-        .status=            0
+        .status=            0x02
     },
     {
         .Type =         SECOC_CRYPTO_COLLECTON_PDU,
         .CollectionId =     5,
         .AuthId =           6,
         .CryptoId=          7,
-        .status=            0
+        .status=            0x02
     }
 };
 

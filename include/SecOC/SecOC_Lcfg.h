@@ -45,7 +45,7 @@ typedef struct
    uint16                     CollectionId;
    uint16                     AuthId;
    uint16                     CryptoId;
-   uint8                      status;
+   Std_ReturnType             status;
 } SecOC_PduCollection;
 
 
