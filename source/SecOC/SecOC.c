@@ -231,7 +231,6 @@ STATIC Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
     /* Clear Auth */
     AuthPdu->SduLength = 0;
 
-    FVM_IncreaseCounter(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueId);
 
     #ifdef SECOC_DEBUG
         printf("result of authenticate is %d\n", result);
@@ -396,6 +395,11 @@ void SecOCMainFunctionTx(void)
 
             if(result == E_OK )
             {
+                /* Using Freshness Value Based on Single Freshness Counter we need to keep it synchronise 
+                    increase counter before Broadcast as require */
+                /*[SWS_SecOC_00031]*/
+                FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
+
                 /* [SWS_SecOC_00062] */
                 PduR_SecOCTransmit(idx , securedPdu);
             }
