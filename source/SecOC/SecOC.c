@@ -664,24 +664,40 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     PduInfoType *AuthPduCollection;
     PduInfoType *CryptoPduCollection;
     PduIdType pduCollectionId;
+    
+    pduCollectionId = PdusCollections[RxPduId].CollectionId;
+    securedPdu = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    uint32 AuthPduLen = authPdu->SduLength;
+    uint32 headerLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCAuthPduHeaderLength;
+    uint32 AuthPduCollectionLen = AuthPduLen + headerLen;
+    AuthPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCRxAuthenticPduRef);
 
-    if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+
+    if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU)
     {
-        pduCollectionId = PdusCollections[RxPduId].CollectionId;
-        AuthPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCRxAuthenticPduRef);
-        CryptoPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxCryptographicPdu->SecOCRxCryptographicPduRef);
-        securedPdu = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
-		
-		uint32 headerLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCAuthPduHeaderLength;
-		uint16 messageLinkLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkLen;
-		uint16 messageLinkPos = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkPos;
-		uint32 AuthPduCollectionLen = AuthPduLen + headerLen;
-
-		/* AuthPduCollection */
-		(void)memcpy(AuthPduCollection->SduDataPtr, securedPdu->SduDataPtr, AuthPduCollectionLen);
+        
+        /* AuthPduCollection */
+		(void)memcpy(securedPdu->SduDataPtr,&authentic->SduDataPtr, AuthPduCollectionLen);
 		AuthPduCollection->MetaDataPtr =  securedPdu->MetaDataPtr;
 		AuthPduCollection->SduLength = AuthPduCollectionLen;
 
+    }
+
+    if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+    {
+        
+        CryptoPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxCryptographicPdu->SecOCRxCryptographicPduRef);
+        
+		
+        
+		
+        
+		uint16 messageLinkLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkLen;
+		uint16 messageLinkPos = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkPos;
+		
+
+		
 		uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCRxPduProcessing[pduCollectionId].SecOCFreshnessValueTruncLength);
 		uint32 AuthenticatorLen = BIT_TO_BYTES(SecOCRxPduProcessing[pduCollectionId].SecOCAuthInfoTruncLength);
 		uint32 CryptoPduCollectionLen = FreshnesslenBytes+ AuthenticatorLen;
