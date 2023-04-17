@@ -659,6 +659,47 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_RxIndication \n");
     #endif
+
+    PduInfoType *securedPdu;
+    PduInfoType *AuthPduCollection;
+    PduInfoType *CryptoPduCollection;
+    PduIdType pduCollectionId;
+
+    if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+    {
+        pduCollectionId = PdusCollections[RxPduId].CollectionId;
+        AuthPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCRxAuthenticPduRef);
+        CryptoPduCollection = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxCryptographicPdu->SecOCRxCryptographicPduRef);
+        securedPdu = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+		
+		uint32 headerLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCRxAuthenticPdu->SecOCAuthPduHeaderLength;
+		uint16 messageLinkLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkLen;
+		uint16 messageLinkPos = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkPos;
+		uint32 AuthPduCollectionLen = AuthPduLen + headerLen;
+
+		/* AuthPduCollection */
+		(void)memcpy(AuthPduCollection->SduDataPtr, securedPdu->SduDataPtr, AuthPduCollectionLen);
+		AuthPduCollection->MetaDataPtr =  securedPdu->MetaDataPtr;
+		AuthPduCollection->SduLength = AuthPduCollectionLen;
+
+		uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCRxPduProcessing[pduCollectionId].SecOCFreshnessValueTruncLength);
+		uint32 AuthenticatorLen = BIT_TO_BYTES(SecOCRxPduProcessing[pduCollectionId].SecOCAuthInfoTruncLength);
+		uint32 CryptoPduCollectionLen = FreshnesslenBytes+ AuthenticatorLen;
+
+		/* CryptoPduCollection */
+		(void)memcpy(CryptoPduCollection->SduDataPtr, &securedPdu->SduDataPtr[AuthPduCollectionLen], CryptoPduCollectionLen);
+
+
+		/* MessageLink */
+		/* [SWS_SecOC_00209] */
+		(void)memcpy(&CryptoPduCollection->SduDataPtr[messageLinkPos], securedPdu->SduDataPtr, messageLinkLen);
+		CryptoPduCollectionLen += messageLinkLen;
+
+		CryptoPduCollection->MetaDataPtr = securedPdu->MetaDataPtr;
+		CryptoPduCollection->SduLength = CryptoPduCollectionLen;
+
+	}
+
     /* The SecOC copies the Authentic I-PDU to its own buffer */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     uint32 headerLen = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
