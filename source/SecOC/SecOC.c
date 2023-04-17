@@ -396,7 +396,8 @@ void SecOCMainFunctionTx(void)
             if(result == E_OK )
             {
                 /* Using Freshness Value Based on Single Freshness Counter we need to keep it synchronise 
-                    increase counter before Broadcast as require [SWS_SecOC_00031]*/
+                    increase counter before Broadcast as require */
+                /*[SWS_SecOC_00031]*/
                 FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
 
                 /* [SWS_SecOC_00062] */
