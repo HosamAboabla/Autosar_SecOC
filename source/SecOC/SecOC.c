@@ -667,8 +667,6 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     #endif
 
     
-//check on direct or collection
-//if not secured so it's collection
 
     if(PdusCollections[RxPduId].Type != SECOC_SECURED_PDU)
     {
@@ -713,6 +711,16 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             (void)memcpy(&(securedPdu->SduDataPtr[securedPdu->SduLength]),CryptoPduCollection->SduDataPtr, (CryptoPduCollection->SduLength)-messageLinkLen);
             
             securedPdu->SduLength+=(CryptoPduCollection->SduLength)-messageLinkLen;
+
+            #ifdef PDU_COLLECTION_DEBUG
+                printf("########  both received and secured length = %d\n" , securedPdu->SduLength);
+                printf("Data Recieve in secured pdu : ");
+                for(uint8 i = 0; i < securedPdu->SduLength; i++)
+                {
+                    printf("%d ",securedPdu->SduDataPtr[i]);
+                }
+                printf("\n");
+            #endif
         }
     }
     else
@@ -1070,7 +1078,19 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 #ifdef DEBUG_ALL
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{  
+{
+    SecOC_Init(&SecOC_Config);
+    while (1)
+    {
+        #ifdef SECOC_DEBUG
+            printf("############### Starting Receive ###############\n");
+        #endif
+        ethernet_RecieveMainFunction();
+        // CanTp_MainFunctionRx();
+        // SoAd_MainFunctionRx();
+        SecOCMainFunctionRx();
+    }
+    
 }
 #endif
 
