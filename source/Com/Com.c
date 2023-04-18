@@ -92,6 +92,18 @@ void Com_MainTx(void)
     	SPDU.SduLength = len;
 		PduR_ComTransmit(2,&SPDU);
 	}
+	else if (len == 7)
+	{
+		#ifdef COM_DEBUG
+		printf("############### Send PDU Collection ###############\n");
+		#endif
+		PduInfoType SPDU;
+		uint8 test_meta_data = 0;
+		SPDU.MetaDataPtr = &test_meta_data;
+    	SPDU.SduDataPtr = buff;
+    	SPDU.SduLength = len;
+		PduR_ComTransmit(5,&SPDU);
+	}
 	else if(len == 19)
 	{
 		#ifdef COM_DEBUG
