@@ -341,11 +341,6 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     if(PdusCollections[TxPduId].Type != SECOC_SECURED_PDU)
     {
         PdusCollections[TxPduId].status = result;
-    }
-
-
-    if(PdusCollections[TxPduId].Type != SECOC_SECURED_PDU)
-    {
         pduCollectionId = PdusCollections[TxPduId].CollectionId;
         authCollectionId = PdusCollections[TxPduId].AuthId;
         cryptoCollectionId = PdusCollections[TxPduId].CryptoId;
@@ -516,7 +511,7 @@ void SecOCMainFunctionTx(void)
                     increase counter before Broadcast as require */
                 /*[SWS_SecOC_00031]*/
                 FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
-                
+
                 /* [SWS_SecOC_00201] */
                 if(securePduCollection != NULL)
                 {
