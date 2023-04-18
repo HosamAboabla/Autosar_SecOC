@@ -17,6 +17,7 @@
 #define PDUR_DEBUG        /* Dubeg for PduR */ 
 #define COUNTERS_DEBUG    /* Debug for Auth && verify Counters */  
 #define MAC_DEBUG    /* Debug for MAC gerenration */  
+#define PDU_COLLECTION_DEBUG    /* Debug for MAC gerenration */  
 #endif
 
 
