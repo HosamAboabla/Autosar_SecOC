@@ -31,7 +31,6 @@ const SecOC_GeneralType             *SecOCGeneral;
 extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
 extern SecOC_RxCountersType         SecOC_RxCounters[SECOC_NUM_OF_RX_PDU_PROCESSING];
 extern SecOC_PduCollection          PdusCollections[];
-extern SecOC_Pdus                   Pdus[];
 
 static SecOC_StateType SecOCState = SECOC_UNINIT;
 static PduLengthType bufferRemainIndex[SECOC_NUM_OF_TX_PDU_PROCESSING] = {0};
