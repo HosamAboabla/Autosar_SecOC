@@ -139,25 +139,29 @@ SecOC_GeneralType SecOC_General =
 
 
 
-SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu =
+SecOC_RxCryptographicPduType SecOC_RxCryptographicPdu[] =
 {
-    SECOC_RX_CRYPTOGRAPHIC_PDUID,
     {
-        .SduDataPtr =               CryptoPduCollection5BufferRx,
-        .MetaDataPtr =              NULL,
-        .SduLength =                ((PduLengthType) 0)
-    },
+        SECOC_RX_CRYPTOGRAPHIC_PDUID,
+        {
+            .SduDataPtr =               CryptoPduCollection5BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        },
+    }
 };
 
-SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu =
+SecOC_RxAuthenticPduType SecOC_RxAuthenticPdu[] =
 {
-    SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
-    SECOC_CRYPTO_RXAUTHENTIC_PDUID,
     {
-        .SduDataPtr =               AuthPduCollection5BufferRx,
-        .MetaDataPtr =              NULL,
-        .SduLength =                ((PduLengthType) 20)
-    },
+        SECOC_CRYPTO_AUTHPDU_HEADERLENGTH,
+        SECOC_CRYPTO_RXAUTHENTIC_PDUID,
+        {
+            .SduDataPtr =               AuthPduCollection5BufferRx,
+            .MetaDataPtr =              NULL,
+            .SduLength =                ((PduLengthType) 0)
+        },
+    }
 };
 
 
@@ -172,8 +176,8 @@ SecOC_RxSecuredPduCollectionType SecOC_RxSecuredPduCollection[] =
 {
     {
         SECOC_SECURED_RX_PDU_VERIFICATION,
-        &SecOC_RxAuthenticPdu,
-        &SecOC_RxCryptographicPdu,
+        &SecOC_RxAuthenticPdu[0],
+        &SecOC_RxCryptographicPdu[0],
         &SecOC_UseMessageLink
     },
 };
@@ -290,7 +294,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
         }
     },
     { /* for RxSecuredPduCollection */
-        .SecOCAuthPduHeaderLength =         ((uint8) 0),
+        .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 15),
         .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
         .SecOCRxSecuredLayerPduRef = 
@@ -316,10 +320,6 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[2],
         .SecOCRxSecuredPduCollection =  NULL
     },
-    { /* for RxSecuredPduCollection" */
-        .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
-        .SecOCRxSecuredPduCollection =  NULL
-    },
     { /* direct without Trunc-FV and header*/
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[3],
         .SecOCRxSecuredPduCollection =  NULL
@@ -331,7 +331,7 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
     { /* for RxSecuredPduCollection" */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[5],
         .SecOCRxSecuredPduCollection =  &SecOC_RxSecuredPduCollection[0]
-    } 
+    }
 };
 
 
@@ -744,10 +744,10 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCAuthenticationVerifyAttempts =                    ((uint16) 2),
         .SecOCAuthInfoTruncLength =                             ((uint16) 32),
         .SecOCClientServerVerificationStatusPropagationMode =   ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
-        .SecOCDataId =                                          ((uint16) 4),
-        .SecOCFreshnessValueId =                                ((uint16) 2),
-        .SecOCFreshnessValueLength =                            ((uint8) 32),
-        .SecOCFreshnessValueTruncLength =                       ((uint8) 30),
+        .SecOCDataId =                                          ((uint16) 5),
+        .SecOCFreshnessValueId =                                ((uint16) 20),
+        .SecOCFreshnessValueLength =                            ((uint8) 24),
+        .SecOCFreshnessValueTruncLength =                       ((uint8) 8),
         .SecOCReceptionOverflowStrategy =                       ((SecOC_ReceptionOverflowStrategy_Type) SECOC_REPLACE),
         .SecOCReceptionQueueSize =                              ((uint16) 10),
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
