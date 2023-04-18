@@ -57,7 +57,7 @@ string(REPLACE ";"  "\n" cppincludes "${headerDirs}")
 file(WRITE "${CMAKE_SOURCE_DIR}/build/cppcheck_includes.txt" ${cppincludes})
 
 # Create library for linking with other projects
-add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
+add_library(SecOCLib SHARED ${SCR_FILES} ${HDR_FILES})
 target_include_directories(SecOCLib PUBLIC ${headerDirs})
 
 # Add our test folder cmakelists
