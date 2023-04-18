@@ -710,7 +710,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             securedPdu->SduLength+=AuthPduCollection->SduLength;
 
             /* CryptoPduCollection */
-            (void)memcpy(&securedPdu->SduDataPtr[securedPdu->SduLength],CryptoPduCollection->SduDataPtr, (CryptoPduCollection->SduLength)-messageLinkLen);
+            (void)memcpy(&(securedPdu->SduDataPtr[securedPdu->SduLength]),CryptoPduCollection->SduDataPtr, (CryptoPduCollection->SduLength)-messageLinkLen);
             
             securedPdu->SduLength+=(CryptoPduCollection->SduLength)-messageLinkLen;
         }
