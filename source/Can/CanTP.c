@@ -1,3 +1,8 @@
+
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "CanTP.h"
 #include "Pdur_CanTP.h"
 #include "SecOC.h"
@@ -12,15 +17,21 @@
 #endif
 
 
-
+/********************************************************************************************************/
+/******************************************GlobalVaribles************************************************/
+/********************************************************************************************************/
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 
-PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
+static PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static PduInfoType CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING];
 static uint8 CanTp_Recieve_Counter[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 static PduLengthType CanTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
+
+/********************************************************************************************************/
+/********************************************Functions***************************************************/
+/********************************************************************************************************/
 
 Std_ReturnType CanTp_Transmit(PduIdType CanTpTxSduId, const PduInfoType* CanTpTxInfoPtr)
 {
@@ -164,7 +175,7 @@ void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     #endif
 }
 
-void CanTP_MainFunctionRx(void)
+void CanTp_MainFunctionRx(void)
 {
     #ifdef CANTP_DEBUG
         printf("######## in CanTP_MainFunctionRx\n");

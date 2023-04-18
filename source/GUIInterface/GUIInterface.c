@@ -1,7 +1,15 @@
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "SecOC.h"
 #include "SecOC_Lcfg.h"
 #include <stdio.h>
 
+
+/********************************************************************************************************/
+/******************************************GlobalVaribles************************************************/
+/********************************************************************************************************/
 extern SecOC_ConfigType SecOC_Config;
 
 extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
@@ -11,6 +19,10 @@ extern const SecOC_GeneralType             *SecOCGeneral;
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
+
+/********************************************************************************************************/
+/********************************************Functions***************************************************/
+/********************************************************************************************************/
 static char* errorString(Std_ReturnType error)
 {
     switch(error)
