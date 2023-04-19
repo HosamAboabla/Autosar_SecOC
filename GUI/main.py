@@ -120,12 +120,6 @@ app.setPalette(dark_palette)
 app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
 
 dlg = MyDialog()
-
-# logging.debug('damn, a bug')
-# logging.info('something to remember')
-# logging.warning('that\'s not right')
-# logging.error('foobar')
-# logging.debug('damn, a bug')
 dlg.show()
 dlg.raise_()
 sys.exit(app.exec_())
