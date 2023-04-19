@@ -14,7 +14,7 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
         self.setReadOnly(True)
         self.setLevel(logging.DEBUG)
-        self.setFormatter(logging.Formatter('%(levelname)s\t- %(message)s'))
+        self.setFormatter(logging.Formatter('%(levelname)s\t %(message)s'))
         self.filters = []
         self.lock = threading.RLock()
 
