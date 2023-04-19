@@ -1211,18 +1211,6 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-    SecOC_Init(&SecOC_Config);
-    while (1)
-    {
-        #ifdef SECOC_DEBUG
-            printf("############### Starting Receive ###############\n");
-        #endif
-        ethernet_RecieveMainFunction();
-        // CanTp_MainFunctionRx();
-        // SoAd_MainFunctionRx();
-        SecOCMainFunctionRx();
-    }
-    
 }
 #endif
 
