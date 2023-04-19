@@ -1,7 +1,8 @@
 #include "Com.h"
 #include "PduR_Com.h"
 #include "Std_Types.h"
-#include<stdio.h>
+#include <stdio.h>
+#include <string.h>
 #include "SecOC_Debug.h"
 
  void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
@@ -44,75 +45,77 @@ void Com_MainTx(void)
 	printf("######## in Com_MainTx\n");
 	#endif
 	PduIdType id;
-	uint8 buff[21] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19};
+	uint8 buff[21];
 	PduInfoType SPDU;
-	PduLengthType len = 19;
-	// printf("Enter data : ");
-	// fgets(buff, 21, stdin);
-	// len = strlen(buff) - 1;
-	for(int i = 0; i < len; i++)
-	{
-		printf("%d ", buff[i]);
+	PduLengthType len = 2;
+	printf("Enter data : ");
+	fgets(buff, 21, stdin);
+	len = strlen(buff) - 1;
 
-	}
-	printf("\n");
-	if (len <= 2)
+	if((sint32)len > 0)
 	{
-		#ifdef COM_DEBUG
-		printf("############### Send Direct with header ###############\n");
-		#endif
-		PduInfoType SPDU;
-		uint8 test_meta_data = 0;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(0,&SPDU);
-	}
-	else if(len == 4)
-	{
-		#ifdef COM_DEBUG
-		printf("############### Send Direct without header and FV ###############\n");
-		#endif
-		PduInfoType SPDU;
-		uint8 test_meta_data = 0;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(3,&SPDU);
-	}
-	else if (len == 5)
-	{
-		#ifdef COM_DEBUG
-		printf("############### Send TP with Ethernet ###############\n");
-		#endif
-		PduInfoType SPDU;
-		uint8 test_meta_data = 0;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(2,&SPDU);
-	}
-	else if(len == 19)
-	{
-		#ifdef COM_DEBUG
-    		printf("############### Send tp without header ###############\n");
-    	#endif
-		uint8 test_meta_data = 2;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(4,&SPDU);
-	}
-	else
-	{
-		#ifdef COM_DEBUG
-    		printf("############### Send tp with header ###############\n");
-    	#endif
-		uint8 test_meta_data = 2;
-		SPDU.MetaDataPtr = &test_meta_data;
-    	SPDU.SduDataPtr = buff;
-    	SPDU.SduLength = len;
-		PduR_ComTransmit(1,&SPDU);
-	}
+		for(int i = 0; i < len; i++)
+		{
+			printf("%d ", buff[i]);
+		}
 
+		if (len <= 2)
+		{
+			#ifdef COM_DEBUG
+			printf("############### Send Direct with header ###############\n");
+			#endif
+			PduInfoType SPDU;
+			uint8 test_meta_data = 0;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(0,&SPDU);
+		}
+		else if(len == 4)
+		{
+			#ifdef COM_DEBUG
+			printf("############### Send Direct without header and FV ###############\n");
+			#endif
+			PduInfoType SPDU;
+			uint8 test_meta_data = 0;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(3,&SPDU);
+		}
+		else if (len == 5)
+		{
+			#ifdef COM_DEBUG
+			printf("############### Send TP with Ethernet ###############\n");
+			#endif
+			PduInfoType SPDU;
+			uint8 test_meta_data = 0;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(2,&SPDU);
+		}
+		else if(len == 19)
+		{
+			#ifdef COM_DEBUG
+				printf("############### Send tp without header ###############\n");
+			#endif
+			uint8 test_meta_data = 2;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(4,&SPDU);
+		}
+		else
+		{
+			#ifdef COM_DEBUG
+				printf("############### Send tp with header ###############\n");
+			#endif
+			uint8 test_meta_data = 2;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(1,&SPDU);
+		}
+	}
 }
