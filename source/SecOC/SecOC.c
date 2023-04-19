@@ -1169,43 +1169,6 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
-
-    #ifdef DEBUG_ALL
-
-    
-    
-
-    SecOC_Init(&SecOC_Config);
-    while (1)
-    {
-        Com_MainTx();
-        SecOCMainFunctionTx();
-        CanTp_MainFunctionTx();
-        #ifdef SECOC_DEBUG
-            printf("############### Finsh Trinsmition  ###############\n");
-        #endif
-    }
-
-    #endif
-
-    // SecOCTxPduProcessing = SecOC_Config.SecOCTxPduProcessings;
-
-    // SecOCMainFunctionTx();
-
-
-    // uint8 buff[50] = {1,2,3,4,5,6,7};
-
-    // PduLengthType len = 7;
-    // PduInfoType SPDU;
-    // uint8 test_meta_data = 0;
-    // SPDU.MetaDataPtr = &test_meta_data;
-    // SPDU.SduDataPtr = buff;
-    // SPDU.SduLength = len;
-
-
-    // // SecOC_IfTransmit(5, &SPDU);
-    // SecOC_IfTransmit(5, &SPDU);
-
 }
 #endif
 
