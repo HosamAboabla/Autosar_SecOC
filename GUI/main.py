@@ -1,15 +1,16 @@
 
 
-from PySide2 import QtWidgets, QtGui, QtQuick
+from PySide2 import QtWidgets, QtGui
+from PySide2.QtGui import QPalette, QColor, Qt
 from pathlib import Path
+from ui import Ui_Dialog
+
 import sys
 import logging
 
-from PySide2.QtCore import Qt
 
-from ui import Ui_Dialog
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
-
+from qtexteditlogger import QTextEditLogger
 # Uncomment below for terminal log messages
 # logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -21,6 +22,19 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         super().__init__(parent)
 
         self.setupUi(self)
+       
+        self.plainTextEdit:QTextEditLogger
+
+
+        logging.debug('damn, a bug')
+        logging.info('something to remember')
+        logging.warning('that\'s not right')
+        logging.error('foobar')
+        logging.debug('damn, a bug')
+
+
+
+
         self.gauge: AnalogGaugeWidget # type hint for self.gauge        
         self.gauge.setMouseTracking(False)
         self.gauge.units = "Km/h"
@@ -56,9 +70,6 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         QtGui.QFontDatabase.addApplicationFont(str(Path('GUI')/'DS-DIGIB.TTF'))
         self.gauge.setValueFontFamily('DS-Digital')
         self.gauge.setScaleFontFamily('DS-Digital')
-        def  mouseMoveEvent(self, event):
-            pass
-        #self.gauge.setFont(QtGui.QFont('DS-Digital', 50))
         
 
         self.LCD : QtWidgets.QLineEdit
@@ -75,8 +86,32 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
 
 
 app = QtWidgets.QApplication(sys.argv)
-app.setStyleSheet((Path('GUI')/'stylesheet.qss').read_text())
 
+app.setStyle("Fusion")
+dark_palette = QPalette()
+
+dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+dark_palette.setColor(QPalette.WindowText, Qt.white)
+dark_palette.setColor(QPalette.Base, QColor(25, 25, 25))
+dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
+dark_palette.setColor(QPalette.ToolTipText, Qt.white)
+dark_palette.setColor(QPalette.Text, Qt.white)
+dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+dark_palette.setColor(QPalette.ButtonText, Qt.white)
+dark_palette.setColor(QPalette.BrightText, Qt.red)
+dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
+dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+dark_palette.setColor(QPalette.HighlightedText, Qt.black)
+
+dark_palette.setColor(QPalette.Disabled, QPalette.Text, Qt.darkGray)
+dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
+
+app.setPalette(dark_palette)
+
+app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+
+#app.setStyleSheet((Path('GUI')/'stylesheet.qss').read_text())
 
 
 dlg = MyDialog()
