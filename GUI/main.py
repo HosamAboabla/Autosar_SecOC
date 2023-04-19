@@ -9,12 +9,12 @@ import logging
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
 
 
+tlog = logging.getLogger('Logger 1')
+rlog = logging.getLogger('Logger 2')
 
 
 class MyDialog(QtWidgets.QDialog, Ui_Dialog):
 
-    tlog = logging.getLogger('Logger 1')
-    rlog = logging.getLogger('Logger 2')
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -24,30 +24,23 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.stylegauge()
         self.styleLCD()
-        self.assingloggers()
 
-        # Create the messages
-        msg1 = 'This is a message for logger 1'
-        msg2 = 'This is a message for logger 2'
 
-        # Log the messages to the appropriate logger
-        self.tlog.info(msg1)
-        self.rlog.warning(msg2)
         self.gauge.updateValue(50)
 
-    def assingloggers(self):
+    def assingloggers(self, tlog, rlog):
 
         # Set the log levels
-        self.tlog.setLevel(logging.DEBUG)
-        self.rlog.setLevel(logging.DEBUG)
+        tlog.setLevel(logging.DEBUG)
+        rlog.setLevel(logging.DEBUG)
 
         # Create the handlers
         thandler = self.tlogger
         rhandler = self.rlogger
 
         # Add the handlers to the loggers
-        self.tlog.addHandler(thandler)
-        self.rlog.addHandler(rhandler)
+        tlog.addHandler(thandler)
+        rlog.addHandler(rhandler)
   
 
     def stylegauge(self):
@@ -119,7 +112,15 @@ dark_palette.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.darkGray)
 app.setPalette(dark_palette)
 app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
 
+
 dlg = MyDialog()
+
+# for debugging messages
+dlg.assingloggers(tlog, rlog)
+
+tlog.error("Authentication failed")
+rlog.error("Verification failed")
+
 dlg.show()
 dlg.raise_()
 sys.exit(app.exec_())

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledLrjoEW.ui'
+## Form generated from reading UI file 'untitledUiTWpc.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -273,7 +273,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(1)
+        self.ModeTabs.setCurrentIndex(0)
         self.pushButton_9.setDefault(False)
 
 
