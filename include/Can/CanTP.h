@@ -49,6 +49,6 @@ void CanTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
 void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 
-void CanTP_MainFunctionRx(void);
+void CanTp_MainFunctionRx(void);
 
 #endif /*INCLUDE_CANTP_H_*/

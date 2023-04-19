@@ -164,7 +164,7 @@ void CanTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     #endif
 }
 
-void CanTP_MainFunctionRx(void)
+void CanTp_MainFunctionRx(void)
 {
     #ifdef CANTP_DEBUG
         printf("######## in CanTP_MainFunctionRx\n");
