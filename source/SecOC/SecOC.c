@@ -362,16 +362,22 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
@@ -507,6 +513,14 @@ void SecOCMainFunctionTx(void)
 
             if(result == E_OK )
             {
+                #ifdef PDU_COLLECTION_DEBUG  
+                    printf("Secured data in pducollection ",idx);
+                    for(int k = 0; k < securedPdu->SduLength; k++)
+                    {
+                        printf("%d ", securedPdu->SduDataPtr[k] );
+                    }
+                    printf("\n");
+                #endif
                 /* [SWS_SecOC_00201] */
                 if(securePduCollection != NULL)
                 {
@@ -517,6 +531,8 @@ void SecOCMainFunctionTx(void)
 
                     /* [SWS_SecOC_00062] */
                     PduR_SecOCTransmit(authPduId , AuthPduCollection);
+                    int delay = 5000000;
+                    while (delay--);
                     PduR_SecOCTransmit(cryptoPduId , CryptoPduCollection);
                 }
 
@@ -1148,6 +1164,43 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
 {
+
+    #ifdef DEBUG_ALL
+
+    
+    
+
+    SecOC_Init(&SecOC_Config);
+    while (1)
+    {
+        Com_MainTx();
+        SecOCMainFunctionTx();
+        CanTp_MainFunctionTx();
+        #ifdef SECOC_DEBUG
+            printf("############### Finsh Trinsmition  ###############\n");
+        #endif
+    }
+
+    #endif
+
+    // SecOCTxPduProcessing = SecOC_Config.SecOCTxPduProcessings;
+
+    // SecOCMainFunctionTx();
+
+
+    // uint8 buff[50] = {1,2,3,4,5,6,7};
+
+    // PduLengthType len = 7;
+    // PduInfoType SPDU;
+    // uint8 test_meta_data = 0;
+    // SPDU.MetaDataPtr = &test_meta_data;
+    // SPDU.SduDataPtr = buff;
+    // SPDU.SduLength = len;
+
+
+    // // SecOC_IfTransmit(5, &SPDU);
+    // SecOC_IfTransmit(5, &SPDU);
+
 }
 #endif
 
