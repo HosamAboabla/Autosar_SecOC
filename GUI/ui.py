@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledvYXRuf.ui'
+## Form generated from reading UI file 'untitledkPCvPg.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -16,11 +16,12 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide2.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
-    QGroupBox, QHBoxLayout, QLineEdit, QPushButton,
-    QSizePolicy, QSpacerItem, QTabWidget, QTextEdit,
+    QGroupBox, QHBoxLayout, QLayout, QLineEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
     QVBoxLayout, QWidget)
 
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
+from qtexteditlogger import QTextEditLogger
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -100,6 +101,7 @@ class Ui_Dialog(object):
         self.groupBox_2.setCheckable(False)
         self.verticalLayout = QVBoxLayout(self.groupBox_2)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.lineEdit = QLineEdit(self.groupBox_2)
         self.lineEdit.setObjectName(u"lineEdit")
         self.lineEdit.setAutoFillBackground(False)
@@ -110,6 +112,7 @@ class Ui_Dialog(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.pushButton_4 = QPushButton(self.groupBox_2)
         self.pushButton_4.setObjectName(u"pushButton_4")
 
@@ -137,18 +140,20 @@ class Ui_Dialog(object):
         self.groupBox.setSizePolicy(sizePolicy)
         self.verticalLayout_4 = QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.textEdit = QTextEdit(self.groupBox)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setEnabled(True)
-        sizePolicy.setHeightForWidth(self.textEdit.sizePolicy().hasHeightForWidth())
-        self.textEdit.setSizePolicy(sizePolicy)
+        self.plainTextEdit = QTextEditLogger(self.groupBox)
+        self.plainTextEdit.setObjectName(u"plainTextEdit")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.plainTextEdit.sizePolicy().hasHeightForWidth())
+        self.plainTextEdit.setSizePolicy(sizePolicy2)
 
-        self.verticalLayout_4.addWidget(self.textEdit)
+        self.verticalLayout_4.addWidget(self.plainTextEdit)
 
         self.pushButton_12 = QPushButton(self.groupBox)
         self.pushButton_12.setObjectName(u"pushButton_12")
-        sizePolicy.setHeightForWidth(self.pushButton_12.sizePolicy().hasHeightForWidth())
-        self.pushButton_12.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.pushButton_12.sizePolicy().hasHeightForWidth())
+        self.pushButton_12.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_4.addWidget(self.pushButton_12)
 
@@ -185,11 +190,11 @@ class Ui_Dialog(object):
 
         self.LCD = QLineEdit(self.DashBoard)
         self.LCD.setObjectName(u"LCD")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
-        self.LCD.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
+        self.LCD.setSizePolicy(sizePolicy3)
         self.LCD.setMinimumSize(QSize(100, 0))
         self.LCD.setAlignment(Qt.AlignCenter)
         self.LCD.setReadOnly(True)
@@ -217,11 +222,11 @@ class Ui_Dialog(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.lineEdit_3 = QLineEdit(self.groupBox_3)
         self.lineEdit_3.setObjectName(u"lineEdit_3")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
-        self.lineEdit_3.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
+        self.lineEdit_3.setSizePolicy(sizePolicy4)
         self.lineEdit_3.setAutoFillBackground(False)
         self.lineEdit_3.setDragEnabled(False)
         self.lineEdit_3.setReadOnly(True)
@@ -244,24 +249,17 @@ class Ui_Dialog(object):
         self.LogBox.setSizePolicy(sizePolicy)
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.textEdit_3 = QTextEdit(self.LogBox)
-        self.textEdit_3.setObjectName(u"textEdit_3")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.textEdit_3.sizePolicy().hasHeightForWidth())
-        self.textEdit_3.setSizePolicy(sizePolicy4)
-        self.textEdit_3.setMinimumSize(QSize(0, 0))
+        self.plainTextEdit_2 = QTextEditLogger(self.LogBox)
+        self.plainTextEdit_2.setObjectName(u"plainTextEdit_2")
+        sizePolicy4.setHeightForWidth(self.plainTextEdit_2.sizePolicy().hasHeightForWidth())
+        self.plainTextEdit_2.setSizePolicy(sizePolicy4)
 
-        self.verticalLayout_9.addWidget(self.textEdit_3)
+        self.verticalLayout_9.addWidget(self.plainTextEdit_2)
 
         self.pushButton_19 = QPushButton(self.LogBox)
         self.pushButton_19.setObjectName(u"pushButton_19")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.pushButton_19.sizePolicy().hasHeightForWidth())
-        self.pushButton_19.setSizePolicy(sizePolicy5)
+        sizePolicy1.setHeightForWidth(self.pushButton_19.sizePolicy().hasHeightForWidth())
+        self.pushButton_19.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_9.addWidget(self.pushButton_19)
 
@@ -283,7 +281,7 @@ class Ui_Dialog(object):
     # setupUi
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
+        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"SecOC", None))
         self.ConfigSelect.setItemText(0, QCoreApplication.translate("Dialog", u"CANIF", None))
         self.ConfigSelect.setItemText(1, QCoreApplication.translate("Dialog", u"CANTP", None))
 
