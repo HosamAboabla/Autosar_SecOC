@@ -18,6 +18,12 @@
 
 #include <string.h>
 
+#ifdef SECOC_DEBUG
+    #define STATIC
+#else
+    #define STATIC static
+#endif
+
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 const SecOC_GeneralType             *SecOCGeneral;
@@ -33,11 +39,11 @@ static PduLengthType authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING] = {0};
 /* Internal functions */
 static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate);
 static void constructDataToAuthenticatorTx(const PduIdType TxPduId, SecOC_TxIntermediateType *SecOCIntermediate, const PduInfoType* AuthPdu);
-static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
+STATIC Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 
 static void parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxIntermediateType *SecOCIntermediate);
 static void constructDataToAuthenticatorRx(PduIdType RxPduId, SecOC_RxIntermediateType *SecOCIntermediate);
-static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
+STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
 
 
 
@@ -205,7 +211,7 @@ static Std_ReturnType prepareFreshnessTx(const PduIdType TxPduId, SecOC_TxInterm
  * secured PDU using authenticator, payload, freshness  * 
  *  value                                               *
  *******************************************************/
-static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu)
+STATIC Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu)
 {
     #ifdef SECOC_DEBUG
         printf("######## in authenticate \n");
@@ -282,7 +288,6 @@ static Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
     /* Clear Auth */
     AuthPdu->SduLength = 0;
 
-    FVM_IncreaseCounter(SecOCTxPduProcessing[TxPduId].SecOCFreshnessValueId);
 
     #ifdef SECOC_DEBUG
         printf("result of authenticate is %d\n", result);
@@ -336,11 +341,6 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     if(PdusCollections[TxPduId].Type != SECOC_SECURED_PDU)
     {
         PdusCollections[TxPduId].status = result;
-    }
-
-
-    if(PdusCollections[TxPduId].Type != SECOC_SECURED_PDU)
-    {
         pduCollectionId = PdusCollections[TxPduId].CollectionId;
         authCollectionId = PdusCollections[TxPduId].AuthId;
         cryptoCollectionId = PdusCollections[TxPduId].CryptoId;
@@ -521,6 +521,11 @@ void SecOCMainFunctionTx(void)
                     }
                     printf("\n");
                 #endif
+                /* Using Freshness Value Based on Single Freshness Counter we need to keep it synchronise 
+                    increase counter before Broadcast as require */
+                /*[SWS_SecOC_00031]*/
+                FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
+
                 /* [SWS_SecOC_00201] */
                 if(securePduCollection != NULL)
                 {
@@ -1031,7 +1036,7 @@ static void constructDataToAuthenticatorRx(PduIdType RxPduId, SecOC_RxIntermedia
 
 }
 
-static Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
+STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result)
 {
     #ifdef SECOC_DEBUG
         printf("######## in verify \n");

@@ -1,5 +1,5 @@
 #include "SoAd.h"
-#include "Pdur_SoAd.h"
+#include "PduR_SoAd.h"
 #include "SecOC.h"
 #include "Std_Types.h"
 #include "SecOC_Debug.h"
