@@ -536,7 +536,7 @@ void SecOCMainFunctionTx(void)
 
                     /* [SWS_SecOC_00062] */
                     PduR_SecOCTransmit(authPduId , AuthPduCollection);
-                    int delay = 5000000;
+                    int delay = 50000000;
                     while (delay--);
                     PduR_SecOCTransmit(cryptoPduId , CryptoPduCollection);
                 }
