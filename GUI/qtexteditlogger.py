@@ -12,8 +12,6 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
     def __init__(self, parent):
         super().__init__()
 
-        logging.getLogger().addHandler(self)
-
         self.setReadOnly(True)
         self.setLevel(logging.DEBUG)
         self.setFormatter(logging.Formatter('%(levelname)s\t- %(message)s'))
@@ -41,4 +39,3 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
         self.appendPlainText(text)
 
-logging.getLogger().setLevel(logging.DEBUG)  # Set root logger level to DEBUG

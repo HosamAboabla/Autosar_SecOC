@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledkPCvPg.ui'
+## Form generated from reading UI file 'untitledLrjoEW.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -140,15 +140,15 @@ class Ui_Dialog(object):
         self.groupBox.setSizePolicy(sizePolicy)
         self.verticalLayout_4 = QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.plainTextEdit = QTextEditLogger(self.groupBox)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
+        self.tlogger = QTextEditLogger(self.groupBox)
+        self.tlogger.setObjectName(u"tlogger")
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.plainTextEdit.sizePolicy().hasHeightForWidth())
-        self.plainTextEdit.setSizePolicy(sizePolicy2)
+        sizePolicy2.setHeightForWidth(self.tlogger.sizePolicy().hasHeightForWidth())
+        self.tlogger.setSizePolicy(sizePolicy2)
 
-        self.verticalLayout_4.addWidget(self.plainTextEdit)
+        self.verticalLayout_4.addWidget(self.tlogger)
 
         self.pushButton_12 = QPushButton(self.groupBox)
         self.pushButton_12.setObjectName(u"pushButton_12")
@@ -249,12 +249,12 @@ class Ui_Dialog(object):
         self.LogBox.setSizePolicy(sizePolicy)
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
-        self.plainTextEdit_2 = QTextEditLogger(self.LogBox)
-        self.plainTextEdit_2.setObjectName(u"plainTextEdit_2")
-        sizePolicy4.setHeightForWidth(self.plainTextEdit_2.sizePolicy().hasHeightForWidth())
-        self.plainTextEdit_2.setSizePolicy(sizePolicy4)
+        self.rlogger = QTextEditLogger(self.LogBox)
+        self.rlogger.setObjectName(u"rlogger")
+        sizePolicy4.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
+        self.rlogger.setSizePolicy(sizePolicy4)
 
-        self.verticalLayout_9.addWidget(self.plainTextEdit_2)
+        self.verticalLayout_9.addWidget(self.rlogger)
 
         self.pushButton_19 = QPushButton(self.LogBox)
         self.pushButton_19.setObjectName(u"pushButton_19")
