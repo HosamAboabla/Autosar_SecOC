@@ -362,16 +362,22 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
         else if( (PdusCollections[authCollectionId].status == E_NOT_OK) && (PdusCollections[cryptoCollectionId].status == E_NOT_OK) )
         {
+            PdusCollections[authCollectionId].status = 0x02;
+            PdusCollections[cryptoCollectionId].status = 0x02;
             /* [SWS_SecOC_00063] */
             PduR_SecOCIfTxConfirmation(pduCollectionId, E_NOT_OK);
         }
@@ -507,6 +513,14 @@ void SecOCMainFunctionTx(void)
 
             if(result == E_OK )
             {
+                #ifdef PDU_COLLECTION_DEBUG  
+                    printf("Secured data in pducollection ",idx);
+                    for(int k = 0; k < securedPdu->SduLength; k++)
+                    {
+                        printf("%d ", securedPdu->SduDataPtr[k] );
+                    }
+                    printf("\n");
+                #endif
                 /* Using Freshness Value Based on Single Freshness Counter we need to keep it synchronise 
                     increase counter before Broadcast as require */
                 /*[SWS_SecOC_00031]*/
@@ -522,6 +536,8 @@ void SecOCMainFunctionTx(void)
 
                     /* [SWS_SecOC_00062] */
                     PduR_SecOCTransmit(authPduId , AuthPduCollection);
+                    int delay = 50000000;
+                    while (delay--);
                     PduR_SecOCTransmit(cryptoPduId , CryptoPduCollection);
                 }
 
