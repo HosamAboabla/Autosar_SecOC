@@ -21,12 +21,6 @@ typedef enum {
 }SecOC_PduCollection_Type;
 
 
-typedef enum {
-    SECOC_AUTH_COLLECTON_PDU = 0,
-    SECOC_CRYPTO_COLLECTON_PDU,
-    SECOC_SECURED_PDU
-}SecOC_PduCollection_Type;
-
 
 typedef enum {
     SECOC_QUEUE = 0,
@@ -52,14 +46,6 @@ typedef enum {
 } SecOC_PduType_Type;
 
 
-typedef struct 
-{
-   SecOC_PduCollection_Type   Type;
-   uint16                     CollectionId;
-   uint16                     AuthId;
-   uint16                     CryptoId;
-   uint8                      status;
-} SecOC_PduCollection;
 
 
 
