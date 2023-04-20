@@ -18,7 +18,7 @@
  ***************************************************/
 
 
-extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern communicate_Types TxComTypes[8];
 
 Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr)
 {
@@ -53,7 +53,7 @@ Std_ReturnType PduR_SecOCTransmit(PduIdType TxPduId, const PduInfoType* PduInfoP
    }
    else
    {
-
+      return E_NOT_OK;
    }
     return E_NOT_OK;
 }
