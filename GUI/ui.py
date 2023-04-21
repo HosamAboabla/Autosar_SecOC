@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'untitledUiTWpc.ui'
+## Form generated from reading UI file 'GUIPuQcoo.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -27,7 +27,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(412, 738)
+        Dialog.resize(430, 652)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -47,6 +47,11 @@ class Ui_Dialog(object):
         self.ConfigSelect.addItem("")
         self.ConfigSelect.addItem("")
         self.ConfigSelect.setObjectName(u"ConfigSelect")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.ConfigSelect.sizePolicy().hasHeightForWidth())
+        self.ConfigSelect.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_5.addWidget(self.ConfigSelect)
 
@@ -57,9 +62,6 @@ class Ui_Dialog(object):
         self.pushButton_3 = QPushButton(self.ControlBox)
         self.pushButton_3.setObjectName(u"pushButton_3")
         self.pushButton_3.setEnabled(False)
-        sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
         self.pushButton_3.setSizePolicy(sizePolicy1)
 
@@ -115,11 +117,15 @@ class Ui_Dialog(object):
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.pushButton_4 = QPushButton(self.groupBox_2)
         self.pushButton_4.setObjectName(u"pushButton_4")
+        sizePolicy1.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
+        self.pushButton_4.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout.addWidget(self.pushButton_4)
 
         self.pushButton_10 = QPushButton(self.groupBox_2)
         self.pushButton_10.setObjectName(u"pushButton_10")
+        sizePolicy1.setHeightForWidth(self.pushButton_10.sizePolicy().hasHeightForWidth())
+        self.pushButton_10.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout.addWidget(self.pushButton_10)
 
@@ -131,6 +137,8 @@ class Ui_Dialog(object):
 
         self.pushButton_11 = QPushButton(self.TransmitterTab)
         self.pushButton_11.setObjectName(u"pushButton_11")
+        sizePolicy1.setHeightForWidth(self.pushButton_11.sizePolicy().hasHeightForWidth())
+        self.pushButton_11.setSizePolicy(sizePolicy1)
 
         self.verticalLayout_5.addWidget(self.pushButton_11)
 
@@ -138,8 +146,11 @@ class Ui_Dialog(object):
         self.groupBox.setObjectName(u"groupBox")
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setMinimumSize(QSize(0, 0))
+        self.groupBox.setMaximumSize(QSize(16777215, 158))
         self.verticalLayout_4 = QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.tlogger = QTextEditLogger(self.groupBox)
         self.tlogger.setObjectName(u"tlogger")
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
@@ -147,6 +158,9 @@ class Ui_Dialog(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.tlogger.sizePolicy().hasHeightForWidth())
         self.tlogger.setSizePolicy(sizePolicy2)
+        self.tlogger.setMaximumSize(QSize(16777215, 158))
+        self.tlogger.setSizeIncrement(QSize(0, 0))
+        self.tlogger.setBaseSize(QSize(0, 0))
 
         self.verticalLayout_4.addWidget(self.tlogger)
 
@@ -175,8 +189,8 @@ class Ui_Dialog(object):
         self.gauge.setObjectName(u"gauge")
         sizePolicy.setHeightForWidth(self.gauge.sizePolicy().hasHeightForWidth())
         self.gauge.setSizePolicy(sizePolicy)
-        self.gauge.setMinimumSize(QSize(350, 250))
-        self.gauge.setBaseSize(QSize(5, 20))
+        self.gauge.setMinimumSize(QSize(368, 265))
+        self.gauge.setBaseSize(QSize(0, 0))
         self.verticalLayout_2 = QVBoxLayout(self.gauge)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
 
@@ -190,7 +204,7 @@ class Ui_Dialog(object):
 
         self.LCD = QLineEdit(self.DashBoard)
         self.LCD.setObjectName(u"LCD")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
@@ -222,11 +236,8 @@ class Ui_Dialog(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.lineEdit_3 = QLineEdit(self.groupBox_3)
         self.lineEdit_3.setObjectName(u"lineEdit_3")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
-        self.lineEdit_3.setSizePolicy(sizePolicy4)
+        sizePolicy1.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
+        self.lineEdit_3.setSizePolicy(sizePolicy1)
         self.lineEdit_3.setAutoFillBackground(False)
         self.lineEdit_3.setDragEnabled(False)
         self.lineEdit_3.setReadOnly(True)
@@ -249,10 +260,11 @@ class Ui_Dialog(object):
         self.LogBox.setSizePolicy(sizePolicy)
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.verticalLayout_9.setSizeConstraint(QLayout.SetDefaultConstraint)
         self.rlogger = QTextEditLogger(self.LogBox)
         self.rlogger.setObjectName(u"rlogger")
-        sizePolicy4.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
-        self.rlogger.setSizePolicy(sizePolicy4)
+        sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
+        self.rlogger.setSizePolicy(sizePolicy)
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
