@@ -43,7 +43,8 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
-
+    int delay = 500000;
+    while (delay--);
     switch (PdusCollections[TxPduId].Type)
     {
     case SECOC_SECURED_PDU_CANIF:

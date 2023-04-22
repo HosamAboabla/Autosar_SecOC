@@ -49,7 +49,8 @@ Std_ReturnType SoAd_IfTransmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
-
+    int delay = 500000;
+    while (delay--);
 
     if (PdusCollections[TxPduId].Type== SECOC_SECURED_PDU_SOADTP)
     {
@@ -174,8 +175,6 @@ void SoAd_MainFunctionTx(void)
                 }
                 BufReq_ReturnType resultCopy = PduR_SoAdTpCopyTxData(TxPduId, &info, &retry, &availableDataPtr);
                 Std_ReturnType resultTrasmit = SoAd_IfTransmit(TxPduId , &info);
-                int delay = 500000;
-                while (delay--);
                 if(resultTrasmit != E_OK || resultCopy!= BUFREQ_OK)
                 {
                     retry.TpDataState = TP_DATARETRY;
