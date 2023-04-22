@@ -1,3 +1,5 @@
+// Tx
+
 // Working 
 
 #include "SecOC.h"
@@ -17,6 +19,7 @@
 #include <string.h>
 #include <ucontext.h>
 #include <sys/time.h> // Include sys/time.h for itimerval
+#include <pthread.h>
 
 #define NUM_FUNCTIONS 4
 #define STACK_SIZE 6553
@@ -36,8 +39,8 @@ void func1() {
     while (1) {
         tasks[0].state++;
         printf("Function 1: state=%d\n", tasks[0].state);
-        Com_MainTx();   // ethernet_RecieveMainFunction();
-        // sleep(1);
+        Com_MainTx();
+        sleep(1);
         swapcontext(&tasks[0].context, &tasks[1].context);
     }
 }
@@ -46,10 +49,7 @@ void func2() {
     while (1) {
         tasks[1].state++;
         printf("Function 2: state=%d\n", tasks[1].state);
-        SecOCMainFunctionTx();   // SecOCMainFunctionRx();
-        // int i = 300000;
-        // while(i--); 
-        // sleep(1);
+        SecOCMainFunctionTx();
         swapcontext(&tasks[1].context, &tasks[2].context);
     }
 }
@@ -58,8 +58,7 @@ void func3() {
     while (1) {
         tasks[2].state++;
         printf("Function 3: state=%d\n", tasks[2].state);
-        CanTp_MainFunctionTx();     // CanTP_MainFunctionRx();
-        // sleep(1);
+        CanTp_MainFunctionTx();
         swapcontext(&tasks[2].context, &tasks[0].context);
     }
 }
@@ -67,32 +66,9 @@ void func3() {
 void func4() {
     while (1) {
         tasks[3].state++;
-        // printf("Function 4: state=%d\n", tasks[3].state);
-        // ethernet_RecieveMainFunction();
-        sleep(1);
         swapcontext(&tasks[3].context, &tasks[0].context);
     }
 }
-
-// void func5() {
-//     while (1) {
-//         tasks[1].state++;
-//         printf("Function 5: state=%d\n", tasks[1].state);
-//         SecOCMainFunctionRx();
-//         sleep(1);
-//         swapcontext(&tasks[1].context, &tasks[2].context);
-//     }
-// }
-
-// void func6() {
-//     while (1) {
-//         tasks[2].state++;
-//         printf("Function 5: state=%d\n", tasks[2].state);
-//         CanTP_MainFunctionRx();
-//         sleep(1);
-//         swapcontext(&tasks[2].context, &tasks[0].context);
-//     }
-// }
 
 void start_task(int i) {
     tasks[i].function();
@@ -131,9 +107,9 @@ int main(int argc, char *argv[]) {
 
     // Configure and start timer for scheduler
     timer.it_value.tv_sec = 0;
-    timer.it_value.tv_usec = 500000; // 0.5 second
+    timer.it_value.tv_usec = 900000; // 0.9 second
     timer.it_interval.tv_sec = 0;
-    timer.it_interval.tv_usec = 500000; //
+    timer.it_interval.tv_usec = 900000; //
 
     setitimer(ITIMER_REAL, &timer, NULL);
     tasks[0].state = 1; // Set initial state for Function 1 to 1
