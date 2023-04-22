@@ -469,7 +469,7 @@ void SecOCMainFunctionTx(void)
             if(result == E_OK )
             {
                 #ifdef PDU_COLLECTION_DEBUG  
-                    printf("Secured data in pducollection ",idx);
+                    printf("Secured data in pduc ollection %d ",idx);
                     for(int k = 0; k < securedPdu->SduLength; k++)
                     {
                         printf("%d ", securedPdu->SduDataPtr[k] );
