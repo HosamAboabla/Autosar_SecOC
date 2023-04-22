@@ -45,9 +45,9 @@ void Com_MainTx(void)
 	printf("######## in Com_MainTx\n");
 	#endif
 	PduIdType id;
-	uint8 buff[21];
+	uint8 buff[21] = {0};
 	PduInfoType SPDU;
-	PduLengthType len = 2;
+	PduLengthType len = 0;
 	printf("Enter data : ");
 	fgets(buff, 21, stdin);
 	len = strlen(buff) - 1;
