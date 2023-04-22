@@ -14,12 +14,12 @@ typedef enum {
     SECOC_NONE
 }SecOC_StatusPropagationMode_Type;
 
-
 typedef enum {
     SECOC_AUTH_COLLECTON_PDU = 0,
     SECOC_CRYPTO_COLLECTON_PDU,
     SECOC_SECURED_PDU
 }SecOC_PduCollection_Type;
+
 
 
 typedef enum {
@@ -44,6 +44,9 @@ typedef enum {
     SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */
 } SecOC_PduType_Type;
+
+
+
 
 
 
