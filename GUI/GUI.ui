@@ -251,7 +251,7 @@
           <item>
            <widget class="QTextEditLogger" name="tlogger">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -259,7 +259,7 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>158</height>
+              <height>16777215</height>
              </size>
             </property>
             <property name="sizeIncrement">
@@ -331,7 +331,7 @@
               <height>0</height>
              </size>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_2" stretch=""/>
+            <layout class="QVBoxLayout" name="verticalLayout_2"/>
            </widget>
           </item>
           <item>
@@ -472,10 +472,16 @@
        <item>
         <widget class="QGroupBox" name="LogBox">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>158</height>
+          </size>
          </property>
          <property name="title">
           <string>Log</string>
