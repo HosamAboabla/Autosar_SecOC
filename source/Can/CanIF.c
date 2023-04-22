@@ -18,8 +18,7 @@
 /********************************************************************************************************/
 
 extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
-extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
-
+extern SecOC_PduCollection PdusCollections[];
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -34,6 +33,7 @@ extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
  * Function_Descripton  : Requests transmission     *
  *              of a PDU                            *
  ***************************************************/
+
 
 Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
 {
@@ -53,15 +53,19 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
-
-
-    if (TxComTypes[TxPduId] == CANTP)
+    int delay = 500000;
+    while (delay--);
+    switch (PdusCollections[TxPduId].Type)
     {
-        CanTp_TxConfirmation(TxPduId, result);
-    }
-    else if (TxComTypes[TxPduId] == CANIF)
-    {
+    case SECOC_SECURED_PDU_CANIF:
         PduR_CanIfTxConfirmation(TxPduId , result);
+        break;
+    case SECOC_SECURED_PDU_CANTP:
+        CanTp_TxConfirmation(TxPduId, result);
+        break;
+    default:
+        result = E_NOT_OK;
+        break;
     }
 
 
