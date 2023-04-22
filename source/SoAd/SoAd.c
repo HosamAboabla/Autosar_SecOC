@@ -19,7 +19,7 @@ static PduLengthType SoAdTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING]
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
-extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern SecOC_PduCollection PdusCollections[];
 
 
 /****************************************************
@@ -51,11 +51,11 @@ Std_ReturnType SoAd_IfTransmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #endif
 
 
-    if (TxComTypes[TxPduId]== SOADTP)
+    if (PdusCollections[TxPduId].Type== SECOC_SECURED_PDU_SOADTP)
     {
         SoAdTp_TxConfirmation(TxPduId, result);
     }
-    else if (TxComTypes[TxPduId] == SOADIF)
+    else if (PdusCollections[TxPduId].Type == SECOC_SECURED_PDU_SOADIF)
     {
         PduR_SoAdIfTxConfirmation(TxPduId , result);
     }

@@ -62,12 +62,12 @@ uint8_t CryptoPduCollection5BufferTx[SECOC_SECPDU_MAX_LENGTH];
 
 SecOC_PduCollection PdusCollections[] = 
 {
-    {SECOC_SECURED_PDU,0,0,0,0},
-    {SECOC_SECURED_PDU,0,0,0,0},
-    {SECOC_SECURED_PDU,0,0,0,0},
-    {SECOC_SECURED_PDU,0,0,0,0},
-    {SECOC_SECURED_PDU,0,0,0,0},
-    {SECOC_SECURED_PDU,0,0,0,0},
+    {SECOC_SECURED_PDU_CANIF,0,0,0,0},
+    {SECOC_SECURED_PDU_CANTP,0,0,0,0},
+    {SECOC_SECURED_PDU_SOADTP,0,0,0,0},
+    {SECOC_SECURED_PDU_CANIF,0,0,0,0},
+    {SECOC_SECURED_PDU_CANTP,0,0,0,0},
+    {SECOC_SECURED_PDU_CANIF,0,0,0,0},
     {
         .Type =         SECOC_AUTH_COLLECTON_PDU,
         .CollectionId =     5,
@@ -84,28 +84,6 @@ SecOC_PduCollection PdusCollections[] =
     }
 };
 
-/* This is the Protocol of Communication of every PDU depend on the ID */
-
-communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
-{
-    CANIF,
-    CANTP,
-    SOADTP,
-    CANIF,
-    CANTP
-};
-
-communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING] =
-{
-   CANIF,
-   CANTP,
-   SOADTP,
-   CANIF,
-   CANTP,
-   CANIF,
-   CANIF,
-   CANIF,
-};
 
 /*
 * Start Of General

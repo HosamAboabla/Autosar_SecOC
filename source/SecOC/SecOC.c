@@ -338,7 +338,7 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
     PduIdType pduCollectionId , authCollectionId , cryptoCollectionId;
 
     /* [SWS_SecOC_00220] */
-    if(PdusCollections[TxPduId].Type != SECOC_SECURED_PDU)
+    if(PdusCollections[TxPduId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[TxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
     {
         PdusCollections[TxPduId].status = result;
         pduCollectionId = PdusCollections[TxPduId].CollectionId;
@@ -816,7 +816,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
     
 
-    if(PdusCollections[RxPduId].Type != SECOC_SECURED_PDU)
+    if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
     {
         PduInfoType *securedPdu;
         PduInfoType *AuthPduCollection;
