@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIYVuTgd.ui'
+## Form generated from reading UI file 'GUIBheKZF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -184,8 +184,11 @@ class Ui_Dialog(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.gauge = AnalogGaugeWidget(self.DashBoard)
         self.gauge.setObjectName(u"gauge")
-        sizePolicy.setHeightForWidth(self.gauge.sizePolicy().hasHeightForWidth())
-        self.gauge.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.gauge.sizePolicy().hasHeightForWidth())
+        self.gauge.setSizePolicy(sizePolicy2)
         self.gauge.setMinimumSize(QSize(368, 265))
         self.gauge.setBaseSize(QSize(0, 0))
         self.verticalLayout_2 = QVBoxLayout(self.gauge)
@@ -201,11 +204,11 @@ class Ui_Dialog(object):
 
         self.LCD = QLineEdit(self.DashBoard)
         self.LCD.setObjectName(u"LCD")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
-        self.LCD.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
+        self.LCD.setSizePolicy(sizePolicy3)
         self.LCD.setMinimumSize(QSize(100, 0))
         self.LCD.setAlignment(Qt.AlignCenter)
         self.LCD.setReadOnly(True)
@@ -253,11 +256,11 @@ class Ui_Dialog(object):
 
         self.LogBox = QGroupBox(self.ReceiverTab)
         self.LogBox.setObjectName(u"LogBox")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.LogBox.sizePolicy().hasHeightForWidth())
-        self.LogBox.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.LogBox.sizePolicy().hasHeightForWidth())
+        self.LogBox.setSizePolicy(sizePolicy4)
         self.LogBox.setMaximumSize(QSize(16777215, 158))
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
@@ -286,7 +289,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(0)
+        self.ModeTabs.setCurrentIndex(1)
         self.pushButton_9.setDefault(False)
 
 
