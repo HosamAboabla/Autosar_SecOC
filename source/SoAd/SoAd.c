@@ -49,7 +49,7 @@ Std_ReturnType SoAd_IfTransmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
-    int delay = 500000;
+    int delay = 50000000;
     while (delay--);
 
     if (PdusCollections[TxPduId].Type== SECOC_SECURED_PDU_SOADTP)
