@@ -19,7 +19,7 @@ static PduLengthType SoAdTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING]
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
-extern communicate_Types TxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern SecOC_PduCollection PdusCollections[];
 
 
 /****************************************************
@@ -49,13 +49,14 @@ Std_ReturnType SoAd_IfTransmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
+    int delay = 50000000;
+    while (delay--);
 
-
-    if (TxComTypes[TxPduId]== SOADTP)
+    if (PdusCollections[TxPduId].Type== SECOC_SECURED_PDU_SOADTP)
     {
         SoAdTp_TxConfirmation(TxPduId, result);
     }
-    else if (TxComTypes[TxPduId] == SOADIF)
+    else if (PdusCollections[TxPduId].Type == SECOC_SECURED_PDU_SOADIF)
     {
         PduR_SoAdIfTxConfirmation(TxPduId , result);
     }
@@ -174,8 +175,6 @@ void SoAd_MainFunctionTx(void)
                 }
                 BufReq_ReturnType resultCopy = PduR_SoAdTpCopyTxData(TxPduId, &info, &retry, &availableDataPtr);
                 Std_ReturnType resultTrasmit = SoAd_IfTransmit(TxPduId , &info);
-                int delay = 500000;
-                while (delay--);
                 if(resultTrasmit != E_OK || resultCopy!= BUFREQ_OK)
                 {
                     retry.TpDataState = TP_DATARETRY;

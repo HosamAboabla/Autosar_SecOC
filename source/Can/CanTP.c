@@ -131,8 +131,6 @@ void CanTp_MainFunctionTx(void)
                 }
                 BufReq_ReturnType resultCopy = PduR_CanTpCopyTxData(TxPduId, &info, &retry, &availableDataPtr);
                 Std_ReturnType resultTrasmit = CanIf_Transmit(TxPduId , &info);
-                int delay = 500000;
-                while (delay--);
                 if(resultTrasmit != E_OK || resultCopy!= BUFREQ_OK)
                 {
                     retry.TpDataState = TP_DATARETRY;
