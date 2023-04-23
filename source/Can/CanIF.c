@@ -53,7 +53,7 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
     #ifdef LINUX
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
-    int delay = 500000;
+    int delay = 50000000;
     while (delay--);
     switch (PdusCollections[TxPduId].Type)
     {
@@ -62,6 +62,12 @@ Std_ReturnType CanIf_Transmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
         break;
     case SECOC_SECURED_PDU_CANTP:
         CanTp_TxConfirmation(TxPduId, result);
+        break;
+    case SECOC_AUTH_COLLECTON_PDU:
+        PduR_CanIfTxConfirmation(TxPduId , result);
+        break;
+    case SECOC_CRYPTO_COLLECTON_PDU:
+        PduR_CanIfTxConfirmation(TxPduId , result);
         break;
     default:
         result = E_NOT_OK;
