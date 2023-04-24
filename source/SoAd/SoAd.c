@@ -161,7 +161,7 @@ void SoAd_MainFunctionTx(void)
             uint8 lastFrameIndex = (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (SoAdTp_Buffer[TxPduId].SduLength / BUS_LENGTH) : ((SoAdTp_Buffer[TxPduId].SduLength / BUS_LENGTH) + 1);
             #ifdef SOAD_DEBUG
                 printf("Start sending id = %d\n" , TxPduId);
-                printf("PDU length = %d\n" , SoAdTp_Buffer[TxPduId].SduLength);       
+                printf("PDU length = %ld\n" , SoAdTp_Buffer[TxPduId].SduLength);       
                 printf("All Data to be Sent: \n");
                 for(int i = 0 ; i < SoAdTp_Buffer[TxPduId].SduLength; i++)
                 {
@@ -175,7 +175,7 @@ void SoAd_MainFunctionTx(void)
                 {
                     info.SduLength = (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (BUS_LENGTH) : (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH);
                     #ifdef SOAD_DEBUG
-                    printf("last frame PDU length = %d\n" , SoAdTp_Buffer[TxPduId].SduLength);       
+                    printf("last frame PDU length = %ld\n" , SoAdTp_Buffer[TxPduId].SduLength);       
                     printf("All Data to be Sent: \n");
                     for(int i = 0 ; i < info.SduLength; i++)
                     {

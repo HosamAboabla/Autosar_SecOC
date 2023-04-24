@@ -5,7 +5,8 @@
 #include "Com.h"
 #include "PduR_Com.h"
 #include "Std_Types.h"
-#include<stdio.h>
+#include <stdio.h>
+#include <string.h>
 #include "SecOC_Debug.h"
 
 

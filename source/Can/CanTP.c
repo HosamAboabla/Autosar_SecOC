@@ -117,7 +117,7 @@ void CanTp_MainFunctionTx(void)
             uint8 lastFrameIndex = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) : ((CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) + 1);
             #ifdef CANTP_DEBUG
                 printf("Start sending id = %d\n" , TxPduId);
-                printf("PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
+                printf("PDU length = %ld\n" , CanTp_Buffer[TxPduId].SduLength);       
                 printf("All Data to be Sent: \n");
                 for(int i = 0 ; i < CanTp_Buffer[TxPduId].SduLength; i++)
                 {
@@ -131,7 +131,7 @@ void CanTp_MainFunctionTx(void)
                 {
                     info.SduLength = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (BUS_LENGTH) : (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH);
                     #ifdef CANTP_DEBUG
-                    printf("last frame PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
+                    printf("last frame PDU length = %ld\n" , CanTp_Buffer[TxPduId].SduLength);       
                     printf("All Data to be Sent: \n");
                     for(int i = 0 ; i < info.SduLength; i++)
                     {

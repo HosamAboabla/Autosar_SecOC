@@ -3,6 +3,7 @@
 /********************************************************************************************************/
 
 #include "CanIF.h"
+#include "CanTP.h"
 // #include "OSconfig.h"
 #include "SecOC.h"
 #include "SecOC_Debug.h"
