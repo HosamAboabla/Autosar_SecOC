@@ -1,7 +1,15 @@
 #ifndef SECOC_DEBUG_H
 #define SECOC_DEBUG_H
 
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include <stdio.h>        /*in order to use printf statements for debugging*/
+
+/********************************************************************************************************/
+/************************************************Defines*************************************************/
+/********************************************************************************************************/
 
 #define DEBUG_ALL         /*Comment this line if you want to deploy your code*/
 
@@ -17,6 +25,7 @@
 #define PDUR_DEBUG        /* Dubeg for PduR */ 
 #define COUNTERS_DEBUG    /* Debug for Auth && verify Counters */  
 #define MAC_DEBUG    /* Debug for MAC gerenration */  
+#define PDU_COLLECTION_DEBUG    /* Debug for MAC gerenration */  
 #endif
 
 

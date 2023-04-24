@@ -1,9 +1,17 @@
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "Com.h"
 #include "PduR_Com.h"
 #include "Std_Types.h"
-#include <stdio.h>
-#include <string.h>
+#include<stdio.h>
 #include "SecOC_Debug.h"
+
+
+/********************************************************************************************************/
+/********************************************Functions***************************************************/
+/********************************************************************************************************/
 
  void Com_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
  {
@@ -47,7 +55,7 @@ void Com_MainTx(void)
 	PduIdType id;
 	uint8 buff[21] = {0};
 	PduInfoType SPDU;
-	PduLengthType len = 0;
+	PduLengthType len = 8;
 	printf("Enter data : ");
 	fgets(buff, 21, stdin);
 	len = strlen(buff) - 1;
@@ -57,7 +65,9 @@ void Com_MainTx(void)
 		for(int i = 0; i < len; i++)
 		{
 			printf("%d ", buff[i]);
+
 		}
+		printf("\n");
 
 		if (len <= 2)
 		{
@@ -95,6 +105,18 @@ void Com_MainTx(void)
 			SPDU.SduLength = len;
 			PduR_ComTransmit(2,&SPDU);
 		}
+		else if (len == 7)
+		{
+			#ifdef COM_DEBUG
+			printf("############### Send PDU Collection ###############\n");
+			#endif
+			PduInfoType SPDU;
+			uint8 test_meta_data = 0;
+			SPDU.MetaDataPtr = &test_meta_data;
+			SPDU.SduDataPtr = buff;
+			SPDU.SduLength = len;
+			PduR_ComTransmit(5,&SPDU);
+		}
 		else if(len == 19)
 		{
 			#ifdef COM_DEBUG
@@ -118,4 +140,5 @@ void Com_MainTx(void)
 			PduR_ComTransmit(1,&SPDU);
 		}
 	}
+
 }

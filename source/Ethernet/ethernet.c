@@ -1,8 +1,22 @@
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "ethernet.h"
 #include "SecOC_Debug.h"
 #include "SecOC_Lcfg.h"
 #include "CanTP.h"
 #include "PduR_CanIf.h"
+
+/********************************************************************************************************/
+/******************************************GlobalVaribles************************************************/
+/********************************************************************************************************/
+
+extern SecOC_PduCollection PdusCollections[];
+
+/********************************************************************************************************/
+/********************************************Functions***************************************************/
+/********************************************************************************************************/
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     #ifdef ETHERNET_DEBUG
@@ -149,8 +163,6 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
 }
 
 
-extern communicate_Types RxComTypes[SECOC_NUM_OF_RX_PDU_PROCESSING];
-
 void ethernet_RecieveMainFunction(void)
 {
     static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
@@ -161,36 +173,52 @@ void ethernet_RecieveMainFunction(void)
     }
     PduInfoType PduInfoPtr = {
         .SduDataPtr = dataRecieve,
-        .MetaDataPtr = &RxComTypes[id],
+        .MetaDataPtr = &PdusCollections[id],
         .SduLength = BUS_LENGTH_RECEIVE,
     };
-    if (RxComTypes[id] == CANIF)
+    switch (PdusCollections[id].Type)
     {
+    case SECOC_SECURED_PDU_CANIF:
         #ifdef ETHERNET_DEBUG
             printf("here in Direct \n");
         #endif
         PduR_CanIfRxIndication(id, &PduInfoPtr);
-    }
-    else if (RxComTypes[id] == CANTP)
-    {
+        break;
+    case SECOC_SECURED_PDU_CANTP:
         #ifdef ETHERNET_DEBUG
             printf("here in CANTP \n");
         #endif
         CanTp_RxIndication(id, &PduInfoPtr);
-    }
-    else if (RxComTypes[id] == SOADTP)
-    {
+        break;
+    case SECOC_SECURED_PDU_SOADTP:
         #ifdef ETHERNET_DEBUG
             printf("here in Ethernet SOADTP \n");
         #endif
         SoAdTp_RxIndication(id, &PduInfoPtr);
-    }
-    else if(RxComTypes[id] == SOADIF)
-    {
+        break;
+    case SECOC_SECURED_PDU_SOADIF:
         #ifdef ETHERNET_DEBUG
             printf("here in Ethernet SOADIF \n");
         #endif
         PduR_SoAdIfRxIndication(id, &PduInfoPtr);
-    }
+        break;
     
+    case SECOC_AUTH_COLLECTON_PDU:
+        #ifdef ETHERNET_DEBUG
+            printf("here in Direct - pdu collection - auth\n");
+        #endif
+        PduR_CanIfRxIndication(id, &PduInfoPtr);
+        break;
+    case SECOC_CRYPTO_COLLECTON_PDU:
+        #ifdef ETHERNET_DEBUG
+            printf("here in Direct- pdu collection - crypto \n");
+        #endif
+        PduR_CanIfRxIndication(id, &PduInfoPtr);
+        break;
+    default:
+        #ifdef ETHERNET_DEBUG
+            printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
+        #endif
+        break;
+    }
 }

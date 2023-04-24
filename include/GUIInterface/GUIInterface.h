@@ -1,30 +1,29 @@
-#ifndef INCLUDE_PDUR_SOAD_H_
-#define INCLUDE_PDUR_SOAD_H_
-
+#ifndef INCLUDE_GUIINTERFACE_H_
+#define INCLUDE_GUIINTERFACE_H_
 
 /********************************************************************************************************/
 /************************************************INCULDES************************************************/
 /********************************************************************************************************/
 
-#include"Std_Types.h"
-#include"ComStack_Types.h"
-
+#include <inttypes.h>
 
 
 /********************************************************************************************************/
 /*****************************************FunctionPrototype**********************************************/
 /********************************************************************************************************/
 
-void PduR_SoAdIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
-void PduR_SoAdIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr);
+void GUIInterface_init();
 
-BufReq_ReturnType PduR_SoAdTpCopyTxData(
-    PduIdType id,
-    const PduInfoType* info,
-    const RetryInfoType* retry,
-    PduLengthType* availableDataPtr
-     );
+char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len);
+char* GUIInterface_verify(uint8_t configId);
 
-void PduR_SoAdTpTxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+uint8_t* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len);
 
-#endif  // INCLUDE_SOAD_H_
+void GUIInterface_alterFreshness(uint8_t configId);
+void GUIInterface_alterAuthenticator(uint8_t configId);
+
+char* GUIInterface_transmit(uint8_t configId);
+char* GUIInterface_receive(uint8_t configId);
+
+
+#endif

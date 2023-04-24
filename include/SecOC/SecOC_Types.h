@@ -1,19 +1,36 @@
 #ifndef INCLUDE_SECOC_TYPES_H_
 #define INCLUDE_SECOC_TYPES_H_
 
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "Std_Types.h"
 #include "ComStack_Types.h"
 
 
 
 
-
+/********************************************************************************************************/
+/*******************************************EnumAndStruct************************************************/
+/********************************************************************************************************/
 typedef enum {
     SECOC_BOTH = 0,
     SECOC_FAILURE_ONLY,
     SECOC_NONE
 }SecOC_StatusPropagationMode_Type;
 
+typedef enum {
+    SECOC_AUTH_COLLECTON_PDU = 0,
+    SECOC_CRYPTO_COLLECTON_PDU,
+    SECOC_SECURED_PDU_CANIF,
+    SECOC_SECURED_PDU_CANTP,
+    SECOC_SECURED_PDU_FRIF,
+    SECOC_SECURED_PDU_SOADTP,
+    SECOC_SECURED_PDU_SOADIF,
+
+    
+}SecOC_PduCollection_Type;
 
 
 
@@ -39,6 +56,9 @@ typedef enum {
     SECOC_IFPDU,    /* SECOC_IFPDU Interface communication API */
     SECOC_TPPDU,    /* SECOC_TPPDU Transport Protocol communication API */
 } SecOC_PduType_Type;
+
+
+
 
 
 

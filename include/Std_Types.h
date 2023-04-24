@@ -7,6 +7,10 @@
 #ifndef INCLUDE_STD_TYPES_H_
 #define INCLUDE_STD_TYPES_H_
 
+/********************************************************************************************************/
+/*******************************************DefinesAndTypedef********************************************/
+/********************************************************************************************************/
+
 /* Convert the bits to nearst byte */
 #define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
 
@@ -39,15 +43,6 @@ typedef float                   float32;
 typedef double                  float64;
 
 
-typedef enum
-{
-    CANIF,
-    CANTP,
-    FRIF,
-    SOADTP,
-    SOADIF,
-
-}communicate_Types;
 
 #ifndef NULL
 #define NULL ((void*)0)
