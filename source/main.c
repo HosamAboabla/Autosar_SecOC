@@ -1,3 +1,4 @@
+
 // Tx
 
 // Working 
@@ -22,7 +23,7 @@
 #include <pthread.h>
 
 #define NUM_FUNCTIONS 4
-#define STACK_SIZE 6553
+#define STACK_SIZE 655
 
 char stacks[NUM_FUNCTIONS][STACK_SIZE];
 
@@ -151,7 +152,7 @@ int main(int argc, char *argv[]) {
 #include <pthread.h>
 
 #define NUM_FUNCTIONS 4
-#define STACK_SIZE 6553
+#define STACK_SIZE 655
 
 char stacks[NUM_FUNCTIONS][STACK_SIZE];
 
@@ -178,13 +179,13 @@ void func1() {
             if(pthread_create(&t , NULL, (void *)&ethernet_RecieveMainFunction, NULL) != 0)
             {
                 printf("error create thread");
-                return 1;
+                return;
             }
 
             if(pthread_join(t, NULL))
             {
                 printf("error join thread ");
-                return 1;
+                return;
             }
         }
 
