@@ -1,6 +1,10 @@
 #ifndef INCLUDE_SECOC_H_
 #define INCLUDE_SECOC_H_
 
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "SecOC_Cfg.h"
 #include "SecOC_Types.h"
 #include "SecOC_Lcfg.h"
@@ -9,8 +13,16 @@
 #include <string.h>
 #include <stdint.h>
 
+/********************************************************************************************************/
+/************************************************Defines*************************************************/
+/********************************************************************************************************/
+
+#define SECOC_E_UNINIT 					0x02
 
 
+/********************************************************************************************************/
+/*****************************************FunctionPrototype**********************************************/
+/********************************************************************************************************/
 
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
@@ -77,12 +89,12 @@ uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessV
  * byte in the array (SecOCFreshnessValue),             *
  * in big endian format.                                *
  *******************************************************/
-#define SECOC_START_SEC_GetTxFreshness_CODE
+
 
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength);
 
-#define SECOC_END_SEC_GetTxFreshness_CODE
+
 
 
 
@@ -229,6 +241,5 @@ BufReq_ReturnType SecOC_StartOfReception (
     PduLengthType TpSduLength, 
     PduLengthType* bufferSizePtr );
 
-#define SECOC_E_UNINIT 					0x02
 
 #endif  /* INCLUDE_SECOC_H_*/
