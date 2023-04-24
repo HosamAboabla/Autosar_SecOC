@@ -119,6 +119,10 @@ dlg = MyDialog()
 dlg.assingloggers(tlog, rlog)
 
 tlog.error("Authentication failed")
+tlog.info("Info message")
+
+tlog.warning("Authentication stopped")
+tlog.debug("Debug message")
 rlog.error("Verification failed")
 
 dlg.show()

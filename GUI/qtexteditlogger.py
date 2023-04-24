@@ -22,16 +22,16 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
     def emit(self, record):
         msg = self.format(record)
         if record.levelname == 'WARNING':
-            emoji = u'\U000026A0' # Unicode for the warning emoji
+            emoji = u'\u26A0\ufe0f' # Unicode for the warning emoji
             text = f'{emoji} {msg}'
         elif record.levelname == 'INFO':
             emoji = u'\U00002705' # Unicode for the check mark emoji
             text = f'{emoji} {msg}'
         elif record.levelname == 'DEBUG':
-            emoji = u'\U0001F41D' # Unicode for the spider emoji
+            emoji = u'\U0001f41e' # Unicode for the spider emoji
             text = f'{emoji} {msg}'
         elif record.levelname == 'ERROR':
-            emoji = u'\U0001F6A8' # Unicode for the red circle emoji
+            emoji = u'\u274c' # Unicode for the red circle emoji
             text = f'{emoji} {msg}'
         else:
             text = msg
