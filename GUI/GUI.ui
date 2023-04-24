@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>430</width>
-    <height>652</height>
+    <height>653</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="TransmitterTab">
       <attribute name="title">
@@ -274,6 +274,11 @@
               <height>0</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>Noto Color Emoji</family>
+             </font>
+            </property>
            </widget>
           </item>
           <item>
@@ -497,6 +502,11 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Noto Color Emoji</family>
+             </font>
             </property>
            </widget>
           </item>

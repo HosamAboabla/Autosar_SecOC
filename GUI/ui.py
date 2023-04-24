@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIUqhhzC.ui'
+## Form generated from reading UI file 'GUIQkVzNF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -27,7 +27,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(430, 652)
+        Dialog.resize(430, 653)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -158,6 +158,9 @@ class Ui_Dialog(object):
         self.tlogger.setMaximumSize(QSize(16777215, 16777215))
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
+        font = QFont()
+        font.setFamilies([u"Noto Color Emoji"])
+        self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
 
@@ -269,6 +272,7 @@ class Ui_Dialog(object):
         self.rlogger.setObjectName(u"rlogger")
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
+        self.rlogger.setFont(font)
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
@@ -289,7 +293,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(0)
+        self.ModeTabs.setCurrentIndex(1)
         self.pushButton_9.setDefault(False)
 
 
