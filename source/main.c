@@ -205,7 +205,7 @@ void func3() {
     while (1) {
         tasks[2].state++;
         printf("Function 3: state=%d\n", tasks[2].state);
-        CanTP_MainFunctionRx();
+        CanTp_MainFunctionRx();
         swapcontext(&tasks[2].context, &tasks[0].context);
     }
 }
