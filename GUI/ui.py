@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIQkVzNF.ui'
+## Form generated from reading UI file 'GUIydzdQu.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -43,54 +43,54 @@ class Ui_Dialog(object):
         self.TransmitterTab.setObjectName(u"TransmitterTab")
         self.verticalLayout_5 = QVBoxLayout(self.TransmitterTab)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.ConfigSelect = QComboBox(self.TransmitterTab)
-        self.ConfigSelect.addItem("")
-        self.ConfigSelect.addItem("")
-        self.ConfigSelect.setObjectName(u"ConfigSelect")
+        self.configSelect = QComboBox(self.TransmitterTab)
+        self.configSelect.addItem("")
+        self.configSelect.addItem("")
+        self.configSelect.setObjectName(u"configSelect")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.ConfigSelect.sizePolicy().hasHeightForWidth())
-        self.ConfigSelect.setSizePolicy(sizePolicy1)
+        sizePolicy1.setHeightForWidth(self.configSelect.sizePolicy().hasHeightForWidth())
+        self.configSelect.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_5.addWidget(self.ConfigSelect)
+        self.verticalLayout_5.addWidget(self.configSelect)
 
         self.ControlBox = QGroupBox(self.TransmitterTab)
         self.ControlBox.setObjectName(u"ControlBox")
         self.gridLayout = QGridLayout(self.ControlBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.pushButton_3 = QPushButton(self.ControlBox)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setEnabled(False)
-        sizePolicy1.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy1)
+        self.showTimeButton = QPushButton(self.ControlBox)
+        self.showTimeButton.setObjectName(u"showTimeButton")
+        self.showTimeButton.setEnabled(False)
+        sizePolicy1.setHeightForWidth(self.showTimeButton.sizePolicy().hasHeightForWidth())
+        self.showTimeButton.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.pushButton_3, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.showTimeButton, 2, 0, 1, 1)
 
-        self.pushButton_9 = QPushButton(self.ControlBox)
-        self.pushButton_9.setObjectName(u"pushButton_9")
-        self.pushButton_9.setEnabled(False)
-        sizePolicy1.setHeightForWidth(self.pushButton_9.sizePolicy().hasHeightForWidth())
-        self.pushButton_9.setSizePolicy(sizePolicy1)
-        self.pushButton_9.setCheckable(False)
-        self.pushButton_9.setChecked(False)
-        self.pushButton_9.setFlat(False)
+        self.showDateButton = QPushButton(self.ControlBox)
+        self.showDateButton.setObjectName(u"showDateButton")
+        self.showDateButton.setEnabled(False)
+        sizePolicy1.setHeightForWidth(self.showDateButton.sizePolicy().hasHeightForWidth())
+        self.showDateButton.setSizePolicy(sizePolicy1)
+        self.showDateButton.setCheckable(False)
+        self.showDateButton.setChecked(False)
+        self.showDateButton.setFlat(False)
 
-        self.gridLayout.addWidget(self.pushButton_9, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.showDateButton, 2, 1, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.ControlBox)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        sizePolicy1.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy1)
+        self.accelButton = QPushButton(self.ControlBox)
+        self.accelButton.setObjectName(u"accelButton")
+        sizePolicy1.setHeightForWidth(self.accelButton.sizePolicy().hasHeightForWidth())
+        self.accelButton.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.pushButton_2, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.accelButton, 0, 0, 1, 1)
 
-        self.pushButton = QPushButton(self.ControlBox)
-        self.pushButton.setObjectName(u"pushButton")
-        sizePolicy1.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy1)
+        self.decelButton = QPushButton(self.ControlBox)
+        self.decelButton.setObjectName(u"decelButton")
+        sizePolicy1.setHeightForWidth(self.decelButton.sizePolicy().hasHeightForWidth())
+        self.decelButton.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.decelButton, 0, 1, 1, 1)
 
 
         self.verticalLayout_5.addWidget(self.ControlBox)
@@ -115,19 +115,19 @@ class Ui_Dialog(object):
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.pushButton_4 = QPushButton(self.groupBox_2)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-        sizePolicy1.setHeightForWidth(self.pushButton_4.sizePolicy().hasHeightForWidth())
-        self.pushButton_4.setSizePolicy(sizePolicy1)
+        self.alterFreshButton = QPushButton(self.groupBox_2)
+        self.alterFreshButton.setObjectName(u"alterFreshButton")
+        sizePolicy1.setHeightForWidth(self.alterFreshButton.sizePolicy().hasHeightForWidth())
+        self.alterFreshButton.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout.addWidget(self.pushButton_4)
+        self.horizontalLayout.addWidget(self.alterFreshButton)
 
-        self.pushButton_10 = QPushButton(self.groupBox_2)
-        self.pushButton_10.setObjectName(u"pushButton_10")
-        sizePolicy1.setHeightForWidth(self.pushButton_10.sizePolicy().hasHeightForWidth())
-        self.pushButton_10.setSizePolicy(sizePolicy1)
+        self.alterAuthButton = QPushButton(self.groupBox_2)
+        self.alterAuthButton.setObjectName(u"alterAuthButton")
+        sizePolicy1.setHeightForWidth(self.alterAuthButton.sizePolicy().hasHeightForWidth())
+        self.alterAuthButton.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout.addWidget(self.pushButton_10)
+        self.horizontalLayout.addWidget(self.alterAuthButton)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -135,12 +135,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout_5.addWidget(self.groupBox_2)
 
-        self.pushButton_11 = QPushButton(self.TransmitterTab)
-        self.pushButton_11.setObjectName(u"pushButton_11")
-        sizePolicy1.setHeightForWidth(self.pushButton_11.sizePolicy().hasHeightForWidth())
-        self.pushButton_11.setSizePolicy(sizePolicy1)
+        self.transmitButton = QPushButton(self.TransmitterTab)
+        self.transmitButton.setObjectName(u"transmitButton")
+        sizePolicy1.setHeightForWidth(self.transmitButton.sizePolicy().hasHeightForWidth())
+        self.transmitButton.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_5.addWidget(self.pushButton_11)
+        self.verticalLayout_5.addWidget(self.transmitButton)
 
         self.groupBox = QGroupBox(self.TransmitterTab)
         self.groupBox.setObjectName(u"groupBox")
@@ -164,12 +164,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout_4.addWidget(self.tlogger)
 
-        self.pushButton_12 = QPushButton(self.groupBox)
-        self.pushButton_12.setObjectName(u"pushButton_12")
-        sizePolicy1.setHeightForWidth(self.pushButton_12.sizePolicy().hasHeightForWidth())
-        self.pushButton_12.setSizePolicy(sizePolicy1)
+        self.tlogClearButton = QPushButton(self.groupBox)
+        self.tlogClearButton.setObjectName(u"tlogClearButton")
+        sizePolicy1.setHeightForWidth(self.tlogClearButton.sizePolicy().hasHeightForWidth())
+        self.tlogClearButton.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_4.addWidget(self.pushButton_12)
+        self.verticalLayout_4.addWidget(self.tlogClearButton)
 
 
         self.verticalLayout_5.addWidget(self.groupBox)
@@ -250,12 +250,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout_10.addWidget(self.groupBox_3)
 
-        self.pushButton_18 = QPushButton(self.ReceiverTab)
-        self.pushButton_18.setObjectName(u"pushButton_18")
-        sizePolicy1.setHeightForWidth(self.pushButton_18.sizePolicy().hasHeightForWidth())
-        self.pushButton_18.setSizePolicy(sizePolicy1)
+        self.verifyButton = QPushButton(self.ReceiverTab)
+        self.verifyButton.setObjectName(u"verifyButton")
+        sizePolicy1.setHeightForWidth(self.verifyButton.sizePolicy().hasHeightForWidth())
+        self.verifyButton.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_10.addWidget(self.pushButton_18)
+        self.verticalLayout_10.addWidget(self.verifyButton)
 
         self.LogBox = QGroupBox(self.ReceiverTab)
         self.LogBox.setObjectName(u"LogBox")
@@ -276,12 +276,12 @@ class Ui_Dialog(object):
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
-        self.pushButton_19 = QPushButton(self.LogBox)
-        self.pushButton_19.setObjectName(u"pushButton_19")
-        sizePolicy1.setHeightForWidth(self.pushButton_19.sizePolicy().hasHeightForWidth())
-        self.pushButton_19.setSizePolicy(sizePolicy1)
+        self.rlogClearButton = QPushButton(self.LogBox)
+        self.rlogClearButton.setObjectName(u"rlogClearButton")
+        sizePolicy1.setHeightForWidth(self.rlogClearButton.sizePolicy().hasHeightForWidth())
+        self.rlogClearButton.setSizePolicy(sizePolicy1)
 
-        self.verticalLayout_9.addWidget(self.pushButton_19)
+        self.verticalLayout_9.addWidget(self.rlogClearButton)
 
 
         self.verticalLayout_10.addWidget(self.LogBox)
@@ -293,8 +293,8 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(1)
-        self.pushButton_9.setDefault(False)
+        self.ModeTabs.setCurrentIndex(0)
+        self.showDateButton.setDefault(False)
 
 
         QMetaObject.connectSlotsByName(Dialog)
@@ -302,29 +302,29 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"SecOC", None))
-        self.ConfigSelect.setItemText(0, QCoreApplication.translate("Dialog", u"CANIF", None))
-        self.ConfigSelect.setItemText(1, QCoreApplication.translate("Dialog", u"CANTP", None))
+        self.configSelect.setItemText(0, QCoreApplication.translate("Dialog", u"CANIF", None))
+        self.configSelect.setItemText(1, QCoreApplication.translate("Dialog", u"CANTP", None))
 
         self.ControlBox.setTitle(QCoreApplication.translate("Dialog", u"Control Box", None))
-        self.pushButton_3.setText(QCoreApplication.translate("Dialog", u"Show Time", None))
-        self.pushButton_9.setText(QCoreApplication.translate("Dialog", u"Show Date", None))
-        self.pushButton_2.setText(QCoreApplication.translate("Dialog", u"ACCEL", None))
-        self.pushButton.setText(QCoreApplication.translate("Dialog", u"DECEL", None))
+        self.showTimeButton.setText(QCoreApplication.translate("Dialog", u"Show Time", None))
+        self.showDateButton.setText(QCoreApplication.translate("Dialog", u"Show Date", None))
+        self.accelButton.setText(QCoreApplication.translate("Dialog", u"ACCEL", None))
+        self.decelButton.setText(QCoreApplication.translate("Dialog", u"DECEL", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("Dialog", u"Secured Payload", None))
         self.lineEdit.setText(QCoreApplication.translate("Dialog", u"3 - 13412 - 34 - 192381209", None))
-        self.pushButton_4.setText(QCoreApplication.translate("Dialog", u"Alter Freshness", None))
-        self.pushButton_10.setText(QCoreApplication.translate("Dialog", u"Alter Authenticator", None))
-        self.pushButton_11.setText(QCoreApplication.translate("Dialog", u"Transmit Secured PDU", None))
+        self.alterFreshButton.setText(QCoreApplication.translate("Dialog", u"Alter Freshness", None))
+        self.alterAuthButton.setText(QCoreApplication.translate("Dialog", u"Alter Authenticator", None))
+        self.transmitButton.setText(QCoreApplication.translate("Dialog", u"Transmit Secured PDU", None))
         self.groupBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
-        self.pushButton_12.setText(QCoreApplication.translate("Dialog", u"Clear", None))
+        self.tlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.TransmitterTab), QCoreApplication.translate("Dialog", u"Transmitter", None))
         self.DashBoard.setTitle(QCoreApplication.translate("Dialog", u"DashBoard", None))
         self.LCD.setText(QCoreApplication.translate("Dialog", u"3:12 AM 3/10/2000", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("Dialog", u"Secured Payload", None))
         self.lineEdit_3.setText(QCoreApplication.translate("Dialog", u"3 - 13412 - 34 - 192381209", None))
-        self.pushButton_18.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
+        self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
-        self.pushButton_19.setText(QCoreApplication.translate("Dialog", u"Clear", None))
+        self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.ReceiverTab), QCoreApplication.translate("Dialog", u"Receiver", None))
     # retranslateUi
 

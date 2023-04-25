@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="TransmitterTab">
       <attribute name="title">
@@ -37,7 +37,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QComboBox" name="ConfigSelect">
+        <widget class="QComboBox" name="configSelect">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -63,7 +63,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="2" column="0">
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="showTimeButton">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -79,7 +79,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QPushButton" name="pushButton_9">
+           <widget class="QPushButton" name="showDateButton">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -107,7 +107,7 @@
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="accelButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -120,7 +120,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="decelButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -178,7 +178,7 @@
              <enum>QLayout::SetDefaultConstraint</enum>
             </property>
             <item>
-             <widget class="QPushButton" name="pushButton_4">
+             <widget class="QPushButton" name="alterFreshButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -191,7 +191,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_10">
+             <widget class="QPushButton" name="alterAuthButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                 <horstretch>0</horstretch>
@@ -209,7 +209,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_11">
+        <widget class="QPushButton" name="transmitButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -282,7 +282,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_12">
+           <widget class="QPushButton" name="tlogClearButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -462,7 +462,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_18">
+        <widget class="QPushButton" name="verifyButton">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
            <horstretch>0</horstretch>
@@ -511,7 +511,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_19">
+           <widget class="QPushButton" name="rlogClearButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
