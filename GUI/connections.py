@@ -14,39 +14,45 @@ class MyConnections:
         self.dialog.showTimeButton.clicked.connect(self.OnShowTimeButtonClicked)
         self.dialog.showDateButton.clicked.connect(self.OnAccelButtonClicked)
 
-        self.dialog.alterFreshButton.clicked.connect(self.OnAccelButtonClicked)
-        self.dialog.alterAuthButton.clicked.connect(self.OnAccelButtonClicked)
+        self.dialog.alterFreshButton.clicked.connect(self.OnAlterFreshButtonClicked)
+        self.dialog.alterAuthButton.clicked.connect(self.OnAlterAuthButtonClicked)
 
-        self.dialog.transmitButton.clicked.connect(self.OnAccelButtonClicked)
-        self.dialog.tlogClearButton.clicked.connect(self.OnAccelButtonClicked)
+        self.dialog.transmitButton.clicked.connect(self.OnTransmitButtonClicked)
+        self.dialog.tlogClearButton.clicked.connect(self.OnTlogClearButtonClicked)
 
         # Receiver tab connections
-        self.dialog.verifyButton.clicked.connect(self.OnAccelButtonClicked)
-        self.dialog.rlogClearButton.clicked.connect(self.OnAccelButtonClicked)
+        self.dialog.verifyButton.clicked.connect(self.OnVerifyButtonClicked)
+        self.dialog.rlogClearButton.clicked.connect(self.OnRlogClearButtonClicked)
 
 
     def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+        self.dialog.tlog.debug("OnAccelButtonClicked")
     
     def OnDecelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+        self.dialog.tlog.debug("OnDecelButtonClicked")
    
     def OnShowTimeButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+        self.dialog.tlog.debug("OnShowTimeButtonClicked")
   
     def OnShowDateButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+        self.dialog.tlog.debug("OnShowDateButtonClicked")
 
 
-    def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+    def OnAlterFreshButtonClicked(self):
+        self.dialog.tlog.debug("OnAlterFreshButtonClicked")
     
-    def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+    def OnAlterAuthButtonClicked(self):
+        self.dialog.tlog.debug("OnAlterAuthButtonClicked")
 
   
-    def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")
+    def OnTransmitButtonClicked(self):
+        self.dialog.tlog.debug("OnTransmitButtonClicked")
    
-    def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("Button Clicked")                                                
+    def OnTlogClearButtonClicked(self):
+        self.dialog.tlog.debug("OnTlogClearButtonClicked")                                                
+
+    def OnVerifyButtonClicked(self):
+        self.dialog.tlog.debug("OnVerifyButtonClicked")       
+
+    def OnRlogClearButtonClicked(self):
+        self.dialog.tlog.debug("OnRlogClearButtonClicked")               
