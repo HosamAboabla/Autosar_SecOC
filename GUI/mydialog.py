@@ -43,7 +43,6 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         self.gauge: AnalogGaugeWidget # type hint for self.gauge 
 
         self.gauge.setMouseTracking(False)
-        self.pushButton_10 : QtWidgets.QPushButton
 
         self.gauge.units = "Km/h"
         self.gauge.minValue = 0
