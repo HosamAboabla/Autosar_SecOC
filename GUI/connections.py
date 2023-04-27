@@ -61,8 +61,9 @@ class MyConnections:
         my_string = my_bytes.decode('utf-8')
 
         # Update the Secured Payload in transmitter tab
-        self.dialog.lineEdit.setText(my_string)
+        self.dialog.transmitPayload.setText(my_string)
 
+   
     def OnConfigChanged(self, index):
         if(index != 0):
             self.dialog.showDateButton.setEnabled(True)
@@ -72,11 +73,12 @@ class MyConnections:
             self.dialog.showTimeButton.setEnabled(False)
         self.UpdateTransmitterSecPayload()                    
 
+  
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
 
         # Create an array of bytes in Python
-        data = (c_ubyte * 2)(9, 9)
+        data = (c_ubyte * 1)(1)
         dataLen = len(data)
 
         # Generate Frame
@@ -88,33 +90,76 @@ class MyConnections:
     
     def OnDecelButtonClicked(self):
         self.dialog.tlog.debug("OnDecelButtonClicked")
-   
+         # Create an array of bytes in Python
+        data = (c_ubyte * 1)(2)
+        dataLen = len(data)
+
+        # Generate Frame
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
+
+        self.UpdateTransmitterSecPayload()
+
     def OnShowTimeButtonClicked(self):
         self.dialog.tlog.debug("OnShowTimeButtonClicked")
-  
+         # Create an array of bytes in Python
+        data = (c_ubyte * 5)(3)
+        dataLen = len(data)
+
+        # Generate Frame
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
+
+        self.UpdateTransmitterSecPayload() 
+
+
     def OnShowDateButtonClicked(self):
         self.dialog.tlog.debug("OnShowDateButtonClicked")
+         # Create an array of bytes in Python
+        data = (c_ubyte * 5)(4)
+        dataLen = len(data)
+
+        # Generate Frame
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
+
+        self.UpdateTransmitterSecPayload()
 
 
     def OnAlterFreshButtonClicked(self):
         self.dialog.tlog.debug("OnAlterFreshButtonClicked")
+
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_alterFreshness(currentIndex)
+
+        self.UpdateTransmitterSecPayload()
+
     
     def OnAlterAuthButtonClicked(self):
         self.dialog.tlog.debug("OnAlterAuthButtonClicked")
 
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_alterAuthenticator(currentIndex)
+
+        self.UpdateTransmitterSecPayload()
   
+
     def OnTransmitButtonClicked(self):
         self.dialog.tlog.debug("OnTransmitButtonClicked")
    
+
+
     def OnTlogClearButtonClicked(self):
         self.dialog.tlog.debug("OnTlogClearButtonClicked")
         self.dialog.tlogger.clear()                                             
+
 
 ############ Receiver tab buttons #########################
 
 
     def OnVerifyButtonClicked(self):
         self.dialog.rlog.debug("OnVerifyButtonClicked")       
+
 
     def OnRlogClearButtonClicked(self):
         self.dialog.rlog.debug("OnRlogClearButtonClicked")
