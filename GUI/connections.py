@@ -3,7 +3,11 @@ try:
 except ImportError:
     pass
 
+from ctypes import *
+import sys
+from pathlib import Path
 
+from PySide2.QtWidgets import QLineEdit
 class MyConnections:
     def __init__(self, dialog):
         self.dialog : MyDialog = dialog
