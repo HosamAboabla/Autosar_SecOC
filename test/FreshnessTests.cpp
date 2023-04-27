@@ -446,6 +446,57 @@ TEST(FreshnessTests, TXFreshness)
 
 }
 
+TEST(FreshnessTests, TXFreshnesstrunc)
+{
+   
+    uint16 SecOCFreshnessValueID = 8;
 
+
+    /* Value in Counter */
+    uint8 SecOCFreshnessValueCounter[100] = {0xff,0x04};
+    uint32 SecOCFreshnessValueLengthCounter = 11;
+    FVM_UpdateCounter(SecOCFreshnessValueID, SecOCFreshnessValueCounter, SecOCFreshnessValueLengthCounter);
+
+    uint16 SecOCAuthVerifyAttempts = 0;
+
+    /* Value out from TX */
+    uint8 SecOCFreshnessValue[100] = {0};
+    uint32 SecOCFreshnessValueLength = 16;
+
+    /* Trunc Value comes from Tx */
+    uint8 SecOCTruncatedFreshnessValue[100] = {0};
+    uint32 SecOCTruncatedFreshnessValueLength = 6;
+
+    /*
+    printf("before : length is %d and Values is --> ",SecOCFreshnessValueLength);
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+        printf("%d ", SecOCFreshnessValue[i]);
+    printf("\n");*/
+
+    Std_ReturnType returnValue = FVM_GetTxFreshnessTruncData(SecOCFreshnessValueID,  SecOCFreshnessValue,
+ &SecOCFreshnessValueLength,  SecOCTruncatedFreshnessValue, &SecOCTruncatedFreshnessValueLength);
+
+    EXPECT_EQ(returnValue, E_OK);
+
+
+    uint8 TruncFreshnessResult [100] = {0x3F};
+
+    /*
+    printf("after : length is %d and Values is --> ",SecOCFreshnessValueLength);
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+    {
+        printf("%d ", SecOCFreshnessValue[i]);
+    }
+    printf("\n");
+    */
+
+    for (int i = 0; i < BIT_TO_BYTES(SecOCTruncatedFreshnessValueLength); i++)
+    {
+        EXPECT_EQ(SecOCFreshnessValueCounter[i], SecOCFreshnessValue[i]);
+    }
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+    {
+        EXPECT_EQ(TruncFreshnessResult[i], SecOCTruncatedFreshnessValue[i]);
+    }
 
 }
