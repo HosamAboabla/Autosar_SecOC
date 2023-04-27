@@ -19,7 +19,7 @@ extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESS
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
-
+extern Std_ReturnType seperatePduCollectionTx(const PduIdType TxPduId,uint32 AuthPduLen , PduInfoType* securedPdu, PduInfoType* AuthPduCollection, PduInfoType* CryptoPduCollection, PduIdType* authPduId, PduIdType* cryptoPduId);
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -144,12 +144,45 @@ void GUIInterface_alterAuthenticator(uint8_t configId)
     
 }
 
-char* GUIInterface_transmit()
+char* GUIInterface_transmit(uint8_t configId)
 {
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
-    SecOCMainFunctionTx();
+    PduInfoType *authPdu = &(SecOCTxPduProcessing[configId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
+    SecOC_TxSecuredPduCollectionType * securePduCollection = (SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection);
+    PduInfoType *AuthPduCollection;
+    PduInfoType *CryptoPduCollection;
+
+    /* Check if there is data */
+    if (authPdu->SduLength > 0) 
+    {
+        uint32 AuthPduLen = authPdu->SduLength;
+
+        PduIdType  authPduId , cryptoPduId;
+
+        FVM_IncreaseCounter(SecOCTxPduProcessing[configId].SecOCFreshnessValueId);
+
+        /* [SWS_SecOC_00201] */
+        if(securePduCollection != NULL)
+        {
+            AuthPduCollection = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxAuthenticPdu->SecOCTxAuthenticPduRef);
+            CryptoPduCollection = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPduCollection->SecOCTxCryptographicPdu->SecOCTxCryptographicPduRef);
+            seperatePduCollectionTx(configId, AuthPduLen , securedPdu , AuthPduCollection , CryptoPduCollection , &authPduId , &cryptoPduId);
+            
+
+            /* [SWS_SecOC_00062] */
+            PduR_SecOCTransmit(authPduId , AuthPduCollection);
+            PduR_SecOCTransmit(cryptoPduId , CryptoPduCollection);
+        }
+        else
+        {
+            /* [SWS_SecOC_00062] */
+            PduR_SecOCTransmit(configId , securedPdu);
+        }
+        
+    }
 
     return errorString(result);
 }
