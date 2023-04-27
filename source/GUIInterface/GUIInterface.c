@@ -1,10 +1,10 @@
 /********************************************************************************************************/
 /************************************************INCULDES************************************************/
 /********************************************************************************************************/
-
+#include <stdio.h>
 #include "SecOC.h"
 #include "SecOC_Lcfg.h"
-#include <stdio.h>
+#include "Std_Types.h"
 
 
 /********************************************************************************************************/
@@ -53,7 +53,7 @@ char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
     PduInfoType *authPdu = &(SecOCTxPduProcessing[configId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     
-    // Creating te Authentic PDU
+    /* Creating te Authentic PDU */
     memcpy(authPdu->SduDataPtr, data, len);
     authPdu->SduLength = len;
 
@@ -77,12 +77,31 @@ char* GUIInterface_verify(uint8_t configId)
 
 }
 
-uint8_t* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
+char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
 {
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
-    
     *len = securedPdu->SduLength;
-    return securedPdu->SduDataPtr;
+
+    static char securedStr[100]; /* Static to be passed to the python program*/
+
+    uint8_t headerIdx = SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCAuthPduHeaderLength;
+    uint8_t authIdx = *len - BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCAuthInfoTruncLength);
+    uint8_t freshIdx = authIdx - BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCFreshnessValueTruncLength);
+    
+    int i, stri;
+    for(i = 0, stri = 0; i < *len; i++)
+    {
+        if((headerIdx != 0 && i == headerIdx) || (i == authIdx) || ((SecOCTxPduProcessing[configId].SecOCFreshnessValueTruncLength != 0) && i == freshIdx))
+        {
+            stri += sprintf(&securedStr[stri], "%s", " - ");
+        }
+        stri += sprintf(&securedStr[stri], "%u", securedPdu->SduDataPtr[i]);
+    }
+    securedStr[stri] = '\0';
+
+    *len = stri; /* Updated the length to match the created string */
+    
+    return securedStr;
 }
 
 void GUIInterface_alterFreshness(uint8_t configId)
