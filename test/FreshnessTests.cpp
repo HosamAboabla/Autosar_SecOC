@@ -244,6 +244,56 @@ TEST(FreshnessTests, RXFreshnessLowerThan1)
 }
 
 
+TEST(FreshnessTests, RXFreshnessLowerThan2)
+{
+    /* Freshness Test
+    Case # Truncfreshnesslength <  counterlength   --->  here verifyFreshness = MSB+1 | TruncValue 
+
+    verifyFreshness  > counterValue     ---> return OK verifyFreshness = MSB+1| TruncValue
+     */
+    uint16 SecOCFreshnessValueID = 6;
+
+    /* Value comes from Tx */
+    uint8 SecOCTruncatedFreshnessValue[100] = {0x0f};
+    uint32 SecOCTruncatedFreshnessValueLength = 4;
+
+    /* Value in Rx */
+    uint8 SecOCFreshnessValueRX[100] = {255,1};
+    uint32 SecOCFreshnessValueLengthRX = 9;
+    FVM_UpdateCounter(SecOCFreshnessValueID, SecOCFreshnessValueRX, SecOCFreshnessValueLengthRX);
+
+    uint16 SecOCAuthVerifyAttempts = 0;
+
+    /* Value out from RX */
+    uint8 SecOCFreshnessValue[100] = {0};
+    uint32 SecOCFreshnessValueLength = 0;
+
+    printf("before : length is %d and Values is --> ",SecOCFreshnessValueLength);
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+        printf("%d ", SecOCFreshnessValue[i]);
+    printf("\n");
+
+    Std_ReturnType returnValue = FVM_GetRxFreshness( SecOCFreshnessValueID, SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength,
+                                   SecOCAuthVerifyAttempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
+
+    EXPECT_EQ(returnValue, E_OK);
+
+
+    uint8 FreshnessResult [100] = {0x0f,0x02};
+    /*
+    printf("after : length is %d and Values is --> ",SecOCFreshnessValueLength);
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+    {
+        printf("%d ", SecOCFreshnessValue[i]);
+        EXPECT_EQ(FreshnessResult[i], SecOCFreshnessValue[i]);
+    }*/
+    for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
+    {
+        EXPECT_EQ(FreshnessResult[i], SecOCFreshnessValue[i]);
+    }
+
+}
+
 
 
 
