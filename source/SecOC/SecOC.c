@@ -1004,7 +1004,7 @@ static void parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxInte
     
     /* init freshness in struct SecOCIntermediate with 0 */
     (void)memset(SecOCIntermediate->freshness, 0, sizeof(SecOCIntermediate->freshness));
-
+    /* [SWS_SecOC_00250] */
     SecOCIntermediate->freshnessResult = SecOC_GetRxFreshness(
             SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueId,
             SecOCTruncatedFreshnessValue, 
