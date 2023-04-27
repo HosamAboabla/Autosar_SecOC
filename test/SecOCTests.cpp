@@ -28,13 +28,6 @@ extern const SecOC_GeneralType             *SecOCGeneral;
 
 TEST(SecOCTests, example)
 {  
-    // TX
-    for(int i = 0; i < 0x2fe; i++)
-       FVM_IncreaseCounter(9); 
-    // RX
-    for(int i = 0; i < 0x1ff; i++)
-       FVM_IncreaseCounter(10);
-    
     uint8 buff[20]={10,100,200,250};
     PduLengthType len = 4;
     PduInfoType SPDU;
@@ -71,9 +64,8 @@ TEST(SecOCTests, example)
     for(int i = 0; i < secured->SduLength; i++)
     {
         ASSERT_NE(SPDU.SduDataPtr[i],secured->SduDataPtr[i]);
-        // EXPECT_NE(SPDU.SduDataPtr[i],secured->SduDataPtr[i]);
     }
-        // printf("%d ", secured->SduDataPtr[i]);
+
     printf("\n");  
     // main function
     SecOCMainFunctionRx();
