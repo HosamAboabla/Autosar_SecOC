@@ -101,7 +101,7 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
         {
             stri += sprintf(&securedStr[stri], "%s", " - ");
         }
-        stri += sprintf(&securedStr[stri], "%u", securedPdu->SduDataPtr[i]);
+        stri += sprintf(&securedStr[stri], "%x ", securedPdu->SduDataPtr[i]);
     }
     securedStr[stri] = '\0';
 
