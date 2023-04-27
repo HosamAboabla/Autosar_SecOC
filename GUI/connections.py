@@ -30,10 +30,12 @@ class MyConnections:
 
 
         # Transmitter tab connections
+        self.dialog.configSelect.currentIndexChanged.connect(self.OnConfigChanged)
+
         self.dialog.accelButton.clicked.connect(self.OnAccelButtonClicked)
         self.dialog.decelButton.clicked.connect(self.OnDecelButtonClicked)
         self.dialog.showTimeButton.clicked.connect(self.OnShowTimeButtonClicked)
-        self.dialog.showDateButton.clicked.connect(self.OnAccelButtonClicked)
+        self.dialog.showDateButton.clicked.connect(self.OnShowDateButtonClicked)
 
         self.dialog.alterFreshButton.clicked.connect(self.OnAlterFreshButtonClicked)
         self.dialog.alterAuthButton.clicked.connect(self.OnAlterAuthButtonClicked)
@@ -45,6 +47,8 @@ class MyConnections:
         self.dialog.verifyButton.clicked.connect(self.OnVerifyButtonClicked)
         self.dialog.rlogClearButton.clicked.connect(self.OnRlogClearButtonClicked)
 
+
+        
     def UpdateTransmitterSecPayload(self):
         # preparing argument and return type for getsecuredPDU
         securedLen = c_int8()
@@ -56,6 +60,15 @@ class MyConnections:
 
         # Update the Secured Payload in transmitter tab
         self.dialog.lineEdit.setText(my_string)
+
+    def OnConfigChanged(self, index):
+        if(index != 0):
+            self.dialog.showDateButton.setEnabled(True)
+            self.dialog.showTimeButton.setEnabled(True)
+        else:
+            self.dialog.showDateButton.setEnabled(False)
+            self.dialog.showTimeButton.setEnabled(False)            
+                    
 
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
