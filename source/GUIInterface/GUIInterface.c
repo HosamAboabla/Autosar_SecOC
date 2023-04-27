@@ -135,7 +135,7 @@ char* GUIInterface_transmit()
     return errorString(result);
 }
 
-char* GUIInterface_receive(uint8_t configId)
+char* GUIInterface_receive()
 {
     Std_ReturnType result;
 
