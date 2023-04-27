@@ -114,9 +114,9 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.tlog.debug("OnVerifyButtonClicked")       
+        self.dialog.rlog.debug("OnVerifyButtonClicked")       
 
     def OnRlogClearButtonClicked(self):
-        self.dialog.tlog.debug("OnRlogClearButtonClicked")
+        self.dialog.rlog.debug("OnRlogClearButtonClicked")
         self.dialog.rlogger.clear()                                             
       
