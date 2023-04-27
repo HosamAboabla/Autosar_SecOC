@@ -8,6 +8,24 @@ class MyConnections:
     def __init__(self, dialog):
         self.dialog : MyDialog = dialog
 
+
+        if sys.platform == 'win32':
+            libname = 'libSecOCLib.dll'
+        elif sys.platform == 'linux':
+            libname = 'libSecOCLib.so'
+        else:
+            raise Exception("Not supported OS")
+
+
+        lib = Path('build') / libname 
+
+        self.mylib = CDLL(str(lib))
+
+
+        # Initializing SecOC
+        self.mylib.GUIInterface_init()
+
+
         # Transmitter tab connections
         self.dialog.accelButton.clicked.connect(self.OnAccelButtonClicked)
         self.dialog.decelButton.clicked.connect(self.OnDecelButtonClicked)
