@@ -52,7 +52,9 @@ class MyConnections:
     def UpdateTransmitterSecPayload(self):
         # preparing argument and return type for getsecuredPDU
         securedLen = c_int8()
-        secPdu = self.mylib.GUIInterface_getSecuredPDU(0, byref(securedLen))
+
+        currentIndex = self.dialog.configSelect.currentIndex()
+        secPdu = self.mylib.GUIInterface_getSecuredPDU(currentIndex, byref(securedLen))
 
         # convert the char* to a Python string
         my_bytes = string_at(secPdu, securedLen.value)
@@ -67,8 +69,8 @@ class MyConnections:
             self.dialog.showTimeButton.setEnabled(True)
         else:
             self.dialog.showDateButton.setEnabled(False)
-            self.dialog.showTimeButton.setEnabled(False)            
-                    
+            self.dialog.showTimeButton.setEnabled(False)
+        self.UpdateTransmitterSecPayload()                    
 
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
@@ -78,7 +80,8 @@ class MyConnections:
         dataLen = len(data)
 
         # Generate Frame
-        self.mylib.GUIInterface_authenticate(0, data, dataLen);
+        currentIndex = self.dialog.configSelect.currentIndex()
+        self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
 
         self.UpdateTransmitterSecPayload()
 
