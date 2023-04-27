@@ -56,9 +56,13 @@ get_target_property(headerDirs SecOC INCLUDE_DIRECTORIES)
 string(REPLACE ";"  "\n" cppincludes "${headerDirs}")
 file(WRITE "${CMAKE_SOURCE_DIR}/build/cppcheck_includes.txt" ${cppincludes})
 
-# Create library for linking with other projects
-add_library(SecOCLib SHARED ${SCR_FILES} ${HDR_FILES})
+# Create static library for linking with gtest
+add_library(SecOCLib STATIC ${SCR_FILES} ${HDR_FILES})
 target_include_directories(SecOCLib PUBLIC ${headerDirs})
+
+# Create shared library for linking with the GUI
+add_library(SecOCLibShared SHARED ${SCR_FILES} ${HDR_FILES})
+target_include_directories(SecOCLibShared PUBLIC ${headerDirs})
 
 # Add our test folder cmakelists
 add_subdirectory(test)
