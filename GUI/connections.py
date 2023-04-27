@@ -59,6 +59,16 @@ class MyConnections:
 
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
+
+        # Create an array of bytes in Python
+        data = (c_ubyte * 2)(9, 9)
+        dataLen = len(data)
+
+        # Generate Frame
+        self.mylib.GUIInterface_authenticate(0, data, dataLen);
+
+        self.UpdateTransmitterSecPayload()
+
     
     def OnDecelButtonClicked(self):
         self.dialog.tlog.debug("OnDecelButtonClicked")
