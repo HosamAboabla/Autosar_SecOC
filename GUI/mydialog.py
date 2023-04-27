@@ -4,7 +4,7 @@ import logging
 
 from ui import Ui_Dialog
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
-
+from connections import MyConnections
 
 class MyDialog(QtWidgets.QDialog, Ui_Dialog):
 
@@ -20,8 +20,9 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         self.stylegauge()
         self.styleLCD()
         self.gauge.updateValue(50)
-
         self.assingloggers(self.tlog, self.rlog)
+
+        self.MyConnections = MyConnections(self)  # pass reference to MyDialog instance
 
     def assingloggers(self, tlog, rlog):
 
@@ -73,3 +74,5 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
     def styleLCD(self):
         self.LCD : QtWidgets.QLineEdit
         self.LCD.setFont(QtGui.QFont('DS-Digital', 16))
+
+
