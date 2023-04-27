@@ -78,11 +78,11 @@ void SecOC_Init(const SecOC_ConfigType *config)
     SecOCRxPduProcessing = config->SecOCRxPduProcessings;
 
     /* Increase all freshness counters to make it fresh */
-    // uint8 idx;
-    // for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
-    // {      
-    //     FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
-    // }
+    uint8 idx;
+    for (idx = 0 ; idx < SECOC_NUM_OF_TX_PDU_PROCESSING ; idx++) 
+    {      
+        FVM_IncreaseCounter(SecOCTxPduProcessing[idx].SecOCFreshnessValueId);
+    }
 
     SecOCState = SECOC_INIT;
     
