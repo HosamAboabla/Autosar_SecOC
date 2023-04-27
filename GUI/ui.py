@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIydzdQu.ui'
+## Form generated from reading UI file 'GUIJIExdb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -104,13 +104,13 @@ class Ui_Dialog(object):
         self.verticalLayout = QVBoxLayout(self.groupBox_2)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setSizeConstraint(QLayout.SetDefaultConstraint)
-        self.lineEdit = QLineEdit(self.groupBox_2)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setAutoFillBackground(False)
-        self.lineEdit.setDragEnabled(False)
-        self.lineEdit.setReadOnly(True)
+        self.transmitPayload = QLineEdit(self.groupBox_2)
+        self.transmitPayload.setObjectName(u"transmitPayload")
+        self.transmitPayload.setAutoFillBackground(False)
+        self.transmitPayload.setDragEnabled(False)
+        self.transmitPayload.setReadOnly(True)
 
-        self.verticalLayout.addWidget(self.lineEdit)
+        self.verticalLayout.addWidget(self.transmitPayload)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -237,15 +237,15 @@ class Ui_Dialog(object):
         self.groupBox_3.setCheckable(False)
         self.verticalLayout_8 = QVBoxLayout(self.groupBox_3)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.lineEdit_3 = QLineEdit(self.groupBox_3)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
-        sizePolicy1.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
-        self.lineEdit_3.setSizePolicy(sizePolicy1)
-        self.lineEdit_3.setAutoFillBackground(False)
-        self.lineEdit_3.setDragEnabled(False)
-        self.lineEdit_3.setReadOnly(True)
+        self.receivePayload = QLineEdit(self.groupBox_3)
+        self.receivePayload.setObjectName(u"receivePayload")
+        sizePolicy1.setHeightForWidth(self.receivePayload.sizePolicy().hasHeightForWidth())
+        self.receivePayload.setSizePolicy(sizePolicy1)
+        self.receivePayload.setAutoFillBackground(False)
+        self.receivePayload.setDragEnabled(False)
+        self.receivePayload.setReadOnly(True)
 
-        self.verticalLayout_8.addWidget(self.lineEdit_3)
+        self.verticalLayout_8.addWidget(self.receivePayload)
 
 
         self.verticalLayout_10.addWidget(self.groupBox_3)
@@ -311,7 +311,7 @@ class Ui_Dialog(object):
         self.accelButton.setText(QCoreApplication.translate("Dialog", u"ACCEL", None))
         self.decelButton.setText(QCoreApplication.translate("Dialog", u"DECEL", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("Dialog", u"Secured Payload", None))
-        self.lineEdit.setText(QCoreApplication.translate("Dialog", u"3 - 13412 - 34 - 192381209", None))
+        self.transmitPayload.setText("")
         self.alterFreshButton.setText(QCoreApplication.translate("Dialog", u"Alter Freshness", None))
         self.alterAuthButton.setText(QCoreApplication.translate("Dialog", u"Alter Authenticator", None))
         self.transmitButton.setText(QCoreApplication.translate("Dialog", u"Transmit Secured PDU", None))
@@ -321,7 +321,7 @@ class Ui_Dialog(object):
         self.DashBoard.setTitle(QCoreApplication.translate("Dialog", u"DashBoard", None))
         self.LCD.setText(QCoreApplication.translate("Dialog", u"3:12 AM 3/10/2000", None))
         self.groupBox_3.setTitle(QCoreApplication.translate("Dialog", u"Secured Payload", None))
-        self.lineEdit_3.setText(QCoreApplication.translate("Dialog", u"3 - 13412 - 34 - 192381209", None))
+        self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
         self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))

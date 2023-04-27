@@ -157,12 +157,12 @@
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="transmitPayload">
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>3 - 13412 - 34 - 192381209</string>
+             <string/>
             </property>
             <property name="dragEnabled">
              <bool>false</bool>
@@ -437,7 +437,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="QLineEdit" name="lineEdit_3">
+           <widget class="QLineEdit" name="receivePayload">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -448,7 +448,7 @@
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>3 - 13412 - 34 - 192381209</string>
+             <string/>
             </property>
             <property name="dragEnabled">
              <bool>false</bool>
