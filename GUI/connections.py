@@ -107,10 +107,16 @@ class MyConnections:
         self.dialog.tlog.debug("OnTransmitButtonClicked")
    
     def OnTlogClearButtonClicked(self):
-        self.dialog.tlog.debug("OnTlogClearButtonClicked")                                                
+        self.dialog.tlog.debug("OnTlogClearButtonClicked")
+        self.dialog.tlogger.clear()                                             
+
+############ Receiver tab buttons #########################
+
 
     def OnVerifyButtonClicked(self):
         self.dialog.tlog.debug("OnVerifyButtonClicked")       
 
     def OnRlogClearButtonClicked(self):
-        self.dialog.tlog.debug("OnRlogClearButtonClicked")               
+        self.dialog.tlog.debug("OnRlogClearButtonClicked")
+        self.dialog.rlogger.clear()                                             
+      
