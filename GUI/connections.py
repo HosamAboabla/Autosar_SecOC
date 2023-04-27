@@ -7,7 +7,6 @@ from ctypes import *
 import sys
 from pathlib import Path
 
-from PySide2.QtWidgets import QLineEdit
 class MyConnections:
     def __init__(self, dialog):
         self.dialog : MyDialog = dialog
@@ -46,6 +45,17 @@ class MyConnections:
         self.dialog.verifyButton.clicked.connect(self.OnVerifyButtonClicked)
         self.dialog.rlogClearButton.clicked.connect(self.OnRlogClearButtonClicked)
 
+    def UpdateTransmitterSecPayload(self):
+        # preparing argument and return type for getsecuredPDU
+        securedLen = c_int8()
+        secPdu = self.mylib.GUIInterface_getSecuredPDU(0, byref(securedLen))
+
+        # convert the char* to a Python string
+        my_bytes = string_at(secPdu, securedLen.value)
+        my_string = my_bytes.decode('utf-8')
+
+        # Update the Secured Payload in transmitter tab
+        self.dialog.lineEdit.setText(my_string)
 
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
