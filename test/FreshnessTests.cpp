@@ -198,6 +198,52 @@ TEST(FreshnessTests, RXFreshnessGreaterThan)
     }
 }
 
+TEST(FreshnessTests, RXFreshnessLowerThan1)
+{
+    /* Freshness Test
+    Case # Truncfreshnesslength <  counterlength   --->  here verifyFreshness = MSB +1| TruncValue 
+
+    verifyFreshness  >  counterValue    ---> return OK verifyFreshness = MSB+1| TruncValue
+    this case is Special 
+    Freshness length is zero so get the Internal Counter and increase One than it
+     */
+    uint16 SecOCFreshnessValueID = 5;
+    const uint8 SecOCTruncatedFreshnessValue[100] = {0};
+    uint32 SecOCTruncatedFreshnessValueLength = 0;
+    uint16 SecOCAuthVerifyAttempts = 0;
+    uint8 SecOCFreshnessValue[100] = {0};
+    uint32 SecOCFreshnessValueLength = 0;
+
+    /*printf("before %d\n", SecOCFreshnessValue[0]);*/
+
+    Std_ReturnType returnValue = FVM_GetRxFreshness( SecOCFreshnessValueID, SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength,
+                                   SecOCAuthVerifyAttempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
+
+    EXPECT_EQ(returnValue, E_OK);
+
+    /*printf("after %d \n",SecOCFreshnessValue[0]);*/
+    EXPECT_GT(SecOCFreshnessValue[0], 0);
+
+    FVM_UpdateCounter(SecOCFreshnessValueID, SecOCFreshnessValue, SecOCFreshnessValueLength);
+
+    /* Here Counter have 1 and the Freshness get from Out Have length of zero */
+    SecOCFreshnessValue[0] = 0;
+    SecOCTruncatedFreshnessValueLength = 0;
+
+    /*printf("before %d\n", SecOCFreshnessValue[0]);*/
+
+    returnValue = FVM_GetRxFreshness( SecOCFreshnessValueID, SecOCTruncatedFreshnessValue, SecOCTruncatedFreshnessValueLength,
+                                   SecOCAuthVerifyAttempts, SecOCFreshnessValue, &SecOCFreshnessValueLength);
+    
+    EXPECT_EQ(returnValue, E_OK);
+
+    /*printf("after %d \n",SecOCFreshnessValue[0]);*/
+
+    EXPECT_GT(SecOCFreshnessValue[0], 1);
+
+}
+
+
 
 
 
