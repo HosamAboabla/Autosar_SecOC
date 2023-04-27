@@ -15,6 +15,7 @@ extern SecOC_ConfigType SecOC_Config;
 extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 extern const SecOC_GeneralType             *SecOCGeneral;
+extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
@@ -53,12 +54,17 @@ char* GUIInterface_authenticate(uint8_t configId, uint8_t *data, uint8_t len)
     PduInfoType *authPdu = &(SecOCTxPduProcessing[configId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[configId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     
+    /* [SWS_SecOC_00226], [SWS_SecOC_00225] */
+    SecOC_TxCounters[configId].AuthenticationCounter = 0;
+
+
     // Creating te Authentic PDU
     memcpy(authPdu->SduDataPtr, data, len);
     authPdu->SduLength = len;
 
     Std_ReturnType result;
     result = authenticate(configId , authPdu , securedPdu);
+    authPdu->SduLength = len;
 
     return errorString(result);
 
@@ -119,11 +125,12 @@ void GUIInterface_alterAuthenticator(uint8_t configId)
     
 }
 
-char* GUIInterface_transmit(uint8_t configId)
+char* GUIInterface_transmit()
 {
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
+    SecOCMainFunctionTx();
 
     return errorString(result);
 }
@@ -133,6 +140,7 @@ char* GUIInterface_receive(uint8_t configId)
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
+    ethernet_RecieveMainFunction();
 
     return errorString(result);
 }
