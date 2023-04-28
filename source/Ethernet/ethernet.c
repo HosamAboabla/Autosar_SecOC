@@ -8,12 +8,14 @@
 #include "CanTP.h"
 #include "PduR_CanIf.h"
 #include "SoAd.h"
+#include <pthread.h>
 
 /********************************************************************************************************/
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
 extern SecOC_PduCollection PdusCollections[];
+pthread_mutex_t lock;
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -151,7 +153,7 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     #endif
     
 
-
+    pthread_mutex_lock(&lock);
     (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef ETHERNET_DEBUG

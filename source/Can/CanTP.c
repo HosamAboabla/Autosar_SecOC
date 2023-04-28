@@ -11,18 +11,17 @@
 #include "SecOC_Debug.h"
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
-
+#include <pthread.h>
 #ifdef LINUX
 #include "ethernet.h"
 #endif
-
 
 /********************************************************************************************************/
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
-
+extern pthread_mutex_t lock;
 
 static PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static PduInfoType CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING];
@@ -230,6 +229,7 @@ void CanTp_MainFunctionRx(void)
             {
                 result = PduR_CanTpCopyRxData(RxPduId, &CanTp_Buffer_Rx[RxPduId], &bufferSizePtr);
             }
+            pthread_mutex_unlock(&lock); 
         }
     }
 

@@ -4,7 +4,13 @@
 
 #include "PduR_SoAd.h"
 #include "SecOC.h"
+#include <pthread.h>
 
+/********************************************************************************************************/
+/******************************************GlobalVaribles************************************************/
+/********************************************************************************************************/
+
+extern pthread_mutex_t lock;
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -18,6 +24,7 @@ void PduR_SoAdIfTxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
 void PduR_SoAdIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 {
+    pthread_mutex_unlock(&lock); 
 	SecOC_RxIndication(RxPduId, PduInfoPtr);
 }
 
