@@ -110,6 +110,18 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
     return securedStr;
 }
 
+char* GUIInterface_getAuthPdu(uint8_t configId, uint8_t *len)
+{
+    Std_ReturnType result;
+    int stri = 0;
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[configId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+
+    stri = authPdu->SduLength;
+    *len = stri;
+
+    return authPdu->SduDataPtr;
+}
+
 void GUIInterface_alterFreshness(uint8_t configId)
 {
     uint32 FreshnesslenBytes = BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCFreshnessValueTruncLength);
