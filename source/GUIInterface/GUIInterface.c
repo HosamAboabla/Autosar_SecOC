@@ -115,23 +115,29 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
 
 char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len)
 {
-    Std_ReturnType result;
-    PduInfoType *authPdu = &(SecOCRxPduProcessing[configId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    *len = securedPdu->SduLength;
+
+    static char securedStr[100]; /* Static to be passed to the python program*/
+
+    uint8_t headerIdx = SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    uint8_t authIdx = *len - BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCAuthInfoTruncLength);
+    uint8_t freshIdx = authIdx - BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength);
     
-    uint8 AuthHeadlen = SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    PduLengthType securePduLength = AuthHeadlen + authRecieveLength[configId] + BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCAuthInfoTruncLength);
-    
-    /* Check if there is data */
-    if ( securedPdu->SduLength >= securePduLength ) 
+    int i, stri;
+    for(i = 0, stri = 0; i < *len; i++)
     {
-        *len = securedPdu->SduLength;       
-        return securedPdu->SduDataPtr;
+        if((headerIdx != 0 && i == headerIdx) || (i == authIdx) || ((SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength != 0) && i == freshIdx))
+        {
+            stri += sprintf(&securedStr[stri], "%s", " - ");
+        }
+        stri += sprintf(&securedStr[stri], "%x ", securedPdu->SduDataPtr[i]);
     }
-    else{
-        *len = 0;  
-    }
-    return errorString(result);
+    securedStr[stri] = '\0';
+
+    *len = stri; /* Updated the length to match the created string */
+    
+    return securedStr;
 }
 
 
