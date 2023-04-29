@@ -16,6 +16,8 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 extern const SecOC_GeneralType             *SecOCGeneral;
 extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
+extern PduLengthType authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern SecOC_PduCollection PdusCollections[];
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
@@ -110,6 +112,29 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
     return securedStr;
 }
 
+
+char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len)
+{
+    Std_ReturnType result;
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[configId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    
+    uint8 AuthHeadlen = SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    PduLengthType securePduLength = AuthHeadlen + authRecieveLength[configId] + BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCAuthInfoTruncLength);
+    
+    /* Check if there is data */
+    if ( securedPdu->SduLength >= securePduLength ) 
+    {
+        *len = securedPdu->SduLength;       
+        return securedPdu->SduDataPtr;
+    }
+    else{
+        *len = 0;  
+    }
+    return errorString(result);
+}
+
+
 char* GUIInterface_getAuthPdu(uint8_t configId, uint8_t *len)
 {
     Std_ReturnType result;
@@ -199,13 +224,67 @@ char* GUIInterface_transmit(uint8_t configId)
     return errorString(result);
 }
 
-char* GUIInterface_receive()
+char* GUIInterface_receive(uint8_t *rxId)
 {
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
     #ifdef __linux__
-        ethernet_RecieveMainFunction();
+        #define BUS_LENGTH_RECEIVE 8
+        static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
+        uint16 id;
+        ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
+        PduInfoType PduInfoPtr = {
+            .SduDataPtr = dataRecieve,
+            .MetaDataPtr = &PdusCollections[id],
+            .SduLength = BUS_LENGTH_RECEIVE,
+        };
+        *rxId = (uint8_t) id;
+        switch (PdusCollections[id].Type)
+        {
+        case SECOC_SECURED_PDU_CANIF:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct \n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_SECURED_PDU_CANTP:
+            #ifdef ETHERNET_DEBUG
+                printf("here in CANTP \n");
+            #endif
+            CanTp_RxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_SECURED_PDU_SOADTP:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Ethernet SOADTP \n");
+            #endif
+            SoAdTp_RxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_SECURED_PDU_SOADIF:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Ethernet SOADIF \n");
+            #endif
+            PduR_SoAdIfRxIndication(id, &PduInfoPtr);
+            break;
+        
+        case SECOC_AUTH_COLLECTON_PDU:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct - pdu collection - auth\n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_CRYPTO_COLLECTON_PDU:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct- pdu collection - crypto \n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        default:
+            #ifdef ETHERNET_DEBUG
+                printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
+            #endif
+            break;
+        }
     #endif
     
     return errorString(result);
