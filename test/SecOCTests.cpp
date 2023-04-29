@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include<gmock/gmock.h>
+// #include<gmock/gmock.h>
 extern "C" {    
 
 #include "SecOC_Lcfg.h"
@@ -26,7 +26,7 @@ extern const SecOC_GeneralType             *SecOCGeneral;
 
 
 
-TEST(SecOCTests, example)
+TEST(SecOCTests, example1)
 {  
     uint8 buff[20]={10,100,200,250};
     PduLengthType len = 4;
@@ -71,3 +71,45 @@ TEST(SecOCTests, example)
     SecOCMainFunctionRx();
 }   
 
+TEST(SecOCTests,example2)
+{
+        /*
+    the length of the whole data (TpSduLength) is 26
+    SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
+    the header length (AuthHeadlen) is 1
+    bufferSizePtr max is 31
+    the current data length in the buffer (securedPdu->SduLength) is 0
+    the received data length is 19
+    the recieved sdulength is 4
+    Max data length is (SECOC_AUTHPDU_MAX_LENGTH) is 20
+    */
+    SecOC_Init(&SecOC_Config);
+    PduIdType id = 0;
+    uint8 dataRec[] = {19,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,255,1,55,66,77,88};
+    uint8 dataRec2[] = {0};
+    PduInfoType info;
+    info.MetaDataPtr = 0;
+    info.SduDataPtr=dataRec;
+    info.SduLength = 4;
+    PduLengthType bufferlen = SECOC_SECPDU_MAX_LENGTH;
+    PduLengthType TpSduLength=26;
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    securedPdu->MetaDataPtr = 0;
+    securedPdu->SduDataPtr=dataRec2;
+    securedPdu->SduLength = 0;
+    BufReq_ReturnType result;
+    printf("\nTEST1\n");
+    printf("\nbefore  : ");
+    printf("SIZEBIFFER : %d \n", bufferlen);
+    result=SecOC_StartOfReception (id,&info,TpSduLength,&bufferlen);
+    printf("\nafter  : ");
+
+    printf("SIZEBIFFER : %d \n", bufferlen);
+	
+	EXPECT_EQ(result,BUFREQ_OK);
+	
+	EXPECT_EQ(result,BUFREQ_E_NOT_OK);
+	
+	EXPECT_EQ(result,BUFREQ_E_OVFL);
+	
+}
