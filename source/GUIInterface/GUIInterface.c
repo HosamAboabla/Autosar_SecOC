@@ -204,7 +204,9 @@ char* GUIInterface_receive()
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
-    ethernet_RecieveMainFunction();
-
+    #ifdef __linux__
+        ethernet_RecieveMainFunction();
+    #endif
+    
     return errorString(result);
 }
