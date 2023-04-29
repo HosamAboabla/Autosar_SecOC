@@ -15,6 +15,7 @@
 
 #define SECOC_MAX_FRESHNESS_SIZE 32
 
+/* [SWS_SecOC_91012] */
 typedef uint8                 SecOC_FreshnessArrayType[SECOC_MAX_FRESHNESS_SIZE];
 
 typedef Std_ReturnType(*SecOC_GetTxFreshnessCalloutType)(uint16 , uint8* , uint32*);
