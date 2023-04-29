@@ -6,6 +6,7 @@ except ImportError:
 from ctypes import *
 import sys
 from pathlib import Path
+import threading
 
 class MyConnections:
     def __init__(self, dialog):
@@ -28,7 +29,12 @@ class MyConnections:
         # Initializing SecOC
         self.mylib.GUIInterface_init()
 
+        # Reciving thread
+        self.current_rx_id = -1
 
+
+        receiver_thread = threading.Thread(target=self.receiver)
+        receiver_thread.start()
         # Transmitter tab connections
         self.dialog.configSelect.currentIndexChanged.connect(self.OnConfigChanged)
 
@@ -62,6 +68,20 @@ class MyConnections:
 
         # Update the Secured Payload in transmitter tab
         self.dialog.transmitPayload.setText(my_string)
+    
+    def UpdateReceiverSecPayload(self):
+        # preparing argument and return type for getsecuredPDU
+        securedLen = c_int8()
+
+
+        secPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id, byref(securedLen))
+
+        # convert the char* to a Python string
+        my_bytes = string_at(secPdu, securedLen.value)
+        my_string = my_bytes.decode('utf-8')
+
+        # Update the Secured Payload in transmitter tab
+        self.dialog.receivePayload.setText(my_string)
 
    
     def OnConfigChanged(self, index):
@@ -146,6 +166,7 @@ class MyConnections:
 
     def OnTransmitButtonClicked(self):
         self.dialog.tlog.debug("OnTransmitButtonClicked")
+        self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
    
 
 
@@ -159,9 +180,58 @@ class MyConnections:
 
     def OnVerifyButtonClicked(self):
         self.dialog.rlog.debug("OnVerifyButtonClicked")       
+        status = self.mylib.GUIInterface_verify(self.current_rx_id)
+
+        # convert the char* to a Python string
+        my_bytes = string_at(status) # , status.value
+        my_string = my_bytes.decode('utf-8')
+        print(my_string)
+        if my_string == "E_OK":
+            authData , authLen = self.get_auth_data(self.current_rx_id)
+        
+            if authData[0] == 1:
+                self.dialog.gauge.updateValue(self.dialog.gauge.value + 10)
+            elif authData[0] == 2:
+                self.dialog.gauge.updateValue(self.dialog.gauge.value - 10)
 
 
     def OnRlogClearButtonClicked(self):
         self.dialog.rlog.debug("OnRlogClearButtonClicked")
         self.dialog.rlogger.clear()                                             
-      
+    
+
+    def get_auth_data(self , idx):
+        # # preparing argument and return type for getsecuredPDU
+        authLen = c_int8()
+        
+        authPdu = self.mylib.GUIInterface_getAuthPdu(idx, byref(authLen))
+
+        authPdu = cast(authPdu, POINTER(c_uint8))
+
+        # # Create a a byte array with the returned address
+        authPdu = (c_uint8 * authLen.value).from_address(addressof(authPdu.contents))
+
+        # print("GUI: Print secured PDU")
+        # for i in range(authLen.value):
+        #     print(authPdu[i], end = " ")
+        # print() 
+        return authPdu , authLen
+
+    def receiver(self):
+
+        while(True):
+            rxId = c_int8()
+            securedLen = c_int8()
+
+            self.mylib.GUIInterface_receive(byref(rxId))
+            self.current_rx_id = rxId.value
+            securedPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id , byref(securedLen))
+
+            securedPdu = cast(securedPdu, POINTER(c_uint8))
+
+            # # Create a a byte array with the returned address
+            securedPdu = (c_uint8 * securedLen.value).from_address(addressof(securedPdu.contents))
+            if securedLen.value > 0:
+                # Update the Secured Payload in transmitter tab
+                self.UpdateReceiverSecPayload()
+                self.dialog.rlog.info("Received PDU")
