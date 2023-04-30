@@ -16,6 +16,8 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 extern const SecOC_GeneralType             *SecOCGeneral;
 extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
+extern PduLengthType authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern SecOC_PduCollection PdusCollections[];
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
 extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_VerificationResultType *verification_result);
@@ -110,6 +112,35 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
     return securedStr;
 }
 
+
+char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len)
+{
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+    *len = securedPdu->SduLength;
+
+    static char securedStr[100]; /* Static to be passed to the python program*/
+
+    uint8_t headerIdx = SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+    uint8_t authIdx = *len - BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCAuthInfoTruncLength);
+    uint8_t freshIdx = authIdx - BIT_TO_BYTES(SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength);
+    
+    int i, stri;
+    for(i = 0, stri = 0; i < *len; i++)
+    {
+        if((headerIdx != 0 && i == headerIdx) || (i == authIdx) || ((SecOCRxPduProcessing[configId].SecOCFreshnessValueTruncLength != 0) && i == freshIdx))
+        {
+            stri += sprintf(&securedStr[stri], "%s", " - ");
+        }
+        stri += sprintf(&securedStr[stri], "%x ", securedPdu->SduDataPtr[i]);
+    }
+    securedStr[stri] = '\0';
+
+    *len = stri; /* Updated the length to match the created string */
+    
+    return securedStr;
+}
+
+
 char* GUIInterface_getAuthPdu(uint8_t configId, uint8_t *len)
 {
     Std_ReturnType result;
@@ -196,16 +227,75 @@ char* GUIInterface_transmit(uint8_t configId)
         
     }
 
+    CanTp_MainFunctionTx();
+    SoAd_MainFunctionTx();
+
     return errorString(result);
 }
 
-char* GUIInterface_receive()
+char* GUIInterface_receive(uint8_t *rxId)
 {
     Std_ReturnType result;
 
     /* TO BE IMPLEMENTED*/
     #ifdef __linux__
-        ethernet_RecieveMainFunction();
+        #define BUS_LENGTH_RECEIVE 8
+        static uint8 dataRecieve [BUS_LENGTH_RECEIVE];
+        uint16 id;
+        ethernet_receive(dataRecieve , BUS_LENGTH_RECEIVE, &id);
+        PduInfoType PduInfoPtr = {
+            .SduDataPtr = dataRecieve,
+            .MetaDataPtr = &PdusCollections[id],
+            .SduLength = BUS_LENGTH_RECEIVE,
+        };
+        *rxId = (uint8_t) id;
+        switch (PdusCollections[id].Type)
+        {
+        case SECOC_SECURED_PDU_CANIF:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct \n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_SECURED_PDU_CANTP:
+            #ifdef ETHERNET_DEBUG
+                printf("here in CANTP \n");
+            #endif
+            CanTp_RxIndication(id, &PduInfoPtr);
+            CanTp_MainFunctionRx();
+            break;
+        case SECOC_SECURED_PDU_SOADTP:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Ethernet SOADTP \n");
+            #endif
+            SoAdTp_RxIndication(id, &PduInfoPtr);
+            SoAd_MainFunctionRx();
+            break;
+        case SECOC_SECURED_PDU_SOADIF:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Ethernet SOADIF \n");
+            #endif
+            PduR_SoAdIfRxIndication(id, &PduInfoPtr);
+            break;
+        
+        case SECOC_AUTH_COLLECTON_PDU:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct - pdu collection - auth\n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        case SECOC_CRYPTO_COLLECTON_PDU:
+            #ifdef ETHERNET_DEBUG
+                printf("here in Direct- pdu collection - crypto \n");
+            #endif
+            PduR_CanIfRxIndication(id, &PduInfoPtr);
+            break;
+        default:
+            #ifdef ETHERNET_DEBUG
+                printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
+            #endif
+            break;
+        }
     #endif
     
     return errorString(result);
