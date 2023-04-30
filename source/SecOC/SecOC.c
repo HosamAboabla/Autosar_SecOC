@@ -1083,7 +1083,9 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
 
     *verification_result = SECOC_NO_VERIFICATION;
-    if((SecOCIntermediate.freshnessResult == E_BUSY) || (SecOCIntermediate.freshnessResult == E_NOT_OK))
+    
+    /* [SWS_SecOC_00265] */
+    if(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCSecuredRxPduVerification != FALSE)
     {
         /* [SWS_SecOC_00256] */
         if( SecOCIntermediate.freshnessResult == E_NOT_OK)
