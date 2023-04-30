@@ -378,7 +378,7 @@
                </size>
               </property>
               <property name="text">
-               <string>3:12 AM 3/10/2000</string>
+               <string/>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>

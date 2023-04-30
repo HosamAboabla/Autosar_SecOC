@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIJIExdb.ui'
+## Form generated from reading UI file 'GUIQLfjjr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -319,7 +319,7 @@ class Ui_Dialog(object):
         self.tlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.TransmitterTab), QCoreApplication.translate("Dialog", u"Transmitter", None))
         self.DashBoard.setTitle(QCoreApplication.translate("Dialog", u"DashBoard", None))
-        self.LCD.setText(QCoreApplication.translate("Dialog", u"3:12 AM 3/10/2000", None))
+        self.LCD.setText("")
         self.groupBox_3.setTitle(QCoreApplication.translate("Dialog", u"Secured Payload", None))
         self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
