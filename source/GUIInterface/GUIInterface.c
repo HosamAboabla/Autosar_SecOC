@@ -227,6 +227,9 @@ char* GUIInterface_transmit(uint8_t configId)
         
     }
 
+    CanTp_MainFunctionTx();
+    SoAd_MainFunctionTx();
+
     return errorString(result);
 }
 
