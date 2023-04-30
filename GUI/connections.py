@@ -7,6 +7,8 @@ from ctypes import *
 import sys
 from pathlib import Path
 import threading
+import datetime
+import struct
 
 class MyConnections:
     def __init__(self, dialog):
@@ -122,8 +124,11 @@ class MyConnections:
 
     def OnShowTimeButtonClicked(self):
         self.dialog.tlog.debug("OnShowTimeButtonClicked")
-         # Create an array of bytes in Python
-        data = (c_ubyte * 5)(3)
+        # Get the current time as a string in the format "03:12 AM"
+        current_time_str = datetime.datetime.now().strftime("%I:%M %p")
+
+        # Convert the string to a c_ubyte array
+        data = struct.pack("{}s".format(len(current_time_str)), current_time_str.encode())
         dataLen = len(data)
 
         # Generate Frame
@@ -135,8 +140,11 @@ class MyConnections:
 
     def OnShowDateButtonClicked(self):
         self.dialog.tlog.debug("OnShowDateButtonClicked")
-         # Create an array of bytes in Python
-        data = (c_ubyte * 5)(4)
+        # Get the current date as a string in the format "3/10/2000"
+        current_date_str = datetime.datetime.now().strftime("%-m/%-d/%Y")
+
+        # Convert the string to a c_ubyte array
+        data = struct.pack("{}s".format(len(current_date_str)), current_date_str.encode())
         dataLen = len(data)
 
         # Generate Frame
