@@ -262,12 +262,14 @@ char* GUIInterface_receive(uint8_t *rxId)
                 printf("here in CANTP \n");
             #endif
             CanTp_RxIndication(id, &PduInfoPtr);
+            CanTp_MainFunctionRx();
             break;
         case SECOC_SECURED_PDU_SOADTP:
             #ifdef ETHERNET_DEBUG
                 printf("here in Ethernet SOADTP \n");
             #endif
             SoAdTp_RxIndication(id, &PduInfoPtr);
+            SoAd_MainFunctionRx();
             break;
         case SECOC_SECURED_PDU_SOADIF:
             #ifdef ETHERNET_DEBUG
