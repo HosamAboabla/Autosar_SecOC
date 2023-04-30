@@ -1087,59 +1087,61 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     /* [SWS_SecOC_00265] */
     if(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCSecuredRxPduVerification != FALSE)
     {
-        /* [SWS_SecOC_00256] */
-        if( SecOCIntermediate.freshnessResult == E_NOT_OK)
+        if((SecOCIntermediate.freshnessResult == E_BUSY) || (SecOCIntermediate.freshnessResult == E_NOT_OK))
         {
-            *verification_result = SECOC_FRESHNESSFAILURE;
+            /* [SWS_SecOC_00256] */
+            if( SecOCIntermediate.freshnessResult == E_NOT_OK)
+            {
+                *verification_result = SECOC_FRESHNESSFAILURE;
+            }
+
+            return SecOCIntermediate.freshnessResult;
         }
 
-        return SecOCIntermediate.freshnessResult;
+        /* [SWS_SecOC_00046] */
+        constructDataToAuthenticatorRx(RxPduId, &SecOCIntermediate);
+
+        Crypto_VerifyResultType verify_var;
+
+        /* [SWS_SecOC_00047] */
+        Std_ReturnType Mac_verify = Csm_MacVerify(
+            SecOCRxPduProcessing[RxPduId].SecOCDataId,
+            Crypto_stub,
+            SecOCIntermediate.DataToAuth,
+            SecOCIntermediate.DataToAuthLen,
+            SecOCIntermediate.mac,
+            SecOCIntermediate.macLenBits,
+            &verify_var
+        );
+
+        if ( (Mac_verify == E_BUSY) || (Mac_verify == QUEUE_FULL) || (Mac_verify == E_NOT_OK))
+        {
+
+            /* [SWS_SecOC_00240] */
+            if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
+            {
+                *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
+            }
+            /* [SWS_SecOC_00241] */
+            if(Mac_verify == E_NOT_OK)
+            {
+                *verification_result = SECOC_VERIFICATIONFAILURE;
+            }
+
+            return Mac_verify;
+
+        }
+        else if ( (Mac_verify == CRYPTO_E_KEY_NOT_VALID) || (Mac_verify == CRYPTO_E_KEY_EMPTY) )
+        {
+            /* [SWS_SecOC_00241], [SWS_SecOC_00121] */
+            if( SecOC_RxCounters[RxPduId].VerificationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts )
+            {
+                *verification_result = SECOC_VERIFICATIONFAILURE;
+            }
+            
+            return Mac_verify;
+        }
     }
-
-    /* [SWS_SecOC_00046] */
-    constructDataToAuthenticatorRx(RxPduId, &SecOCIntermediate);
-
-    Crypto_VerifyResultType verify_var;
-
-    /* [SWS_SecOC_00047] */
-    Std_ReturnType Mac_verify = Csm_MacVerify(
-        SecOCRxPduProcessing[RxPduId].SecOCDataId,
-        Crypto_stub,
-        SecOCIntermediate.DataToAuth,
-        SecOCIntermediate.DataToAuthLen,
-        SecOCIntermediate.mac,
-        SecOCIntermediate.macLenBits,
-        &verify_var
-    );
-
-    if ( (Mac_verify == E_BUSY) || (Mac_verify == QUEUE_FULL) || (Mac_verify == E_NOT_OK))
-    {
-
-        /* [SWS_SecOC_00240] */
-        if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
-        {
-            *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
-        }
-        /* [SWS_SecOC_00241] */
-        if(Mac_verify == E_NOT_OK)
-        {
-            *verification_result = SECOC_VERIFICATIONFAILURE;
-        }
-
-        return Mac_verify;
-
-    }
-    else if ( (Mac_verify == CRYPTO_E_KEY_NOT_VALID) || (Mac_verify == CRYPTO_E_KEY_EMPTY) )
-    {
-        /* [SWS_SecOC_00241], [SWS_SecOC_00121] */
-        if( SecOC_RxCounters[RxPduId].VerificationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts )
-        {
-            *verification_result = SECOC_VERIFICATIONFAILURE;
-        }
-        
-         return Mac_verify;
-    }
-
     /* [SWS_SecOC_00242] */
     *verification_result = SECOC_VERIFICATIONSUCCESS;
 
