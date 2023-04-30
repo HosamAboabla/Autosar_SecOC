@@ -125,7 +125,7 @@ class MyConnections:
     def OnShowTimeButtonClicked(self):
         self.dialog.tlog.debug("OnShowTimeButtonClicked")
         # Get the current time as a string in the format "03:12 AM"
-        current_time_str = datetime.datetime.now().strftime("%I:%M %p")
+        current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p")
 
         # Convert the string to a c_ubyte array
         data = struct.pack("{}s".format(len(current_time_str)), current_time_str.encode())
@@ -141,7 +141,7 @@ class MyConnections:
     def OnShowDateButtonClicked(self):
         self.dialog.tlog.debug("OnShowDateButtonClicked")
         # Get the current date as a string in the format "3/10/2000"
-        current_date_str = datetime.datetime.now().strftime("%-m/%-d/%Y")
+        current_date_str = '4' + datetime.datetime.now().strftime("%-Y/%-m/%d")
 
         # Convert the string to a c_ubyte array
         data = struct.pack("{}s".format(len(current_date_str)), current_date_str.encode())
@@ -196,12 +196,16 @@ class MyConnections:
         print(my_string)
         if my_string == "E_OK":
             authData , authLen = self.get_auth_data(self.current_rx_id)
-        
+
             if authData[0] == 1:
                 self.dialog.gauge.updateValue(self.dialog.gauge.value + 10)
             elif authData[0] == 2:
                 self.dialog.gauge.updateValue(self.dialog.gauge.value - 10)
-
+            elif chr(authData[0]) == '3' or chr(authData[0]) == '4':
+                # convert the char* to a Python string
+                my_bytes = string_at(authData, authLen.value)
+                my_string = my_bytes.decode('utf-8')
+                self.dialog.LCD.setText(my_string[1:])
 
     def OnRlogClearButtonClicked(self):
         self.dialog.rlog.debug("OnRlogClearButtonClicked")
