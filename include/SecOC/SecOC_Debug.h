@@ -11,7 +11,7 @@
 /************************************************Defines*************************************************/
 /********************************************************************************************************/
 
-#define RELEASE                    /*Comment this line if you want to Debug your code*/
+#define RELEASE                    
 
 #define DEBUG_ALL                   /*Comment this line if you want to Release your code*/
 
