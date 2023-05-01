@@ -823,22 +823,22 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     // [SWS_SecOC_00082]
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
-    BufReq_ReturnType r=BUFREQ_OK;
+    BufReq_ReturnType result = BUFREQ_OK;
     uint32 datalen=0;
     // [SWS_SecOC_00130] /*description*/
     if(TpSduLength>*bufferSizePtr)
     {
-        r=BUFREQ_E_OVFL;
-        //[SWS_SecOC_00215]
+        result = BUFREQ_E_OVFL;
+        /*[SWS_SecOC_00215]*/
         if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
         {
-            r=BUFREQ_E_NOT_OK;
+            result = BUFREQ_E_NOT_OK;
         }
     }
     else if (TpSduLength == 0)
     {
-        // [SWS_SecOC_00181] 
-        r=BUFREQ_E_NOT_OK;
+        /* [SWS_SecOC_00181] */
+        result = BUFREQ_E_NOT_OK;
     }
     else
     {
@@ -884,6 +884,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
 
                 default:
                     break;
+                    result = BUFREQ_E_NOT_OK;
                 }
                 authRecieveLength[id] = datalen;
             }
@@ -896,12 +897,12 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         
     if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
-		//r=PduR_SecOCTpStartOfReception();
+		//result = PduR_SecOCTpStartOfReception();
 	}
     #ifdef SECOC_DEBUG
-        printf("result of SecOC_StartOfReception is %d\n", r);
+        printf("result of SecOC_StartOfReception is %d\n", result);
     #endif
-	return r;
+	return result;
 }
 
 
