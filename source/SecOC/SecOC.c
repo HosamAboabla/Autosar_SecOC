@@ -782,7 +782,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             securedPdu->SduLength+=(CryptoPduCollection->SduLength)-messageLinkLen;
 
             #ifdef PDU_COLLECTION_DEBUG
-                printf("########  both received and secured length = %d\n" , securedPdu->SduLength);
+                printf("########  both received and secured length = %lu\n" , securedPdu->SduLength);
                 printf("Data Recieve in secured pdu : ");
                 for(uint8 i = 0; i < securedPdu->SduLength; i++)
                 {
@@ -1029,7 +1029,7 @@ static void parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxInte
         {
             printf("%d ",SecOCIntermediate->authenticPdu[i] );
         }
-        printf("\nFreshness and lenbit is %d :",SecOCIntermediate->freshnessLenBits);
+        printf("\nFreshness and lenbit is %lu :",SecOCIntermediate->freshnessLenBits);
         for(int i = 0; i < BIT_TO_BYTES(SecOCIntermediate->freshnessLenBits); i++)
         {
             printf("%d ",SecOCIntermediate->freshness[i] );
