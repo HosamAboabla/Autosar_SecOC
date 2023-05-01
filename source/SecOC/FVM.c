@@ -150,7 +150,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
 
         uint32 maxTruncedIndex = (truncedFreshnessLengthBytes > 0) ? (truncedFreshnessLengthBytes - 1) : (0);
 
-        if (Freshness_Counter_length[SecOCFreshnessValueID] == SecOCTruncatedFreshnessValueLength)
+        if (Freshness_Counter_length[SecOCFreshnessValueID] == SecOCTruncatedFreshnessValueLength && SecOCTruncatedFreshnessValueLength != 0)
         {
             #ifdef FV_DEBUG
             printf("length counter = length trunc\n");
@@ -168,7 +168,7 @@ Std_ReturnType FVM_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8 *Sec
             sint8 equalityFlag = memcmp(SecOCTruncatedFreshnessValue, Freshness_Counter[SecOCFreshnessValueID], truncedFreshnessLengthBytes);
             for(index = maxTruncedIndex; index >= 0; index--)
             {
-                if(SecOCTruncatedFreshnessValue[index] > Freshness_Counter[SecOCFreshnessValueID][index])
+                if(SecOCTruncatedFreshnessValue[index] > Freshness_Counter[SecOCFreshnessValueID][index] && SecOCTruncatedFreshnessValueLength != 0)
                 {
                     #ifdef FV_DEBUG
                     printf("LSB  counter < LSB trunc\n");
