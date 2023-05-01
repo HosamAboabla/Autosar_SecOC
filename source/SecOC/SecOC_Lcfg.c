@@ -249,7 +249,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* for Tp */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 11),
-        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu1BufferRx,
@@ -260,7 +260,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* for SOAD "Ethernet APIs" */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 12),
-        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu2BufferRx,
@@ -271,7 +271,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* direct without Trunc-FV and header*/
         .SecOCAuthPduHeaderLength =         ((uint8) 0),
         .SecOCRxSecuredLayerPduId =         ((uint16) 13),
-        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu3BufferRx,
@@ -282,7 +282,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* Tp without header*/
         .SecOCAuthPduHeaderLength =         ((uint8) 0),
         .SecOCRxSecuredLayerPduId =         ((uint16) 14),
-        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu4BufferRx,
@@ -293,7 +293,7 @@ SecOC_RxSecuredPduType SecOC_RxSecuredPdu[] =
     { /* for RxSecuredPduCollection */
         .SecOCAuthPduHeaderLength =         ((uint8) 1),
         .SecOCRxSecuredLayerPduId =         ((uint16) 15),
-        .SecOCSecuredRxPduVerification =    ((boolean) TRUE),
+        .SecOCSecuredRxPduVerification =    ((boolean) FALSE),
         .SecOCRxSecuredLayerPduRef = 
         {
             .SduDataPtr =                   SecPdu5BufferRx,
