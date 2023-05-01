@@ -1136,7 +1136,6 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 
 void SecOC_MainFunctionRx(void)
 {
-    /* [SWS_SecOC_00171] */
     #ifdef SECOC_DEBUG
         printf("######## in SecOCMainFunctionRx \n");
     #endif
