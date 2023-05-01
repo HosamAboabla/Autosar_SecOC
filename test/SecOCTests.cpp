@@ -166,3 +166,33 @@ TEST(SecOCTests, StartOfReception4)
     EXPECT_NE(0, bufferSizePtr);
 
 }
+
+TEST(SecOCTests, StartOfReception5)
+{
+    /* 
+    Test :  SecOC_StartOfReception [SWS_SecOC_00263]
+    Case : the header have that auth biger tha max
+    */
+    SecOC_Init(&SecOC_Config);
+
+    /* Input Data */
+    PduIdType id = 0;
+
+    PduInfoType info;
+    uint8 dataRec[] = {21,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
+    info.MetaDataPtr = 0;
+    info.SduDataPtr = dataRec;
+    info.SduLength = 4;
+
+    PduLengthType TpSduLength = 28;
+    PduLengthType bufferSizePtr = 0;
+    
+
+    BufReq_ReturnType Result  = SecOC_StartOfReception (id, &info, TpSduLength, &bufferSizePtr);
+
+
+    EXPECT_EQ(Result , BUFREQ_E_NOT_OK);
+    
+    EXPECT_NE(0, bufferSizePtr);
+
+}
