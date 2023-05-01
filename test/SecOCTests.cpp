@@ -66,7 +66,7 @@ TEST(SecOCTests, StartOfReception1)
 TEST(SecOCTests, StartOfReception2)
 {
     /* 
-    Test :  SecOC_StartOfReception
+    Test :  SecOC_StartOfReception [SWS_SecOC_00215]
     Case : TpSduLength > buffer size
         TpSduLength = 35
         SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
@@ -103,7 +103,7 @@ TEST(SecOCTests, StartOfReception2)
 TEST(SecOCTests, StartOfReception3)
 {
     /* 
-    Test :  SecOC_StartOfReception
+    Test :  SecOC_StartOfReception [SWS_SecOC_00181]
     Case : TpSduLength = 0 
         TpSduLength = 0
         SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
@@ -140,7 +140,7 @@ TEST(SecOCTests, StartOfReception3)
 TEST(SecOCTests, StartOfReception4)
 {
     /* 
-    Test :  SecOC_StartOfReception
+    Test :  SecOC_StartOfReception 
     Case : TpSduLength < buffer size and Sdu is NULL 
         TpSduLength = 0
         SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
@@ -154,10 +154,6 @@ TEST(SecOCTests, StartOfReception4)
 
     /* Input Data */
     PduIdType id = 0;
-
-    PduInfoType info;
-    uint8 dataRec[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35};
-
     PduLengthType TpSduLength = 20;
     PduLengthType bufferSizePtr = 0;
     
