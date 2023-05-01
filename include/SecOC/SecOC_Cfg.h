@@ -264,7 +264,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDUVERIFICATION        TRUE
+#define SECOC_SECURED_RX_PDUVERIFICATION        FALSE
 
 
 /*****************************************
