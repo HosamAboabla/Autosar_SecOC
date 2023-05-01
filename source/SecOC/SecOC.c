@@ -29,10 +29,10 @@
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
-#ifdef SECOC_DEBUG
-    #define STATIC
-#else
+#ifdef RELEASE
     #define STATIC static
+#else
+    #define STATIC
 #endif
 
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
