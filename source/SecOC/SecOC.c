@@ -91,7 +91,7 @@ void SecOC_Init(const SecOC_ConfigType *config)
 
 void SecOC_DeInit(void)
 {
-    /* [SWS_SecOC_00161] */
+
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_DeInit \n");
     #endif
@@ -138,7 +138,6 @@ Std_ReturnType SecOC_IfTransmit(PduIdType TxPduId, const PduInfoType* PduInfoPtr
         printf("######## in SecOC_IfTransmit \n");
     #endif
     Std_ReturnType result = E_OK;
-    /* [SWS_SecOC_00112] */
     PduInfoType *authpdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxAuthenticPduLayer->SecOCTxAuthenticLayerPduRef);
     
     /* [SWS_SecOC_00252] The SecOC module shall copy the complete Authentic I-PDU to its internal memory before transmission */
@@ -434,7 +433,6 @@ static Std_ReturnType seperatePduCollectionTx(const PduIdType TxPduId,uint32 Aut
 
 void SecOCMainFunctionTx(void) 
 {
-    /* [SWS_SecOC_00176] */
     #ifdef SECOC_DEBUG
         printf("######## in SecOCMainFunctionTx \n");
     #endif
@@ -532,7 +530,6 @@ void SecOCMainFunctionTx(void)
 BufReq_ReturnType SecOC_CopyTxData (PduIdType id,const PduInfoType* info,
 const RetryInfoType* retry, PduLengthType* availableDataPtr)
 {
-    /* [SWS_SecOC_00129] */
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_CopyTxData \n");
     #endif
@@ -615,7 +612,6 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         printf("######## in SecOC_TxConfirmation \n");
     #endif
     
-    /* [SWS_SecOC_00126] */
     PduInfoType *securedPdu;
     PduInfoType *AuthPduCollection;
     PduInfoType *CryptoPduCollection;
@@ -686,7 +682,6 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
 
 void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 {
-    /* [SWS_SecOC_00152] */
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[TxPduId].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     #ifdef SECOC_DEBUG
         printf("########  In SecOC_TpTxConfirmation \n result of SecOC_TpTxConfirmation is %d \n" , result);
@@ -718,7 +713,6 @@ void SecOC_TpTxConfirmation(PduIdType TxPduId,Std_ReturnType result)
 
 Std_ReturnType SecOC_IfCancelTransmit(PduIdType TxPduId)
 {
-    /* [SWS_SecOC_00113] */
     #ifdef SECOC_DEBUG
         printf("######## in SecOC_IfCancelTransmit \n");
     #endif
