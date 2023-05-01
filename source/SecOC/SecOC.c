@@ -845,45 +845,12 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         //receiving first Byte if not Null
         if((info->SduDataPtr != NULL))
         {
-            if(AuthHeadlen>0)
             /* [SWS_SecOC_00263] */ /*check if dynamic*/            
+            if(AuthHeadlen > 0)
             {
-                switch (AuthHeadlen)
+                (void)memcpy((uint8*)&datalen, info->SduDataPtr, AuthHeadlen );
+                if(datalen > SECOC_AUTHPDU_MAX_LENGTH)
                 {
-                case 1:
-                    datalen=info->SduDataPtr[0];
-                    if((uint8)datalen > SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 2:
-                    datalen=((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 3:
-                    datalen=((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 4:
-                    datalen=((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                default:
-                    break;
                     result = BUFREQ_E_NOT_OK;
                 }
                 authRecieveLength[id] = datalen;
