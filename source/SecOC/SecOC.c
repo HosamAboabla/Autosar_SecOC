@@ -661,7 +661,7 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else
         {
-            // Wait for both pdus to be confirmed
+            /* Wait for both pdus to be confirmed */
         }
     }
     else
@@ -754,19 +754,19 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
         {
             
             /* AuthPduCollection */
-            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength); //from pduinfoptr finished
+            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength); /* from pduinfoptr finished */
             AuthPduCollection->SduLength=PduInfoPtr->SduLength;
         }
         else if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
         {
 
-            //copy from pduinfoptr to crypto
+            /* copy from pduinfoptr to crypto */
             (void)memcpy(CryptoPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength);
             CryptoPduCollection->SduLength=PduInfoPtr->SduLength;
 	    }
 
         
-        //if not secued and the length not >0 out of the crypto and in the pdu collection
+        /* if not secued and the length not >0 out of the crypto and in the pdu collection */
         if(AuthPduCollection->SduLength>0 && CryptoPduCollection->SduLength>0)
         {
             uint16 messageLinkLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkLen;
@@ -820,16 +820,16 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     #endif
 	uint8 AuthHeadlen;
 	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    // [SWS_SecOC_00082]
+    /* [SWS_SecOC_00082] */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType r=BUFREQ_OK;
     uint32 datalen=0;
-    // [SWS_SecOC_00130] /*description*/
+    /* [SWS_SecOC_00130] description*/
     if(TpSduLength>*bufferSizePtr)
     {
         r=BUFREQ_E_OVFL;
-        //[SWS_SecOC_00215]
+        /* [SWS_SecOC_00215] */
         if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
         {
             r=BUFREQ_E_NOT_OK;
@@ -837,15 +837,15 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     }
     else if (TpSduLength == 0)
     {
-        // [SWS_SecOC_00181] 
+        /* [SWS_SecOC_00181] */ 
         r=BUFREQ_E_NOT_OK;
     }
     else
     {
-        //receiving first Byte if not Null
+        /* receiving first Byte if not Null */
         if((info->SduDataPtr != NULL))
         {
-            //[SWS_SecOC_00263] /*check if dynamic*/            
+            /* [SWS_SecOC_00263] check if dynamic */            
             if(AuthHeadlen>0)
             {
                 switch (AuthHeadlen)
@@ -896,7 +896,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         
     if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
-		//r=PduR_SecOCTpStartOfReception();
+		/* r=PduR_SecOCTpStartOfReception(); */
 	}
     #ifdef SECOC_DEBUG
         printf("result of SecOC_StartOfReception is %d\n", r);
