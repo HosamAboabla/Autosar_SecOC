@@ -24,6 +24,17 @@
 /*****************************************FunctionPrototype**********************************************/
 /********************************************************************************************************/
 
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_IfTransmit              *
+ * Function_Index       : 8.3.4 [SWS_SecOC_00112]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Requests transmission of a    *
+ * PDU.                                                 *
+ *******************************************************/
+
 Std_ReturnType SecOC_IfTransmit(
     PduIdType                  TxPduId,
     const PduInfoType*         PduInfoPtr
@@ -32,12 +43,38 @@ Std_ReturnType SecOC_IfTransmit(
 
 
 
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TxConfirmation          *
+ * Function_Index       : 8.4.3  [SWS_SecOC_00126]      *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : The lower layer communication *
+ * interface module confirms the transmission of a PDU, *
+ * or the failure to transmit a PDU.                    *
+ *******************************************************/
+
 void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+
+
+
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_Init                    *
+ * Function_Index       : 8.3.1  [SWS_SecOC_00106]      *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Initializes the the SecOC     *
+ * module. Successful initialization leads to state     *
+ * SecOC_INIT. In configurations, in which SecOC is     *
+ * assigned to more than one partition                  *
+ *******************************************************/
 
 void SecOC_Init(const SecOC_ConfigType *config);
 
 
-/****************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_RxIndication            *
@@ -45,10 +82,10 @@ void SecOC_Init(const SecOC_ConfigType *config);
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : Indication of a received PDU  *
  * from a lower layer communication interface module.   *
- ***************************************************/
+ *******************************************************/
 void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_GetRxFreshness          *
@@ -62,7 +99,7 @@ Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8* S
 uint32 SecOCTruncatedFreshnessValueLength, uint16 SecOCAuthVerifyAttempts, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength);
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_GetRxFreshnessAuthData  *
@@ -96,15 +133,22 @@ uint32* SecOCFreshnessValueLength);
 
 
 
-
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_GetVersionInfo          *
+ * Function_Index       : 8.3.3 [SWS_SecOC_00107]       *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Returns the version           *
+ * information of this module.                          *
+ *******************************************************/
 void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
-/*void memcpy(versionInfo, &_SecOC_VersionInfo, sizeof(Std_VersionInfoType));*/
 
 
 
 
 
-/****************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_SPduTxConfirmation      *
@@ -113,13 +157,13 @@ void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
  * Function_Descripton  : This interface is used by     *
  * SecOC to indicate that the Secured I-PDU has been    *
  * initiated for transmission                           *
- ***************************************************/
+ ********************************************************/
 void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID);
 
 
 
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_GetTxFreshnessTruncData *
@@ -138,7 +182,7 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint32* SecOCTruncatedFreshnessValueLength
 );
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_CopyTxData              *
@@ -161,7 +205,7 @@ BufReq_ReturnType SecOC_CopyTxData (
     PduLengthType* availableDataPtr
 );
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_TpTxConfirmation        *
@@ -174,10 +218,10 @@ BufReq_ReturnType SecOC_CopyTxData (
  *******************************************************/
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_CopyRxData        *
+ * Function_Name        : SecOC_CopyRxData              *
  * Function_Index       : 8.4.6                         *
  * Function_File        : SWS of SecOC                  *
  * Function_Descripton  : This function is called to    *
@@ -189,7 +233,7 @@ void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
  *******************************************************/
 BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr);
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_TpRxIndication          *
@@ -201,10 +245,9 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
  * the transmission was successful or not.              *
  *******************************************************/
 
-
 void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_IfCancelTransmit        *
@@ -220,7 +263,7 @@ Std_ReturnType SecOC_IfCancelTransmit(
     PduIdType                  TxPduId
 );
 
-/*******************************************************
+/********************************************************
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_StartOfReception        *
