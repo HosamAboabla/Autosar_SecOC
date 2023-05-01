@@ -820,12 +820,12 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     #endif
 	uint8 AuthHeadlen;
 	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    // [SWS_SecOC_00082]
+    /* [SWS_SecOC_00082] */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType result = BUFREQ_OK;
     uint32 datalen=0;
-    // [SWS_SecOC_00130] /*description*/
+    /* [SWS_SecOC_00130] */ /*description*/
     if(TpSduLength>*bufferSizePtr)
     {
         result = BUFREQ_E_OVFL;
@@ -845,8 +845,8 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
         //receiving first Byte if not Null
         if((info->SduDataPtr != NULL))
         {
-            //[SWS_SecOC_00263] /*check if dynamic*/            
             if(AuthHeadlen>0)
+            /* [SWS_SecOC_00263] */ /*check if dynamic*/            
             {
                 switch (AuthHeadlen)
                 {
