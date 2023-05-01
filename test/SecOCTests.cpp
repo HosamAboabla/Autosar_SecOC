@@ -31,13 +31,6 @@ TEST(SecOCTests, StartOfReception1)
     /* 
     Test :  SecOC_StartOfReception
     Case :  TpSduLength < buffer size
-        TpSduLength = 26
-        SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
-        the header length (AuthHeadlen) is 1
-        bufferSizePtr max is 29
-        the current data length in the buffer (securedPdu->SduLength) is 0
-        the recieved sdulength is 4
-        Max data length is (SECOC_AUTHPDU_MAX_LENGTH) is 20
     */
     SecOC_Init(&SecOC_Config);
 
@@ -68,13 +61,6 @@ TEST(SecOCTests, StartOfReception2)
     /* 
     Test :  SecOC_StartOfReception [SWS_SecOC_00215]
     Case : TpSduLength > buffer size
-        TpSduLength = 35
-        SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
-        the header length (AuthHeadlen) is 1
-        bufferSizePtr max is 29
-        the current data length in the buffer (securedPdu->SduLength) is 0
-        the recieved sdulength is 4
-        Max data length is (SECOC_AUTHPDU_MAX_LENGTH) is 20
     */
     SecOC_Init(&SecOC_Config);
 
@@ -105,13 +91,6 @@ TEST(SecOCTests, StartOfReception3)
     /* 
     Test :  SecOC_StartOfReception [SWS_SecOC_00181]
     Case : TpSduLength = 0 
-        TpSduLength = 0
-        SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
-        the header length (AuthHeadlen) is 1
-        bufferSizePtr max is 29
-        the current data length in the buffer (securedPdu->SduLength) is 0
-        the recieved sdulength is 4
-        Max data length is (SECOC_AUTHPDU_MAX_LENGTH) is 20
     */
     SecOC_Init(&SecOC_Config);
 
@@ -142,23 +121,18 @@ TEST(SecOCTests, StartOfReception4)
     /* 
     Test :  SecOC_StartOfReception 
     Case : TpSduLength < buffer size and Sdu is NULL 
-        TpSduLength = 0
-        SecOC_ReceptionOverflowStrategy_Type is SECOC_QUEUE
-        the header length (AuthHeadlen) is 1
-        bufferSizePtr max is 29
-        the current data length in the buffer (securedPdu->SduLength) is 0
-        the recieved sdulength is 4
-        Max data length is (SECOC_AUTHPDU_MAX_LENGTH) is 20
     */
     SecOC_Init(&SecOC_Config);
 
     /* Input Data */
     PduIdType id = 0;
+    PduInfoType info;
+    info.SduDataPtr = NULL;
     PduLengthType TpSduLength = 20;
     PduLengthType bufferSizePtr = 0;
     
 
-    BufReq_ReturnType Result  = SecOC_StartOfReception (id, NULL, TpSduLength, &bufferSizePtr);
+    BufReq_ReturnType Result  = SecOC_StartOfReception (id, &info, TpSduLength, &bufferSizePtr);
 
 
     EXPECT_EQ(Result , BUFREQ_OK);

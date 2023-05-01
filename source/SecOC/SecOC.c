@@ -842,7 +842,6 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     }
     else
     {
-        //receiving first Byte if not Null
         if((info->SduDataPtr != NULL))
         {
             /* [SWS_SecOC_00263] */ /*check if dynamic*/            
