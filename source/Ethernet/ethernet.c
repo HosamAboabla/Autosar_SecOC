@@ -219,6 +219,8 @@ void ethernet_RecieveMainFunction(void)
         PduR_CanIfRxIndication(id, &PduInfoPtr);
         break;
     default:
+        /* for saftey if id is out of range we must release mutex */
+        pthread_mutex_unlock(&lock); 
         #ifdef ETHERNET_DEBUG
             printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
         #endif
