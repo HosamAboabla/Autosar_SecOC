@@ -25,39 +25,9 @@
 /********************************************************************************************************/
 
 
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_IfTransmit              *
- * Function_Index       : 8.3.4 [SWS_SecOC_00112]       *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : Requests transmission of a    *
- * PDU.                                                 *
- *******************************************************/
-
-Std_ReturnType SecOC_IfTransmit(
-    PduIdType                  TxPduId,
-    const PduInfoType*         PduInfoPtr
-);
-
-
-
-
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_TxConfirmation          *
- * Function_Index       : 8.4.3  [SWS_SecOC_00126]      *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : The lower layer communication *
- * interface module confirms the transmission of a PDU, *
- * or the failure to transmit a PDU.                    *
- *******************************************************/
-
-void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
-
-
-
+/********************************************************************************************************/
+/******************************************Initialization************************************************/
+/********************************************************************************************************/
 
 /*******************************************************
  *          * Function Info *                           *
@@ -74,46 +44,46 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 void SecOC_Init(const SecOC_ConfigType *config);
 
 
-/********************************************************
+/*******************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_RxIndication            *
- * Function_Index       : 8.4.1 [SWS_SecOC_00124]       *
- * Function_File        : SWS of secOC                  *
- * Function_Descripton  : Indication of a received PDU  *
- * from a lower layer communication interface module.   *
- *******************************************************/
-void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
-
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_GetRxFreshness          *
- * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
+ * Function_Name        : SecOC_DeInit                  *
+ * Function_Index       : 8.3.2  [SWS_SecOC_00161]      *
  * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : This interface is used by the *
- * SecOC to obtain the current freshness value          *
+ * Function_Descripton  : This service stops the secure *
+ * onboard communication. All buffered I-PDU are removed*
+ *  and have to be obtained again, if needed, after     *
+ * SecOC_Init has been called. By a call to SecOC_DeInit*
+ *  the AUTOSAR SecOC module is put into a not          *
+ * initialized state (SecOC_UNINIT).                    *
  *******************************************************/
 
-Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8* SecOCTruncatedFreshnessValue,
-uint32 SecOCTruncatedFreshnessValueLength, uint16 SecOCAuthVerifyAttempts, uint8* SecOCFreshnessValue,
-uint32* SecOCFreshnessValueLength);
+void SecOC_DeInit (void);
+
+
+
+/********************************************************************************************************/
+/********************************************Transmission************************************************/
+/**********************************The creation of a Secured I-PDU***************************************/
+/********************************************************************************************************/
+
 
 /********************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_GetRxFreshnessAuthData  *
- * Function_Index       : 8.5.2 [SWS_SecOC_91006]       *
+ * Function_Name        : SecOC_IfTransmit              *
+ * Function_Index       : 8.3.4 [SWS_SecOC_00112]       *
  * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : This interface is used by the *
- * SecOC to obtain the current freshness value          *
+ * Function_Descripton  : Requests transmission of a    *
+ * PDU.                                                 *
  *******************************************************/
 
-Std_ReturnType SecOC_GetRxFreshnessAuthData(uint16 SecOCFreshnessValueID , const uint8* SecOCTruncatedFreshnessValue ,
-uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessValue,
- uint16 SecOCAuthDataFreshnessValueLength , uint16 SecOCAuthVerifyAttempts,
- uint8* SecOCFreshnessValue, uint32* SecOCFreshnessValueLength);
- 
+Std_ReturnType SecOC_IfTransmit(
+    PduIdType                  TxPduId,
+    const PduInfoType*         PduInfoPtr
+);
+
+
 /********************************************************
  *          * Function Info *                           *
  *                                                      *
@@ -126,41 +96,8 @@ uint32 SecOCTruncatedFreshnessValueLength , const uint8* SecOCAuthDataFreshnessV
  * in big endian format.                                *
  *******************************************************/
 
-
 Std_ReturnType SecOC_GetTxFreshness(uint16 SecOCFreshnessValueID, uint8* SecOCFreshnessValue,
 uint32* SecOCFreshnessValueLength);
-
-
-
-
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_GetVersionInfo          *
- * Function_Index       : 8.3.3 [SWS_SecOC_00107]       *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : Returns the version           *
- * information of this module.                          *
- *******************************************************/
-void SecOC_GetVersionInfo(Std_VersionInfoType* versioninfo);
-
-
-
-
-
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_SPduTxConfirmation      *
- * Function_Index       : 8.5.5 [SWS_SecOC_91005]       *
- * Function_File        : SWS of secOC                  *
- * Function_Descripton  : This interface is used by     *
- * SecOC to indicate that the Secured I-PDU has been    *
- * initiated for transmission                           *
- ********************************************************/
-void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID);
-
-
 
 
 /********************************************************
@@ -174,6 +111,7 @@ void SecOc_SPduTxConfirmation(uint16 SecOCFreshnessValueID);
  * The interface function provides also the truncated   *
  * freshness transmitted in the secured I-PDU.          *
  *******************************************************/
+
 Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint16 SecOCFreshnessValueID,
     uint8* SecOCFreshnessValue,
@@ -181,6 +119,7 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
     uint8* SecOCTruncatedFreshnessValue,
     uint32* SecOCTruncatedFreshnessValueLength
 );
+
 
 /********************************************************
  *          * Function Info *                           *
@@ -198,12 +137,28 @@ Std_ReturnType SecOC_GetTxFreshnessTruncData(
  * The size of the remaining data is written to the     *
  * position indicated by availableDataPtr.              *
  *******************************************************/
+
 BufReq_ReturnType SecOC_CopyTxData (
     PduIdType id,
     const PduInfoType* info,
     const RetryInfoType* retry,
     PduLengthType* availableDataPtr
 );
+
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_TxConfirmation          *
+ * Function_Index       : 8.4.3  [SWS_SecOC_00126]      *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : The lower layer communication *
+ * interface module confirms the transmission of a PDU, *
+ * or the failure to transmit a PDU.                    *
+ *******************************************************/
+
+void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
+
 
 /********************************************************
  *          * Function Info *                           *
@@ -216,7 +171,63 @@ BufReq_ReturnType SecOC_CopyTxData (
  * result indicates whether the transmission was        *
  * successful or not.                                   *
  *******************************************************/
+
 void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
+
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_IfCancelTransmit        *
+ * Function_Index       : 8.3.6                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : Requests cancellation of an   *
+ * ongoing transmission of a PDU in a lower layer       *
+ * communication module.                                *
+ *******************************************************/
+
+Std_ReturnType SecOC_IfCancelTransmit(
+    PduIdType                  TxPduId
+);
+
+
+/********************************************************************************************************/
+/*********************************************Reception**************************************************/
+/********************************The verification of a Secured I-PDU*************************************/
+/********************************************************************************************************/
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_RxIndication            *
+ * Function_Index       : 8.4.1 [SWS_SecOC_00124]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : Indication of a received PDU  *
+ * from a lower layer communication interface module.   *
+ *******************************************************/
+
+void SecOC_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
+
+
+/********************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOC_StartOfReception        *
+ * Function_Index       : 8.4.8                         *
+ * Function_File        : SWS of SecOC                  *
+ * Function_Descripton  : This function is called at    *
+ * the start of receiving an N-SDU. The N-SDU might be  *
+ * fragmented into multiple N-PDUs                      *
+ * (FF with one or more following CFs) or might consist *
+ * of a single N-PDU (SF).                              *
+ *******************************************************/
+
+BufReq_ReturnType SecOC_StartOfReception ( 
+    PduIdType id, 
+    const PduInfoType* info, 
+    PduLengthType TpSduLength, 
+    PduLengthType* bufferSizePtr );
+
 
 /********************************************************
  *          * Function Info *                           *
@@ -231,7 +242,9 @@ void SecOC_TpTxConfirmation(PduIdType id,Std_ReturnType result);
  * The size of the remaining buffer is written to the   *
  * position indicated by bufferSizePtr.                 *
  *******************************************************/
+
 BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLengthType* bufferSizePtr);
+
 
 /********************************************************
  *          * Function Info *                           *
@@ -247,41 +260,21 @@ BufReq_ReturnType SecOC_CopyRxData (PduIdType id, const PduInfoType* info, PduLe
 
 void SecOC_TpRxIndication( PduIdType id, Std_ReturnType result );
 
-/********************************************************
- *          * Function Info *                           *
- *                                                      *
- * Function_Name        : SecOC_IfCancelTransmit        *
- * Function_Index       : 8.3.6                         *
- * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : Requests cancellation of an   *
- * ongoing transmission of a PDU in a lower layer       *
- * communication module.                                *
- *******************************************************/
 
-
-Std_ReturnType SecOC_IfCancelTransmit(
-    PduIdType                  TxPduId
-);
 
 /********************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOC_StartOfReception        *
- * Function_Index       : 8.4.8                         *
+ * Function_Name        : SecOC_GetRxFreshness          *
+ * Function_Index       : 8.5.1 [SWS_SecOC_91007]       *
  * Function_File        : SWS of SecOC                  *
- * Function_Descripton  : This function is called at    *
- * the start of receiving an N-SDU. The N-SDU might be  *
- * fragmented into multiple N-PDUs                      *
- * (FF with one or more following CFs) or might consist *
- * of a single N-PDU (SF).                              *
+ * Function_Descripton  : This interface is used by the *
+ * SecOC to obtain the current freshness value          *
  *******************************************************/
 
-
-BufReq_ReturnType SecOC_StartOfReception ( 
-    PduIdType id, 
-    const PduInfoType* info, 
-    PduLengthType TpSduLength, 
-    PduLengthType* bufferSizePtr );
+Std_ReturnType SecOC_GetRxFreshness(uint16 SecOCFreshnessValueID, const uint8* SecOCTruncatedFreshnessValue,
+uint32 SecOCTruncatedFreshnessValueLength, uint16 SecOCAuthVerifyAttempts, uint8* SecOCFreshnessValue,
+uint32* SecOCFreshnessValueLength);
 
 
 
