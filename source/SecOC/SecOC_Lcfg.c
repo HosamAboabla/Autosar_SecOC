@@ -106,7 +106,7 @@ SecOC_MainFunctionTxType SecOC_MainFunctionTxConf =
 };
 
 
-SecOC_MainFunctionRxType SecOC_MainFunctionRx = 
+SecOCMainFunctionRxType SecOCMainFunctionRx = 
 {
     SECOC_MAIN_FUNCTION_PERIOD_RX,
     SECOC_MAIN_FUNCTION_RX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
@@ -701,7 +701,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         SECOC_USE_AUTHDATA_FRESHNESS,
         SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE,
         &SecOC_RxAuthServiceConfigRef,
-        &SecOC_MainFunctionRx,
+        &SecOCMainFunctionRx,
         &SecOC_SameBufferPduRef,
         &SecOC_RxSecuredPduLayer[0],
         &SecOC_RxAuthenticPduLayer[0],
@@ -723,7 +723,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
         .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
-        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxPduMainFunctionRef =                            &SecOCMainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[1],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[1],
         /*&SecOC_RxPduSecuredArea*/
@@ -744,7 +744,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
         .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
-        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxPduMainFunctionRef =                            &SecOCMainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[2],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[2],
         /*&SecOC_RxPduSecuredArea*/
@@ -765,7 +765,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
         .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
-        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxPduMainFunctionRef =                            &SecOCMainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[3],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[3],
         /*&SecOC_RxPduSecuredArea*/
@@ -786,7 +786,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
         .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
-        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxPduMainFunctionRef =                            &SecOCMainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[4],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[4],
         /*&SecOC_RxPduSecuredArea*/
@@ -807,7 +807,7 @@ SecOC_RxPduProcessingType SecOC_RxPduProcessing[] =
         .SecOCUseAuthDataFreshness =                            ((boolean) FALSE),
         .SecOCVerificationStatusPropagationMode =               ((SecOC_StatusPropagationMode_Type) SECOC_BOTH),
         .SecOCRxAuthServiceConfigRef =                          &SecOC_RxAuthServiceConfigRef,
-        .SecOCRxPduMainFunctionRef =                            &SecOC_MainFunctionRx,
+        .SecOCRxPduMainFunctionRef =                            &SecOCMainFunctionRx,
         .SecOCRxSecuredPduLayer =                               &SecOC_RxSecuredPduLayer[5],
         .SecOCRxAuthenticPduLayer =                             &SecOC_RxAuthenticPduLayer[5],
         /*&SecOC_RxPduSecuredArea*/

@@ -22,7 +22,7 @@ void SecOC_MainFunctionTx(void);
 /****************************************************
  *          * Function Info *                           *
  *                                                      *
- * Function_Name        : SecOCMainFunctionRx           *
+ * Function_Name        : SecOC_MainFunctionRx           *
  * Function_Index       : 8.6.1 [SWS_SecOC_00171]       *
  * Function_File        : SWS of secOC                  *
  * Function_Descripton  : This function performs the    *
