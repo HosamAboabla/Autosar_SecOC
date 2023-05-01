@@ -69,7 +69,6 @@ typedef enum {
 
 
 
-/* [SWS_SecOC_00162] */
 typedef enum       /* SecOC status*/
 {
     SECOC_UNINIT,   /* SecOC uninitialized*/

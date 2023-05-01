@@ -500,7 +500,7 @@ typedef struct
 }SecOC_GeneralType;
 
 
-/* [SWS_SecOC_00104] */
+
 typedef struct /*Specific Implementation Data Structure Configuration SecOC Module Data Structure*/
 { 
 	const SecOC_GeneralType* General;
