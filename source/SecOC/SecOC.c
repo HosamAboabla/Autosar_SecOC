@@ -1083,9 +1083,18 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
 
     *verification_result = SECOC_NO_VERIFICATION;
-    
+    boolean SecOCSecuredRxPduVerification = TRUE;
+    if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+    {
+        SecOCSecuredRxPduVerification = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCSecuredRxPduVerification;
+    }
+    else
+    {
+        SecOCSecuredRxPduVerification = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCSecuredRxPduVerification;
+    }
+
     /* [SWS_SecOC_00265] */
-    if(SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCSecuredRxPduVerification != FALSE)
+    if(SecOCSecuredRxPduVerification == TRUE)
     {
         if((SecOCIntermediate.freshnessResult == E_BUSY) || (SecOCIntermediate.freshnessResult == E_NOT_OK))
         {
