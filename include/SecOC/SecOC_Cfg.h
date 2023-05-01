@@ -206,7 +206,7 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
 */
-#define SECOC_FRESHNESSVALUE_ID      ((uint16)10)
+#define SECOC_FRESHNESSVALUE_ID      ((uint16)20)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
