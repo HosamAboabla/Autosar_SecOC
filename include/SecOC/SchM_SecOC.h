@@ -10,14 +10,25 @@
  *          * Function Info *                           *
  *                                                      *
  * Function_Name        : SecOC_MainFunctionTx          *
- * Function_Index       : 8.6.2                         *
+ * Function_Index       : 8.6.2 [SWS_SecOC_00176]       *
  * Function_File        : SWS of secOC                  *
- * Function_Descripton  : The lower layer communication * 
- * interface module confirms  the transmission of a PDU *
- *        or the failure to transmit a PDU              *
- ***************************************************/
-void SecOCMainFunctionTx(void);
+ * Function_Descripton  : This function performs the    *
+ * processing of the SecOC module's authentication and  *
+ * verification processing for the Tx path              *
+ ********************************************************/
+void SecOC_MainFunctionTx(void);
 
-void SecOCMainFunctionRx(void);
+
+/****************************************************
+ *          * Function Info *                           *
+ *                                                      *
+ * Function_Name        : SecOCMainFunctionRx           *
+ * Function_Index       : 8.6.1 [SWS_SecOC_00171]       *
+ * Function_File        : SWS of secOC                  *
+ * Function_Descripton  : This function performs the    *
+ *  processing of the SecOC module's authentication and * 
+ * verification processing for the Rx path              *
+ ********************************************************/
+void SecOC_MainFunctionRx(void);
 
 #endif

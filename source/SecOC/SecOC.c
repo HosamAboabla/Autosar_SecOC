@@ -432,7 +432,7 @@ static Std_ReturnType seperatePduCollectionTx(const PduIdType TxPduId,uint32 Aut
     return E_OK;
 }
 
-void SecOCMainFunctionTx(void) 
+void SecOC_MainFunctionTx(void) 
 {
     /* [SWS_SecOC_00176] */
     #ifdef SECOC_DEBUG
@@ -1140,7 +1140,7 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 }
 
 
-void SecOCMainFunctionRx(void)
+void SecOC_MainFunctionRx(void)
 {
     /* [SWS_SecOC_00171] */
     #ifdef SECOC_DEBUG
