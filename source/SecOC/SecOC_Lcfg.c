@@ -307,7 +307,7 @@ SecOC_RxSecuredPduLayerType SecOC_RxSecuredPduLayer[] =
 {
     { /* direct */
         &SecOC_RxSecuredPdu[0],
-        &SecOC_RxSecuredPduCollection  
+        NULL  
     },
     { /* for Tp */
         .SecOCRxSecuredPdu =            &SecOC_RxSecuredPdu[1],

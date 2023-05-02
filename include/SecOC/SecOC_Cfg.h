@@ -295,7 +295,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDU_VERIFICATION       FALSE
+#define SECOC_SECURED_RX_PDU_VERIFICATION       TRUE
 
 /*****************************************
  *          * Container Info *           *
