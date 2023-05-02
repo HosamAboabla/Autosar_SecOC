@@ -663,7 +663,7 @@ void SecOC_TxConfirmation(PduIdType TxPduId, Std_ReturnType result)
         }
         else
         {
-            // Wait for both pdus to be confirmed
+            /* Wait for both pdus to be confirmed */
         }
     }
     else
@@ -756,19 +756,19 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
         {
             
             /* AuthPduCollection */
-            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength); //from pduinfoptr finished
+            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength); /* from pduinfoptr finished */
             AuthPduCollection->SduLength=PduInfoPtr->SduLength;
         }
         else if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
         {
 
-            //copy from pduinfoptr to crypto
+            /* copy from pduinfoptr to crypto */
             (void)memcpy(CryptoPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength);
             CryptoPduCollection->SduLength=PduInfoPtr->SduLength;
 	    }
 
         /* [SWS_SecOC_00203] */
-        //if not secued and the length not >0 out of the crypto and in the pdu collection
+        /* if not secued and the length not >0 out of the crypto and in the pdu collection */
         if(AuthPduCollection->SduLength>0 && CryptoPduCollection->SduLength>0)
         {
             uint16 messageLinkLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCUseMessageLink->SecOCMessageLinkLen;
@@ -823,16 +823,16 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     #endif
 	uint8 AuthHeadlen;
 	AuthHeadlen=SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
-    // [SWS_SecOC_00082]
+    /* [SWS_SecOC_00082] */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
     BufReq_ReturnType r=BUFREQ_OK;
     uint32 datalen=0;
-    // [SWS_SecOC_00130] /*description*/
+    /* [SWS_SecOC_00130] description*/
     if(TpSduLength>*bufferSizePtr)
     {
         r=BUFREQ_E_OVFL;
-        //[SWS_SecOC_00215]
+        /* [SWS_SecOC_00215] */
         if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
         {
             r=BUFREQ_E_NOT_OK;
@@ -840,15 +840,15 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     }
     else if (TpSduLength == 0)
     {
-        // [SWS_SecOC_00181] 
+        /* [SWS_SecOC_00181] */ 
         r=BUFREQ_E_NOT_OK;
     }
     else
     {
-        //receiving first Byte if not Null
+        /* receiving first Byte if not Null */
         if((info->SduDataPtr != NULL))
         {
-            //[SWS_SecOC_00263] /*check if dynamic*/            
+            /* [SWS_SecOC_00263] check if dynamic */            
             if(AuthHeadlen>0)
             {
                 switch (AuthHeadlen)
@@ -900,7 +900,7 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
         /* [SWS_SecOC_00082] */
-		//r=PduR_SecOCTpStartOfReception();
+		/* r=PduR_SecOCTpStartOfReception(); */
 	}
     #ifdef SECOC_DEBUG
         printf("result of SecOC_StartOfReception is %d\n", r);
@@ -1089,61 +1089,74 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
     parseSecuredPdu(RxPduId, SecPdu, &SecOCIntermediate);
 
     *verification_result = SECOC_NO_VERIFICATION;
-    if((SecOCIntermediate.freshnessResult == E_BUSY) || (SecOCIntermediate.freshnessResult == E_NOT_OK))
+    boolean SecOCSecuredRxPduVerification = TRUE;
+    if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
     {
-        /* [SWS_SecOC_00256] */
-        if( SecOCIntermediate.freshnessResult == E_NOT_OK)
-        {
-            *verification_result = SECOC_FRESHNESSFAILURE;
-        }
-
-        return SecOCIntermediate.freshnessResult;
+        SecOCSecuredRxPduVerification = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPduCollection->SecOCSecuredRxPduVerification;
+    }
+    else
+    {
+        SecOCSecuredRxPduVerification = SecOCRxPduProcessing[RxPduId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCSecuredRxPduVerification;
     }
 
-    /* [SWS_SecOC_00046] */
-    constructDataToAuthenticatorRx(RxPduId, &SecOCIntermediate);
-
-    Crypto_VerifyResultType verify_var;
-
-    /* [SWS_SecOC_00047]  [SWS_SecOC_00012]*/
-    Std_ReturnType Mac_verify = Csm_MacVerify(
-        SecOCRxPduProcessing[RxPduId].SecOCDataId,
-        Crypto_stub,
-        SecOCIntermediate.DataToAuth,
-        SecOCIntermediate.DataToAuthLen,
-        SecOCIntermediate.mac,
-        SecOCIntermediate.macLenBits,
-        &verify_var
-    );
-
-    if ( (Mac_verify == E_BUSY) || (Mac_verify == QUEUE_FULL) || (Mac_verify == E_NOT_OK))
+    /* [SWS_SecOC_00265] */
+    if(SecOCSecuredRxPduVerification == TRUE)
     {
-
-        /* [SWS_SecOC_00240] */
-        if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
+        if((SecOCIntermediate.freshnessResult == E_BUSY) || (SecOCIntermediate.freshnessResult == E_NOT_OK))
         {
-            *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
+            /* [SWS_SecOC_00256] */
+            if( SecOCIntermediate.freshnessResult == E_NOT_OK)
+            {
+                *verification_result = SECOC_FRESHNESSFAILURE;
+            }
+
+            return SecOCIntermediate.freshnessResult;
         }
-        /* [SWS_SecOC_00241] */
-        if(Mac_verify == E_NOT_OK)
+
+        /* [SWS_SecOC_00046] */
+        constructDataToAuthenticatorRx(RxPduId, &SecOCIntermediate);
+
+        Crypto_VerifyResultType verify_var;
+
+        /* [SWS_SecOC_00047] */
+        Std_ReturnType Mac_verify = Csm_MacVerify(
+            SecOCRxPduProcessing[RxPduId].SecOCDataId,
+            Crypto_stub,
+            SecOCIntermediate.DataToAuth,
+            SecOCIntermediate.DataToAuthLen,
+            SecOCIntermediate.mac,
+            SecOCIntermediate.macLenBits,
+            &verify_var
+        );
+
+        if ( (Mac_verify == E_BUSY) || (Mac_verify == QUEUE_FULL) || (Mac_verify == E_NOT_OK))
         {
-            *verification_result = SECOC_VERIFICATIONFAILURE;
+
+            /* [SWS_SecOC_00240] */
+            if( SecOC_RxCounters[RxPduId].AuthenticationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationBuildAttempts )
+            {
+                *verification_result = SECOC_AUTHENTICATIONBUILDFAILURE;
+            }
+            /* [SWS_SecOC_00241] */
+            if(Mac_verify == E_NOT_OK)
+            {
+                *verification_result = SECOC_VERIFICATIONFAILURE;
+            }
+
+            return Mac_verify;
+
         }
-
-        return Mac_verify;
-
+        else if ( (Mac_verify == CRYPTO_E_KEY_NOT_VALID) || (Mac_verify == CRYPTO_E_KEY_EMPTY) )
+        {
+            /* [SWS_SecOC_00241], [SWS_SecOC_00121] */
+            if( SecOC_RxCounters[RxPduId].VerificationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts )
+            {
+                *verification_result = SECOC_VERIFICATIONFAILURE;
+            }
+            
+            return Mac_verify;
+        }
     }
-    else if ( (Mac_verify == CRYPTO_E_KEY_NOT_VALID) || (Mac_verify == CRYPTO_E_KEY_EMPTY) )
-    {
-        /* [SWS_SecOC_00241], [SWS_SecOC_00121] */
-        if( SecOC_RxCounters[RxPduId].VerificationCounter == SecOCRxPduProcessing[RxPduId].SecOCAuthenticationVerifyAttempts )
-        {
-            *verification_result = SECOC_VERIFICATIONFAILURE;
-        }
-        
-         return Mac_verify;
-    }
-
     /* [SWS_SecOC_00242] */
     *verification_result = SECOC_VERIFICATIONSUCCESS;
 
