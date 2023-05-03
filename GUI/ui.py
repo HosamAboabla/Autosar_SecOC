@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIQLfjjr.ui'
+## Form generated from reading UI file 'GUIAuudPb.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.4.0
 ##
@@ -44,6 +44,10 @@ class Ui_Dialog(object):
         self.verticalLayout_5 = QVBoxLayout(self.TransmitterTab)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.configSelect = QComboBox(self.TransmitterTab)
+        self.configSelect.addItem("")
+        self.configSelect.addItem("")
+        self.configSelect.addItem("")
+        self.configSelect.addItem("")
         self.configSelect.addItem("")
         self.configSelect.addItem("")
         self.configSelect.setObjectName(u"configSelect")
@@ -302,8 +306,12 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"SecOC", None))
-        self.configSelect.setItemText(0, QCoreApplication.translate("Dialog", u"CANIF", None))
-        self.configSelect.setItemText(1, QCoreApplication.translate("Dialog", u"CANTP", None))
+        self.configSelect.setItemText(0, QCoreApplication.translate("Dialog", u"Direct transmission (CanIf)", None))
+        self.configSelect.setItemText(1, QCoreApplication.translate("Dialog", u"Transport protocol transmission (CanTp)", None))
+        self.configSelect.setItemText(2, QCoreApplication.translate("Dialog", u"Transport protocol transmission (Ethernet)", None))
+        self.configSelect.setItemText(3, QCoreApplication.translate("Dialog", u"Direct transmission without Trunc-FV and header (CanIf)", None))
+        self.configSelect.setItemText(4, QCoreApplication.translate("Dialog", u"Transport protocol transmission without header(CanTp)", None))
+        self.configSelect.setItemText(5, QCoreApplication.translate("Dialog", u"Secured Pdu Collection (CanIf)", None))
 
         self.ControlBox.setTitle(QCoreApplication.translate("Dialog", u"Control Box", None))
         self.showTimeButton.setText(QCoreApplication.translate("Dialog", u"Show Time", None))

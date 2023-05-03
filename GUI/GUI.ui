@@ -46,12 +46,32 @@
          </property>
          <item>
           <property name="text">
-           <string>CANIF</string>
+           <string>Direct transmission (CanIf)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>CANTP</string>
+           <string>Transport protocol transmission (CanTp)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Transport protocol transmission (Ethernet)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Direct transmission without Trunc-FV and header (CanIf)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Transport protocol transmission without header(CanTp)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Secured Pdu Collection (CanIf)</string>
           </property>
          </item>
         </widget>
