@@ -87,7 +87,8 @@ class MyConnections:
 
    
     def OnConfigChanged(self, index):
-        if(index != 0):
+        # if CanIf is used
+        if(index not in [0,3]):
             self.dialog.showDateButton.setEnabled(True)
             self.dialog.showTimeButton.setEnabled(True)
         else:
@@ -99,12 +100,17 @@ class MyConnections:
     def OnAccelButtonClicked(self):
         self.dialog.tlog.debug("OnAccelButtonClicked")
 
+        currentIndex = self.dialog.configSelect.currentIndex()
         # Create an array of bytes in Python
-        data = (c_ubyte * 1)(1)
+        # if header is 0
+        if currentIndex in [3,4]:
+            data = (c_ubyte * 4)(1,0,0,0)
+        else:
+            data = (c_ubyte * 1)(1)
+
         dataLen = len(data)
 
         # Generate Frame
-        currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
 
         self.UpdateTransmitterSecPayload()
@@ -112,12 +118,18 @@ class MyConnections:
     
     def OnDecelButtonClicked(self):
         self.dialog.tlog.debug("OnDecelButtonClicked")
-         # Create an array of bytes in Python
-        data = (c_ubyte * 1)(2)
+        currentIndex = self.dialog.configSelect.currentIndex()
+
+        # Create an array of bytes in Python
+        # if header is 0
+        if currentIndex in [3,4]:
+            data = (c_ubyte * 4)(2,0,0,0)
+        else:
+            data = (c_ubyte * 1)(2)
+
         dataLen = len(data)
 
         # Generate Frame
-        currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_authenticate(currentIndex, data, dataLen);
 
         self.UpdateTransmitterSecPayload()
@@ -187,7 +199,10 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.rlog.debug("OnVerifyButtonClicked")       
+        self.dialog.rlog.debug("OnVerifyButtonClicked")      
+        if self.current_rx_id == -1:
+            return 
+        
         status = self.mylib.GUIInterface_verify(self.current_rx_id)
 
         # convert the char* to a Python string
@@ -206,6 +221,13 @@ class MyConnections:
                 my_bytes = string_at(authData, authLen.value)
                 my_string = my_bytes.decode('utf-8')
                 self.dialog.LCD.setText(my_string[1:])
+
+            self.dialog.receivePayload.setText("")
+            self.dialog.rlog.info(my_string)
+        else:
+            self.dialog.rlog.error(my_string)
+            
+
 
     def OnRlogClearButtonClicked(self):
         self.dialog.rlog.debug("OnRlogClearButtonClicked")
