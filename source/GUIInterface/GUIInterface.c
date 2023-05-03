@@ -80,6 +80,7 @@ char* GUIInterface_verify(uint8_t configId)
     SecOC_VerificationResultType result_ver;
     Std_ReturnType result;
     result = verify(configId, securedPdu, &result_ver);
+    securedPdu->SduLength = 0; 
 
     return errorString(result);
 
