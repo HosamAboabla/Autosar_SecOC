@@ -16,9 +16,9 @@ class MyConnections:
 
 
         if sys.platform == 'win32':
-            libname = 'libSecOCLib.dll'
+            libname = 'libSecOCLibShared.dll'
         elif sys.platform == 'linux':
-            libname = 'libSecOCLib.so'
+            libname = 'libSecOCLibShared.so'
         else:
             raise Exception("Not supported OS")
 
