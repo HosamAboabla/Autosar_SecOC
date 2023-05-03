@@ -57,7 +57,7 @@ Std_ReturnType SoAd_IfTransmit(PduIdType TxPduId,const PduInfoType* PduInfoPtr)
         printf("\n");
     #endif
 
-    #ifdef LINUX
+    #ifdef __linux__
     result = ethernet_send(TxPduId, PduInfoPtr->SduDataPtr , PduInfoPtr->SduLength);
     #endif
     int delay = 50000000;
