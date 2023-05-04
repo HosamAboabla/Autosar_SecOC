@@ -18,7 +18,7 @@
 /*
 * Configration parameter for SecOCMainFunctionPeriodTx
 */
-#define SECOC_MAIN_FUNCTION_PERIOD_TX                                   ((float64)0)    
+#define SECOC_MAIN_FUNCTION_PERIOD_TX                                   ((float64)0.9)    
 
 /*
 * Configration parameter for SecOCMainFunctionTxPartitionRef
