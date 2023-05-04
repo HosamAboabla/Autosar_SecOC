@@ -412,14 +412,14 @@ typedef struct
 * Index : 10.1.3                                             *
 **************************************************************/
 
-typedef uint16              SecOC_MainFunctionRxPartitionRefType; /* NOT SURE ABOUT THAT TYPE */
+typedef uint16              SecOCMainFunctionRxPartitionRefType; /* NOT SURE ABOUT THAT TYPE */
 
 typedef struct 
 {
     float64 SecOCMainFunctionPeriodRx;
-    SecOC_MainFunctionRxPartitionRefType *SecOCMainFunctionRxPartitionRef; /* NOT SURE ABOUT THAT TYPE */
+    SecOCMainFunctionRxPartitionRefType *SecOCMainFunctionRxPartitionRef; /* NOT SURE ABOUT THAT TYPE */
 
-}SecOC_MainFunctionRxType;
+}SecOCMainFunctionRxType;
 
 /*****************************************
  *          * Container Info *           *
@@ -445,7 +445,7 @@ typedef struct
    boolean                                                        SecOCUseAuthDataFreshness;
    SecOC_VerificationStatusPropagationMode_Type                   SecOCVerificationStatusPropagationMode;
    SecOC_RxAuthServiceConfigRefType                              *SecOCRxAuthServiceConfigRef;
-   SecOC_MainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
+   SecOCMainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
    SecOC_SameBufferPduCollectionType                             *SecOCSameBufferPduRef;
    SecOC_RxSecuredPduLayerType                                   *SecOCRxSecuredPduLayer;
    SecOC_RxAuthenticPduLayerType                                 *SecOCRxAuthenticPduLayer;
