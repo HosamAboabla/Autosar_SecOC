@@ -88,7 +88,7 @@ class MyConnections:
    
     def OnConfigChanged(self, index):
         # if CanIf is used
-        if(index not in [0,3]):
+        if(index not in [0,3,5]):
             self.dialog.showDateButton.setEnabled(True)
             self.dialog.showTimeButton.setEnabled(True)
         else:
