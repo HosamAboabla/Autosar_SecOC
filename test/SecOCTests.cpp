@@ -343,3 +343,107 @@ TEST(SecOCTests,SecOC_TpTxConfirmation1)
 }
 
 
+TEST(SecOCTests,SecOC_TpRxIndication1)
+{
+    //the buffer has data 156 44 22 45 34 23 26
+    //the output before calling the function is the data in the buffer depending on the length of the buffer os it's 156 44 22 45 34 23 26
+    //the Secoc_TPRXIndication is called to check the result
+    //the result here is E_NOT_OK 
+    //the output is the cleared buffer so the data is dropped
+
+	SecOC_Init(&SecOC_Config);  
+
+    PduInfoType sec;
+    uint8 data_buffer[7] = {156, 44, 22, 45, 34, 23, 26};
+    PduLengthType len = 7;
+    PduIdType Id = 0;
+    uint8 metaData = 2;    
+
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[Id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+
+    securedPdu->SduDataPtr = data_buffer;
+    securedPdu->MetaDataPtr=&metaData;
+    securedPdu->SduLength = len;
+
+
+    printf("data received Before Calling The Function : \n");
+    for(int i=0; i< securedPdu->SduLength; i++)
+    {
+        printf("%d ",securedPdu->SduDataPtr[i]);
+    }
+
+    printf("\n");
+    printf("\n");
+    printf("\n");
+
+
+    
+    Std_ReturnType result=E_NOT_OK;
+
+
+    SecOC_TpRxIndication(Id,result);
+
+    EXPECT_EQ(0,securedPdu->SduLength);
+
+    printf("data received After Calling The Function : \n");
+    for(int i=0; i< securedPdu->SduLength; i++)
+    {
+        printf("%d ",securedPdu->SduDataPtr[i]);
+    }
+    printf("\n");
+
+}
+
+
+TEST(SecOCTests,SecOC_TpRxIndication2)
+{
+    //the buffer has data 156 44 22 45 34 23 26
+    //the output before calling the function is the data in the buffer depending on the length of the buffer os it's 156 44 22 45 34 23 26
+    //the Secoc_TPRXIndication is called to check the result
+    //the result here is E_OK 
+    //the output is the data in the buffer 156 44 22 45 34 23 26
+
+	SecOC_Init(&SecOC_Config);  
+
+    PduInfoType sec;
+    uint8 data_buffer[7] = {156, 44, 22, 45, 34, 23, 26};
+    PduLengthType len = 7;
+    PduIdType Id = 0;
+    uint8 metaData = 2;    
+
+    PduInfoType *securedPdu = &(SecOCRxPduProcessing[Id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
+
+    securedPdu->SduDataPtr = data_buffer;
+    securedPdu->MetaDataPtr=&metaData;
+    securedPdu->SduLength = len;
+
+
+    printf("data received Before Calling The Function : \n");
+    for(int i=0; i< securedPdu->SduLength; i++)
+    {
+        printf("%d ",securedPdu->SduDataPtr[i]);
+    }
+
+    printf("\n");
+    printf("\n");
+    printf("\n");
+
+
+    
+    Std_ReturnType result=E_OK;
+
+
+    SecOC_TpRxIndication(Id,result);
+
+    EXPECT_EQ(len,securedPdu->SduLength);
+
+    printf("data received After Calling The Function : \n");
+    for(int i=0; i< securedPdu->SduLength; i++)
+    {
+        printf("%d ",securedPdu->SduDataPtr[i]);
+    }
+    printf("\n");
+
+}
+
+
