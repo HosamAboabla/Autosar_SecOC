@@ -241,7 +241,7 @@ void SoAd_MainFunctionRx(void)
             uint8 lastFrameIndex = (SoAdTp_secureLength_Recieve[RxPduId] % BUS_LENGTH == 0)  ? (SoAdTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) : ((SoAdTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) + 1);
             PduLengthType bufferSizePtr;
             #ifdef SOAD_DEBUG
-                printf("######## in main tp Rx  in id : %d\n", RxPduId);
+                printf("######## in main Soad Rx  in id : %d\n", RxPduId);
                 printf("for id %d :",RxPduId);
                 for(int l = 0; l < SoAdTp_Buffer_Rx[RxPduId].SduLength; l++)
                 {
