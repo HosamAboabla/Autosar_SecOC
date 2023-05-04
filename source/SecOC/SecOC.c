@@ -1254,7 +1254,8 @@ void SecOCMainFunctionRx(void)
 #ifdef DEBUG_ALL
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{  
+{
+    	  
 }
 #endif
 
