@@ -43,7 +43,7 @@
 /*
 * Configration parameter for SecOCMainFunctionRxPartitionRef
 */
-#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOC_MainFunctionRxPartitionRefType*)NULL)    
+#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOCMainFunctionRxPartitionRefType*)NULL)    
 
 
 
@@ -206,7 +206,7 @@
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
 */
-#define SECOC_FRESHNESSVALUE_ID      ((uint16)10)
+#define SECOC_FRESHNESSVALUE_ID      ((uint16)20)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
@@ -295,7 +295,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDU_VERIFICATION       FALSE
+#define SECOC_SECURED_RX_PDU_VERIFICATION       TRUE
 
 /*****************************************
  *          * Container Info *           *
