@@ -278,6 +278,4 @@ uint32* SecOCFreshnessValueLength);
 
 
 
-void SecOC_test();
-
 #endif  /* INCLUDE_SECOC_H_*/
