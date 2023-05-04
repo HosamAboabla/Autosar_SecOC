@@ -268,7 +268,7 @@ TEST(FreshnessTests, RXFreshnessLowerThan2)
     uint8 SecOCFreshnessValue[100] = {0};
     uint32 SecOCFreshnessValueLength = 0;
 
-    printf("before : length is %d and Values is --> ",SecOCFreshnessValueLength);
+    printf("before : length is %ld and Values is --> ",SecOCFreshnessValueLength);
     for (int i = 0; i < BIT_TO_BYTES(SecOCFreshnessValueLength); i++)
         printf("%d ", SecOCFreshnessValue[i]);
     printf("\n");
