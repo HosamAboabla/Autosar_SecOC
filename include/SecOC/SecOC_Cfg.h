@@ -43,7 +43,7 @@
 /*
 * Configration parameter for SecOCMainFunctionRxPartitionRef
 */
-#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOC_MainFunctionRxPartitionRefType*)NULL)    
+#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOCMainFunctionRxPartitionRefType*)NULL)    
 
 
 

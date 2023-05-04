@@ -29,4 +29,3 @@ extern const SecOC_GeneralType             *SecOCGeneral;
 TEST(SecOCTests, example)
 {
 }
-
