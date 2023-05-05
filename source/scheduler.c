@@ -36,7 +36,7 @@ static struct task_state {
 }task_state;
 
 static struct task_state tasks[NUM_FUNCTIONS];
-static boolean once = TRUE;
+static boolean once = FALSE;
 static pthread_t t;
 
 
