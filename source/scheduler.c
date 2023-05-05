@@ -50,7 +50,6 @@ void *ethernetRecieve()
 void EthernetRecieveFn() {
     while (1) {
         tasks[0].state++;
-        printf("Function 1: state=%d\n", tasks[0].state);
 
         if ( once == FALSE)
         {
@@ -69,7 +68,6 @@ void EthernetRecieveFn() {
 void RecieveMainFunctions() {
     while (1) {
         tasks[1].state++;
-        printf("Function 2: state=%d\n", tasks[1].state);
         CanTp_MainFunctionRx();
         SecOC_MainFunctionRx();
         swapcontext(&tasks[1].context, &tasks[2].context);
@@ -81,7 +79,6 @@ void TxMainFunctions()
     while (1) 
     {
         tasks[2].state++;
-        printf("Function 3: state=%d\n", tasks[2].state);
         Com_MainTx();
         SecOC_MainFunctionTx();
         CanTp_MainFunctionTx();
