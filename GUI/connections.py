@@ -73,13 +73,14 @@ class MyConnections:
     
     def UpdateReceiverSecPayload(self):
         # preparing argument and return type for getsecuredPDU
+        securedLenString = c_int8()
         securedLen = c_int8()
 
 
-        secPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id, byref(securedLen))
+        secPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id , byref(securedLenString), byref(securedLen))
 
         # convert the char* to a Python string
-        my_bytes = string_at(secPdu, securedLen.value)
+        my_bytes = string_at(secPdu, securedLenString.value)
         my_string = my_bytes.decode('utf-8')
 
         # Update the Secured Payload in transmitter tab
@@ -255,17 +256,19 @@ class MyConnections:
 
         while(True):
             rxId = c_int8()
+            rxLenString = c_int8()
+            finalRxLen = c_int8()
             securedLen = c_int8()
 
-            self.mylib.GUIInterface_receive(byref(rxId))
+            self.mylib.GUIInterface_receive(byref(rxId) , byref(finalRxLen))
             self.current_rx_id = rxId.value
-            securedPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id , byref(securedLen))
+            securedPdu = self.mylib.GUIInterface_getSecuredRxPDU(self.current_rx_id , byref(rxLenString) , byref(securedLen))
 
             securedPdu = cast(securedPdu, POINTER(c_uint8))
 
             # # Create a a byte array with the returned address
             securedPdu = (c_uint8 * securedLen.value).from_address(addressof(securedPdu.contents))
-            if securedLen.value > 0:
+            if securedLen.value >= finalRxLen.value:
                 # Update the Secured Payload in transmitter tab
                 self.UpdateReceiverSecPayload()
                 self.dialog.rlog.info("Received PDU")
