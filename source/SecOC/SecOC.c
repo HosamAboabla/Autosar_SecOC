@@ -782,7 +782,8 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             (void)memcpy(&(securedPdu->SduDataPtr[securedPdu->SduLength]),CryptoPduCollection->SduDataPtr, (CryptoPduCollection->SduLength)-messageLinkLen);
             
             securedPdu->SduLength+=(CryptoPduCollection->SduLength)-messageLinkLen;
-
+            AuthPduCollection->SduLength = 0;
+            CryptoPduCollection->SduLength = 0;
             #ifdef PDU_COLLECTION_DEBUG
                 printf("########  both received and secured length = %d\n" , securedPdu->SduLength);
                 printf("Data Recieve in secured pdu : ");
