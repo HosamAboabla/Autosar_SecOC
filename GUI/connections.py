@@ -130,7 +130,7 @@ class MyConnections:
 
         # Create an array of bytes in Python
         # if header is 0
-        if currentIndex in [3,4]:
+        if currentIndex in [3]:
             data = (c_ubyte * 4)(2,0,0,0)
         elif currentIndex in [4]:
             data = (c_ubyte * 19)(2,0,0,0)
@@ -147,7 +147,7 @@ class MyConnections:
     def OnShowTimeButtonClicked(self):
         self.dialog.tlog.debug("OnShowTimeButtonClicked")
         # Get the current time as a string in the format "03:12 AM"
-        current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p")
+        current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p") + + 10 * "$"
 
         # Convert the string to a c_ubyte array
         data = struct.pack("{}s".format(len(current_time_str)), current_time_str.encode())
@@ -163,8 +163,7 @@ class MyConnections:
     def OnShowDateButtonClicked(self):
         self.dialog.tlog.debug("OnShowDateButtonClicked")
         # Get the current date as a string in the format "3/10/2000"
-        current_date_str = '4' + datetime.datetime.now().strftime("%-Y/%-m/%d")
-
+        current_date_str = '4' + datetime.datetime.now().strftime("%-Y/%-m/%d") + 9 * "$"
         # Convert the string to a c_ubyte array
         data = struct.pack("{}s".format(len(current_date_str)), current_date_str.encode())
         dataLen = len(data)
@@ -230,7 +229,7 @@ class MyConnections:
             elif chr(authData[0]) == '3' or chr(authData[0]) == '4':
                 # convert the char* to a Python string
                 my_bytes = string_at(authData, authLen.value)
-                my_string = my_bytes.decode('utf-8')
+                my_string = my_bytes.decode('utf-8').replace("$" , "")
                 self.dialog.LCD.setText(my_string[1:])
 
             self.dialog.receivePayload.setText("")
