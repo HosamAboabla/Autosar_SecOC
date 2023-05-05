@@ -109,8 +109,10 @@ class MyConnections:
         currentIndex = self.dialog.configSelect.currentIndex()
         # Create an array of bytes in Python
         # if header is 0
-        if currentIndex in [3,4]:
+        if currentIndex in [3]:
             data = (c_ubyte * 4)(1,0,0,0)
+        elif currentIndex in [4]:
+            data = (c_ubyte * 19)(1,0,0,0)
         else:
             data = (c_ubyte * 1)(1)
 
@@ -130,6 +132,8 @@ class MyConnections:
         # if header is 0
         if currentIndex in [3,4]:
             data = (c_ubyte * 4)(2,0,0,0)
+        elif currentIndex in [4]:
+            data = (c_ubyte * 19)(2,0,0,0)
         else:
             data = (c_ubyte * 1)(2)
 
@@ -208,7 +212,8 @@ class MyConnections:
         self.dialog.rlog.debug("OnVerifyButtonClicked")      
         if self.current_rx_id == -1:
             return 
-        
+        if self.current_rx_id in [6,7]:
+            self.current_rx_id = 5
         status = self.mylib.GUIInterface_verify(self.current_rx_id)
 
         # convert the char* to a Python string
