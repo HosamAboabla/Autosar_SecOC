@@ -1,13 +1,14 @@
 /********************************************************************************************************/
 /************************************************INCULDES************************************************/
 /********************************************************************************************************/
-#include "Scheduler.h"
+#include "scheduler.h"
 
 #include "SecOC.h"
 #include "SecOC_Debug.h"
 #include "Com.h"
 #include "CanTP.h"
 #include "ethernet.h"
+#include "SoAd.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,10 +33,10 @@ static struct task_state {
     char *stack;
     int state;
     ucontext_t context; // Store the context for each task
-};
+}task_state;
 
 static struct task_state tasks[NUM_FUNCTIONS];
-static boolean once = FALSE;
+static boolean once = TRUE;
 static pthread_t t;
 
 
@@ -58,8 +59,9 @@ void EthernetRecieveFn() {
 void RecieveMainFunctions() {
     while (1) {
         tasks[1].state++;
-        CanTp_MainFunctionRx();
+        SoAd_MainFunctionRx();
         SecOC_MainFunctionRx();
+        CanTp_MainFunctionRx();
         swapcontext(&tasks[1].context, &tasks[2].context);
     }
 }
@@ -71,6 +73,7 @@ void TxMainFunctions()
         tasks[2].state++;
         Com_MainTx();
         SecOC_MainFunctionTx();
+        SoAd_MainFunctionTx();
         CanTp_MainFunctionTx();
         swapcontext(&tasks[2].context, &tasks[0].context);
     }
@@ -85,7 +88,7 @@ void scheduler_handler(int signum) {
 }
 
 void Scheduler_Start()
- {
+{
     int i;
     struct sigaction sa;
     struct itimerval timer;
