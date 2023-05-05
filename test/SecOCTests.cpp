@@ -130,11 +130,11 @@ TEST(SecOCTests,SecOCCopyTXData1)
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
     uint8 buffersdata[10] = {1,2,3,4,5,6,7,8,9,10};
-    uint8 buffermdata[0] = {0};
+    uint8 buffermdata = 0;
     PduLengthType bufferlength = 10;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[pduid].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     securedPdu->SduDataPtr = buffersdata;
-    securedPdu->MetaDataPtr = buffermdata;
+    securedPdu->MetaDataPtr = &buffermdata;
     securedPdu->SduLength = bufferlength;
 	
 
@@ -184,11 +184,11 @@ TEST(SecOCTests,SecOCCopyTXData2)
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
     uint8 buffersdata[10] = {1,2,3,4,5,6,7,8,9,10};
-    uint8 buffermdata[0] = {0};
+    uint8 buffermdata = 0;
     PduLengthType bufferlength = 10;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[pduid].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     securedPdu->SduDataPtr = buffersdata;
-    securedPdu->MetaDataPtr = buffermdata;
+    securedPdu->MetaDataPtr = &buffermdata;
     securedPdu->SduLength = bufferlength;
 	
     
@@ -197,7 +197,7 @@ TEST(SecOCTests,SecOCCopyTXData2)
     printf("\n");
     for(int i = 0; i < bufferlength; i++)
         printf("before : %d\t",securedPdu->SduDataPtr[i]);
-    printf("\nnreturn :%d\n",SecOC_CopyTxData (pduid, &info, &retrystate, &availableDataPtr));
+    printf("\nnreturn :%d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
 
     EXPECT_EQ(BUFREQ_OK,SecOC_CopyTxData (pduid, &info, NULL, &availableDataPtr));
 
@@ -207,9 +207,9 @@ TEST(SecOCTests,SecOCCopyTXData2)
     for(int i = 0; i < bufferlength; i++)
         printf("after : %d\t",securedPdu->SduDataPtr[i]);
 
-    printf("\navalible bytes in buffer --> %d\n", availableDataPtr);
+    printf("\navalible bytes in buffer --> %ld\n", availableDataPtr);
     printf("\n#####\n");
-    printf("\nreturn : %d\n",SecOC_CopyTxData (pduid, &info, &retrystate, &availableDataPtr));
+    printf("\nreturn : %d\n",SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr));
 
     EXPECT_EQ(BUFREQ_OK,SecOC_CopyTxData (pduid, &info, NULL, &availableDataPtr));
 
@@ -219,7 +219,7 @@ TEST(SecOCTests,SecOCCopyTXData2)
     for(int i = 0; i < bufferlength; i++)
         printf("after : %d\t",securedPdu->SduDataPtr[i]);
     
-    printf("\navalible bytes in buffer --> %d\n", availableDataPtr);
+    printf("\navalible bytes in buffer --> %ld\n", availableDataPtr);
     printf("\n#####\n");
 
 }
@@ -236,11 +236,11 @@ TEST(SecOCTests,SecOCCopyTXData3)
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
     uint8 buffersdata[10] = {1,2,3,4,5,6,7,8,9,10};
-    uint8 buffermdata[0] = {0};
+    uint8 buffermdata = 0;
     PduLengthType bufferlength = 10;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[pduid].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     securedPdu->SduDataPtr = buffersdata;
-    securedPdu->MetaDataPtr = buffermdata;
+    securedPdu->MetaDataPtr = &buffermdata;
     securedPdu->SduLength = bufferlength;
 	
     
@@ -248,7 +248,7 @@ TEST(SecOCTests,SecOCCopyTXData3)
         the buffer Index will be 5
         with TP_CONFPENDING it will return the last data
     */
-    SecOC_CopyTxData (pduid, &info, &retrystate, &availableDataPtr);
+    SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr);
     
     retry.TpDataState = TP_CONFPENDING;
     for(int i = 0; i < length; i++)
@@ -265,7 +265,7 @@ TEST(SecOCTests,SecOCCopyTXData3)
     printf("\n");
     for(int i = 0; i < bufferlength; i++)
         printf("after : %d\t",securedPdu->SduDataPtr[i]);
-    printf("\n avalible bytes in buffer --> %d\n", availableDataPtr);
+    printf("\n avalible bytes in buffer --> %ld\n", availableDataPtr);
 	
 	EXPECT_EQ(BUFREQ_OK,SecOC_CopyTxData (pduid, &info, NULL, &availableDataPtr));
 	
@@ -285,11 +285,11 @@ TEST(SecOCTests,SecOCCopyTXData4)
     RetryInfoType retry = {retrystate,retrycout};
     PduLengthType availableDataPtr = 0;
     uint8 buffersdata[10] = {1,2,3,4,5,6,7,8,9,10};
-    uint8 buffermdata[0] = {0};
+    uint8 buffermdata = 0;
     PduLengthType bufferlength = 10;
     PduInfoType *securedPdu = &(SecOCTxPduProcessing[pduid].SecOCTxSecuredPduLayer->SecOCTxSecuredPdu->SecOCTxSecuredLayerPduRef);
     securedPdu->SduDataPtr = buffersdata;
-    securedPdu->MetaDataPtr = buffermdata;
+    securedPdu->MetaDataPtr = &buffermdata;
     securedPdu->SduLength = bufferlength;
 	
     
@@ -297,7 +297,7 @@ TEST(SecOCTests,SecOCCopyTXData4)
         the buffer Index will be 5
         with TP_CONFPENDING it will return the last data
     */
-    SecOC_CopyTxData (pduid, &info, &retrystate, &availableDataPtr);
+    SecOC_CopyTxData (pduid, &info, &retry, &availableDataPtr);
     
     retry.TpDataState = TP_CONFPENDING;
     for(int i = 0; i < length; i++)
@@ -314,7 +314,7 @@ TEST(SecOCTests,SecOCCopyTXData4)
     printf("\n");
     for(int i = 0; i < bufferlength; i++)
         printf("after : %d\t",securedPdu->SduDataPtr[i]);
-    printf("\n avalible bytes in buffer --> %d\n", availableDataPtr);
+    printf("\n avalible bytes in buffer --> %ld\n", availableDataPtr);
 	
 	EXPECT_EQ(BUFREQ_OK,SecOC_CopyTxData (pduid, &info, NULL, &availableDataPtr));
 	
