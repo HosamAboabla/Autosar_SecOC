@@ -29,10 +29,10 @@
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
-#ifdef SECOC_DEBUG
-    #define STATIC
-#else
+#ifdef RELEASE
     #define STATIC static
+#else
+    #define STATIC
 #endif
 
 const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
@@ -431,7 +431,7 @@ STATIC Std_ReturnType seperatePduCollectionTx(const PduIdType TxPduId,uint32 Aut
     return E_OK;
 }
 
-void SecOCMainFunctionTx(void) 
+void SecOC_MainFunctionTx(void) 
 {
     #ifdef SECOC_DEBUG
         printf("######## in SecOCMainFunctionTx \n");
@@ -789,7 +789,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             AuthPduCollection->SduLength = 0;
             CryptoPduCollection->SduLength = 0;
             #ifdef PDU_COLLECTION_DEBUG
-                printf("########  both received and secured length = %d\n" , securedPdu->SduLength);
+                printf("########  both received and secured length = %lu\n" , securedPdu->SduLength);
                 printf("Data Recieve in secured pdu : ");
                 for(uint8 i = 0; i < securedPdu->SduLength; i++)
                 {
@@ -831,67 +831,34 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     /* [SWS_SecOC_00082] */
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *bufferSizePtr = SECOC_SECPDU_MAX_LENGTH - securedPdu->SduLength;
-    BufReq_ReturnType r=BUFREQ_OK;
+    BufReq_ReturnType result = BUFREQ_OK;
     uint32 datalen=0;
-    /* [SWS_SecOC_00130] description*/
+    /* [SWS_SecOC_00130] */
     if(TpSduLength>*bufferSizePtr)
     {
-        r=BUFREQ_E_OVFL;
-        /* [SWS_SecOC_00215] */
+        result = BUFREQ_E_OVFL;
+        /*[SWS_SecOC_00215]*/
         if(SecOCRxPduProcessing[id].SecOCReceptionOverflowStrategy==SECOC_REJECT)
         {
-            r=BUFREQ_E_NOT_OK;
+            result = BUFREQ_E_NOT_OK;
         }
     }
     else if (TpSduLength == 0)
     {
-        /* [SWS_SecOC_00181] */ 
-        r=BUFREQ_E_NOT_OK;
+        /* [SWS_SecOC_00181] */
+        result = BUFREQ_E_NOT_OK;
     }
     else
     {
-        /* receiving first Byte if not Null */
         if((info->SduDataPtr != NULL))
         {
-            /* [SWS_SecOC_00263] check if dynamic */            
-            if(AuthHeadlen>0)
+            /* [SWS_SecOC_00263] check if dynamic*/            
+            if(AuthHeadlen > 0)
             {
-                switch (AuthHeadlen)
+                (void)memcpy((uint8*)&datalen, info->SduDataPtr, AuthHeadlen );
+                if(datalen > SECOC_AUTHPDU_MAX_LENGTH)
                 {
-                case 1:
-                    datalen=info->SduDataPtr[0];
-                    if((uint8)datalen > SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 2:
-                    datalen=((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint16)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 3:
-                    datalen=((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                case 4:
-                    datalen=((info->SduDataPtr[3])<<24)|((info->SduDataPtr[2])<<16)|((info->SduDataPtr[1])<<8)|(info->SduDataPtr[0]);
-                    if((uint32)datalen> SECOC_AUTHPDU_MAX_LENGTH)
-                    {
-                        r=BUFREQ_E_NOT_OK;
-                    }
-                    break;
-
-                default:
-                    break;
+                    result = BUFREQ_E_NOT_OK;
                 }
                 authRecieveLength[id] = datalen;
             }
@@ -905,12 +872,12 @@ BufReq_ReturnType SecOC_StartOfReception ( PduIdType id, const PduInfoType* info
     if(SecOCRxPduProcessing[id].SecOCRxAuthenticPduLayer->SecOCPduType==SECOC_TPPDU)
     {
         /* [SWS_SecOC_00082] */
-		/* r=PduR_SecOCTpStartOfReception(); */
+		/*result = PduR_SecOCTpStartOfReception();*/
 	}
     #ifdef SECOC_DEBUG
-        printf("result of SecOC_StartOfReception is %d\n", r);
+        printf("result of SecOC_StartOfReception is %d\n", result);
     #endif
-	return r;
+	return result;
 }
 
 
@@ -1039,7 +1006,7 @@ static void parseSecuredPdu(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_RxInte
         {
             printf("%d ",SecOCIntermediate->authenticPdu[i] );
         }
-        printf("\nFreshness and lenbit is %d :",SecOCIntermediate->freshnessLenBits);
+        printf("\nFreshness and lenbit is %lu :",SecOCIntermediate->freshnessLenBits);
         for(int i = 0; i < BIT_TO_BYTES(SecOCIntermediate->freshnessLenBits); i++)
         {
             printf("%d ",SecOCIntermediate->freshness[i] );
@@ -1185,9 +1152,8 @@ STATIC Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
 }
 
 
-void SecOCMainFunctionRx(void)
+void SecOC_MainFunctionRx(void)
 {
-    /* [SWS_SecOC_00171] */
     #ifdef SECOC_DEBUG
         printf("######## in SecOCMainFunctionRx \n");
     #endif
