@@ -739,6 +739,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
     /* [SWS_SecOC_00124] */
     
 
+    uint8 headerLen , authLen;
     if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
     {
         PduInfoType *securedPdu;
@@ -756,8 +757,11 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
         {
             
             /* AuthPduCollection */
-            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr,PduInfoPtr->SduLength); /* from pduinfoptr finished */
-            AuthPduCollection->SduLength=PduInfoPtr->SduLength;
+            headerLen = SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+            (void)memcpy(&authLen, &PduInfoPtr->SduDataPtr[0] ,headerLen);
+            authLen += headerLen;
+            (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr, authLen); /* from pduinfoptr finished */
+            AuthPduCollection->SduLength= authLen;
         }
         else if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
         {
