@@ -95,6 +95,11 @@ class MyConnections:
         else:
             self.dialog.showDateButton.setEnabled(False)
             self.dialog.showTimeButton.setEnabled(False)
+
+        if(index in [3]):
+            self.dialog.alterFreshButton.setEnabled(False)
+        else:
+            self.dialog.alterFreshButton.setEnabled(True)
         self.UpdateTransmitterSecPayload()                    
 
   
