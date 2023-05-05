@@ -16,7 +16,7 @@ extern const SecOC_TxPduProcessingType     *SecOCTxPduProcessing;
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 extern const SecOC_GeneralType             *SecOCGeneral;
 extern SecOC_TxCountersType         SecOC_TxCounters[SECOC_NUM_OF_TX_PDU_PROCESSING];
-extern PduLengthType authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING];
+extern PduLengthType                authRecieveLength[SECOC_NUM_OF_RX_PDU_PROCESSING];
 extern SecOC_PduCollection PdusCollections[];
 
 extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu, PduInfoType* SecPdu);
@@ -114,10 +114,15 @@ char* GUIInterface_getSecuredPDU(uint8_t configId, uint8_t *len)
 }
 
 
-char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len)
+char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len , uint8_t * Securedlen)
 {
+    if(PdusCollections[configId].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[configId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+    {
+        configId = PdusCollections[configId].CollectionId;
+    }
     PduInfoType *securedPdu = &(SecOCRxPduProcessing[configId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
     *len = securedPdu->SduLength;
+    *Securedlen = securedPdu->SduLength;
 
     static char securedStr[100]; /* Static to be passed to the python program*/
 
@@ -137,6 +142,8 @@ char* GUIInterface_getSecuredRxPDU(uint8_t configId, uint8_t *len)
     securedStr[stri] = '\0';
 
     *len = stri; /* Updated the length to match the created string */
+    
+
     
     return securedStr;
 }
@@ -234,7 +241,7 @@ char* GUIInterface_transmit(uint8_t configId)
     return errorString(result);
 }
 
-char* GUIInterface_receive(uint8_t *rxId)
+char* GUIInterface_receive(uint8_t* rxId , uint8_t* finalRxLen)
 {
     Std_ReturnType result;
 
@@ -249,7 +256,6 @@ char* GUIInterface_receive(uint8_t *rxId)
             .MetaDataPtr = &PdusCollections[id],
             .SduLength = BUS_LENGTH_RECEIVE,
         };
-        *rxId = (uint8_t) id;
         switch (PdusCollections[id].Type)
         {
         case SECOC_SECURED_PDU_CANIF:
@@ -296,6 +302,17 @@ char* GUIInterface_receive(uint8_t *rxId)
                 printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
             #endif
             break;
+        }
+
+        *rxId = (uint8_t) id;
+        if(PdusCollections[id].Type == SECOC_AUTH_COLLECTON_PDU || PdusCollections[id].Type == SECOC_CRYPTO_COLLECTON_PDU)
+        {
+            *finalRxLen = 0;
+        }
+        else
+        {
+            uint8_t AuthHeadlen = SecOCRxPduProcessing[id].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCAuthPduHeaderLength;
+            *finalRxLen = (uint8_t) AuthHeadlen + authRecieveLength[id] + BIT_TO_BYTES(SecOCRxPduProcessing[id].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[id].SecOCAuthInfoTruncLength);
         }
     #endif
     
