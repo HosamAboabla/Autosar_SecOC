@@ -39,27 +39,17 @@ static boolean once = TRUE;
 static pthread_t t;
 
 
-void *ethernetRecieve() 
-{
-    while (1) 
-    {
-        ethernet_RecieveMainFunction();
-    }
-}
-
 void EthernetRecieveFn() {
     while (1) {
         tasks[0].state++;
 
         if ( once == FALSE)
         {
-            printf("\n\n\n\nhi im create a thread \n\n\n\n");
-            if(pthread_create(&t , NULL, ethernetRecieve, NULL) != 0)
+            if(pthread_create(&t , NULL, (void *)&ethernet_RecieveMainFunction, NULL) != 0)
             {
                 printf("error create thread");
                 return;
             }
-            once = TRUE;
         }
         swapcontext(&tasks[0].context, &tasks[1].context);
     }
