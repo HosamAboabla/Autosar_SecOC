@@ -1,13 +1,13 @@
 
 #include "SecOC.h"
 #include "SecOC_Debug.h"
-#include "Scheduler.h"
 
-
-extern SecOC_ConfigType SecOC_Config;
 int main(void)
 {
-    SecOC_Init(&SecOC_Config);
-    Scheduler_Start();
+    #ifdef DEBUG_ALL
+        SecOC_test();
+    #endif
+
+    (void)printf("Program ran successfully\n");
     return 0;
 }
