@@ -110,3 +110,41 @@ TEST(SecOCTests, authenticate2)
     printf("\n");
     EXPECT_NE(memcmp(buffVerfySecure,SecPdu.SduDataPtr, SecPdu.SduLength), 0);
 }
+
+TEST(SecOCTests, authenticate3)
+{
+    SecOC_Init(&SecOC_Config);
+    /* Failed for id 0
+        changing the MAC
+        direct with header
+    */
+    PduIdType TxPduId = 0;
+
+    PduInfoType AuthPdu;
+    uint8 buffAuth [100] = {'H', 'S', 'h', 's'};
+    AuthPdu.MetaDataPtr = 0;
+    AuthPdu.SduDataPtr = buffAuth;
+    AuthPdu.SduLength = 4;
+
+    PduInfoType SecPdu = {0};
+    uint8 buffSec [100] = {0};
+    SecPdu.MetaDataPtr = 0;
+    SecPdu.SduDataPtr = buffSec;
+    SecPdu.SduLength = 0;
+
+    Std_ReturnType Result = authenticate(TxPduId, &AuthPdu, &SecPdu);
+
+    EXPECT_EQ(Result, E_OK);
+
+    /* Header + Authdata + Freshness + MAC
+        2       100/200        1          82/0/112/115*/
+
+    uint8 buffVerfySecure [100] = {4, 'H', 'S', 'h', 's', 3, 209, 20, 205, 172};
+
+    for(int i = 0; i < SecPdu.SduLength; i++)
+    {
+        printf("%c ",SecPdu.SduDataPtr[i]);
+    }
+    printf("\n");
+    EXPECT_EQ(memcmp(buffVerfySecure,SecPdu.SduDataPtr, SecPdu.SduLength), 0);
+}
