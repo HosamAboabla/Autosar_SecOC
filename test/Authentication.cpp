@@ -35,3 +35,39 @@ extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
         4- Construct the Scure PDU to broadCast
     --- to check its working need to see the Secure PDU is changing by length and add a data FV and MAC
 */
+TEST(SecOCTests, authenticate1)
+{
+    SecOC_Init(&SecOC_Config);
+    /* Secuss for id 0
+        direct with header
+    */
+    PduIdType TxPduId = 0;
+
+    PduInfoType AuthPdu;
+    uint8 buffAuth [100] = {100, 200};
+    AuthPdu.MetaDataPtr = 0;
+    AuthPdu.SduDataPtr = buffAuth;
+    AuthPdu.SduLength = 2;
+
+    PduInfoType SecPdu = {0};
+    uint8 buffSec [100] = {0};
+    SecPdu.MetaDataPtr = 0;
+    SecPdu.SduDataPtr = buffSec;
+    SecPdu.SduLength = 0;
+
+    Std_ReturnType Result = authenticate(TxPduId, &AuthPdu, &SecPdu);
+
+    EXPECT_EQ(Result, E_OK);
+
+    /* Header + Authdata + Freshness + MAC
+        2       100/200        1          82/0/112/115*/
+
+    uint8 buffVerfySecure [100] = {2,100, 200, 1, 196,200,222,153};
+
+    for(int i = 0; i < SecPdu.SduLength; i++)
+    {
+        printf("%d ",SecPdu.SduDataPtr[i]);
+    }
+    printf("\n");
+    EXPECT_EQ(memcmp(buffVerfySecure,SecPdu.SduDataPtr, SecPdu.SduLength), 0);
+}
