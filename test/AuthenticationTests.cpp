@@ -35,7 +35,7 @@ extern Std_ReturnType authenticate(const PduIdType TxPduId, PduInfoType* AuthPdu
         4- Construct the Scure PDU to broadCast
     --- to check its working need to see the Secure PDU is changing by length and add a data FV and MAC
 */
-TEST(Authentication, authenticate1)
+TEST(AuthenticationTests, authenticate1)
 {
     SecOC_Init(&SecOC_Config);
     /* Secuss for id 0
@@ -73,7 +73,7 @@ TEST(Authentication, authenticate1)
 }
 
 
-TEST(Authentication, authenticate2)
+TEST(AuthenticationTests, authenticate2)
 {
     SecOC_Init(&SecOC_Config);
     /* Secuss for id 0
@@ -99,7 +99,7 @@ TEST(Authentication, authenticate2)
     EXPECT_EQ(Result, E_OK);
 
     /* Header + Authdata + Freshness + MAC
-        2       100/200        1          82/0/112/115*/
+        2       100/200        2          196/100/222/153*/
 
     uint8 buffVerfySecure [100] = {2,100, 200, 2, 196, 100, 222, 153};
 
@@ -111,7 +111,7 @@ TEST(Authentication, authenticate2)
     EXPECT_NE(memcmp(buffVerfySecure,SecPdu.SduDataPtr, SecPdu.SduLength), 0);
 }
 
-TEST(Authentication, authenticate3)
+TEST(AuthenticationTests, authenticate3)
 {
     SecOC_Init(&SecOC_Config);
     /* Failed for id 0
@@ -136,8 +136,8 @@ TEST(Authentication, authenticate3)
 
     EXPECT_EQ(Result, E_OK);
 
-    /* Header + Authdata + Freshness + MAC
-        2       100/200        1          82/0/112/115*/
+    /* Header + Authdata            + Freshness +     MAC
+        4       'H', 'S', 'h', 's'       3          3/209/205/172*/
 
     uint8 buffVerfySecure [100] = {4, 'H', 'S', 'h', 's', 3, 209, 20, 205, 172};
 
