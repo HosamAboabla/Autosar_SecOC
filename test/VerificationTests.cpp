@@ -34,3 +34,44 @@ extern Std_ReturnType verify(PduIdType RxPduId, PduInfoType* SecPdu, SecOC_Verif
         5- Update Freshness if Secuess
     --- to check its working need to see the Auth PDU is modified
 */
+
+
+TEST(VerificationTests, verify1)
+{
+    SecOC_Init(&SecOC_Config);
+    /* Secuss for id 0
+        direct with header
+    */
+    PduIdType RxPduId = 0;
+    
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    PduLengthType lengthbefore = authPdu->SduLength;
+    
+
+    /* Header + Authdata + Freshness + MAC
+        2       100/200        1        196,200,222,153*/
+    PduInfoType SecPdu;
+    uint8 buffSec [100] = {2,100, 200, 1, 196,200,222,153};
+    SecPdu.MetaDataPtr = 0;
+    SecPdu.SduDataPtr = buffSec;
+    SecPdu.SduLength = 2;
+
+    SecOC_VerificationResultType verification_result;
+
+    Std_ReturnType Result = verify(RxPduId, &SecPdu, &verification_result);
+
+    EXPECT_EQ(Result, E_OK);
+
+    PduLengthType lengthafter = authPdu->SduLength;
+
+    EXPECT_NE(lengthbefore, lengthafter);
+
+    uint8 buffVerfyAuth [100] = {100, 200};
+
+    for(int i = 0; i < authPdu->SduLength; i++)
+    {
+        printf("%d ",authPdu->SduDataPtr[i]);
+    }
+    printf("\n");
+    EXPECT_EQ(memcmp(buffVerfyAuth,authPdu->SduDataPtr, authPdu->SduLength), 0);
+}
