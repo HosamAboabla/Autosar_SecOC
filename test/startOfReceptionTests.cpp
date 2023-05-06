@@ -10,7 +10,7 @@ extern const SecOC_GeneralType             *SecOCGeneral;
 
 
 
-TEST(SecOCTests, StartOfReception1)
+TEST(StartOfReceptionTests, StartOfReception1)
 {
     /* 
     Test :  SecOC_StartOfReception
@@ -40,7 +40,7 @@ TEST(SecOCTests, StartOfReception1)
 
 }
 
-TEST(SecOCTests, StartOfReception2)
+TEST(StartOfReceptionTests, StartOfReception2)
 {
     /* 
     Test :  SecOC_StartOfReception [SWS_SecOC_00215]
@@ -70,7 +70,7 @@ TEST(SecOCTests, StartOfReception2)
 
 }
 
-TEST(SecOCTests, StartOfReception3)
+TEST(StartOfReceptionTests, StartOfReception3)
 {
     /* 
     Test :  SecOC_StartOfReception [SWS_SecOC_00181]
@@ -100,7 +100,7 @@ TEST(SecOCTests, StartOfReception3)
 
 }
 
-TEST(SecOCTests, StartOfReception4)
+TEST(StartOfReceptionTests, StartOfReception4)
 {
     /* 
     Test :  SecOC_StartOfReception 
@@ -125,7 +125,7 @@ TEST(SecOCTests, StartOfReception4)
 
 }
 
-TEST(SecOCTests, StartOfReception5)
+TEST(StartOfReceptionTests, StartOfReception5)
 {
     /* 
     Test :  SecOC_StartOfReception [SWS_SecOC_00263]
