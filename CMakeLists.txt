@@ -17,8 +17,17 @@ endif()
 
 project(SecOC)
 
+find_package(Threads REQUIRED)
+
 
 add_executable(SecOC ${SCR_FILES})
+
+if(THREADS_HAVE_PTHREAD_ARG)
+  target_compile_options(SecOC PUBLIC "-pthread")
+endif()
+if(CMAKE_THREAD_LIBS_INIT)
+  target_link_libraries(SecOC "${CMAKE_THREAD_LIBS_INIT}")
+endif()
 
 foreach (_file ${HDR_FILES})
     cmake_path(REMOVE_FILENAME _file)
@@ -34,16 +43,15 @@ elseif(UNIX)
 endif()
 
 
-
 # Adding unit tests
 include(CTest)
 
 include(FetchContent)
 
 FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.11.0
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG        release-1.11.0
 )
 FetchContent_MakeAvailable(googletest)
 
@@ -65,7 +73,6 @@ target_include_directories(SecOCLibShared PUBLIC ${headerDirs})
 
 # Add our test folder cmakelists
 add_subdirectory(test)
-
 
 
 

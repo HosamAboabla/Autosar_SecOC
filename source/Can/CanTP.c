@@ -11,18 +11,21 @@
 #include "SecOC_Debug.h"
 #include "SecOC_Cfg.h"
 #include "SecOC_Lcfg.h"
-
+#ifdef SCHEDULER_ON
+    #include <pthread.h>
+#endif 
 #ifdef LINUX
 #include "ethernet.h"
 #endif
-
 
 /********************************************************************************************************/
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
-
+#ifdef SCHEDULER_ON
+    extern pthread_mutex_t lock;
+#endif 
 
 static PduInfoType CanTp_Buffer[SECOC_NUM_OF_TX_PDU_PROCESSING];
 static PduInfoType CanTp_Buffer_Rx[SECOC_NUM_OF_RX_PDU_PROCESSING];
@@ -117,7 +120,7 @@ void CanTp_MainFunctionTx(void)
             uint8 lastFrameIndex = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) : ((CanTp_Buffer[TxPduId].SduLength / BUS_LENGTH) + 1);
             #ifdef CANTP_DEBUG
                 printf("Start sending id = %d\n" , TxPduId);
-                printf("PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
+                printf("PDU length = %ld\n" , CanTp_Buffer[TxPduId].SduLength);       
                 printf("All Data to be Sent: \n");
                 for(int i = 0 ; i < CanTp_Buffer[TxPduId].SduLength; i++)
                 {
@@ -131,7 +134,7 @@ void CanTp_MainFunctionTx(void)
                 {
                     info.SduLength = (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (BUS_LENGTH) : (CanTp_Buffer[TxPduId].SduLength % BUS_LENGTH);
                     #ifdef CANTP_DEBUG
-                    printf("last frame PDU length = %d\n" , CanTp_Buffer[TxPduId].SduLength);       
+                    printf("last frame PDU length = %ld\n" , CanTp_Buffer[TxPduId].SduLength);       
                     printf("All Data to be Sent: \n");
                     for(int i = 0 ; i < info.SduLength; i++)
                     {
@@ -230,6 +233,9 @@ void CanTp_MainFunctionRx(void)
             {
                 result = PduR_CanTpCopyRxData(RxPduId, &CanTp_Buffer_Rx[RxPduId], &bufferSizePtr);
             }
+            #ifdef SCHEDULER_ON
+                pthread_mutex_unlock(&lock);
+            #endif 
         }
     }
 

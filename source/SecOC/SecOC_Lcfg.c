@@ -106,7 +106,7 @@ SecOC_MainFunctionTxType SecOC_MainFunctionTxConf =
 };
 
 
-SecOCMainFunctionRxType SecOCMainFunctionRx = 
+SecOC_MainFunctionRxType SecOCMainFunctionRx = 
 {
     SECOC_MAIN_FUNCTION_PERIOD_RX,
     SECOC_MAIN_FUNCTION_RX_PARTITION_REF, /* NOT SURE ABOUT THAT TYPE */
