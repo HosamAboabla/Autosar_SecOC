@@ -17,6 +17,7 @@
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
+static uint8 ip_address_send [15] = "127.0.0.1";
 extern SecOC_PduCollection PdusCollections[];
 #ifdef SCHEDULER_ON
     pthread_mutex_t lock;
@@ -25,6 +26,38 @@ extern SecOC_PduCollection PdusCollections[];
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
 /********************************************************************************************************/
+
+void ethernet_init(void) 
+{
+
+    uint8 ip_address_read[16];
+    /* Open the file containing the IP address */
+    FILE* fp = fopen("E:\\GraduationProject\\Project-Code\\Autosar_SecOC\\source\\Ethernet\\ip_address.txt", "r");
+    if (fp == NULL) 
+    {
+        #ifdef ETHERNET_DEBUG
+            printf("Error opening file\n");
+        #endif
+        return;
+    }
+    
+    /* Read the IP address from the file */
+    fgets(ip_address_read, 16, fp);
+
+    /* Close the file */
+    fclose(fp);
+
+    #ifdef ETHERNET_DEBUG
+        printf("IP is %s\n", ip_address_read);
+    #endif
+
+    /* Copy the IP address to the global variable */
+    if (strlen(ip_address_read) > 0) 
+    {
+        ip_address_read[strcspn(ip_address_read, "\n")] = 0;
+        strcpy(ip_address_send, ip_address_read);
+    }
+}
 
 Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned char dataLen) {
     #ifdef ETHERNET_DEBUG
@@ -44,7 +77,7 @@ Std_ReturnType ethernet_send(unsigned short id, unsigned char* data , unsigned c
     struct sockaddr_in server_address;
     server_address.sin_family = AF_INET;
     server_address.sin_port = htons(PORT_NUMBER);
-    server_address.sin_addr.s_addr = INADDR_ANY; /*inet_addr("192.168.1.2");*/  
+    server_address.sin_addr.s_addr = inet_addr(ip_address_send);
 
     int connection_status = connect(network_sockect , (struct sockaddr* ) &server_address , sizeof(server_address) );
 
