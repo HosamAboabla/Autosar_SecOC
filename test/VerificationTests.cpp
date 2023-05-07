@@ -119,3 +119,46 @@ TEST(VerificationTests, verify2)
     printf("\n");
     EXPECT_EQ(memcmp(buffVerfyAuth,authPdu->SduDataPtr, authPdu->SduLength), 0);
 }
+
+
+TEST(VerificationTests, verify3)
+{
+    SecOC_DeInit();
+    SecOC_Init(&SecOC_Config);
+    /* Secuse for id 0
+        direct with header
+    */
+    PduIdType RxPduId = 0;
+    
+    PduInfoType *authPdu = &(SecOCRxPduProcessing[RxPduId].SecOCRxAuthenticPduLayer->SecOCRxAuthenticLayerPduRef);
+    authPdu->SduLength = 0;
+    PduLengthType lengthbefore = authPdu->SduLength;
+    
+
+    /* Header +   Authdata +        Freshness    +      MAC
+        4       'H', 'S', 'h', 's'       3        1209, 20, 205, 172*/
+    PduInfoType SecPdu;
+    uint8 buffSec [100] = {4, 'H', 'S', 'h', 's', 3, 209, 20, 205, 172};
+    SecPdu.MetaDataPtr = 0;
+    SecPdu.SduDataPtr = buffSec;
+    SecPdu.SduLength = 10;
+
+    SecOC_VerificationResultType verification_result;
+
+    Std_ReturnType Result = verify(RxPduId, &SecPdu, &verification_result);
+
+    EXPECT_EQ(Result, E_OK);
+
+    PduLengthType lengthafter = authPdu->SduLength;
+
+    EXPECT_NE(lengthbefore, lengthafter);
+
+    uint8 buffVerfyAuth [100] = {'H', 'S', 'h', 's'};
+
+    for(int i = 0; i < authPdu->SduLength; i++)
+    {
+        printf("%c ",authPdu->SduDataPtr[i]);
+    }
+    printf("\n");
+    EXPECT_EQ(memcmp(buffVerfyAuth,authPdu->SduDataPtr, authPdu->SduLength), 0);
+}
