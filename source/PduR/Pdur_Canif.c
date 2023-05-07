@@ -5,13 +5,17 @@
 #include "PduR_CanIf.h"
 #include "SecOC.h"
 #include "SecOC_Debug.h"
-#include <pthread.h>
+#ifdef SCHEDULER_ON
+    #include <pthread.h>
+#endif 
 
 /********************************************************************************************************/
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
-extern pthread_mutex_t lock;
+#ifdef SCHEDULER_ON
+    extern pthread_mutex_t lock;
+#endif 
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -31,6 +35,8 @@ void PduR_CanIfRxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 	#ifdef PDUR_DEBUG
         printf("######## in PduR_CanIfRxIndication\n");
     #endif
-    pthread_mutex_unlock(&lock); 
+    #ifdef SCHEDULER_ON
+        pthread_mutex_unlock(&lock);
+    #endif 
 	SecOC_RxIndication(RxPduId, PduInfoPtr);
 }

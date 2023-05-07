@@ -8,14 +8,19 @@
 #include "CanTP.h"
 #include "PduR_CanIf.h"
 #include "SoAd.h"
-#include <pthread.h>
+#ifdef SCHEDULER_ON
+    #include <pthread.h>
+#endif 
+
 
 /********************************************************************************************************/
 /******************************************GlobalVaribles************************************************/
 /********************************************************************************************************/
 
 extern SecOC_PduCollection PdusCollections[];
-pthread_mutex_t lock;
+#ifdef SCHEDULER_ON
+    pthread_mutex_t lock;
+#endif 
 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
@@ -153,7 +158,10 @@ Std_ReturnType ethernet_receive(unsigned char* data , unsigned char dataLen, uns
     #endif
     
 
-    pthread_mutex_lock(&lock);
+    #ifdef SCHEDULER_ON
+        pthread_mutex_lock(&lock);
+    #endif 
+    
     (void)memcpy(id, recData+dataLen, sizeof(unsigned short));
     (void)memcpy(data, recData, dataLen);
     #ifdef ETHERNET_DEBUG
@@ -220,7 +228,9 @@ void ethernet_RecieveMainFunction(void)
         break;
     default:
         /* for saftey if id is out of range we must release mutex */
-        pthread_mutex_unlock(&lock); 
+        #ifdef SCHEDULER_ON
+            pthread_mutex_unlock(&lock);
+        #endif 
         #ifdef ETHERNET_DEBUG
             printf("This is no type like it for ID : %d  type : %d \n", id, PdusCollections[id].Type);
         #endif

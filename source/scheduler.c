@@ -48,7 +48,9 @@ void EthernetRecieveFn() {
         {
             if(pthread_create(&t , NULL, (void *)&ethernet_RecieveMainFunction, NULL) != 0)
             {
+                #ifdef SCHEDULER_DEBUG
                 printf("error create thread");
+                #endif
                 return;
             }
         }

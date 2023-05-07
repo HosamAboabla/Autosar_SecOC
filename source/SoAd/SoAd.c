@@ -8,7 +8,10 @@
 #include "Std_Types.h"
 #include "SecOC_Debug.h"
 #include "SecOC_Cfg.h"
-#include <pthread.h>
+
+#ifdef SCHEDULER_ON
+    #include <pthread.h>
+#endif 
 
 #ifdef LINUX
 #include "ethernet.h"
@@ -27,8 +30,9 @@ static PduLengthType SoAdTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING]
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 extern SecOC_PduCollection PdusCollections[];
-extern pthread_mutex_t lock;
-
+#ifdef SCHEDULER_ON
+    extern pthread_mutex_t lock;
+#endif 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
 /********************************************************************************************************/
@@ -273,7 +277,9 @@ void SoAd_MainFunctionRx(void)
             {
                 result = PduR_SoAdTpCopyRxData(RxPduId, &SoAdTp_Buffer_Rx[RxPduId], &bufferSizePtr);
             }
-            pthread_mutex_unlock(&lock);
+            #ifdef SCHEDULER_ON
+                pthread_mutex_unlock(&lock);
+            #endif
         }
     }
 }
