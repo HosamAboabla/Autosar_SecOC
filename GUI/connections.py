@@ -104,7 +104,7 @@ class MyConnections:
 
   
     def OnAccelButtonClicked(self):
-        self.dialog.tlog.debug("OnAccelButtonClicked")
+        self.dialog.tlog.debug("Accelerate  ⬆")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         # Create an array of bytes in Python
@@ -125,7 +125,7 @@ class MyConnections:
 
     
     def OnDecelButtonClicked(self):
-        self.dialog.tlog.debug("OnDecelButtonClicked")
+        self.dialog.tlog.debug("Decelerate ⬇")
         currentIndex = self.dialog.configSelect.currentIndex()
 
         # Create an array of bytes in Python
@@ -194,7 +194,7 @@ class MyConnections:
   
 
     def OnTransmitButtonClicked(self):
-        self.dialog.tlog.debug("OnTransmitButtonClicked")
+        self.dialog.tlog.debug("Transmitting...")
         self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
    
 
