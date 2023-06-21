@@ -753,7 +753,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
 
         securedPdu = &(SecOCRxPduProcessing[pduCollectionId].SecOCRxSecuredPduLayer->SecOCRxSecuredPdu->SecOCRxSecuredLayerPduRef);
         
-        if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU)
+        if(PdusCollections[RxPduId].Type == SECOC_AUTH_COLLECTON_PDU && securedPdu->SduLength == 0)
         {
             
             /* AuthPduCollection */
@@ -763,7 +763,7 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
             (void)memcpy(AuthPduCollection->SduDataPtr,PduInfoPtr->SduDataPtr, authLen); /* from pduinfoptr finished */
             AuthPduCollection->SduLength= authLen;
         }
-        else if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU)
+        else if(PdusCollections[RxPduId].Type == SECOC_CRYPTO_COLLECTON_PDU && securedPdu->SduLength == 0)
         {
 
             /* copy from pduinfoptr to crypto */
@@ -1246,7 +1246,19 @@ void SecOC_MainFunctionRx(void)
 #ifdef DEBUG_ALL
 extern SecOC_ConfigType SecOC_Config;
 void SecOC_test()
-{  
+{
+    SecOC_Init(&SecOC_Config);
+    while (1)
+    {
+        #ifdef SECOC_DEBUG
+            printf("############### Starting Receive ###############\n");
+        #endif
+        ethernet_RecieveMainFunction();
+        CanTp_MainFunctionRx();
+        SoAd_MainFunctionRx();
+        SecOCMainFunctionRx();
+    }
+    
 }
 #endif
 
