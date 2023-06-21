@@ -206,6 +206,7 @@ char* GUIInterface_transmit(uint8_t configId)
     PduInfoType *AuthPduCollection;
     PduInfoType *CryptoPduCollection;
 
+    uint32 SecuredPduLen = securedPdu->SduLength;
     /* Check if there is data */
     if (authPdu->SduLength > 0) 
     {
@@ -237,6 +238,7 @@ char* GUIInterface_transmit(uint8_t configId)
 
     CanTp_MainFunctionTx();
     SoAd_MainFunctionTx();
+    securedPdu->SduLength = SecuredPduLen; // to reserve the length of auth for GUI
 
     return errorString(result);
 }
