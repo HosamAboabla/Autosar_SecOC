@@ -9,6 +9,9 @@
 #include "SecOC_Debug.h"
 #include "SecOC_Cfg.h"
 
+#ifdef SCHEDULER_ON
+    #include <pthread.h>
+#endif 
 
 #ifdef LINUX
 #include "ethernet.h"
@@ -27,8 +30,9 @@ static PduLengthType SoAdTp_secureLength_Recieve[SECOC_NUM_OF_RX_PDU_PROCESSING]
 extern const SecOC_RxPduProcessingType     *SecOCRxPduProcessing;
 
 extern SecOC_PduCollection PdusCollections[];
-
-
+#ifdef SCHEDULER_ON
+    extern pthread_mutex_t lock;
+#endif 
 /********************************************************************************************************/
 /********************************************Functions***************************************************/
 /********************************************************************************************************/
@@ -161,7 +165,7 @@ void SoAd_MainFunctionTx(void)
             uint8 lastFrameIndex = (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (SoAdTp_Buffer[TxPduId].SduLength / BUS_LENGTH) : ((SoAdTp_Buffer[TxPduId].SduLength / BUS_LENGTH) + 1);
             #ifdef SOAD_DEBUG
                 printf("Start sending id = %d\n" , TxPduId);
-                printf("PDU length = %d\n" , SoAdTp_Buffer[TxPduId].SduLength);       
+                printf("PDU length = %ld\n" , SoAdTp_Buffer[TxPduId].SduLength);       
                 printf("All Data to be Sent: \n");
                 for(int i = 0 ; i < SoAdTp_Buffer[TxPduId].SduLength; i++)
                 {
@@ -175,7 +179,7 @@ void SoAd_MainFunctionTx(void)
                 {
                     info.SduLength = (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH == 0)  ? (BUS_LENGTH) : (SoAdTp_Buffer[TxPduId].SduLength % BUS_LENGTH);
                     #ifdef SOAD_DEBUG
-                    printf("last frame PDU length = %d\n" , SoAdTp_Buffer[TxPduId].SduLength);       
+                    printf("last frame PDU length = %ld\n" , SoAdTp_Buffer[TxPduId].SduLength);       
                     printf("All Data to be Sent: \n");
                     for(int i = 0 ; i < info.SduLength; i++)
                     {
@@ -241,7 +245,7 @@ void SoAd_MainFunctionRx(void)
             uint8 lastFrameIndex = (SoAdTp_secureLength_Recieve[RxPduId] % BUS_LENGTH == 0)  ? (SoAdTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) : ((SoAdTp_secureLength_Recieve[RxPduId] / BUS_LENGTH) + 1);
             PduLengthType bufferSizePtr;
             #ifdef SOAD_DEBUG
-                printf("######## in main tp Rx  in id : %d\n", RxPduId);
+                printf("######## in main Soad Rx  in id : %d\n", RxPduId);
                 printf("for id %d :",RxPduId);
                 for(int l = 0; l < SoAdTp_Buffer_Rx[RxPduId].SduLength; l++)
                 {
@@ -273,6 +277,9 @@ void SoAd_MainFunctionRx(void)
             {
                 result = PduR_SoAdTpCopyRxData(RxPduId, &SoAdTp_Buffer_Rx[RxPduId], &bufferSizePtr);
             }
+            #ifdef SCHEDULER_ON
+                pthread_mutex_unlock(&lock);
+            #endif
         }
     }
 }

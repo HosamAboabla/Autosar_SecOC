@@ -46,5 +46,6 @@ void SoAdTp_RxIndication (PduIdType RxPduId, const PduInfoType* PduInfoPtr);
 
 void SoAdTp_TxConfirmation(PduIdType TxPduId, Std_ReturnType result);
 void SoAd_MainFunctionRx(void);
+void SoAd_MainFunctionTx(void);
 
 #endif  // INCLUDE_SOAD_H_
