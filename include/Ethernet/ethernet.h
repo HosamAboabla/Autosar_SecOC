@@ -28,6 +28,18 @@
 /*******************************************************
  *          * Function Info *                           *
  *                                                      *
+ * Function_Name        : ethernet_init                 *
+ * Function_Index       :                               *
+ * Function_File        :                               *
+ * Function_Descripton  : Used to get the ip that       *
+ * send data to                                         *
+ *******************************************************/
+void ethernet_init(void);
+
+
+/*******************************************************
+ *          * Function Info *                           *
+ *                                                      *
  * Function_Name        : ethernet_send                 *
  * Function_Index       :                               *
  * Function_File        :                               *

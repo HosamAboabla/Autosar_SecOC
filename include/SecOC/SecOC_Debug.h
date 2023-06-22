@@ -28,8 +28,10 @@
 #define PDUR_DEBUG                  /* Debug for PduR */ 
 #define COUNTERS_DEBUG              /* Debug for Auth && verify Counters */  
 #define MAC_DEBUG                   /* Debug for MAC gerenration */  
-#define PDU_COLLECTION_DEBUG        /* Debug for MAC gerenration */  
+#define PDU_COLLECTION_DEBUG        /* Debug for PDU Collection */  
+#define SCHEDULER_DEBUG             /* Debug for Schedular */  
 #endif
 
+/*#define SCHEDULER_ON*/
 
 #endif

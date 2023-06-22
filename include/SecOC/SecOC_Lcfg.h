@@ -16,12 +16,13 @@
 
 /* Derived configuration*/
 #define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 20)
+#define SECOC_AUTHPDU_HEADER_MAX_LENGTH                             ((uint8)4)
 #define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
 #define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
 
 #define SECOC_FRESHNESS_MAX_LENGTH                                  ((uint8)32)
 
-#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADERLENGTH + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1) + (SECOC_TX_AUTH_INFO_TRUNC_LENGTH/8 + 1))
+#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADER_MAX_LENGTH + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1) + (SECOC_TX_AUTH_INFO_TRUNC_LENGTH/8 + 1))
 
 #define SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1))
 
@@ -419,7 +420,7 @@ typedef struct
     float64 SecOCMainFunctionPeriodRx;
     SecOCMainFunctionRxPartitionRefType *SecOCMainFunctionRxPartitionRef; /* NOT SURE ABOUT THAT TYPE */
 
-}SecOCMainFunctionRxType;
+}SecOC_MainFunctionRxType;
 
 /*****************************************
  *          * Container Info *           *
@@ -445,7 +446,7 @@ typedef struct
    boolean                                                        SecOCUseAuthDataFreshness;
    SecOC_VerificationStatusPropagationMode_Type                   SecOCVerificationStatusPropagationMode;
    SecOC_RxAuthServiceConfigRefType                              *SecOCRxAuthServiceConfigRef;
-   SecOCMainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
+   SecOC_MainFunctionRxType                                      *SecOCRxPduMainFunctionRef;
    SecOC_SameBufferPduCollectionType                             *SecOCSameBufferPduRef;
    SecOC_RxSecuredPduLayerType                                   *SecOCRxSecuredPduLayer;
    SecOC_RxAuthenticPduLayerType                                 *SecOCRxAuthenticPduLayer;
