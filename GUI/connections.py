@@ -233,7 +233,7 @@ class MyConnections:
                 self.dialog.LCD.setText(my_string[1:])
 
             self.dialog.receivePayload.setText("")
-            self.dialog.rlog.info(my_string)
+            self.dialog.rlog.info(my_string[1:])
         else:
             self.dialog.rlog.error(my_string)
             
