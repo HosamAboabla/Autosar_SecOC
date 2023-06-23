@@ -811,8 +811,18 @@ void SecOC_RxIndication(PduIdType RxPduId, const PduInfoType* PduInfoPtr)
         securedPdu->MetaDataPtr = PduInfoPtr->MetaDataPtr;
 
         /* [SWS_SecOC_00078] */
-        securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
-
+        if(headerLen > 0)
+        {
+            (void)memcpy(&authLen, &PduInfoPtr->SduDataPtr[0] ,headerLen);
+            authRecieveLength[RxPduId] = authLen;
+            PduLengthType securePduLength = headerLen + authRecieveLength[RxPduId] + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCFreshnessValueTruncLength) + BIT_TO_BYTES(SecOCRxPduProcessing[RxPduId].SecOCAuthInfoTruncLength);
+            securedPdu->SduLength = securePduLength;
+        }
+        else
+        {
+            securedPdu->SduLength = MIN(PduInfoPtr->SduLength, SECOC_SECPDU_MAX_LENGTH);
+        }
+        
         /* [SWS_SecOC_00234], [SWS_SecOC_00235] */
         SecOC_RxCounters[RxPduId].AuthenticationCounter = 0;
         SecOC_RxCounters[RxPduId].VerificationCounter = 0; 
