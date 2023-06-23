@@ -47,6 +47,7 @@ static char* errorString(Std_ReturnType error)
 
 void GUIInterface_init()
 {
+    ethernet_init();
     SecOC_Init(&SecOC_Config);
 }
 
