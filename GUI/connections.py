@@ -145,7 +145,7 @@ class MyConnections:
         self.UpdateTransmitterSecPayload()
 
     def OnShowTimeButtonClicked(self):
-        self.dialog.tlog.debug("OnShowTimeButtonClicked")
+        self.dialog.tlog.debug("Show Time")
         # Get the current time as a string in the format "03:12 AM"
         current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p") + + 10 * "$"
 
@@ -161,7 +161,7 @@ class MyConnections:
 
 
     def OnShowDateButtonClicked(self):
-        self.dialog.tlog.debug("OnShowDateButtonClicked")
+        self.dialog.tlog.debug("Show Date 📅")
         # Get the current date as a string in the format "3/10/2000"
         current_date_str = '4' + datetime.datetime.now().strftime("%-Y/%-m/%d") + 9 * "$"
         # Convert the string to a c_ubyte array
@@ -176,7 +176,7 @@ class MyConnections:
 
 
     def OnAlterFreshButtonClicked(self):
-        self.dialog.tlog.debug("OnAlterFreshButtonClicked")
+        self.dialog.tlog.debug("Manipulating Freshness...")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterFreshness(currentIndex)
@@ -185,7 +185,7 @@ class MyConnections:
 
     
     def OnAlterAuthButtonClicked(self):
-        self.dialog.tlog.debug("OnAlterAuthButtonClicked")
+        self.dialog.tlog.debug("Manipulating Authenticator...")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterAuthenticator(currentIndex)
@@ -200,7 +200,7 @@ class MyConnections:
 
 
     def OnTlogClearButtonClicked(self):
-        self.dialog.tlog.debug("OnTlogClearButtonClicked")
+        self.dialog.tlog.debug("Clearing... ")
         self.dialog.tlogger.clear()                                             
 
 
@@ -208,7 +208,7 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.rlog.debug("OnVerifyButtonClicked")      
+        self.dialog.rlog.debug("Verifing...")      
         if self.current_rx_id == -1:
             return 
         if self.current_rx_id in [6,7]:
@@ -240,7 +240,7 @@ class MyConnections:
 
 
     def OnRlogClearButtonClicked(self):
-        self.dialog.rlog.debug("OnRlogClearButtonClicked")
+        self.dialog.rlog.debug("Clearing... ")
         self.dialog.rlogger.clear()                                             
     
 
