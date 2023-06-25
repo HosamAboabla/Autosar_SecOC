@@ -513,7 +513,7 @@ void SecOC_MainFunctionTx(void)
                 #endif
 
                 /* [SWS_SecOC_00228] */
-                if( SecOC_TxCounters[idx].AuthenticationCounter == SecOCTxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
+                if( SecOC_TxCounters[idx].AuthenticationCounter >= SecOCTxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
                 {
                     authPdu->SduLength = 0;
                 }
