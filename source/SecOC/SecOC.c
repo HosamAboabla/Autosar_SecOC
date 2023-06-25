@@ -513,7 +513,7 @@ void SecOC_MainFunctionTx(void)
                 #endif
 
                 /* [SWS_SecOC_00228] */
-                if( SecOC_TxCounters[idx].AuthenticationCounter == SecOCTxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
+                if( SecOC_TxCounters[idx].AuthenticationCounter >= SecOCTxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
                 {
                     authPdu->SduLength = 0;
                 }
@@ -1210,7 +1210,7 @@ void SecOC_MainFunctionRx(void)
                 #endif
 
                 /* [SWS_SecOC_00240], [SWS_SecOC_00238], [SWS_SecOC_00151] */
-                if( SecOC_RxCounters[idx].AuthenticationCounter == SecOCRxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
+                if( SecOC_RxCounters[idx].AuthenticationCounter >= SecOCRxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
                 {
                     securedPdu->SduLength = 0;
                 }
@@ -1228,7 +1228,7 @@ void SecOC_MainFunctionRx(void)
                 #endif
 
                 /* [SWS_SecOC_00241] */
-                if( SecOC_RxCounters[idx].VerificationCounter == SecOCRxPduProcessing[idx].SecOCAuthenticationVerifyAttempts )
+                if( SecOC_RxCounters[idx].VerificationCounter >= SecOCRxPduProcessing[idx].SecOCAuthenticationVerifyAttempts )
                 {
                     securedPdu->SduLength = 0;
                 }
