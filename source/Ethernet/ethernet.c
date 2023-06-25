@@ -32,7 +32,7 @@ void ethernet_init(void)
 
     uint8 ip_address_read[16];
     /* Open the file containing the IP address */
-    FILE* fp = fopen("../source/Ethernet/ip_address.txt", "r");
+    FILE* fp = fopen("./source/Ethernet/ip_address.txt", "r");
     if (fp == NULL) 
     {
         #ifdef ETHERNET_DEBUG
