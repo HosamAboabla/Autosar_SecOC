@@ -1195,7 +1195,7 @@ void SecOC_MainFunctionRx(void)
                 #endif
 
                 /* [SWS_SecOC_00240], [SWS_SecOC_00238], [SWS_SecOC_00151] */
-                if( SecOC_RxCounters[idx].AuthenticationCounter == SecOCRxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
+                if( SecOC_RxCounters[idx].AuthenticationCounter >= SecOCRxPduProcessing[idx].SecOCAuthenticationBuildAttempts )
                 {
                     securedPdu->SduLength = 0;
                 }
