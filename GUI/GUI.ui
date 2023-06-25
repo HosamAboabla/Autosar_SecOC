@@ -46,12 +46,32 @@
          </property>
          <item>
           <property name="text">
-           <string>CANIF</string>
+           <string>Direct transmission (CanIf)</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>CANTP</string>
+           <string>Transport protocol transmission (CanTp)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Transport protocol transmission (Ethernet)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Direct transmission without Trunc-FV and header (CanIf)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Transport protocol transmission without header(CanTp)</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Secured Pdu Collection (CanIf)</string>
           </property>
          </item>
         </widget>
@@ -157,12 +177,12 @@
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
           <item>
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="transmitPayload">
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>3 - 13412 - 34 - 192381209</string>
+             <string/>
             </property>
             <property name="dragEnabled">
              <bool>false</bool>
@@ -378,7 +398,7 @@
                </size>
               </property>
               <property name="text">
-               <string>3:12 AM 3/10/2000</string>
+               <string/>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -437,7 +457,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
-           <widget class="QLineEdit" name="lineEdit_3">
+           <widget class="QLineEdit" name="receivePayload">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -448,7 +468,7 @@
              <bool>false</bool>
             </property>
             <property name="text">
-             <string>3 - 13412 - 34 - 192381209</string>
+             <string/>
             </property>
             <property name="dragEnabled">
              <bool>false</bool>
