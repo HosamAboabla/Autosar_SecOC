@@ -5,10 +5,11 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Contributing](#contributing)
+- [Contributors](#contributors)
 - [SecOC Operation](#secoc-operation)
 - [Supported Modes](#supported-modes)
 - [Tools](#tools)
+- [Installation](#installation)
 - [Testing](#testing)
 - [Documentation](#documentation)
 - [Conclusion](#conclusion)
@@ -25,6 +26,27 @@ ___
 
 This is a bachelor's graduation project that aims to implement the AUTOSAR software module concerned with providing effective information security on in-vehicle networks, addressing the rising concerns surrounding malicious attacks. By supplementing the existing AUTOSAR package, SecOC introduces a set of communication encryption and verification standards specifically designed for telematics buses.
 
+
+## Contributors
+
+SecOC team under the supervision of:
+* Eng. Ahmed Elsaka.
+* Prof. Dr. Wael Mohammed AlAwadi.  
+
+
+Team members are six senior Computer and Automatic Controls Students :
+* Abdallah Alaa Ali Salem.
+  (Email: @gmail.com)
+* Galal Nasser Mohamed Elfeky.
+  (Email: @gmail.com)
+* Hosam Sayed Ahmed Mohamed Aboabla. 
+ (Email: hosamaboabla@yahoo.com)
+* Hussein AbdAlsalam Hassan Elsaka.
+  (Email: @gmail.com)
+* Mohammed Abdelsattar Abdelsattar Aboelniel.
+  (Email: @gmail.com)
+* Ziad Ashraf Kamel Gamalelden.
+  (Email: @gmail.com)
 ### What is SecOC?
 
 SecOC (Secure On-Board Communication) is integrated as an information security component within the AUTOSAR architecture. It incorporates various functionalities, including encryption and decryption operations, key management, and fresh value management and distribution. At the PDU (Protocol Data Unit) level, SecOC offers a robust authentication mechanism for critical data. The authentication mechanism seamlessly integrates with the current AUTOSAR communication systems while minimizing resource consumption, ensuring backward compatibility with legacy systems.
@@ -79,14 +101,14 @@ The receiver of the message calculates the MAC using the same shared secret key.
 - The TP mode in SecOC involves the use of a transport protocol for secure communication between sender and receiver entities.
 - The transport protocol is responsible for establishing a reliable and secure communication channel between the SecOC modules on both sides.
 - In the TP mode, large messages are segmented into smaller units at the sender side before transmission.
-- The segments are individually secured and transmitted over the communication channel.
+- The segments are individually secured and transmitd ovteer the communication channel.
 - At the receiver side, the segments are reassembled to reconstruct the original message.
 
 
 
 ## Tools
 
-1. CMake
+1. CMake (version 3.25.2)
 
 * CMake served as a vital tool for various aspects of our development process. We utilized CMake to compile the codebase, primarily focusing on the Windows platform for development and testing purposes.
 However, our main target environment was the Linux-based Raspberry Pi.
@@ -117,6 +139,14 @@ project management.
 our workflow and allowed for efficient collaboration.
 
 
+## Installation
+``` bash
+git clone https://github.com/HosamAboabla/Autosar_SecOC.git
+mkdir build
+cd build
+cmake -G "Unix Makefiles" ..
+make
+```
 ## Testing
 
 * Test Cases
