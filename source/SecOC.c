@@ -1,6 +1,0 @@
-#include "SecOC_Lcfg.h"
-#include "SecOC_PBcfg.h"
-#include "SecOC_Cbk.h"
-#include "Det.h"
-#include "Rte_SecOC.h"
-#include "SecOC.h"

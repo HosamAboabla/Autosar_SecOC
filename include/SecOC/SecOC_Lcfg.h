@@ -1,12 +1,100 @@
 #ifndef INCLUDE_SECOC_LCFG_H_
 #define INCLUDE_SECOC_LCFG_H_
 
+/********************************************************************************************************/
+/************************************************INCULDES************************************************/
+/********************************************************************************************************/
+
 #include "Std_Types.h"
 #include "SecOC_Types.h"
 #include "Rte_SecOC.h"
+#include "SecOC_Cfg.h"
+
+/********************************************************************************************************/
+/************************************************Defines*************************************************/
+/********************************************************************************************************/
+
+/* Derived configuration*/
+#define SECOC_AUTHPDU_MAX_LENGTH                                    ((uint32) 20)
+#define SECOC_AUTHPDU_HEADER_MAX_LENGTH                             ((uint8)4)
+#define SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + SECOC_TX_FRESHNESS_VALUE_LENGTH)
+#define SECOC_AUTHENTICATOR_MAX_LENGTH                              ((uint8)32)
+
+#define SECOC_FRESHNESS_MAX_LENGTH                                  ((uint8)32)
+
+#define SECOC_SECPDU_MAX_LENGTH                                     (SECOC_AUTHPDU_HEADER_MAX_LENGTH + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1) + (SECOC_TX_AUTH_INFO_TRUNC_LENGTH/8 + 1))
+
+#define SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH                       (sizeof(PduIdType) + SECOC_AUTHPDU_MAX_LENGTH + (SECOC_FRESHNESS_MAX_LENGTH/8 + 1))
 
 
 
+#define SECOC_NUM_OF_TX_PDU_PROCESSING                               (6)
+#define SECOC_NUM_OF_RX_PDU_PROCESSING                               (6)
+
+
+
+
+/********************************************************************************************************/
+/*******************************************StructAndEnums***********************************************/
+/********************************************************************************************************/
+
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
+typedef struct
+{
+
+   uint8                   Freshness[SECOC_FRESHNESS_MAX_LENGTH/8];  /* Complete Freshness Value */
+   uint32                  FreshnessLenBits;
+
+   uint8                   FreshnessTrunc[SECOC_FRESHNESS_MAX_LENGTH/8];   /* Truncated freshness value */
+   uint32                  FreshnessTruncLenBits;
+
+   uint8                   DataToAuth[SECOC_TX_DATA_TO_AUTHENTICATOR_LENGTH];
+   uint32                  DataToAuthLen;
+
+   uint8                   AuthenticatorPtr[SECOC_AUTHENTICATOR_MAX_LENGTH];
+   uint32                  AuthenticatorLen;
+
+} SecOC_TxIntermediateType;
+
+
+typedef struct 
+{
+   SecOC_PduCollection_Type   Type;
+   uint16                     CollectionId;
+   uint16                     AuthId;
+   uint16                     CryptoId;
+   Std_ReturnType             status;
+} SecOC_PduCollection;
+
+
+typedef struct
+{
+   uint16 AuthenticationCounter;
+} SecOC_TxCountersType;
+
+typedef struct
+{
+   uint16 AuthenticationCounter;
+   uint16 VerificationCounter;
+} SecOC_RxCountersType;
+
+/* [SWS_SecOC_00057] The SecOC module shall provide sufficient buffers to store all intermediate data */
+typedef struct
+{
+   uint8                   authenticPdu[SECOC_AUTHPDU_MAX_LENGTH];
+   uint32                  authenticPduLen;
+
+   uint8                   freshness[SECOC_FRESHNESS_MAX_LENGTH / 8];
+   uint32                  freshnessLenBits;
+   Std_ReturnType          freshnessResult;
+   
+   uint8                   mac[SECOC_AUTHENTICATOR_MAX_LENGTH / 8];
+   uint32                  macLenBits;
+
+   uint8                   DataToAuth[SECOC_RX_DATA_TO_AUTHENTICATOR_LENGTH];
+   uint32                  DataToAuthLen;
+
+} SecOC_RxIntermediateType;
 
 
 typedef SecOC_StatusPropagationMode_Type SecOC_ClientServerVerificationStatusPropagationMode_Type;
@@ -24,8 +112,6 @@ typedef void (SecOC_VerificationStatusCalloutType) (SecOC_VerificationStatusType
 
 
 typedef uint16                SecOC_MainFunctionTxPartitionRefType;/* NOT SURE ABOUT THAT TYPE */
-typedef struct EcuC_PduType EcuC_PduType;
-extern EcuC_PduType           EcuC_Pdu; /* Reference to the global Pdu. */
 
 /*
 * Start of RxPduProcessing
@@ -95,7 +181,7 @@ typedef struct
 typedef struct
 {
    uint16                  SecOCTxCryptographicPduId;
-   EcuC_PduType            *SecOCTxCryptographicPduRef;
+   PduInfoType             SecOCTxCryptographicPduRef;
 } SecOC_TxCryptographicPduType;
 
 
@@ -112,7 +198,7 @@ typedef struct
 {
    uint8                         SecOCAuthPduHeaderLength;
    uint16                        SecOCTxAuthenticPduId;
-   EcuC_PduType                  *SecOCTxAuthenticPduRef;
+   PduInfoType                   SecOCTxAuthenticPduRef;
 } SecOC_TxAuthenticPduType;
 
 
@@ -147,11 +233,15 @@ typedef struct
 {
     uint8                   SecOCAuthPduHeaderLength;
     uint16                  SecOCTxSecuredLayerPduId;
-    EcuC_PduType            *SecOCTxSecuredLayerPduRef;
+    PduInfoType             SecOCTxSecuredLayerPduRef;
 } SecOC_TxSecuredPduType;
 
 
-
+typedef struct
+{
+   SecOC_TxSecuredPduType                 *SecOCTxSecuredPdu;
+   SecOC_TxSecuredPduCollectionType       *SecOCTxSecuredPduCollection;
+}SecOC_TxSecuredPduLayerType;
 
 /**************************************************************
  *          * Container Info *                                *
@@ -164,7 +254,7 @@ typedef struct
 {
     SecOC_PduType_Type      SecOCPduType;
     uint16                  SecOCTxAuthenticLayerPduId;
-    EcuC_PduType            *SecOCTxAuthenticLayerPduRef;
+    PduInfoType       SecOCTxAuthenticLayerPduRef;
 } SecOC_TxAuthenticPduLayerType;
 
 
@@ -177,22 +267,22 @@ typedef struct
  ***************************************************/
 typedef struct
 {
-    uint16                                              SecOCAuthenticationBuildAttempts;
-    uint16                                              SecOCAuthInfoTruncLength;
-    uint16                                              SecOCDataId;
-    uint16                                              SecOCFreshnessValueId;
-    uint8                                               SecOCFreshnessValueLength;
-    uint8                                               SecOCFreshnessValueTruncLength;
-    boolean                                             SecOCProvideTxTruncatedFreshnessValue;
-    boolean                                             SecOCReAuthenticateAfterTriggerTransmit;
-    uint8                                               SecOCTxPduUnusedAreasDefault;
-    boolean                                             SecOCUseTxConfirmation;
-    //                                                  SecOCSameBufferPduRef;
-    //                                                  SecOCTxAuthServiceConfigRef
-    //                                                  SecOCTxPduMainFunctionRef;
-    const SecOC_TxAuthenticPduLayerType                 *SecOCTxAuthenticationPduLayer;
-    const SecOC_TxPduSecuredAreaType                    *SecOCTxPduSecuredArea;
-//                                                      SecOCTxSecuredPduLayer
+   uint16                                              SecOCAuthenticationBuildAttempts;
+   uint16                                              SecOCAuthInfoTruncLength;
+   uint16                                              SecOCDataId;
+   uint16                                              SecOCFreshnessValueId;
+   uint8                                               SecOCFreshnessValueLength;
+   uint8                                               SecOCFreshnessValueTruncLength;
+   boolean                                             SecOCProvideTxTruncatedFreshnessValue;
+   boolean                                             SecOCReAuthenticateAfterTriggerTransmit;
+   uint8                                               SecOCTxPduUnusedAreasDefault;
+   boolean                                             SecOCUseTxConfirmation;
+   /*                                                  SecOCSameBufferPduRef;*/
+   /*                                                  SecOCTxAuthServiceConfigRef*/
+   /*                                                  SecOCTxPduMainFunctionRef;*/
+   SecOC_TxAuthenticPduLayerType                      *SecOCTxAuthenticPduLayer;
+   /*const SecOC_TxPduSecuredAreaType                  *SecOCTxPduSecuredArea;*/
+   const SecOC_TxSecuredPduLayerType                   *SecOCTxSecuredPduLayer;
 }SecOC_TxPduProcessingType;
 
 
@@ -209,7 +299,7 @@ typedef struct
 {
    uint8                 SecOCAuthPduHeaderLength;
    uint16                SecOCRxAuthenticPduId;
-   EcuC_PduType         *SecOCRxAuthenticPduRef;
+   PduInfoType         SecOCRxAuthenticPduRef;
 }SecOC_RxAuthenticPduType;
 
 /*****************************************
@@ -222,7 +312,7 @@ typedef struct
 typedef struct
 {
    uint16            SecOCRxCryptographicPduId;
-   EcuC_PduType     *SecOCRxCryptographicPduRef;
+   PduInfoType     SecOCRxCryptographicPduRef;
 }SecOC_RxCryptographicPduType;
 /*****************************************
  *          * Container Info *           *
@@ -250,7 +340,7 @@ typedef struct
 {
    SecOC_PduType_Type             SecOCPduType;
    uint16                     SecOCRxAuthenticLayerPduId;
-   EcuC_PduType              *SecOCRxAuthenticLayerPduRef;
+   PduInfoType                SecOCRxAuthenticLayerPduRef;
 }SecOC_RxAuthenticPduLayerType;
 
 /*****************************************
@@ -265,7 +355,7 @@ typedef struct
    uint8           SecOCAuthPduHeaderLength;
    uint16          SecOCRxSecuredLayerPduId;
    boolean         SecOCSecuredRxPduVerification;
-   EcuC_PduType   *SecOCRxSecuredLayerPduRef;
+   PduInfoType     SecOCRxSecuredLayerPduRef;
 }SecOC_RxSecuredPduType;
 
 /*****************************************
@@ -310,7 +400,7 @@ typedef struct
  * Parent_Container_Name : SecOCRxPduProcessing           *
  * Container_Index       : ECUC_SecOC_00048        *
  *****************************************/
-//extern Csm_JobType CsmJob;
+/*extern Csm_JobType CsmJob;*/
 typedef struct
 {
    Csm_JobType    *CsmJob;
@@ -323,12 +413,12 @@ typedef struct
 * Index : 10.1.3                                             *
 **************************************************************/
 
-typedef uint16              SecOC_MainFunctionRxPartitionRefType; /* NOT SURE ABOUT THAT TYPE */
+typedef uint16              SecOCMainFunctionRxPartitionRefType; /* NOT SURE ABOUT THAT TYPE */
 
 typedef struct 
 {
     float64 SecOCMainFunctionPeriodRx;
-    SecOC_MainFunctionRxPartitionRefType *SecOCMainFunctionRxPartitionRef; /* NOT SURE ABOUT THAT TYPE */
+    SecOCMainFunctionRxPartitionRefType *SecOCMainFunctionRxPartitionRef; /* NOT SURE ABOUT THAT TYPE */
 
 }SecOC_MainFunctionRxType;
 
@@ -395,20 +485,30 @@ typedef struct
 
 typedef struct 
 {
-    uint8   SecOCDefaultAuthenticationInformationPattern;
-    boolean SecOCDevErrorDetect;
-    boolean SecOCEnableForcedPassOverride;
-    boolean SecOCEnableSecurityEventReporting;
-    boolean SecOCIgnoreVerificationResult;
-    uint8 SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
-    boolean SecOCOverrideStatusWithDataId;
-    boolean SecOCPropagateOnlyFinalVerificationStatus;
-    SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
-    // SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;
-    boolean SecOCVersionInfoApi;
-    //SecOC_SecurityEventRefsType *SecOCSecurityEventRefs; /* can't have the container of it */
+   uint8   SecOCDefaultAuthenticationInformationPattern;
+   boolean SecOCDevErrorDetect;
+   boolean SecOCEnableForcedPassOverride;
+   boolean SecOCEnableSecurityEventReporting;
+   boolean SecOCIgnoreVerificationResult;
+   uint8   SecOCMaxAlignScalarType[100];  /* This type can be e.g. uint8, uint16 or uint32.*/
+   boolean SecOCOverrideStatusWithDataId;
+   boolean SecOCPropagateOnlyFinalVerificationStatus;
+   SecOC_QueryFreshnessValue_Type SecOCQueryFreshnessValue;
+   /* SecOC_VerificationStatusCalloutType* SecOCVerificationStatusCallout;*/
+   boolean SecOCVersionInfoApi;
+   /*SecOC_SecurityEventRefsType *SecOCSecurityEventRefs;*/ /* can't have the container of it */
 
 }SecOC_GeneralType;
+
+
+
+typedef struct /*Specific Implementation Data Structure Configuration SecOC Module Data Structure*/
+{ 
+	const SecOC_GeneralType* General;
+	const SecOC_TxPduProcessingType* SecOCTxPduProcessings;
+	const SecOC_RxPduProcessingType* SecOCRxPduProcessings;
+}SecOC_ConfigType;
+
 
 
 

@@ -1,4 +1,6 @@
 .vscode/*
+build/*
+GUI/__pycache__
 # Prerequisites
 *.d
 
@@ -51,3 +53,5 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*.dump
+cppcheck_includes.txt

@@ -7,6 +7,16 @@
 #ifndef INCLUDE_STD_TYPES_H_
 #define INCLUDE_STD_TYPES_H_
 
+/********************************************************************************************************/
+/*******************************************DefinesAndTypedef********************************************/
+/********************************************************************************************************/
+
+/* Convert the bits to nearst byte */
+#define BIT_TO_BYTES(NUMBITS) ((NUMBITS  % 8 == 0) ? (NUMBITS/8) :  (((NUMBITS / 8) + 1)))
+
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 /* Boolean Values */
 #ifndef FALSE
 #define FALSE       (0u)
@@ -17,6 +27,7 @@
 
 #define HIGH        (1u)
 #define LOW         (0u)
+
 
 /* Boolean Data Type */
 typedef unsigned char           boolean;
@@ -31,10 +42,16 @@ typedef unsigned long long      uint64;         /*       0..18446744073709551615
 typedef float                   float32;
 typedef double                  float64;
 
+
+
+#ifndef NULL
 #define NULL ((void*)0)
+#endif
 
 typedef uint8 Std_ReturnType;
 #define E_OK            ((Std_ReturnType)0x00)
 #define E_NOT_OK        ((Std_ReturnType)0x01)
+#define E_BUSY          ((Std_ReturnType)0x02)
+#define QUEUE_FULL      ((Std_ReturnType)0x03)
 
 #endif /* INCLUDE_STD_TYPES_H_ */

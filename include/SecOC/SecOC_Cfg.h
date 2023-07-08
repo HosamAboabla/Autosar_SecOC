@@ -8,7 +8,6 @@
 */
 
 
-
 /*************************************************************
 *                          Container                         *
 * Name : SecOCMainFunctionTx                                 *
@@ -19,7 +18,7 @@
 /*
 * Configration parameter for SecOCMainFunctionPeriodTx
 */
-#define SECOC_MAIN_FUNCTION_PERIOD_TX                                   ((float64)0)    
+#define SECOC_MAIN_FUNCTION_PERIOD_TX                                   ((float64)0.9)    
 
 /*
 * Configration parameter for SecOCMainFunctionTxPartitionRef
@@ -39,12 +38,12 @@
 /*
 * Configration parameter for SecOCMainFunctionPeriodRx
 */
-#define SECOC_MAIN_FUNCTION_PERIOD_RX                                   ((float64)0)    
+#define SECOC_MAIN_FUNCTION_PERIOD_RX                                   ((float64)0.9)    
 
 /*
 * Configration parameter for SecOCMainFunctionRxPartitionRef
 */
-#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOC_MainFunctionRxPartitionRefType*)NULL)    
+#define SECOC_MAIN_FUNCTION_RX_PARTITION_REF                            ((SecOCMainFunctionRxPartitionRefType*)NULL)    
 
 
 
@@ -128,11 +127,11 @@
 
 
 
-// /* NOTE i don't container  */
-// /* 
-// * Configration parameter for SecOCSecurityEventRefs 
-// */ 
-// #define SECOC_SECURITY_EVENT_REFS                                  ((SecOC_SecurityEventRefsType)NULL)
+/* NOTE i don't container  */
+/* 
+* Configration parameter for SecOCSecurityEventRefs 
+*/ 
+/* #define SECOC_SECURITY_EVENT_REFS                                  ((SecOC_SecurityEventRefsType)NULL)*/
 
 
 
@@ -159,7 +158,7 @@
 /*
 * Configuration Parameter for SecOCBufferLength
 */
-#define SECOC_BUFFERLENGTH                  ((uint32)0)
+#define SECOC_BUFFERLENGTH                  ((uint32)100)
 
 /*****************************************
  *          * Container Info *           *
@@ -182,47 +181,47 @@
 /*
 * Configuration Parameter for SecOC_AuthenticationBuildAttempts
 */
-#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)0)
+#define SECOC_AUTHENTICATION_BUILDATTEMPTS      ((uint16)5)
 
 /*
 * Configuration Parameter for SecOC_AuthenticationVerifyAttempts
 */
-#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)0)
+#define SECOC_AUTHENTICATION_VERIFYATTEMPTS     ((uint16)5)
 
 /*
 * Configuration Parameter for SecOC_AuthInfoTruncLength
 */
-#define SECOC_AUTHINFO_TRUNCLENGTH      ((uint16)1)
+#define SECOC_RX_AUTH_INFO_TRUNCLENGTH      ((uint16)32)
 
 /*
 * Configuration Parameter for SecOC_ClientServerVerificationStatusPropagationMode
 */
-#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       NONE
+#define SECOC_CLIENTSERVER_VERIFICATIONSTATUS_PROPAGATIONMODE       ((SecOC_StatusPropagationMode_Type)SECOC_BOTH)
 
 /*
 * Configuration Parameter for SecOC_DataId
 */
-#define SECOC_RX_DATA_ID        ((uint16)1)
+#define SECOC_RX_DATA_ID        ((uint16)0)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueId
 */
-#define SECOC_FRESHNESSVALUE_ID      ((uint16)1)
+#define SECOC_FRESHNESSVALUE_ID      ((uint16)20)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueLength
 */
-#define SECOC_FRESHNESSVALUE_LENGTH     ((uint8)10)
+#define SECOC_RX_FRESHNESS_VALUE_LENGTH     ((uint8)24)
 
 /*
 * Configuration Parameter for SecOC_FreshnessValueTruncLength
 */
-#define SECOC_FRESHNESSVALUE_TRUNCLENGTH        ((uint8)0)
+#define SECOC_RX_FRESHNESS_VALUE_TRUNCLENGTH        ((uint8)8)
 
 /*
 * Configuration Parameter for SecOC_ReceptionOverflowStrategy
 */
-#define SECOC_RECEPTION_OVERFLOW_STRATEGY       SECOC_QUEUE
+#define SECOC_RECEPTION_OVERFLOW_STRATEGY       SECOC_REPLACE
 
 /*
 * Configuration Parameter for SecOC_ReceptionQueueSize
@@ -237,7 +236,7 @@
 /*
 * Configuration Parameter for SecOC_VerificationStatusPropagationMode
 */
-#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        NONE
+#define SECOC_VERIFICATIONSTATUS_PROPAGATIONMODE        ((SecOC_StatusPropagationMode_Type)SECOC_BOTH)
 
 /*
 * Configuration Parameter for Csm_JobId
@@ -255,7 +254,7 @@
 /*
 * Configuration Parameter for SecOC_AuthPduHeaderLength
 */
-#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)0)
+#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)1)
 
 /*
 * Configuration Parameter for SecOC_RxSecuredLayerPduId
@@ -265,7 +264,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDUVERIFICATION        FALSE
+#define SECOC_SECURED_RX_PDUVERIFICATION        TRUE
 
 
 /*****************************************
@@ -296,7 +295,7 @@
 /*
 * Configuration Parameter for SecOC_SecuredRxPduVerification
 */
-#define SECOC_SECURED_RX_PDU_VERIFICATION       FALSE
+#define SECOC_SECURED_RX_PDU_VERIFICATION       TRUE
 
 /*****************************************
  *          * Container Info *           *
@@ -308,12 +307,12 @@
 /*
 * Configuration Parameter for SecOC_AuthPduHeaderLength
 */
-#define SECOC_AUTHPDU_HEADERLENGTH      ((uint8)0)
+#define SECOC_CRYPTO_AUTHPDU_HEADERLENGTH      ((uint8)1)
 
 /*
 * Configuration Parameter for SecOC_RxAuthenticPduId
 */
-#define SECOC_RXAUTHENTIC_PDUID         ((uint16)0)
+#define SECOC_CRYPTO_RXAUTHENTIC_PDUID         ((uint16)0)
 
 
 /*****************************************
@@ -352,7 +351,7 @@
  * Container_Index       : 10.1.14                            *
  **************************************************************/
 
-#define SECOC_TX_PDUTYPE                      ((SecOC_PduType_Type)SECOC_TPPDU)
+#define SECOC_TX_PDUTYPE                    ((SecOC_PduType_Type)SECOC_IFPDU)
 #define SECOC_TX_AUTHENTIC_LAYER_PDUID      ((uint16)0)
 
 
@@ -364,7 +363,7 @@
  * Container_Index       : 10.1.16                            *
  **************************************************************/
 
-#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)0)
+#define SECOC_AUTH_PDUHEADER_LENGTH        ((uint8)1)
 #define SECOC_TX_SECURED_LAYER_PDUID        ((uint16)0)
 
 
@@ -376,8 +375,8 @@
  * Container_Index       : 10.1.20                          *
  ***********************************************************/
 
-#define SECOC_MESSAGE_LINKLEN               ((uint16)0)
-#define SECOC_MESSAGE_LINKPOS               ((uint16)0)
+#define SECOC_MESSAGE_LINKLEN               ((uint16)3)
+#define SECOC_MESSAGE_LINKPOS               ((uint16)5)
 
 /************************************************************
  *          * Container Info *                              *
@@ -388,7 +387,7 @@
  ***********************************************************/
 
 #define SECOC_TX_CRYPTOGRAPHIC_PDUID        ((uint16)0)
-#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)&EcuC_Pdu)
+#define SECOC_TX_CRYPTOGRAPHIC_PDUREF       ((EcuC_PduType*)NULL) /*((EcuC_PduType*)&EcuC_Pdu)*/
 
 /************************************************************
  *          * Container Info *                              *
@@ -398,9 +397,9 @@
  * Container_Index       : 10.1.18                          *
  ***********************************************************/
 
-#define SECOC_AUTH_PDUHEADER_LENGTH         ((uint8)0)
-#define SECOC_TX_AUTHENTIC_PDUID            ((uint16)0)
-#define SECOC_TX_AUTHENTIC_PDUREF           ((EcuC_PduType*)&EcuC_Pdu)
+#define SECOC_CRYPTO_AUTH_PDUHEADER_LENGTH         ((uint8)1)
+#define SECOC_CRYPTO_TX_AUTHENTIC_PDUID            ((uint16)0)
+#define SECOC_CRYPTO_TX_AUTHENTIC_PDUREF           
 
 
 
@@ -443,24 +442,24 @@
  ***************************************************/
 
 #define SECOC_AUTHENTICATION_BUILD_ATTEMPTS                         ((uint16) 5)
-#define SECOC_AUTH_INFO_TRUNC_LENGTH                                ((uint16) 1)
-#define SECOC_TX_DATA_ID                                               ((uint16) 0)
-#define SECOC_FRESHNESS_VALUE_ID                                    ((uint16) 0)
-#define SECOC_FRESHNESS_VALUE_LENGTH                                ((uint8 ) 0)
-#define SECOC_FRESHNESS_VALUE_TRUNC_LENGTH                          ((uint8 ) 0)
-#define SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE                  ((boolean) 0)
+#define SECOC_TX_AUTH_INFO_TRUNC_LENGTH                             ((uint16) 32)
+#define SECOC_TX_DATA_ID                                            ((uint16) 0)
+#define SECOC_TX_FRESHNESS_VALUE_ID                                 ((uint16) 10)
+#define SECOC_TX_FRESHNESS_VALUE_LENGTH                             ((uint8) 24)
+#define SECOC_TX_FRESHNESS_VALUE_TRUNC_LENGTH                       ((uint8 ) 8)
+#define SECOC_PROVIDE_TX_TRUNCATED_FRESHNESS_VALUE                  ((boolean) TRUE)
 #define SECOC_RE_AUTHENTICATE_AFTER_TRIGGER_TRANSMIT                ((boolean) 1)
-#define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8 ) 0)
-#define SECOC_USE_TX_CONFIRMATION                                   ((boolean)0)
-//                                                  SecOCSameBufferPduRef;
-//                                                  SecOCTxAuthServiceConfigRef
-//                                                  SecOCTxPduMainFunctionRef;
+#define SECOC_TX_PDU_UNUSED_AREAS_DEFAULT                           ((uint8) 0)
+#define SECOC_USE_TX_CONFIRMATION                                   (0)
+
+/*                                                  SecOCSameBufferPduRef;*/
+/*                                                  SecOCTxAuthServiceConfigRef*/
+/*                                                  SecOCTxPduMainFunctionRef;*/
 
 
 
 /*
 * End of TxPduProcessing
 */
-
 
 #endif
