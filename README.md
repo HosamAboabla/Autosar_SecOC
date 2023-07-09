@@ -13,6 +13,7 @@
 - [Testing](#testing)
 - [Documentation](#documentation)
 - [Conclusion](#conclusion)
+- [Supported Features](#supported-features)
 - [Future Work](#future-work)
 - [License](#license)
 - [Credits](#credits)
@@ -30,23 +31,19 @@ This is a bachelor's graduation project that aims to implement the AUTOSAR softw
 ## Contributors
 
 SecOC team under the supervision of:
-* Eng. Ahmed Elsaka.
 * Prof. Dr. Wael Mohammed AlAwadi.  
+* Eng. Ahmed Elsaka.
 
 
 Team members are six senior Computer and Automatic Controls Students :
 * Abdallah Alaa Ali Salem.
-  (Email: @gmail.com)
 * Galal Nasser Mohamed Elfeky.
-  (Email: @gmail.com)
 * Hosam Sayed Ahmed Mohamed Aboabla. 
- (Email: hosamaboabla@yahoo.com)
 * Hussein AbdAlsalam Hassan Elsaka.
-  (Email: @gmail.com)
 * Mohammed Abdelsattar Abdelsattar Aboelniel.
-  (Email: @gmail.com)
 * Ziad Ashraf Kamel Gamalelden.
-  (Email: @gmail.com)
+
+
 ### What is SecOC?
 
 SecOC (Secure On-Board Communication) is integrated as an information security component within the AUTOSAR architecture. It incorporates various functionalities, including encryption and decryption operations, key management, and fresh value management and distribution. At the PDU (Protocol Data Unit) level, SecOC offers a robust authentication mechanism for critical data. The authentication mechanism seamlessly integrates with the current AUTOSAR communication systems while minimizing resource consumption, ensuring backward compatibility with legacy systems.
@@ -149,68 +146,34 @@ make
 ```
 ## Testing
 
-* Test Cases
+* Test Cases and Results
 
 1. Test Case 1: Message Authentication
 
-Verify that the SecOC module properly authenticates outgoing messages.
+        o Description: Verify that the SecOC module properly authenticates outgoing messages.
+        o Result: Pass
 
 2. Test Case 2: Message Integrity Verification
 
-Ensure that the SecOC module correctly verifies the integrity of incoming messages.
-
+        o Description: Ensure that the SecOC module correctly verifies the integrity of incoming messages.
+        o Result: Pass
+        
 3. Test Case 3: Communication Security
 
-Validate the end-to-end communication security using the SecOC module using direct transmission with header.
+        o Description: Validate the end-to-end communication security using the SecOC module using direct transmission with header.
+        o Result: Pass
+
 
 4. Test Case 4: Different configurations of PDUs using the GUI
 
-Ensures that the SecOC is working correctly with different configurations of PDUs like direct with header, direct
-without header, and transport protocol over CAN or Ethernet
+        o Description: Ensures that the SecOC is working correctly with different configurations of PDUs like direct with header, direct
+        without header, and transport protocol over CAN or Ethernet
+        o Result: Pass
 
 5. Test Case 5: Sending PDUs with altered MAC and Freshness and sending the same PDU twice:
 
-Ensures that the SecOC is responding successfully to different attacks like replay attack and man in the middle attack
-
-
-* Test Results
-
-1. Test Case 1: Message Authentication
- 
-* result: Pass
-* Description: The SecOC module successfully authenticated outgoing messages. The encrypted messages matched the
-expected encryption algorithm.
-
-
-2. Test Case 2: Message Integrity Verification 
-
-o Result: Pass 
-
-o Description: The SecOC module correctly verified the integrity of incoming messages. Valid messages were detected as intact, and
-invalid messages were detected as modified.
-
-
-3. Test Case 3: Communication Security 
-o Result: Pass 
-o Description: The end-to-end communication security was successfully established using the SecOC module. Messages exchanged between the Raspberry Pis were properly encrypted,
-transmitted, decrypted, and verified for integrity.
-
-
-4. Test Case 4: Different configurations of PDUs using the GUI: 
-o Result: Pass 
-o Description: the PDUs are authenticated, transmitted, and verified successfully for all the following configurations 1. Direct Transmission (CanIf) 2. Transport protocol transmission (CanTp) 3. Transport protocol transmission (Ethernet) 4. Direct Transmission without Trunc-FV and header (CanIf) 5. Transport transmission without header (CanTp)
-6. Secured PDU collection (CanIf)
-
-
-5. Test Case 5: Sending PDUs with altered MAC and Freshness and sending the same PDU twice:
-o Result: Pass 
-o Description: The SecOC successfully detects the integrity violation
-of repeated PDUs and altered PDUs in MAC or freshness value.
-
-Overall Test Results: o Test Coverage: The defined test cases covered all the specified functionalities and scenarios.
-o Defects: No critical defects were identified during the testing phase.
-o Test Objectives: The test objectives were achieved, and the SecOC module implementation met the expected functionality, security,
-and performance requirements.
+        o Description: Ensures that the SecOC is responding successfully to different attacks like replay attack and man in the middle attack
+        o Result: Pass
 
 
 
@@ -219,6 +182,48 @@ and performance requirements.
 the SecOC module represents an effective and essential information security solution for in-vehicle networks. Its implementation significantly enhances the security of automotive systems, safeguarding against unauthorized access, tampering, and data breaches. By adopting SecOC, automotive manufacturers demonstrate their commitment to customer safety
 and contribute to building a more secure and resilient automotive ecosystem.
 
+## Documentation
+
+Software was developed following certain standards and specifications.
+
+APIs, interfaces, confgurations, code and files structure follows the AUTOSAR SecureOnboardCommunication_SWS as per version R21-11 .
+
+
+The code was developed using best practice techniques following and abiding by the MISRA rules as per MISRA C:2012 standard.
+
+Here you can find our graduation book where you can find more details [Book](https://openai.com "Graduation Document").
+
+
+
+## Supported Features
+| Section |   |
+|----|-----|
+| Authentic I-PDU and Secured I-PDU | SWS_SecOC_00261 |
+|  Freshness Values | SWS_SecOC_00261 SWS_SecOC_00094 SWS_SecOC_00220 SWS_SecOC_00221 SWS_SecOC_00222 SWS_SecOC_00225 SWS_SecOC_00226 SWS_SecOC_00227 SWS_SecOC_00228 SWS_SecOC_00230 SWS_SecOC_00231 SWS_SecOC_00232 SWS_SecOC_00234 SWS_SecOC_00236 SWS_SecOC_00237 SWS_SecOC_00238 SWS_SecOC_00239 SWS_SecOC_00256 SWS_SecOC_00241 SWS_SecOC_00242 SWS_SecOC_00247 SWS_SecOC_00250|
+| Authentication of I-PDUs | SWS_SecOC_00031 SWS_SecOC_00033 SWS_SecOC_00034 SWS_SecOC_00035 SWS_SecOC_00036 SWS_SecOC_00037 |
+| Verification of I-PDUs | SWS_SecOC_00040 SWS_SecOC_00203 SWS_SecOC_00211 SWS_SecOC_00042 SWS_SecOC_00046 SWS_SecOC_00047|
+| Successful verification of I-PDUs | SWS_SecOC_00050 |
+| Relationship to PduR | SWS_SecOC_00153 SWS_SecOC_00212 |
+| Initialization | SWS_SecOC_00054 SWS_SecOC_00269 |
+| Authentication of outgoing PDUs | SWS_SecOC_00252 SWS_SecOC_00201 SWS_SecOC_00202 SWS_SecOC_00209 SWS_SecOC_00210 SWS_SecOC_00270 SWS_SecOC_00057 SWS_SecOC_00146 SWS_SecOC_00110 SWS_SecOC_00262 |
+| Authentication during direct transmission | SWS_SecOC_00058 SWS_SecOC_00060 SWS_SecOC_00061 SWS_SecOC_00062 SWS_SecOC_00063 SWS_SecOC_00064 |
+| Authentication during transport protocol transmission | SWS_SecOC_00072 SWS_SecOC_00073 SWS_SecOC_00074 SWS_SecOC_00075 |
+| Error handling and cancelation of transmission | SWS_SecOC_00076 SWS_SecOC_00151 SWS_SecOC_00108 |
+| Verification of incoming PDUs | SWS_SecOC_00214 SWS_SecOC_00215 SWS_SecOC_00204 SWS_SecOC_00216 SWS_SecOC_00207 SWS_SecOC_00257 SWS_SecOC_00259 |
+| Verification during bus interface reception | SWS_SecOC_00078 SWS_SecOC_00079 SWS_SecOC_00080 |
+| Verification during transport protocol reception | SWS_SecOC_00082 SWS_SecOC_00083 SWS_SecOC_00084 SWS_SecOC_00085 SWS_SecOC_00086 SWS_SecOC_00087 SWS_SecOC_00255 |
+| Skipping Authentication for Secured I-PDUs at SecOC | SWS_SecOC_00265 |
+| Error handling and discarding of reception | SWS_SecOC_00089 SWS_SecOC_00121 SWS_SecOC_00208 SWS_SecOC_00109 SWS_SecOC_00263 SWS_SecOC_00264 |
+| Multicore Distribution | SWS_SecOC_00276 |
+| Imported types | SWS_SecOC_00103 |
+| Type definitions | SWS_SecOC_00104 SWS_SecOC_00162 |
+| Function definitions | SWS_SecOC_00106 SWS_SecOC_00161 SWS_SecOC_00157 SWS_SecOC_00112 SWS_SecOC_00113 |
+| Call-back notifications | SWS_SecOC_00124 SWS_SecOC_00125 SWS_SecOC_00126 SWS_SecOC_00152 SWS_SecOC_00128 SWS_SecOC_00129 SWS_SecOC_00130 SWS_SecOC_00181 SWS_SecOC_00012 |
+| Callout Definitions | SWS_SecOC_91007 SWS_SecOC_91004 SWS_SecOC_91003 |
+| Scheduled functions | SWS_SecOC_00171 SWS_SecOC_00172 SWS_SecOC_00173 SWS_SecOC_00174 SWS_SecOC_00175 SWS_SecOC_00176 SWS_SecOC_00177 SWS_SecOC_00178 SWS_SecOC_00179 SWS_SecOC_00180 |
+| Expected Interfaces | SWS_SecOC_00137 SWS_SecOC_00138 |
+| Service Interfaces | SWS_SecOC_91002 SWS_SecOC_91012 |
+---
 ## Future Work
 
 While the SecOC module provides a robust security solution for in-vehicle communication, there may be certain SWS (Software Specifications) that are not currently implemented but can be considered for future enhancements. These potential areas for future work can further strengthen the overall security posture of automotive systems. The following SWS can be explored for
@@ -247,3 +252,43 @@ implementation:
 | Service Interfaces | SWS_SecOC_00141 SWS_SecOC_00148 SWS_SecOC_00142 SWS_SecOC_00002 SWS_SecOC_91016 SWS_SecOC_91001 SWS_SecOC_91020 SWS_SecOC_91021 SWS_SecOC_91022 SWS_SecOC_91015 SWS_SecOC_00149 SWS_SecOC_00160 SWS_SecOC_00991 |
 ---
 
+
+
+## Credits
+
+The Team would like to sincerely thank Assoc. Prof. Dr. Wael Mohammed AlAwadi for his invaluable guidance and support throughout the graduation project. His expertise and mentorship have been instrumental in shaping the outcome of the research.
+
+The Team is also grateful to the technical support team of the company Appraid LLC, especially Eng. Ahmed Elsaka, for their assistance and expertise. Their contributions have greatly enhanced the quality of the work.
+
+The Team would like to express their appreciation to their families and friends for their endless support throughout this endeavor. Their encouragement and belief in the authors' abilities have always been a constant source of motivation.
+
+To every individual who contributed to this project, regardless of their role or level of involvement, thank you for your invaluable contributions. It has been
+an honor for the authors to work with such exceptional individuals.
+
+
+
+## Contact
+
+If you have any questions, feedback, or suggestions, feel free to reach out:
+
+- [abdallahalaasalem7@gmail.com](mailto:abdallahalaasalem7@gmail.com)
+- [galalnasser5@gmail.com](mailto:galalnasser5@gmail.com)
+- [hosamaboabla@yahoo.com](mailto:hosamaboabla@yahoo.com)
+- [ehussein366@gmail.com](mailto:ehussein366@gmail.com)
+- [mohamedaboelnile68@gmail.com](mailto:mohamedaboelnile68@gmail.com)
+- [ziad.gamalelden@gmail.com](mailto:ziad.gamalelden@gmail.com)
+
+
+We would love to hear from you!
+
+
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+
+
+### Copyrights
+
+>Copyright (c) 2022-2023 Faculty of Engineering Tanta University 
