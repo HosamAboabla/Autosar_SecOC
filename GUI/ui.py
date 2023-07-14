@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIOLXXDr.ui'
+## Form generated from reading UI file 'GUICfvJem.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -20,7 +20,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(442, 771)
+        Dialog.resize(442, 842)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -156,8 +156,10 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamilies([u"Noto Color Emoji"])
+        font.setFamily(u"Noto Color Emoji")
         font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
@@ -271,7 +273,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
         font1 = QFont()
-        font1.setFamilies([u"Noto Color Emoji"])
+        font1.setFamily(u"Noto Color Emoji")
         font1.setPointSize(14)
         self.rlogger.setFont(font1)
 
@@ -329,6 +331,7 @@ class Ui_Dialog(object):
         self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
+        self.rlogger.setPlainText("")
         self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.ReceiverTab), QCoreApplication.translate("Dialog", u"Receiver", None))
     # retranslateUi

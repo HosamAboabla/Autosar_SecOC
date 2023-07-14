@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>442</width>
-    <height>771</height>
+    <height>842</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -296,8 +296,10 @@
             </property>
             <property name="font">
              <font>
-              <family>Bahnschrift SemiCondensed</family>
-              <pointsize>10</pointsize>
+              <family>Noto Color Emoji</family>
+              <pointsize>14</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
              </font>
             </property>
            </widget>
@@ -526,13 +528,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Segoe UI</family>
-              <pointsize>10</pointsize>
+              <family>Noto Color Emoji</family>
+              <pointsize>14</pointsize>
              </font>
             </property>
             <property name="plainText">
-             <string>
-</string>
+             <string/>
             </property>
            </widget>
           </item>
