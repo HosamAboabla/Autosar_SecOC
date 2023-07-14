@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIgdgWqi.ui'
+## Form generated from reading UI file 'GUIOLXXDr.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -271,7 +271,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
         font1 = QFont()
-        font1.setFamily(u"MS Shell Dlg 2")
+        font1.setFamily(u"Segoe UI")
         font1.setPointSize(10)
         self.rlogger.setFont(font1)
 
@@ -329,6 +329,8 @@ class Ui_Dialog(object):
         self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
+        self.rlogger.setPlainText(QCoreApplication.translate("Dialog", u"asdsa\n"
+"", None))
         self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.ReceiverTab), QCoreApplication.translate("Dialog", u"Receiver", None))
     # retranslateUi

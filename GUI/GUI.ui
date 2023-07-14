@@ -526,9 +526,13 @@
             </property>
             <property name="font">
              <font>
-              <family>MS Shell Dlg 2</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="plainText">
+             <string>asdsa
+</string>
             </property>
            </widget>
           </item>
