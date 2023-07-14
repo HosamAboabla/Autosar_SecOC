@@ -237,7 +237,7 @@ class MyConnections:
         else:
             self.dialog.rlog.error(my_string)
 
-        self.current_rx_id == -1
+        self.current_rx_id = -1
         self.UpdateReceiverSecPayload()
 
             
