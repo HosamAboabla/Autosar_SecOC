@@ -210,7 +210,7 @@ class Ui_Dialog(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
         self.LCD.setSizePolicy(sizePolicy3)
-        self.LCD.setMinimumSize(QSize(100, 0))
+        self.LCD.setMinimumSize(QSize(150, 0))
         self.LCD.setAlignment(Qt.AlignCenter)
         self.LCD.setReadOnly(True)
         self.LCD.setCursorMoveStyle(Qt.LogicalMoveStyle)
