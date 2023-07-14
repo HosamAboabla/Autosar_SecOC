@@ -155,10 +155,10 @@ class Ui_Dialog(object):
         self.tlogger.setMaximumSize(QSize(16777215, 250))
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
-        # font = QFont()
-        # font.setFamily(u"Bahnschrift SemiCondensed")
-        # font.setPointSize(10)
-        # self.tlogger.setFont(font)
+        font = QFont()
+        font.setFamilies([u"Noto Color Emoji"])
+        font.setPointSize(10)
+        self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
 
@@ -270,10 +270,10 @@ class Ui_Dialog(object):
         self.rlogger.setObjectName(u"rlogger")
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
-        # font1 = QFont()
-        # font1.setFamily(u"Segoe UI")
-        # font1.setPointSize(10)
-        # self.rlogger.setFont(font1)
+        font1 = QFont()
+        font1.setFamilies([u"Noto Color Emoji"])
+        font1.setPointSize(10)
+        self.rlogger.setFont(font1)
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
