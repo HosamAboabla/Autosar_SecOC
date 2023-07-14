@@ -272,7 +272,7 @@ class Ui_Dialog(object):
         self.rlogger.setSizePolicy(sizePolicy)
         font1 = QFont()
         font1.setFamilies([u"Noto Color Emoji"])
-        font1.setPointSize(10)
+        font1.setPointSize(14)
         self.rlogger.setFont(font1)
 
         self.verticalLayout_9.addWidget(self.rlogger)
@@ -294,7 +294,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(1)
+        self.ModeTabs.setCurrentIndex(0)
         self.showDateButton.setDefault(False)
 
 
