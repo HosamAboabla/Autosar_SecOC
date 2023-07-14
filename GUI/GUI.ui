@@ -296,7 +296,8 @@
             </property>
             <property name="font">
              <font>
-              <family>Calibri</family>
+              <family>Bahnschrift SemiCondensed</family>
+              <pointsize>10</pointsize>
              </font>
             </property>
            </widget>
@@ -525,7 +526,8 @@
             </property>
             <property name="font">
              <font>
-              <family>Calibri</family>
+              <family>Bahnschrift SemiCondensed</family>
+              <pointsize>10</pointsize>
              </font>
             </property>
            </widget>

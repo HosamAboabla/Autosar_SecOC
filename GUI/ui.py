@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIGGebkc.ui'
+## Form generated from reading UI file 'GUIGrfnuw.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -156,7 +156,8 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamily(u"Calibri")
+        font.setFamily(u"Bahnschrift SemiCondensed")
+        font.setPointSize(10)
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
