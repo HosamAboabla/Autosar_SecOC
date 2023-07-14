@@ -1,33 +1,26 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIAuudPb.ui'
+## Form generated from reading UI file 'GUIkbnAFF.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide2.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
-    QGroupBox, QHBoxLayout, QLayout, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
-    QVBoxLayout, QWidget)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
 from qtexteditlogger import QTextEditLogger
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(430, 653)
+        Dialog.resize(442, 771)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -163,7 +156,7 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamilies([u"Noto Color Emoji"])
+        font.setFamily(u"Noto Color Emoji")
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
@@ -268,7 +261,7 @@ class Ui_Dialog(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.LogBox.sizePolicy().hasHeightForWidth())
         self.LogBox.setSizePolicy(sizePolicy4)
-        self.LogBox.setMaximumSize(QSize(16777215, 158))
+        self.LogBox.setMaximumSize(QSize(16777215, 250))
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setSizeConstraint(QLayout.SetDefaultConstraint)
