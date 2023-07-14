@@ -210,7 +210,7 @@ class MyConnections:
     def OnVerifyButtonClicked(self):
         self.dialog.rlog.debug("Verifing...")      
         if self.current_rx_id == -1:
-            self.dialog.rlog.warning("PDU is empty")      
+            self.dialog.rlog.info("PDU is empty")      
             return 
         if self.current_rx_id in [6,7]:
             self.current_rx_id = 5
