@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUICfvJem.ui'
+## Form generated from reading UI file 'GUIiCLgFa.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -156,7 +156,7 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamily(u"Noto Color Emoji")
+        font.setFamily(u"Noto Sans")
         font.setPointSize(14)
         font.setBold(False)
         font.setWeight(50)
@@ -273,7 +273,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
         font1 = QFont()
-        font1.setFamily(u"Noto Color Emoji")
+        font1.setFamily(u"Noto Sans")
         font1.setPointSize(14)
         self.rlogger.setFont(font1)
 

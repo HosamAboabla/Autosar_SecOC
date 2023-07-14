@@ -296,7 +296,7 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Noto Sans</family>
               <pointsize>14</pointsize>
               <weight>50</weight>
               <bold>false</bold>
@@ -528,7 +528,7 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Noto Sans</family>
               <pointsize>14</pointsize>
              </font>
             </property>
