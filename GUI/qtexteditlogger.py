@@ -14,14 +14,14 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
         self.setReadOnly(True)
         self.setLevel(logging.DEBUG)
-        self.setFormatter(logging.Formatter('%(levelname)8s %(message)s'))
+        self.setFormatter(logging.Formatter('%(levelname)5s %(message)s'))
         self.filters = []
         self.lock = threading.RLock()
 
 
     def emit(self, record):
         msg = self.format(record)
-        if record.levelname == 'WARNING':
+        if record.levelname == 'WARN':
             emoji = u'\u26A0\ufe0f' # Unicode for the warning emoji
             text = f'{emoji} {msg}'
         elif record.levelname == 'INFO':
