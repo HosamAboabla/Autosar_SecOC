@@ -329,8 +329,6 @@ class Ui_Dialog(object):
         self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
-        self.rlogger.setPlainText(QCoreApplication.translate("Dialog", u"asdsa\n"
-"", None))
         self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.ReceiverTab), QCoreApplication.translate("Dialog", u"Receiver", None))
     # retranslateUi
