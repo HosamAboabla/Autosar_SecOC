@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIkbnAFF.ui'
+## Form generated from reading UI file 'GUITSpJfk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -144,7 +144,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
         self.groupBox.setMinimumSize(QSize(0, 0))
-        self.groupBox.setMaximumSize(QSize(16777215, 158))
+        self.groupBox.setMaximumSize(QSize(16777215, 250))
         self.verticalLayout_4 = QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setSizeConstraint(QLayout.SetDefaultConstraint)
@@ -152,11 +152,11 @@ class Ui_Dialog(object):
         self.tlogger.setObjectName(u"tlogger")
         sizePolicy.setHeightForWidth(self.tlogger.sizePolicy().hasHeightForWidth())
         self.tlogger.setSizePolicy(sizePolicy)
-        self.tlogger.setMaximumSize(QSize(16777215, 16777215))
+        self.tlogger.setMaximumSize(QSize(16777215, 250))
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamilies([u"Noto Color Emoji"])
+        font.setFamily(u"Noto Color Emoji")
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
