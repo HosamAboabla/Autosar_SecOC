@@ -156,7 +156,7 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamilies([u"Noto Color Emoji"])
+        font.setFamily(u"PibotoLt")
         font.setPointSize(14)
         font.setBold(False)
         font.setWeight(50)
@@ -273,7 +273,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
         font1 = QFont()
-        font1.setFamilies([u"Noto Color Emoji"])
+        font1.setFamily(u"PibotoLt")
         font1.setPointSize(14)
         self.rlogger.setFont(font1)
 
