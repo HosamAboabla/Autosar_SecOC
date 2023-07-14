@@ -296,7 +296,7 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Calibri</family>
              </font>
             </property>
            </widget>
@@ -525,7 +525,7 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Calibri</family>
              </font>
             </property>
            </widget>
