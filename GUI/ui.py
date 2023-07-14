@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIGrfnuw.ui'
+## Form generated from reading UI file 'GUIgdgWqi.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -270,7 +270,10 @@ class Ui_Dialog(object):
         self.rlogger.setObjectName(u"rlogger")
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
-        self.rlogger.setFont(font)
+        font1 = QFont()
+        font1.setFamily(u"MS Shell Dlg 2")
+        font1.setPointSize(10)
+        self.rlogger.setFont(font1)
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
@@ -291,7 +294,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.ModeTabs.setCurrentIndex(0)
+        self.ModeTabs.setCurrentIndex(1)
         self.showDateButton.setDefault(False)
 
 
