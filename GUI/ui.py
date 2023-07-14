@@ -156,7 +156,7 @@ class Ui_Dialog(object):
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
-        font.setFamily(u"Noto Color Emoji")
+        font.setFamilies([u"Noto Color Emoji"])
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
