@@ -203,7 +203,7 @@ class MyConnections:
             return
 
         self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
-        self.dialog.tlog.info("Transmitted PDU ➡")
+        self.dialog.tlog.info("Transmitted PDU 📡")
 
    
 
@@ -294,4 +294,4 @@ class MyConnections:
             if securedLen.value >= finalRxLen.value:
                 # Update the Secured Payload in transmitter tab
                 self.UpdateReceiverSecPayload()
-                self.dialog.rlog.info("Received PDU ⬅")
+                self.dialog.rlog.info("Received PDU 📩")
