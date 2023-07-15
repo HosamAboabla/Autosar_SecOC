@@ -194,8 +194,9 @@ class MyConnections:
   
 
     def OnTransmitButtonClicked(self):
-        self.dialog.tlog.debug("Transmitting...")
         self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
+        self.dialog.tlog.info("Transmitted PDU")
+
    
 
 
