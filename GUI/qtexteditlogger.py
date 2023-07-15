@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 import logging
 import threading
 
@@ -38,4 +38,5 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
 
         self.appendPlainText(text)
+        self.moveCursor(QtGui.QTextCursor.End)
 
