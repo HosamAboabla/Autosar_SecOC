@@ -161,7 +161,7 @@ class MyConnections:
 
 
     def OnShowDateButtonClicked(self):
-        self.dialog.tlog.debug("Show Date 📅")
+        self.dialog.tlog.debug("Show Date 🗓")
         # Get the current date as a string in the format "3/10/2000"
         current_date_str = '4' + datetime.datetime.now().strftime("%-Y/%-m/%d") + 9 * "$"
         # Convert the string to a c_ubyte array
