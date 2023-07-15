@@ -83,6 +83,12 @@ char* GUIInterface_verify(uint8_t configId)
     result = verify(configId, securedPdu, &result_ver);
     securedPdu->SduLength = 0; 
 
+    if(result_ver == SECOC_FRESHNESSFAILURE)
+        return "Freshness Failed";
+
+    if((result_ver == SECOC_AUTHENTICATIONBUILDFAILURE) || (result_ver == SECOC_VERIFICATIONFAILURE))
+        return "PDU is not Authentic";
+
     return errorString(result);
 
 }
