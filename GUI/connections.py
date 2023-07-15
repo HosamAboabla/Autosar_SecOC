@@ -197,7 +197,7 @@ class MyConnections:
         securedLen = c_int8()
         currentIndex = self.dialog.configSelect.currentIndex()
         secPdu = self.mylib.GUIInterface_getSecuredPDU(currentIndex, byref(securedLen))
-        
+        print(securedLen)
         if(securedLen != 0):
             self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
             self.dialog.tlog.info("Transmitted PDU ➡")
