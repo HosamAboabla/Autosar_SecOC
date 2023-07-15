@@ -197,10 +197,13 @@ class MyConnections:
         securedLen = c_int8()
         currentIndex = self.dialog.configSelect.currentIndex()
         secPdu = self.mylib.GUIInterface_getSecuredPDU(currentIndex, byref(securedLen))
-        
-        if(securedLen.value != 0):
-            self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
-            self.dialog.tlog.info("Transmitted PDU ➡")
+
+        if(securedLen.value == 0):
+            self.dialog.tlog.error("PDU is empty")
+            return
+
+        self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
+        self.dialog.tlog.info("Transmitted PDU ➡")
 
    
 
