@@ -176,7 +176,7 @@ class MyConnections:
 
 
     def OnAlterFreshButtonClicked(self):
-        self.dialog.tlog.debug("Manipulating Freshness...")
+        self.dialog.tlog.debug("Altered Freshness")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterFreshness(currentIndex)
@@ -185,7 +185,7 @@ class MyConnections:
 
     
     def OnAlterAuthButtonClicked(self):
-        self.dialog.tlog.debug("Manipulating Authenticator...")
+        self.dialog.tlog.debug("Altered Authenticator")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterAuthenticator(currentIndex)
@@ -209,7 +209,6 @@ class MyConnections:
 
 
     def OnTlogClearButtonClicked(self):
-        self.dialog.tlog.debug("Clearing... ")
         self.dialog.tlogger.clear()                                             
 
 
