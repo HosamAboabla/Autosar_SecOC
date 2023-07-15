@@ -145,7 +145,7 @@ class MyConnections:
         self.UpdateTransmitterSecPayload()
 
     def OnShowTimeButtonClicked(self):
-        self.dialog.tlog.debug("Show Time")
+        self.dialog.tlog.debug("Show Time ⏰")
         # Get the current time as a string in the format "03:12 AM"
         current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p") + + 10 * "$"
 
