@@ -215,7 +215,7 @@ class MyConnections:
         if self.current_rx_id in [6,7]:
             self.current_rx_id = 5
         status = self.mylib.GUIInterface_verify(self.current_rx_id)
-        self.dialog.rlog.debug("PDU Verification Completed")      
+        self.dialog.rlog.debug("Verification Completed")      
 
         # convert the char* to a Python string
         my_bytes = string_at(status) # , status.value
