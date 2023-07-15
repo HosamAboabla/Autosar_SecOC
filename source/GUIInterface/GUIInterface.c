@@ -181,10 +181,10 @@ void GUIInterface_alterFreshness(uint8_t configId)
 
     uint8_t macLen = BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCAuthInfoTruncLength);
 
-    /* Get the offset of last freshness byte */
-    uint8_t freshness_offset = securedPdu->SduLength - macLen - 1;
+    /* Get the first freshness byte */
+    uint8_t freshness_offset = securedPdu->SduLength - macLen - 1 - FreshnesslenBytes + 1;
 
-    securedPdu->SduDataPtr[freshness_offset]++;
+    securedPdu->SduDataPtr[freshness_offset]--;
 
 }
 
