@@ -125,7 +125,7 @@ class MyConnections:
 
     
     def OnDecelButtonClicked(self):
-        self.dialog.tlog.debug("Decelerate ⬇")
+        self.dialog.tlog.debug("Decelerate  ⬇")
         currentIndex = self.dialog.configSelect.currentIndex()
 
         # Create an array of bytes in Python
