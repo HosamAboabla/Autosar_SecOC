@@ -211,7 +211,7 @@ class MyConnections:
     def OnVerifyButtonClicked(self):
         self.dialog.rlog.debug("PDU Verification Completed")      
         if self.current_rx_id == -1:
-            self.dialog.rlog.info("PDU is empty")      
+            self.dialog.rlog.error("PDU is empty")      
             return 
         if self.current_rx_id in [6,7]:
             self.current_rx_id = 5
@@ -235,7 +235,7 @@ class MyConnections:
                 self.dialog.LCD.setText(my_string[1:])
 
             self.dialog.receivePayload.setText("")
-            self.dialog.rlog.info(my_string[1:])
+            self.dialog.rlog.info('PDU is Authentic')
         else:
             self.dialog.rlog.error(my_string)
 
@@ -246,7 +246,6 @@ class MyConnections:
 
 
     def OnRlogClearButtonClicked(self):
-        self.dialog.rlog.debug("Clearing... ")
         self.dialog.rlogger.clear()                                             
     
 
