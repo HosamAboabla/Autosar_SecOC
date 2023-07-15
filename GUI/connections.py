@@ -209,7 +209,7 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.rlog.debug("Verifing...")      
+        self.dialog.rlog.debug("PDU Verification Completed")      
         if self.current_rx_id == -1:
             self.dialog.rlog.info("PDU is empty")      
             return 
