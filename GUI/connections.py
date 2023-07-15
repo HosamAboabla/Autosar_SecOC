@@ -209,18 +209,20 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.rlog.debug("PDU Verification Completed")      
         if self.current_rx_id == -1:
             self.dialog.rlog.error("PDU is empty")      
             return 
         if self.current_rx_id in [6,7]:
             self.current_rx_id = 5
         status = self.mylib.GUIInterface_verify(self.current_rx_id)
+        self.dialog.rlog.debug("PDU Verification Completed")      
 
         # convert the char* to a Python string
         my_bytes = string_at(status) # , status.value
         my_string = my_bytes.decode('utf-8')
         print(my_string)
+
+
         if my_string == "E_OK":
             authData , authLen = self.get_auth_data(self.current_rx_id)
 
