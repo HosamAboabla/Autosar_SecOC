@@ -271,12 +271,12 @@ an honor for the authors to work with such exceptional individuals.
 
 If you have any questions, feedback, or suggestions, feel free to reach out:
 
-- [abdallahalaasalem7@gmail.com](mailto:abdallahalaasalem7@gmail.com)
-- [galalnasser5@gmail.com](mailto:galalnasser5@gmail.com)
-- [hosamaboabla@yahoo.com](mailto:hosamaboabla@yahoo.com)
-- [ehussein366@gmail.com](mailto:ehussein366@gmail.com)
-- [mohamedaboelnile68@gmail.com](mailto:mohamedaboelnile68@gmail.com)
-- [ziad.gamalelden@gmail.com](mailto:ziad.gamalelden@gmail.com)
+- [Abdallah-Alaa-Ali-Salem](https://www.linkedin.com/in/abdallah-alaa-salem/ )
+- [Galal-Nasser-Mohamed-Elfeky](https://www.linkedin.com/in/galal-nasser/)
+- [Hosam-Sayed-Ahmed-Mohamed-Aboabla](https://www.linkedin.com/in/HosamAboabla/) 
+- [Hussein-AbdAlsalam-Hassan-Elsaka](https://www.linkedin.com/in/hussein-elsaka)
+- [Mohammed-Abdelsattar-Abdelsattar-Aboelniel](https://www.linkedin.com/in/mohammed-abo-elniel-180b14174)
+- [Ziad-Ashraf-Kamel-Gamalelden](https://www.linkedin.com/in/ziad-gamaleldin/).
 
 
 We would love to hear from you!
