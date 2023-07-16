@@ -276,7 +276,7 @@ If you have any questions, feedback, or suggestions, feel free to reach out:
 - [Hosam-Sayed-Ahmed-Mohamed-Aboabla](https://www.linkedin.com/in/HosamAboabla/) 
 - [Hussein-AbdAlsalam-Hassan-Elsaka](https://www.linkedin.com/in/hussein-elsaka)
 - [Mohammed-Abdelsattar-Abdelsattar-Aboelniel](https://www.linkedin.com/in/mohammed-abo-elniel-180b14174)
-- [Ziad-Ashraf-Kamel-Gamalelden](https://www.linkedin.com/in/ziad-gamaleldin/).
+- [Ziad-Ashraf-Kamel-Gamalelden](https://www.linkedin.com/in/ziad-gamaleldin/)
 
 
 We would love to hear from you!
