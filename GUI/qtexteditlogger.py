@@ -1,4 +1,4 @@
-from PySide2 import QtWidgets
+from PySide2 import QtWidgets, QtGui
 import logging
 import threading
 
@@ -14,7 +14,7 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
         self.setReadOnly(True)
         self.setLevel(logging.DEBUG)
-        self.setFormatter(logging.Formatter('%(levelname)s\t %(message)s'))
+        self.setFormatter(logging.Formatter('{levelname:<5s} {message}', style='{'))
         self.filters = []
         self.lock = threading.RLock()
 
@@ -38,4 +38,5 @@ class QTextEditLogger(QtWidgets.QPlainTextEdit, logging.Handler):
 
 
         self.appendPlainText(text)
+        self.moveCursor(QtGui.QTextCursor.End)
 

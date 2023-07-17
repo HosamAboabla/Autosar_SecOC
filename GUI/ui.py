@@ -1,33 +1,26 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'GUIAuudPb.ui'
+## Form generated from reading UI file 'GUIiCLgFa.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 5.15.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide2.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
-    QGroupBox, QHBoxLayout, QLayout, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QTabWidget,
-    QVBoxLayout, QWidget)
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 from Custom_Widgets.AnalogGaugeWidget import AnalogGaugeWidget
 from qtexteditlogger import QTextEditLogger
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(430, 653)
+        Dialog.resize(442, 842)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -151,7 +144,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
         self.groupBox.setMinimumSize(QSize(0, 0))
-        self.groupBox.setMaximumSize(QSize(16777215, 158))
+        self.groupBox.setMaximumSize(QSize(16777215, 250))
         self.verticalLayout_4 = QVBoxLayout(self.groupBox)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setSizeConstraint(QLayout.SetDefaultConstraint)
@@ -159,11 +152,14 @@ class Ui_Dialog(object):
         self.tlogger.setObjectName(u"tlogger")
         sizePolicy.setHeightForWidth(self.tlogger.sizePolicy().hasHeightForWidth())
         self.tlogger.setSizePolicy(sizePolicy)
-        self.tlogger.setMaximumSize(QSize(16777215, 16777215))
+        self.tlogger.setMaximumSize(QSize(16777215, 250))
         self.tlogger.setSizeIncrement(QSize(0, 0))
         self.tlogger.setBaseSize(QSize(0, 0))
         font = QFont()
         font.setFamilies([u"Noto Color Emoji"])
+        font.setPointSize(14)
+        font.setBold(False)
+        font.setWeight(50)
         self.tlogger.setFont(font)
 
         self.verticalLayout_4.addWidget(self.tlogger)
@@ -216,7 +212,7 @@ class Ui_Dialog(object):
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.LCD.sizePolicy().hasHeightForWidth())
         self.LCD.setSizePolicy(sizePolicy3)
-        self.LCD.setMinimumSize(QSize(100, 0))
+        self.LCD.setMinimumSize(QSize(150, 0))
         self.LCD.setAlignment(Qt.AlignCenter)
         self.LCD.setReadOnly(True)
         self.LCD.setCursorMoveStyle(Qt.LogicalMoveStyle)
@@ -268,7 +264,7 @@ class Ui_Dialog(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.LogBox.sizePolicy().hasHeightForWidth())
         self.LogBox.setSizePolicy(sizePolicy4)
-        self.LogBox.setMaximumSize(QSize(16777215, 158))
+        self.LogBox.setMaximumSize(QSize(16777215, 250))
         self.verticalLayout_9 = QVBoxLayout(self.LogBox)
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.verticalLayout_9.setSizeConstraint(QLayout.SetDefaultConstraint)
@@ -276,7 +272,10 @@ class Ui_Dialog(object):
         self.rlogger.setObjectName(u"rlogger")
         sizePolicy.setHeightForWidth(self.rlogger.sizePolicy().hasHeightForWidth())
         self.rlogger.setSizePolicy(sizePolicy)
-        self.rlogger.setFont(font)
+        font1 = QFont()
+        font1.setFamilies([u"Noto Color Emoji"])
+        font1.setPointSize(14)
+        self.rlogger.setFont(font1)
 
         self.verticalLayout_9.addWidget(self.rlogger)
 
@@ -332,6 +331,7 @@ class Ui_Dialog(object):
         self.receivePayload.setText("")
         self.verifyButton.setText(QCoreApplication.translate("Dialog", u"Verify Secured PDU", None))
         self.LogBox.setTitle(QCoreApplication.translate("Dialog", u"Log", None))
+        self.rlogger.setPlainText("")
         self.rlogClearButton.setText(QCoreApplication.translate("Dialog", u"Clear", None))
         self.ModeTabs.setTabText(self.ModeTabs.indexOf(self.ReceiverTab), QCoreApplication.translate("Dialog", u"Receiver", None))
     # retranslateUi

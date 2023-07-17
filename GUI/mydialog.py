@@ -72,6 +72,6 @@ class MyDialog(QtWidgets.QDialog, Ui_Dialog):
         
     def styleLCD(self):
         self.LCD : QtWidgets.QLineEdit
-        self.LCD.setFont(QtGui.QFont('DS-Digital', 16))
+        self.LCD.setFont(QtGui.QFont('DS-Digital', 24))
 
 

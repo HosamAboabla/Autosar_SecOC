@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>430</width>
-    <height>653</height>
+    <width>442</width>
+    <height>842</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -258,7 +258,7 @@
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>158</height>
+           <height>250</height>
           </size>
          </property>
          <property name="title">
@@ -279,7 +279,7 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>16777215</height>
+              <height>250</height>
              </size>
             </property>
             <property name="sizeIncrement">
@@ -296,7 +296,10 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Noto Sans</family>
+              <pointsize>14</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
              </font>
             </property>
            </widget>
@@ -393,7 +396,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>150</width>
                 <height>0</height>
                </size>
               </property>
@@ -505,7 +508,7 @@
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>158</height>
+           <height>250</height>
           </size>
          </property>
          <property name="title">
@@ -525,8 +528,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Noto Color Emoji</family>
+              <family>Noto Sans</family>
+              <pointsize>14</pointsize>
              </font>
+            </property>
+            <property name="plainText">
+             <string/>
             </property>
            </widget>
           </item>

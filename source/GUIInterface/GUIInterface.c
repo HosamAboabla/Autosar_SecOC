@@ -83,6 +83,12 @@ char* GUIInterface_verify(uint8_t configId)
     result = verify(configId, securedPdu, &result_ver);
     securedPdu->SduLength = 0; 
 
+    if(result_ver == SECOC_FRESHNESSFAILURE)
+        return "Freshness Failed";
+
+    if((result_ver == SECOC_AUTHENTICATIONBUILDFAILURE) || (result_ver == SECOC_VERIFICATIONFAILURE))
+        return "PDU is not Authentic";
+
     return errorString(result);
 
 }
@@ -175,10 +181,10 @@ void GUIInterface_alterFreshness(uint8_t configId)
 
     uint8_t macLen = BIT_TO_BYTES(SecOCTxPduProcessing[configId].SecOCAuthInfoTruncLength);
 
-    /* Get the offset of last freshness byte */
-    uint8_t freshness_offset = securedPdu->SduLength - macLen - 1;
+    /* Get the first freshness byte */
+    uint8_t freshness_offset = securedPdu->SduLength - macLen - 1 - FreshnesslenBytes + 1;
 
-    securedPdu->SduDataPtr[freshness_offset]++;
+    securedPdu->SduDataPtr[freshness_offset]--;
 
 }
 

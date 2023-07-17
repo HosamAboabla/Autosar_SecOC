@@ -125,7 +125,7 @@ class MyConnections:
 
     
     def OnDecelButtonClicked(self):
-        self.dialog.tlog.debug("Decelerate ⬇")
+        self.dialog.tlog.debug("Decelerate  ⬇")
         currentIndex = self.dialog.configSelect.currentIndex()
 
         # Create an array of bytes in Python
@@ -145,7 +145,7 @@ class MyConnections:
         self.UpdateTransmitterSecPayload()
 
     def OnShowTimeButtonClicked(self):
-        self.dialog.tlog.debug("Show Time")
+        self.dialog.tlog.debug("Show Time 🕗")
         # Get the current time as a string in the format "03:12 AM"
         current_time_str =  '3' + datetime.datetime.now().strftime("%I:%M %p") + + 10 * "$"
 
@@ -176,7 +176,7 @@ class MyConnections:
 
 
     def OnAlterFreshButtonClicked(self):
-        self.dialog.tlog.debug("Manipulating Freshness...")
+        self.dialog.tlog.debug("Altered Freshness")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterFreshness(currentIndex)
@@ -185,7 +185,7 @@ class MyConnections:
 
     
     def OnAlterAuthButtonClicked(self):
-        self.dialog.tlog.debug("Manipulating Authenticator...")
+        self.dialog.tlog.debug("Altered Authenticator")
 
         currentIndex = self.dialog.configSelect.currentIndex()
         self.mylib.GUIInterface_alterAuthenticator(currentIndex)
@@ -194,13 +194,21 @@ class MyConnections:
   
 
     def OnTransmitButtonClicked(self):
-        self.dialog.tlog.debug("Transmitting...")
+        securedLen = c_int8()
+        currentIndex = self.dialog.configSelect.currentIndex()
+        secPdu = self.mylib.GUIInterface_getSecuredPDU(currentIndex, byref(securedLen))
+
+        if(securedLen.value == 0):
+            self.dialog.tlog.error("PDU is empty")
+            return
+
         self.mylib.GUIInterface_transmit(self.dialog.configSelect.currentIndex())
+        self.dialog.tlog.info("Transmitted PDU 📡")
+
    
 
 
     def OnTlogClearButtonClicked(self):
-        self.dialog.tlog.debug("Clearing... ")
         self.dialog.tlogger.clear()                                             
 
 
@@ -208,17 +216,20 @@ class MyConnections:
 
 
     def OnVerifyButtonClicked(self):
-        self.dialog.rlog.debug("Verifing...")      
         if self.current_rx_id == -1:
+            self.dialog.rlog.error("PDU is empty")      
             return 
         if self.current_rx_id in [6,7]:
             self.current_rx_id = 5
         status = self.mylib.GUIInterface_verify(self.current_rx_id)
+        self.dialog.rlog.debug("Verification Completed")      
 
         # convert the char* to a Python string
         my_bytes = string_at(status) # , status.value
         my_string = my_bytes.decode('utf-8')
         print(my_string)
+
+
         if my_string == "E_OK":
             authData , authLen = self.get_auth_data(self.current_rx_id)
 
@@ -233,14 +244,17 @@ class MyConnections:
                 self.dialog.LCD.setText(my_string[1:])
 
             self.dialog.receivePayload.setText("")
-            self.dialog.rlog.info(my_string[1:])
+            self.dialog.rlog.info('PDU is Authentic')
         else:
             self.dialog.rlog.error(my_string)
+
+        self.current_rx_id = -1
+        self.UpdateReceiverSecPayload()
+
             
 
 
     def OnRlogClearButtonClicked(self):
-        self.dialog.rlog.debug("Clearing... ")
         self.dialog.rlogger.clear()                                             
     
 
@@ -280,4 +294,4 @@ class MyConnections:
             if securedLen.value >= finalRxLen.value:
                 # Update the Secured Payload in transmitter tab
                 self.UpdateReceiverSecPayload()
-                self.dialog.rlog.info("Received PDU")
+                self.dialog.rlog.info("Received PDU 📩")
