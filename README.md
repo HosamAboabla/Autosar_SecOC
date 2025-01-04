@@ -191,7 +191,7 @@ APIs, interfaces, confgurations, code and files structure follows the AUTOSAR Se
 
 The code was developed using best practice techniques following and abiding by the MISRA rules as per MISRA C:2012 standard.
 
-Here you can find our graduation book where you can find more details [Book](https://openai.com "Graduation Document").
+Here you can find our graduation book where you can find more details [Book](https://drive.google.com/drive/mobile/folders/1Ct9Su8qwKj3ynr8rcKqxX6zPgFMQQr5R/1xxyVxqZBJgdAyx60Vzyf1SFhlwitRrX2?pli=1&sort=13&direction=a "Graduation Document").
 
 
 
